@@ -93,10 +93,21 @@ namespace BattleSystem.Moves
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="maxUses">The max uses.</param>
-        /// <param name="maxUses">The power.</param>
+        /// <param name="power">The power.</param>
         public static Attack ByAbsolutePower(string name, int maxUses, int power)
         {
             return new Attack(new AbsoluteDamageCalculator(), name, maxUses, power);
+        }
+
+        /// <summary>
+        /// Returns an attack that calculates damage equal to a percentage of the target's max health.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="maxUses">The max uses.</param>
+        /// <param name="percentage">The percentage.</param>
+        public static Attack ByPercentage(string name, int maxUses, int percentage)
+        {
+            return new Attack(new PercentageDamageCalculator(), name, maxUses, percentage);
         }
     }
 }
