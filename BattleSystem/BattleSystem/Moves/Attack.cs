@@ -1,4 +1,5 @@
 ﻿using BattleSystem.Characters;
+using BattleSystem.Damage;
 
 namespace BattleSystem.Moves
 {
@@ -7,6 +8,11 @@ namespace BattleSystem.Moves
     /// </summary>
     public class Attack : IMove
     {
+        /// <summary>
+        /// The damage calculator.
+        /// </summary>
+        private readonly IDamageCalculator _damageCalculator;
+
         /// <summary>
         /// Gets or sets the attack's name.
         /// </summary>
@@ -35,11 +41,18 @@ namespace BattleSystem.Moves
         /// <summary>
         /// Creates a new <see cref="Attack"/>.
         /// </summary>
+        /// <param name="damageCalculator">The damage calculator.</param>
         /// <param name="name">The name.</param>
         /// <param name="maxUses">The max uses.</param>
         /// <param name="power">The power.</param>
-        public Attack(string name, int maxUses, int power)
+        public Attack(
+            IDamageCalculator damageCalculator,
+            string name,
+            int maxUses,
+            int power)
         {
+            _damageCalculator = damageCalculator;
+
             Name = name;
 
             MaxUses = maxUses;
@@ -57,7 +70,8 @@ namespace BattleSystem.Moves
         /// <inheritdoc />
         public virtual void Use(Character user, Character target)
         {
-            target.ReceiveAttack(this, user.Stats.Attack);
+            var damage = _damageCalculator.Calculate(user, this, target);
+            target.ReceiveDamage(damage);
 
             RemainingUses--;
         }

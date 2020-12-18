@@ -73,25 +73,12 @@ namespace BattleSystem.Characters
         public abstract MoveUse ChooseMove(IEnumerable<Character> otherCharacters);
 
         /// <summary>
-        /// Takes damage from the given attack.
+        /// Takes the incoming damage.
         /// </summary>
-        /// <param name="attack">The incoming attack.</param>
-        /// <param name="userAttackStat">The attack stat of the user of the attack.</param>
-        public virtual void ReceiveAttack(Attack attack, Stat userAttackStat)
+        /// <param name="damage">The incoming damage.</param>
+        public virtual void ReceiveDamage(int damage)
         {
-            var damage = ComputeDamage(attack, userAttackStat);
             CurrentHealth -= damage;
-        }
-
-        /// <summary>
-        /// Computes the damage this character takes from the given attack.
-        /// </summary>
-        /// <param name="attack">The incoming attack.</param>
-        /// <param name="userAttackStat">The attack stat of the user of the attack.</param>
-        protected virtual int ComputeDamage(Attack attack, Stat userAttackStat)
-        {
-            // damage is offset by defence to a minimum of 1
-            return Math.Max(1, attack.Power * (userAttackStat.CurrentValue - Stats.Defence.CurrentValue));
         }
 
         /// <summary>

@@ -1,5 +1,7 @@
 ﻿using System;
+using BattleSystem.Damage;
 using BattleSystem.Moves;
+using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
@@ -17,7 +19,7 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var moveSet = new MoveSet
             {
-                Move1 = TestHelpers.CreateAttack(),
+                Move1 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object),
                 Move3 = TestHelpers.CreateBuff(),
             };
 
@@ -34,7 +36,7 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var moveSet = new MoveSet
             {
-                Move1 = TestHelpers.CreateAttack("move1"),
+                Move1 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move1"),
                 Move3 = TestHelpers.CreateBuff("move3"),
             };
 
@@ -55,9 +57,9 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var moveSet = new MoveSet
             {
-                Move1 = TestHelpers.CreateAttack("move1"),
+                Move1 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move1"),
                 Move2 = TestHelpers.CreateHeal("move2"),
-                Move4 = TestHelpers.CreateAttack("move4"),
+                Move4 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move4"),
             };
 
             // Act
@@ -82,10 +84,10 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var moveSet = new MoveSet
             {
-                Move1 = TestHelpers.CreateAttack("move1"),
+                Move1 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move1"),
                 Move2 = TestHelpers.CreateHeal("move2"),
                 Move3 = TestHelpers.CreateBuff("move3"),
-                Move4 = TestHelpers.CreateAttack("move4"),
+                Move4 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move4"),
             };
 
             // Act

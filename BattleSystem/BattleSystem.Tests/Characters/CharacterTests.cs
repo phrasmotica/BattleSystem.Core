@@ -13,26 +13,26 @@ namespace BattleSystem.Tests.Characters
     public class CharacterTests
     {
         [Test]
-        public void ReceiveAttack_TakesDamage()
+        public void ReceiveDamage_TakesDamage()
         {
             // Arrange
-            var target = TestHelpers.CreateBasicCharacter(maxHealth: 5, defence: 1);
+            var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
 
             // Act
-            target.ReceiveAttack(TestHelpers.CreateAttack(), TestHelpers.CreateStat());
+            target.ReceiveDamage(2);
 
             // Assert
-            Assert.That(target.CurrentHealth, Is.EqualTo(4));
+            Assert.That(target.CurrentHealth, Is.EqualTo(3));
         }
 
         [Test]
-        public void ReceiveAttack_IsDeadIfNoHealthLeft()
+        public void ReceiveDamage_IsDeadIfNoHealthLeft()
         {
             // Arrange
-            var target = TestHelpers.CreateBasicCharacter(maxHealth: 5, defence: 1);
+            var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
 
             // Act
-            target.ReceiveAttack(TestHelpers.CreateAttack(power: 6), TestHelpers.CreateStat(2));
+            target.ReceiveDamage(6);
 
             // Assert
             Assert.That(target.IsDead, Is.True);
@@ -64,8 +64,8 @@ namespace BattleSystem.Tests.Characters
         public void ReceiveHeal_AddsHealth(int amount, HealingMode healingMode, int expectedHealth)
         {
             // Arrange
-            var target = TestHelpers.CreateBasicCharacter(maxHealth: 5, defence: 1);
-            target.ReceiveAttack(TestHelpers.CreateAttack(power: 2), TestHelpers.CreateStat(2)); // now has 3 health
+            var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
+            target.ReceiveDamage(2);
 
             // Act
             target.ReceiveHeal(TestHelpers.CreateHeal(amount: amount, mode: healingMode));

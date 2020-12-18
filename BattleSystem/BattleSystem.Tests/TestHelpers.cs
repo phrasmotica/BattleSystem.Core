@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
+using BattleSystem.Damage;
 using BattleSystem.Moves;
 using BattleSystem.Stats;
+using Moq;
 
 namespace BattleSystem.Tests
 {
@@ -51,16 +53,16 @@ namespace BattleSystem.Tests
         {
             return new MoveSet
             {
-                Move1 = CreateAttack(),
+                Move1 = CreateAttack(new Mock<IDamageCalculator>().Object),
             };
         }
 
         /// <summary>
         /// Returns a basic attack with the given max uses and power.
         /// </summary>
-        public static Attack CreateAttack(string name = "yeti", int maxUses = 5, int power = 2)
+        public static Attack CreateAttack(IDamageCalculator damageCalculator, string name = "yeti", int maxUses = 5, int power = 2)
         {
-            return new Attack(name, maxUses, power);
+            return new Attack(damageCalculator, name, maxUses, power);
         }
 
         /// <summary>
