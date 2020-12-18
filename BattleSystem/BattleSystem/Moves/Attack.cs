@@ -75,5 +75,17 @@ namespace BattleSystem.Moves
 
             RemainingUses--;
         }
+
+        /// <summary>
+        /// Returns an attack that calculates damage based on the difference between the user's
+        /// attack stat and the target's defence stat.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="maxUses">The max uses.</param>
+        /// <param name="maxUses">The power.</param>
+        public static Attack ByStatDifference(string name, int maxUses, int power)
+        {
+            return new Attack(new StatDifferenceDamageCalculator(), name, maxUses, power);
+        }
     }
 }

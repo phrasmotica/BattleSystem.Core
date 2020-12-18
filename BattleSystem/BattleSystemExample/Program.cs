@@ -13,7 +13,6 @@ namespace BattleSystemExample
         public static void Main(string[] args)
         {
             var gameOutput = new ConsoleOutput();
-            var damageCalculator = new StatDifferenceDamageCalculator();
 
             gameOutput.WriteLine("Welcome to the Console Battle System!");
 
@@ -26,7 +25,7 @@ namespace BattleSystemExample
 
             var userMoves = new MoveSet
             {
-                Move1 = new Attack(damageCalculator, "Sword Strike", 15, 20),
+                Move1 = Attack.ByStatDifference("Sword Strike", 15, 20),
                 Move2 = Buff.RaiseUserAttack("Sharpen", 10),
                 Move3 = Heal.HealByPercentage("Restore", 10, 10),
             };
@@ -43,7 +42,7 @@ namespace BattleSystemExample
 
             var enemyMoves = new MoveSet
             {
-                Move1 = new Attack(damageCalculator, "Magic Missile", 15, 15),
+                Move1 = Attack.ByStatDifference("Magic Missile", 15, 15),
                 Move2 = Buff.RaiseUserAttack("Meditate", 15),
                 Move3 = Heal.HealByPercentage("Refresh", 10, 30),
             };
