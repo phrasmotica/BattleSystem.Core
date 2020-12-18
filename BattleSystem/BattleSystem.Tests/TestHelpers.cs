@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
 using BattleSystem.Damage;
+using BattleSystem.Healing;
 using BattleSystem.Moves;
 using BattleSystem.Stats;
 using Moq;
@@ -81,9 +82,9 @@ namespace BattleSystem.Tests
         /// <summary>
         /// Returns a basic heal with the given max uses, amount and mode.
         /// </summary>
-        public static Heal CreateHeal(string name = "yeti", int maxUses = 5, int amount = 5, HealingMode mode = HealingMode.Absolute)
+        public static Heal CreateHeal(IHealingCalculator healingCalculator, string name = "yeti", int maxUses = 5, int amount = 5)
         {
-            return new Heal(name, maxUses, amount, mode);
+            return new Heal(healingCalculator, name, maxUses, amount);
         }
     }
 }

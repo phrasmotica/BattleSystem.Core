@@ -1,4 +1,5 @@
 ﻿using BattleSystem.Characters;
+using BattleSystem.Healing;
 
 namespace BattleSystem.Moves
 {
@@ -7,6 +8,11 @@ namespace BattleSystem.Moves
     /// </summary>
     public class Heal : IMove
     {
+        /// <summary>
+        /// The healing calculator.
+        /// </summary>
+        private readonly IHealingCalculator _healingCalculator;
+
         /// <summary>
         /// Gets or sets the heal's name.
         /// </summary>
@@ -38,26 +44,22 @@ namespace BattleSystem.Moves
         public int Amount { get; set; }
 
         /// <summary>
-        /// Gets or sets the heal's healing mode.
-        /// </summary>
-        public HealingMode HealingMode { get; set; }
-
-        /// <summary>
         /// Creates a new <see cref="Heal"/>.
         /// </summary>
+        /// <param name="healingCalculator">The healing calculator.</param>
         /// <param name="name">The name.</param>
         /// <param name="maxUses">The max uses.</param>
         /// <param name="amount">The healing amount.</param>
-        /// <param name="healingMode">The healing mode.</param>
-        public Heal(string name, int maxUses, int amount, HealingMode healingMode)
+        public Heal(IHealingCalculator healingCalculator, string name, int maxUses, int amount)
         {
+            _healingCalculator = healingCalculator;
+
             Name = name;
 
             MaxUses = maxUses;
             RemainingUses = maxUses;
 
             Amount = amount;
-            HealingMode = healingMode;
         }
 
         /// <inheritdoc />
@@ -69,7 +71,8 @@ namespace BattleSystem.Moves
         /// <inheritdoc />
         public virtual void Use(Character user, Character target)
         {
-            user.ReceiveHeal(this);
+            var amount = _healingCalculator.Calculate(user, this, target);
+            user.Heal(amount);
 
             RemainingUses--;
         }
@@ -78,12 +81,27 @@ namespace BattleSystem.Moves
         /// Returns a heal that heals the user by the given percentage of its max health.
         /// </summary>
         /// <param name="name">The name.</param>
+        /// <param name="maxUses">The max uses.</param>
         /// <param name="percentage">The percentage to heal by.</param>
         public static Heal ByPercentage(string name, int maxUses, int percentage)
         {
-            return new Heal(name, maxUses, percentage, HealingMode.Percentage)
+            return new Heal(new PercentageHealingCalculator(), name, maxUses, percentage)
             {
                 Description = $"Heals the user by {percentage}% of their max health."
+            };
+        }
+
+        /// <summary>
+        /// Returns a heal that heals the user by the given amount.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="maxUses">The max uses.</param>
+        /// <param name="amount">The amount to heal by.</param>
+        public static Heal ByAbsoluteAmount(string name, int maxUses, int amount)
+        {
+            return new Heal(new AbsoluteHealingCalculator(), name, maxUses, amount)
+            {
+                Description = $"Heals the user by {amount} health."
             };
         }
     }

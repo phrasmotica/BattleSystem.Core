@@ -112,30 +112,12 @@ namespace BattleSystem.Characters
         }
 
         /// <summary>
-        /// Restores health from the given heal.
+        /// Restores the given amount of health, capped by the character's max health.
         /// </summary>
-        /// <param name="heal">The incoming heal.</param>
-        public virtual void ReceiveHeal(Heal heal)
+        /// <param name="amount">The healing amount.</param>
+        public virtual void Heal(int amount)
         {
-            var healAmount = ComputeHealAmount(heal);
-            CurrentHealth += healAmount;
-        }
-
-        /// <summary>
-        /// Computes the amount of health this character receives from the given heal.
-        /// </summary>
-        /// <param name="heal">The incoming heal.</param>
-        protected virtual int ComputeHealAmount(Heal heal)
-        {
-            var rawAmount = heal.Amount;
-
-            if (heal.HealingMode == HealingMode.Percentage)
-            {
-                rawAmount = (int) (MaxHealth * (heal.Amount / 100d));
-            }
-
-            // ensure character cannot over-heal
-            return Math.Min(MaxHealth - CurrentHealth, rawAmount);
+            CurrentHealth += Math.Min(MaxHealth - CurrentHealth, amount);
         }
     }
 }

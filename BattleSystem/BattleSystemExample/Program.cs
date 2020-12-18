@@ -28,7 +28,7 @@ namespace BattleSystemExample
                 Move1 = Attack.ByStatDifference("Sword Strike", 15, 20),
                 Move2 = Attack.ByPercentage("Pierce", 5, 40),
                 Move3 = Buff.RaiseUserAttack("Sharpen", 10),
-                Move4 = Heal.ByPercentage("Restore", 10, 10),
+                Move4 = Heal.ByAbsoluteAmount("Restore", 10, 20),
             };
 
             var playerInput = new ConsoleInput();

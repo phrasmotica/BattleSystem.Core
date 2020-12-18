@@ -58,20 +58,18 @@ namespace BattleSystem.Tests.Characters
             Assert.That(target.CurrentSpeed, Is.EqualTo(9));
         }
 
-        [TestCase(2, HealingMode.Absolute, 5)]
-        [TestCase(10, HealingMode.Absolute, 5)]
-        [TestCase(20, HealingMode.Percentage, 4)]
-        public void ReceiveHeal_AddsHealth(int amount, HealingMode healingMode, int expectedHealth)
+        [Test]
+        public void ReceiveHeal_AddsHealth()
         {
             // Arrange
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
             target.ReceiveDamage(2);
 
             // Act
-            target.ReceiveHeal(TestHelpers.CreateHeal(amount: amount, mode: healingMode));
+            target.Heal(2);
 
             // Assert
-            Assert.That(target.CurrentHealth, Is.EqualTo(expectedHealth));
+            Assert.That(target.CurrentHealth, Is.EqualTo(5));
         }
     }
 }

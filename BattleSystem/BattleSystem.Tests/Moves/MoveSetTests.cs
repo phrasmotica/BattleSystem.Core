@@ -1,5 +1,6 @@
 ﻿using System;
 using BattleSystem.Damage;
+using BattleSystem.Healing;
 using BattleSystem.Moves;
 using Moq;
 using NUnit.Framework;
@@ -58,7 +59,7 @@ namespace BattleSystem.Tests.Moves
             var moveSet = new MoveSet
             {
                 Move1 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move1"),
-                Move2 = TestHelpers.CreateHeal("move2"),
+                Move2 = TestHelpers.CreateHeal(new Mock<IHealingCalculator>().Object, "move2"),
                 Move4 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move4"),
             };
 
@@ -85,7 +86,7 @@ namespace BattleSystem.Tests.Moves
             var moveSet = new MoveSet
             {
                 Move1 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move1"),
-                Move2 = TestHelpers.CreateHeal("move2"),
+                Move2 = TestHelpers.CreateHeal(new Mock<IHealingCalculator>().Object, "move2"),
                 Move3 = TestHelpers.CreateBuff("move3"),
                 Move4 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move4"),
             };
