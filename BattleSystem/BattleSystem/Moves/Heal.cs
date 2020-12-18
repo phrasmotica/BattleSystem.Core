@@ -13,6 +13,11 @@ namespace BattleSystem.Moves
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the heal's description.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
         /// Gets or sets the heal's maximum uses.
         /// </summary>
         public int MaxUses { get; set; }
@@ -25,7 +30,7 @@ namespace BattleSystem.Moves
         /// <summary>
         /// Gets a summary of the move.
         /// </summary>
-        public string Summary => $"{Name} ({RemainingUses}/{MaxUses} uses)";
+        public string Summary => $"{Name} ({RemainingUses}/{MaxUses} uses) - {Description}";
 
         /// <summary>
         /// Gets or sets the heal's healing amount.
@@ -74,9 +79,12 @@ namespace BattleSystem.Moves
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="percentage">The percentage to heal by.</param>
-        public static Heal HealByPercentage(string name, int maxUses, int percentage)
+        public static Heal ByPercentage(string name, int maxUses, int percentage)
         {
-            return new Heal(name, maxUses, percentage, HealingMode.Percentage);
+            return new Heal(name, maxUses, percentage, HealingMode.Percentage)
+            {
+                Description = $"Heals the user by {percentage}% of their max health."
+            };
         }
     }
 }

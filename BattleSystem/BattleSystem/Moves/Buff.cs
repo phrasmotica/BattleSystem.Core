@@ -15,6 +15,11 @@ namespace BattleSystem.Moves
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the buff's description.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
         /// Gets or sets the buff's maximum uses.
         /// </summary>
         public int MaxUses { get; set; }
@@ -27,7 +32,7 @@ namespace BattleSystem.Moves
         /// <summary>
         /// Gets a summary of the move.
         /// </summary>
-        public string Summary => $"{Name} ({RemainingUses}/{MaxUses} uses)";
+        public string Summary => $"{Name} ({RemainingUses}/{MaxUses} uses) - {Description}";
 
         /// <summary>
         /// Gets or sets the buff's stat multipliers for the user.
@@ -82,7 +87,10 @@ namespace BattleSystem.Moves
             return new Buff(name, maxUses, new Dictionary<StatCategory, double>
             {
                 [StatCategory.Attack] = 0.1
-            }, null);
+            }, null)
+            {
+                Description = "Raises the user's attack by 10%."
+            };
         }
     }
 }

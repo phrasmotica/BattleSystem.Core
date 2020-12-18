@@ -13,6 +13,11 @@ namespace BattleSystem.Moves
         string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the move's description.
+        /// </summary>
+        string Description { get; set; }
+
+        /// <summary>
         /// Gets or sets the move's maximum uses.
         /// </summary>
         int MaxUses { get; set; }

@@ -19,6 +19,11 @@ namespace BattleSystem.Moves
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the attack's description.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
         /// Gets or sets the attack's maximum uses.
         /// </summary>
         public int MaxUses { get; set; }
@@ -36,7 +41,7 @@ namespace BattleSystem.Moves
         /// <summary>
         /// Gets a summary of the move.
         /// </summary>
-        public string Summary => $"{Name} ({RemainingUses}/{MaxUses} uses)";
+        public string Summary => $"{Name} ({RemainingUses}/{MaxUses} uses) - {Description}";
 
         /// <summary>
         /// Creates a new <see cref="Attack"/>.
@@ -85,7 +90,10 @@ namespace BattleSystem.Moves
         /// <param name="maxUses">The power.</param>
         public static Attack ByStatDifference(string name, int maxUses, int power)
         {
-            return new Attack(new StatDifferenceDamageCalculator(), name, maxUses, power);
+            return new Attack(new StatDifferenceDamageCalculator(), name, maxUses, power)
+            {
+                Description = $"Deals damage ({power} power) to the target."
+            };
         }
 
         /// <summary>
@@ -96,7 +104,10 @@ namespace BattleSystem.Moves
         /// <param name="power">The power.</param>
         public static Attack ByAbsolutePower(string name, int maxUses, int power)
         {
-            return new Attack(new AbsoluteDamageCalculator(), name, maxUses, power);
+            return new Attack(new AbsoluteDamageCalculator(), name, maxUses, power)
+            {
+                Description = $"Always deals {power} damage."
+            };
         }
 
         /// <summary>
@@ -107,7 +118,10 @@ namespace BattleSystem.Moves
         /// <param name="percentage">The percentage.</param>
         public static Attack ByPercentage(string name, int maxUses, int percentage)
         {
-            return new Attack(new PercentageDamageCalculator(), name, maxUses, percentage);
+            return new Attack(new PercentageDamageCalculator(), name, maxUses, percentage)
+            {
+                Description = $"Always deals damage equal to {percentage}% of the target's max health."
+            };
         }
     }
 }
