@@ -3,7 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Julian Lawrance</Authors>
+    <Authors>phrasmotica</Authors>
+    <Company />
+    <Description>.NET 5.0 battle system library</Description>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
 </Project>
