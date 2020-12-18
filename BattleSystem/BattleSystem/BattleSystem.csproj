@@ -7,6 +7,14 @@
     <Company />
     <Description>.NET 5.0 battle system library</Description>
     <Version>0.1.0</Version>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
