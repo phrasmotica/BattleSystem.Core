@@ -87,5 +87,16 @@ namespace BattleSystem.Moves
         {
             return new Attack(new StatDifferenceDamageCalculator(), name, maxUses, power);
         }
+
+        /// <summary>
+        /// Returns an attack that calculates damage equal to its power.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="maxUses">The max uses.</param>
+        /// <param name="maxUses">The power.</param>
+        public static Attack ByAbsolutePower(string name, int maxUses, int power)
+        {
+            return new Attack(new AbsoluteDamageCalculator(), name, maxUses, power);
+        }
     }
 }

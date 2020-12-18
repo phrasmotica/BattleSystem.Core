@@ -42,7 +42,7 @@ namespace BattleSystemExample
 
             var enemyMoves = new MoveSet
             {
-                Move1 = Attack.ByStatDifference("Magic Missile", 15, 15),
+                Move1 = Attack.ByAbsolutePower("Magic Missile", 15, 20),
                 Move2 = Buff.RaiseUserAttack("Meditate", 15),
                 Move3 = Heal.HealByPercentage("Refresh", 10, 30),
             };

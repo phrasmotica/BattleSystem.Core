@@ -5,7 +5,8 @@ using BattleSystem.Moves;
 namespace BattleSystem.Damage
 {
     /// <summary>
-    /// Interface for calculating damage dealt by a character using an attack on a target character.
+    /// Calculates damage based on the difference between the user's attack stat and the target's
+    /// defence stat.
     /// </summary>
     public class StatDifferenceDamageCalculator : IDamageCalculator
     {
