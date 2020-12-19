@@ -1,6 +1,9 @@
-﻿using BattleSystem.Moves;
+﻿using System.Collections.Generic;
+using BattleSystem.Moves;
+using BattleSystem.Moves.Targets;
+using BattleSystem.Stats;
+using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace BattleSystem.Tests.Moves
 {
@@ -10,31 +13,33 @@ namespace BattleSystem.Tests.Moves
     [TestFixture]
     public class BuffTests
     {
-        [TestCase(5, true)]
-        [TestCase(1, true)]
-        [TestCase(0, false)]
-        [TestCase(-5, false)]
-        public void CanUse_ReturnsCorrectly(int remainingUses, bool expectedCanUse)
-        {
-            // Arrange
-            var buff = TestHelpers.CreateBuff(maxUses: remainingUses);
-            Constraint constraint = expectedCanUse ? Is.True : Is.False;
-
-            // Act and Assert
-            Assert.That(buff.CanUse(), constraint);
-        }
-
         [Test]
-        public void Use_ReducesRemainingUses()
+        public void Use_BuffsTargetStat()
         {
             // Arrange
-            var buff = TestHelpers.CreateBuff(maxUses: 2);
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter(attack: 10)
+            };
+
+            var moveTargetCalculator = new Mock<IMoveTargetCalculator>();
+            moveTargetCalculator
+                .Setup(m => m.Calculate(user, otherCharacters))
+                .Returns(otherCharacters[0]);
+
+            var buff = TestHelpers.CreateBuff(
+                moveTargetCalculator.Object,
+                targetMultipliers: new Dictionary<StatCategory, double>
+                {
+                    [StatCategory.Attack] = 0.2
+                });
 
             // Act
-            buff.Use(TestHelpers.CreateBasicCharacter(), TestHelpers.CreateBasicCharacter());
+            buff.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(buff.RemainingUses, Is.EqualTo(1));
+            Assert.That(otherCharacters[0].Stats.Attack.CurrentValue, Is.EqualTo(12));
         }
     }
 }

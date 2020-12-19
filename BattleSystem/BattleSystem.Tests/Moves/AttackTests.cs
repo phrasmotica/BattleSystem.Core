@@ -1,9 +1,10 @@
 ﻿using BattleSystem.Characters;
 using BattleSystem.Damage;
 using BattleSystem.Moves;
+using BattleSystem.Moves.Actions;
+using BattleSystem.Moves.Targets;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace BattleSystem.Tests.Moves
 {
@@ -13,25 +14,20 @@ namespace BattleSystem.Tests.Moves
     [TestFixture]
     public class AttackTests
     {
-        [TestCase(5, true)]
-        [TestCase(1, true)]
-        [TestCase(0, false)]
-        [TestCase(-5, false)]
-        public void CanUse_ReturnsCorrectly(int remainingUses, bool expectedCanUse)
-        {
-            // Arrange
-            var attack = TestHelpers.CreateAttack(maxUses: remainingUses);
-            Constraint constraint = expectedCanUse ? Is.True : Is.False;
-
-            // Act and Assert
-            Assert.That(attack.CanUse(), constraint);
-        }
-
         [Test]
         public void Use_DamagesTarget()
         {
             // Arrange
-            var target = TestHelpers.CreateBasicCharacter(maxHealth: 8);
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter(maxHealth: 8)
+            };
+
+            var moveTargetCalculator = new Mock<IMoveTargetCalculator>();
+            moveTargetCalculator
+                .Setup(m => m.Calculate(user, otherCharacters))
+                .Returns(otherCharacters[0]);
 
             var damageCalculator = new Mock<IDamageCalculator>();
             damageCalculator
@@ -44,26 +40,13 @@ namespace BattleSystem.Tests.Moves
                 )
                 .Returns(6);
 
-            var attack = TestHelpers.CreateAttack(damageCalculator.Object);
+            var attack = TestHelpers.CreateAttack(damageCalculator.Object, moveTargetCalculator.Object);
 
             // Act
-            attack.Use(TestHelpers.CreateBasicCharacter(), target);
+            attack.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(target.CurrentHealth, Is.EqualTo(2));
-        }
-
-        [Test]
-        public void Use_ReducesRemainingUses()
-        {
-            // Arrange
-            var attack = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, maxUses: 2);
-
-            // Act
-            attack.Use(TestHelpers.CreateBasicCharacter(), TestHelpers.CreateBasicCharacter());
-
-            // Assert
-            Assert.That(attack.RemainingUses, Is.EqualTo(1));
+            Assert.That(otherCharacters[0].CurrentHealth, Is.EqualTo(2));
         }
     }
 }

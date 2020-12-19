@@ -1,6 +1,4 @@
-﻿using BattleSystem.Damage;
-using BattleSystem.Moves;
-using Moq;
+﻿using BattleSystem.Moves;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Moves
@@ -15,13 +13,16 @@ namespace BattleSystem.Tests.Moves
         public void Apply_UsesMove()
         {
             // Arrange
-            var move = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, maxUses: 5);
+            var move = TestHelpers.CreateMove();
 
             var moveUse = new MoveUse
             {
                 Move = move,
                 User = TestHelpers.CreateBasicCharacter(),
-                Target = TestHelpers.CreateBasicCharacter(),
+                OtherCharacters = new[]
+                {
+                    TestHelpers.CreateBasicCharacter()
+                }
             };
 
             // Act

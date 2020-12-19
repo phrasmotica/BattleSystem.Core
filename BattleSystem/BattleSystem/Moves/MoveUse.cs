@@ -10,7 +10,7 @@ namespace BattleSystem.Moves
         /// <summary>
         /// Gets or sets the move.
         /// </summary>
-        public IMove Move { get; set; }
+        public Move Move { get; set; }
 
         /// <summary>
         /// Gets or sets the user of the move.
@@ -18,9 +18,9 @@ namespace BattleSystem.Moves
         public Character User { get; set; }
 
         /// <summary>
-        /// Gets or sets the target of the move.
+        /// Gets or sets the characters that did not use the move.
         /// </summary>
-        public Character Target { get; set; }
+        public IEnumerable<Character> OtherCharacters { get; set; }
 
         /// <summary>
         /// Gets or sets the damage taken by the characters with the given IDs from this move use.
@@ -37,31 +37,62 @@ namespace BattleSystem.Moves
         /// </summary>
         public void Apply()
         {
-            var userStartingHealth = User.CurrentHealth;
-            var targetStartingHealth = Target.CurrentHealth;
+            var charactersStartingHealth = ComputeCharactersHealth();
+            var charactersStartingStatMultipliers = ComputeCharactersStatMultipliers();
 
-            var userStartingStatMultipliers = GetStatMultipliers(User);
-            var targetStartingStatMultipliers = GetStatMultipliers(Target);
+            Move.Use(User, OtherCharacters);
 
-            Move.Use(User, Target);
+            var charactersEndingHealth = ComputeCharactersHealth();
+            var charactersEndingStatMultipliers = ComputeCharactersStatMultipliers();
 
-            var userEndingHealth = User.CurrentHealth;
-            var targetEndingHealth = Target.CurrentHealth;
+            DamageTaken = charactersStartingHealth.Subtract(charactersEndingHealth);
 
-            DamageTaken = new Dictionary<string, int>
+            StatMultiplierChanges = new Dictionary<string, IDictionary<StatCategory, double>>();
+
+            foreach (var entry in charactersStartingStatMultipliers)
             {
-                [User.Id] = userStartingHealth - userEndingHealth,
-                [Target.Id] = targetStartingHealth - targetEndingHealth,
+                var characterId = entry.Key;
+                var startingStatMultipliers = entry.Value;
+                var endingStatMultipliers = charactersEndingStatMultipliers[characterId];
+
+                StatMultiplierChanges[characterId] = endingStatMultipliers.Subtract(startingStatMultipliers);
+            }
+        }
+
+        /// <summary>
+        /// Returns a dictionary of the health of each character keyed by the character's ID.
+        /// </summary>
+        private IDictionary<string, int> ComputeCharactersHealth()
+        {
+            var dict = new Dictionary<string, int>
+            {
+                [User.Id] = User.CurrentHealth
             };
 
-            var userEndingStatMultipliers = GetStatMultipliers(User);
-            var targetEndingStatMultipliers = GetStatMultipliers(Target);
-
-            StatMultiplierChanges = new Dictionary<string, IDictionary<StatCategory, double>>
+            foreach (var character in OtherCharacters)
             {
-                [User.Id] = userEndingStatMultipliers.Subtract(userStartingStatMultipliers),
-                [Target.Id] = targetEndingStatMultipliers.Subtract(targetStartingStatMultipliers),
+                dict[character.Id] = character.CurrentHealth;
+            }
+
+            return dict;
+        }
+
+        /// <summary>
+        /// Returns a dictionary of the stat multipliers of each character keyed by the character's ID.
+        /// </summary>
+        private IDictionary<string, IDictionary<StatCategory, double>> ComputeCharactersStatMultipliers()
+        {
+            var dict = new Dictionary<string, IDictionary<StatCategory, double>>
+            {
+                [User.Id] = GetStatMultipliers(User)
             };
+
+            foreach (var character in OtherCharacters)
+            {
+                dict[character.Id] = GetStatMultipliers(character);
+            }
+
+            return dict;
         }
 
         /// <summary>

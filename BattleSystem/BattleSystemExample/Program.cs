@@ -1,5 +1,6 @@
 ﻿using BattleSystem.Characters;
 using BattleSystem.Moves;
+using BattleSystem.Moves.Actions;
 using BattleSystem.Stats;
 using BattleSystemExample.Battles;
 using BattleSystemExample.Characters;
@@ -24,10 +25,34 @@ namespace BattleSystemExample
 
             var userMoves = new MoveSet
             {
-                Move1 = Attack.ByStatDifference("Sword Strike", 15, 20),
-                Move2 = Attack.ByPercentage("Pierce", 5, 40),
-                Move3 = Buff.RaiseUserAttack("Sharpen", 10),
-                Move4 = Heal.ByAbsoluteAmount("Restore", 10, 20),
+                Move1 = new MoveBuilder()
+                            .Name("Sword Strike")
+                            .Describe("The user swings their sword to inflict damage.")
+                            .WithMaxUses(15)
+                            .WithAction(Attack.ByStatDifference(20))
+                            .Build(),
+
+                Move2 = new MoveBuilder()
+                            .Name("Pierce")
+                            .Describe("The user drives their weapon through the target's abdomen, and then raises their Attack stat.")
+                            .WithMaxUses(5)
+                            .WithAction(Attack.ByPercentage(40))
+                            .WithAction(Buff.RaiseUserAttack())
+                            .Build(),
+
+                Move3 = new MoveBuilder()
+                            .Name("Sharpen")
+                            .Describe("The user dons additional armour to raise their Defense stat.")
+                            .WithMaxUses(10)
+                            .WithAction(Buff.RaiseUserDefence())
+                            .Build(),
+
+                Move4 = new MoveBuilder()
+                            .Name("Restore")
+                            .Describe("The user drinks a potion to restore 20 health.")
+                            .WithMaxUses(10)
+                            .WithAction(Heal.ByAbsoluteAmount(20))
+                            .Build(),
             };
 
             var playerInput = new ConsoleInput();
@@ -42,10 +67,33 @@ namespace BattleSystemExample
 
             var enemyMoves = new MoveSet
             {
-                Move1 = Attack.ByAbsolutePower("Magic Missile", 15, 20),
-                Move2 = Attack.ByPercentage("Lightning Bolt", 5, 30),
-                Move3 = Buff.RaiseUserAttack("Meditate", 15),
-                Move4 = Heal.ByPercentage("Refresh", 10, 30),
+                Move1 = new MoveBuilder()
+                            .Name("Magic Missile")
+                            .Describe("The user fires a spectral missile to inflict 20 damage.")
+                            .WithMaxUses(15)
+                            .WithAction(Attack.ByAbsolutePower(20))
+                            .Build(),
+
+                Move2 = new MoveBuilder()
+                            .Name("Lightning Bolt")
+                            .Describe("The user summons a lightning strike to deal damage equal to 30% of the target's health.")
+                            .WithMaxUses(5)
+                            .WithAction(Attack.ByPercentage(30))
+                            .Build(),
+
+                Move3 = new MoveBuilder()
+                            .Name("Meditate")
+                            .Describe("The user finds inner calm to raise their Attack stat.")
+                            .WithMaxUses(15)
+                            .WithAction(Buff.RaiseUserAttack())
+                            .Build(),
+
+                Move4 = new MoveBuilder()
+                            .Name("Refresh")
+                            .Describe("The user regenerates 30% of their max health.")
+                            .WithMaxUses(10)
+                            .WithAction(Heal.ByPercentage(30))
+                            .Build(),
             };
 
             var enemy = new BasicCharacter("Mage", 100, enemyStats, enemyMoves);

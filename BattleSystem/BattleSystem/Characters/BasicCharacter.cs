@@ -17,14 +17,11 @@ namespace BattleSystem.Characters
         /// <inheritdoc />
         public override MoveUse ChooseMove(IEnumerable<Character> otherCharacters)
         {
-            var move = Moves.ChooseRandom();
-            var target = move.CalculateTarget(this, otherCharacters);
-
             return new MoveUse
             {
-                Move = move,
+                Move = Moves.ChooseRandom(),
                 User = this,
-                Target = target,
+                OtherCharacters = otherCharacters,
             };
         }
     }

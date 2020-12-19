@@ -3,6 +3,7 @@ using BattleSystem.Characters;
 using BattleSystem.Damage;
 using BattleSystem.Healing;
 using BattleSystem.Moves;
+using BattleSystem.Moves.Actions;
 using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
 using Moq;
@@ -61,12 +62,36 @@ namespace BattleSystem.Tests
         /// <summary>
         /// Returns a move set with one move.
         /// </summary>
-        public static MoveSet CreateMoveSet(IMove move1 = null)
+        public static MoveSet CreateMoveSet(Move move1 = null)
         {
             return new MoveSet
             {
-                Move1 = move1 ?? CreateAttack(new Mock<IDamageCalculator>().Object),
+                Move1 = move1 ?? CreateMove(
+                    moveActions: CreateAttack(new Mock<IDamageCalculator>().Object)
+                ),
             };
+        }
+
+        /// <summary>
+        /// Returns a move with the given actions.
+        /// </summary>
+        public static Move CreateMove(
+            string name = "yeti",
+            string description = "amon",
+            int maxUses = 5,
+            params IMoveAction[] moveActions)
+        {
+            var builder = new MoveBuilder()
+                            .Name(name)
+                            .Describe(description)
+                            .WithMaxUses(maxUses);
+
+            foreach (var action in moveActions)
+            {
+                builder = builder.WithAction(action);
+            }
+
+            return builder.Build();
         }
 
         /// <summary>
@@ -75,15 +100,11 @@ namespace BattleSystem.Tests
         public static Attack CreateAttack(
             IDamageCalculator damageCalculator = null,
             IMoveTargetCalculator moveTargetCalculator = null,
-            string name = "yeti",
-            int maxUses = 5,
             int power = 2)
         {
             return new Attack(
                 damageCalculator ?? new Mock<IDamageCalculator>().Object,
                 moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object,
-                name,
-                maxUses,
                 power);
         }
 
@@ -92,20 +113,16 @@ namespace BattleSystem.Tests
         /// </summary>
         public static Buff CreateBuff(
             IMoveTargetCalculator moveTargetCalculator = null,
-            string name = "yeti",
-            int maxUses = 5)
+            IDictionary<StatCategory, double> userMultipliers = null,
+            IDictionary<StatCategory, double> targetMultipliers = null)
         {
-            var userMultipliers = new Dictionary<StatCategory, double>
-            {
-                [StatCategory.Attack] = 0.2,
-            };
-
             return new Buff(
                 moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object,
-                name,
-                maxUses,
-                userMultipliers,
-                null);
+                userMultipliers ?? new Dictionary<StatCategory, double>
+                {
+                    [StatCategory.Attack] = 0.2,
+                },
+                targetMultipliers);
         }
 
         /// <summary>
@@ -114,15 +131,11 @@ namespace BattleSystem.Tests
         public static Heal CreateHeal(
             IHealingCalculator healingCalculator = null,
             IMoveTargetCalculator moveTargetCalculator = null,
-            string name = "yeti",
-            int maxUses = 5,
             int amount = 5)
         {
             return new Heal(
                 healingCalculator ?? new Mock<IHealingCalculator>().Object,
                 moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object,
-                name,
-                maxUses,
                 amount);
         }
     }

@@ -1,8 +1,5 @@
 ﻿using System;
-using BattleSystem.Damage;
-using BattleSystem.Healing;
 using BattleSystem.Moves;
-using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
@@ -20,8 +17,8 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var moveSet = new MoveSet
             {
-                Move1 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object),
-                Move3 = TestHelpers.CreateBuff(),
+                Move1 = TestHelpers.CreateMove(),
+                Move3 = TestHelpers.CreateMove(),
             };
 
             // Act
@@ -37,8 +34,8 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var moveSet = new MoveSet
             {
-                Move1 = TestHelpers.CreateAttack(name: "move1"),
-                Move3 = TestHelpers.CreateBuff(name: "move3"),
+                Move1 = TestHelpers.CreateMove(name: "move1"),
+                Move3 = TestHelpers.CreateMove(name: "move3"),
             };
 
             // Act
@@ -58,9 +55,9 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var moveSet = new MoveSet
             {
-                Move1 = TestHelpers.CreateAttack(name: "move1"),
-                Move2 = TestHelpers.CreateHeal(name: "move2"),
-                Move4 = TestHelpers.CreateAttack(name: "move4"),
+                Move1 = TestHelpers.CreateMove(name: "move1"),
+                Move2 = TestHelpers.CreateMove(name: "move2"),
+                Move4 = TestHelpers.CreateMove(name: "move4"),
             };
 
             // Act
@@ -85,10 +82,10 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var moveSet = new MoveSet
             {
-                Move1 = TestHelpers.CreateAttack(name: "move1"),
-                Move2 = TestHelpers.CreateHeal(name: "move2"),
-                Move3 = TestHelpers.CreateBuff(name: "move3"),
-                Move4 = TestHelpers.CreateAttack(name: "move4"),
+                Move1 = TestHelpers.CreateMove(name: "move1"),
+                Move2 = TestHelpers.CreateMove(name: "move2"),
+                Move3 = TestHelpers.CreateMove(name: "move3"),
+                Move4 = TestHelpers.CreateMove(name: "move4"),
             };
 
             // Act

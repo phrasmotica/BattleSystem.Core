@@ -1,6 +1,10 @@
-﻿using BattleSystem.Moves;
+﻿using BattleSystem.Characters;
+using BattleSystem.Healing;
+using BattleSystem.Moves;
+using BattleSystem.Moves.Actions;
+using BattleSystem.Moves.Targets;
+using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace BattleSystem.Tests.Moves
 {
@@ -10,31 +14,41 @@ namespace BattleSystem.Tests.Moves
     [TestFixture]
     public class HealTests
     {
-        [TestCase(5, true)]
-        [TestCase(1, true)]
-        [TestCase(0, false)]
-        [TestCase(-5, false)]
-        public void CanUse_ReturnsCorrectly(int remainingUses, bool expectedCanUse)
-        {
-            // Arrange
-            var heal = TestHelpers.CreateHeal(maxUses: remainingUses);
-            Constraint constraint = expectedCanUse ? Is.True : Is.False;
-
-            // Act and Assert
-            Assert.That(heal.CanUse(), constraint);
-        }
-
         [Test]
-        public void Use_ReducesRemainingUses()
+        public void Use_HealsTarget()
         {
             // Arrange
-            var heal = TestHelpers.CreateHeal(maxUses: 2);
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter()
+            };
+
+            var moveTargetCalculator = new Mock<IMoveTargetCalculator>();
+            moveTargetCalculator
+                .Setup(m => m.Calculate(user, otherCharacters))
+                .Returns(otherCharacters[0]);
+
+            var healingCalculator = new Mock<IHealingCalculator>();
+            healingCalculator
+                .Setup(
+                    m => m.Calculate(
+                        It.IsAny<Character>(),
+                        It.IsAny<Heal>(),
+                        It.IsAny<Character>()
+                    )
+                )
+                .Returns(2);
+
+            var heal = TestHelpers.CreateHeal(healingCalculator.Object, moveTargetCalculator.Object);
+
+            otherCharacters[0].ReceiveDamage(2);
 
             // Act
-            heal.Use(TestHelpers.CreateBasicCharacter(), TestHelpers.CreateBasicCharacter());
+            heal.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(heal.RemainingUses, Is.EqualTo(1));
+            Assert.That(otherCharacters[0].CurrentHealth, Is.EqualTo(5));
         }
     }
 }

@@ -44,22 +44,21 @@ namespace BattleSystemExample.Characters
             _gameOutput.WriteLine(Moves.GetChoices());
 
             var move = SelectMove();
-            var target = move.CalculateTarget(this, otherCharacters);
 
             return new MoveUse
             {
                 Move = move,
                 User = this,
-                Target = target,
+                OtherCharacters = otherCharacters,
             };
         }
 
         /// <summary>
         /// Lets the player select a move and returns it.
         /// </summary>
-        private IMove SelectMove()
+        private Move SelectMove()
         {
-            IMove move = null;
+            Move move = null;
 
             var validIndexes = Moves.GetIndexes();
             int chosenIndex = -1;
