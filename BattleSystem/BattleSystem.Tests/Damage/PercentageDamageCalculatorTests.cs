@@ -1,8 +1,7 @@
 ﻿using BattleSystem.Damage;
-using BattleSystem.Tests;
 using NUnit.Framework;
 
-namespace BattleSystemTests.Damage
+namespace BattleSystem.Tests.Damage
 {
     /// <summary>
     /// Unit tests for <see cref="PercentageDamageCalculator"/>.

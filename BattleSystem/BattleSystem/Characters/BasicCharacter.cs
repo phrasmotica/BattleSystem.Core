@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using BattleSystem.Moves;
 using BattleSystem.Stats;
 
@@ -19,7 +18,7 @@ namespace BattleSystem.Characters
         public override MoveUse ChooseMove(IEnumerable<Character> otherCharacters)
         {
             var move = Moves.ChooseRandom();
-            var target = otherCharacters.First();
+            var target = move.CalculateTarget(this, otherCharacters);
 
             return new MoveUse
             {

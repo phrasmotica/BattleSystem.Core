@@ -17,7 +17,7 @@ namespace BattleSystem.Tests.Moves
         public void CanUse_ReturnsCorrectly(int remainingUses, bool expectedCanUse)
         {
             // Arrange
-            var buff = new Buff("yeti", remainingUses, null, null);
+            var buff = TestHelpers.CreateBuff(maxUses: remainingUses);
             Constraint constraint = expectedCanUse ? Is.True : Is.False;
 
             // Act and Assert
@@ -28,7 +28,7 @@ namespace BattleSystem.Tests.Moves
         public void Use_ReducesRemainingUses()
         {
             // Arrange
-            var buff = new Buff("yeti", 2, null, null);
+            var buff = TestHelpers.CreateBuff(maxUses: 2);
 
             // Act
             buff.Use(TestHelpers.CreateBasicCharacter(), TestHelpers.CreateBasicCharacter());

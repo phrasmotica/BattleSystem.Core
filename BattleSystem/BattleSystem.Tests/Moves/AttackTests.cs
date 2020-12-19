@@ -20,7 +20,7 @@ namespace BattleSystem.Tests.Moves
         public void CanUse_ReturnsCorrectly(int remainingUses, bool expectedCanUse)
         {
             // Arrange
-            var attack = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "yeti", remainingUses, 1);
+            var attack = TestHelpers.CreateAttack(maxUses: remainingUses);
             Constraint constraint = expectedCanUse ? Is.True : Is.False;
 
             // Act and Assert

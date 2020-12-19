@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
+using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
 
 namespace BattleSystem.Moves
@@ -9,6 +10,11 @@ namespace BattleSystem.Moves
     /// </summary>
     public class Buff : IMove
     {
+        /// <summary>
+        /// The move target calculator.
+        /// </summary>
+        private readonly IMoveTargetCalculator _moveTargetCalculator;
+
         /// <summary>
         /// Gets or sets the buff's name.
         /// </summary>
@@ -47,12 +53,20 @@ namespace BattleSystem.Moves
         /// <summary>
         /// Creates a new <see cref="Buff"/>.
         /// </summary>
+        /// <param name="moveTargetCalculator">The move target calculator.</param>
         /// <param name="name">The name.</param>
         /// <param name="maxUses">The max uses.</param>
         /// <param name="userMultipliers">The user stat multipliers.</param>
         /// <param name="targetMultipliers">The target stat multipliers.</param>
-        public Buff(string name, int maxUses, IDictionary<StatCategory, double> userMultipliers, IDictionary<StatCategory, double> targetMultipliers)
+        public Buff(
+            IMoveTargetCalculator moveTargetCalculator,
+            string name,
+            int maxUses,
+            IDictionary<StatCategory, double> userMultipliers,
+            IDictionary<StatCategory, double> targetMultipliers)
         {
+            _moveTargetCalculator = moveTargetCalculator;
+
             Name = name;
 
             MaxUses = maxUses;
@@ -77,6 +91,12 @@ namespace BattleSystem.Moves
             RemainingUses--;
         }
 
+        /// <inheritdoc />
+        public Character CalculateTarget(Character user, IEnumerable<Character> characters)
+        {
+            return _moveTargetCalculator.Calculate(user, characters);
+        }
+
         /// <summary>
         /// Returns a buff that raises the user's attack by 10% of its base value.
         /// </summary>
@@ -84,10 +104,15 @@ namespace BattleSystem.Moves
         /// <param name="maxUses">The max uses.</param>
         public static Buff RaiseUserAttack(string name, int maxUses)
         {
-            return new Buff(name, maxUses, new Dictionary<StatCategory, double>
-            {
-                [StatCategory.Attack] = 0.1
-            }, null)
+            return new Buff(
+                new UserMoveTargetCalculator(),
+                name,
+                maxUses,
+                new Dictionary<StatCategory, double>
+                {
+                    [StatCategory.Attack] = 0.1
+                },
+                null)
             {
                 Description = "Raises the user's attack by 10%."
             };

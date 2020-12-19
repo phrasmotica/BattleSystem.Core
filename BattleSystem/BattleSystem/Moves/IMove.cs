@@ -1,4 +1,5 @@
-﻿using BattleSystem.Characters;
+﻿using System.Collections.Generic;
+using BattleSystem.Characters;
 
 namespace BattleSystem.Moves
 {
@@ -43,5 +44,12 @@ namespace BattleSystem.Moves
         /// <param name="user">The user of the move.</param>
         /// <param name="target">The target of the move.</param>
         void Use(Character user, Character target);
+
+        /// <summary>
+        /// Returns the character this move should target from the given characters.
+        /// </summary>
+        /// <param name="user">The user of the move.</param>
+        /// <param name="otherCharacters">The other characters.</param>
+        Character CalculateTarget(Character user, IEnumerable<Character> otherCharacters);
     }
 }

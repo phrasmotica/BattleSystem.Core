@@ -1,6 +1,4 @@
-﻿using BattleSystem.Healing;
-using BattleSystem.Moves;
-using Moq;
+﻿using BattleSystem.Moves;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
@@ -19,7 +17,7 @@ namespace BattleSystem.Tests.Moves
         public void CanUse_ReturnsCorrectly(int remainingUses, bool expectedCanUse)
         {
             // Arrange
-            var heal = new Heal(new Mock<IHealingCalculator>().Object, "yeti", remainingUses, 1);
+            var heal = TestHelpers.CreateHeal(maxUses: remainingUses);
             Constraint constraint = expectedCanUse ? Is.True : Is.False;
 
             // Act and Assert
@@ -30,7 +28,7 @@ namespace BattleSystem.Tests.Moves
         public void Use_ReducesRemainingUses()
         {
             // Arrange
-            var heal = new Heal(new Mock<IHealingCalculator>().Object, "yeti", 2, 1);
+            var heal = TestHelpers.CreateHeal(maxUses: 2);
 
             // Act
             heal.Use(TestHelpers.CreateBasicCharacter(), TestHelpers.CreateBasicCharacter());
