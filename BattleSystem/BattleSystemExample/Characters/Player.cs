@@ -44,6 +44,9 @@ namespace BattleSystemExample.Characters
             _gameOutput.WriteLine(Moves.GetChoices());
 
             var move = SelectMove();
+
+            // TODO: let move compute its preferred target
+            // currently heals always target the user
             var target = otherCharacters.First();
 
             return new MoveUse

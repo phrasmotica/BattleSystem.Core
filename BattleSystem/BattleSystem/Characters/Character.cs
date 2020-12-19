@@ -73,25 +73,12 @@ namespace BattleSystem.Characters
         public abstract MoveUse ChooseMove(IEnumerable<Character> otherCharacters);
 
         /// <summary>
-        /// Takes damage from the given attack.
+        /// Takes the incoming damage.
         /// </summary>
-        /// <param name="attack">The incoming attack.</param>
-        /// <param name="userAttackStat">The attack stat of the user of the attack.</param>
-        public virtual void ReceiveAttack(Attack attack, Stat userAttackStat)
+        /// <param name="damage">The incoming damage.</param>
+        public virtual void ReceiveDamage(int damage)
         {
-            var damage = ComputeDamage(attack, userAttackStat);
             CurrentHealth -= damage;
-        }
-
-        /// <summary>
-        /// Computes the damage this character takes from the given attack.
-        /// </summary>
-        /// <param name="attack">The incoming attack.</param>
-        /// <param name="userAttackStat">The attack stat of the user of the attack.</param>
-        protected virtual int ComputeDamage(Attack attack, Stat userAttackStat)
-        {
-            // damage is offset by defence to a minimum of 1
-            return Math.Max(1, attack.Power * (userAttackStat.CurrentValue - Stats.Defence.CurrentValue));
         }
 
         /// <summary>
@@ -125,30 +112,12 @@ namespace BattleSystem.Characters
         }
 
         /// <summary>
-        /// Restores health from the given heal.
+        /// Restores the given amount of health, capped by the character's max health.
         /// </summary>
-        /// <param name="heal">The incoming heal.</param>
-        public virtual void ReceiveHeal(Heal heal)
+        /// <param name="amount">The healing amount.</param>
+        public virtual void Heal(int amount)
         {
-            var healAmount = ComputeHealAmount(heal);
-            CurrentHealth += healAmount;
-        }
-
-        /// <summary>
-        /// Computes the amount of health this character receives from the given heal.
-        /// </summary>
-        /// <param name="heal">The incoming heal.</param>
-        protected virtual int ComputeHealAmount(Heal heal)
-        {
-            var rawAmount = heal.Amount;
-
-            if (heal.HealingMode == HealingMode.Percentage)
-            {
-                rawAmount = (int) (MaxHealth * (heal.Amount / 100d));
-            }
-
-            // ensure character cannot over-heal
-            return Math.Min(MaxHealth - CurrentHealth, rawAmount);
+            CurrentHealth += Math.Min(MaxHealth - CurrentHealth, amount);
         }
     }
 }

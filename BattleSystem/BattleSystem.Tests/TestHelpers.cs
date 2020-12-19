@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
+using BattleSystem.Damage;
+using BattleSystem.Healing;
 using BattleSystem.Moves;
 using BattleSystem.Stats;
+using Moq;
 
 namespace BattleSystem.Tests
 {
@@ -51,16 +54,16 @@ namespace BattleSystem.Tests
         {
             return new MoveSet
             {
-                Move1 = CreateAttack(),
+                Move1 = CreateAttack(new Mock<IDamageCalculator>().Object),
             };
         }
 
         /// <summary>
         /// Returns a basic attack with the given max uses and power.
         /// </summary>
-        public static Attack CreateAttack(string name = "yeti", int maxUses = 5, int power = 2)
+        public static Attack CreateAttack(IDamageCalculator damageCalculator, string name = "yeti", int maxUses = 5, int power = 2)
         {
-            return new Attack(name, maxUses, power);
+            return new Attack(damageCalculator, name, maxUses, power);
         }
 
         /// <summary>
@@ -79,9 +82,9 @@ namespace BattleSystem.Tests
         /// <summary>
         /// Returns a basic heal with the given max uses, amount and mode.
         /// </summary>
-        public static Heal CreateHeal(string name = "yeti", int maxUses = 5, int amount = 5, HealingMode mode = HealingMode.Absolute)
+        public static Heal CreateHeal(IHealingCalculator healingCalculator, string name = "yeti", int maxUses = 5, int amount = 5)
         {
-            return new Heal(name, maxUses, amount, mode);
+            return new Heal(healingCalculator, name, maxUses, amount);
         }
     }
 }

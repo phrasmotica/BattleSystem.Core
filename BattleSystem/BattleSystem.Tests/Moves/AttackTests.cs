@@ -1,11 +1,14 @@
-﻿using BattleSystem.Moves;
+﻿using BattleSystem.Characters;
+using BattleSystem.Damage;
+using BattleSystem.Moves;
+using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
 namespace BattleSystem.Tests.Moves
 {
     /// <summary>
-    /// Unit tests for <see cref="Heal"/>.
+    /// Unit tests for <see cref="Attack"/>.
     /// </summary>
     [TestFixture]
     public class AttackTests
@@ -17,7 +20,7 @@ namespace BattleSystem.Tests.Moves
         public void CanUse_ReturnsCorrectly(int remainingUses, bool expectedCanUse)
         {
             // Arrange
-            var attack = new Attack("yeti", remainingUses, 1);
+            var attack = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "yeti", remainingUses, 1);
             Constraint constraint = expectedCanUse ? Is.True : Is.False;
 
             // Act and Assert
@@ -28,38 +31,33 @@ namespace BattleSystem.Tests.Moves
         public void Use_DamagesTarget()
         {
             // Arrange
-            var user = TestHelpers.CreateBasicCharacter(attack: 5);
-            var target = TestHelpers.CreateBasicCharacter(maxHealth: 8, defence: 3);
-            var attack = TestHelpers.CreateAttack(power: 3);
+            var target = TestHelpers.CreateBasicCharacter(maxHealth: 8);
+
+            var damageCalculator = new Mock<IDamageCalculator>();
+            damageCalculator
+                .Setup(
+                    m => m.Calculate(
+                        It.IsAny<Character>(),
+                        It.IsAny<Attack>(),
+                        It.IsAny<Character>()
+                    )
+                )
+                .Returns(6);
+
+            var attack = TestHelpers.CreateAttack(damageCalculator.Object);
 
             // Act
-            attack.Use(user, target);
+            attack.Use(TestHelpers.CreateBasicCharacter(), target);
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(2));
-        }
-
-        [TestCase(5, 5, 8, 7)]
-        [TestCase(5, 6, 8, 7)]
-        public void Use_NonPositiveDamage_DamagesTarget_OneDamage(int userAttack, int targetDefence, int targetMaxHealth, int expectedTargetHealth)
-        {
-            // Arrange
-            var user = TestHelpers.CreateBasicCharacter(attack: userAttack);
-            var target = TestHelpers.CreateBasicCharacter(maxHealth: targetMaxHealth, defence: targetDefence);
-            var attack = TestHelpers.CreateAttack(power: 3);
-
-            // Act
-            attack.Use(user, target);
-
-            // Assert
-            Assert.That(target.CurrentHealth, Is.EqualTo(expectedTargetHealth));
         }
 
         [Test]
         public void Use_ReducesRemainingUses()
         {
             // Arrange
-            var attack = new Attack("yeti", 2, 1);
+            var attack = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, maxUses: 2);
 
             // Act
             attack.Use(TestHelpers.CreateBasicCharacter(), TestHelpers.CreateBasicCharacter());
