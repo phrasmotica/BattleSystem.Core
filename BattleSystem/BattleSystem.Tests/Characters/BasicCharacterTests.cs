@@ -1,4 +1,7 @@
-﻿using BattleSystem.Characters;
+﻿using System.Collections.Generic;
+using BattleSystem.Characters;
+using BattleSystem.Moves;
+using Moq;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Characters
@@ -13,8 +16,20 @@ namespace BattleSystem.Tests.Characters
         public void ChooseMove_ReturnsMoveUse()
         {
             // Arrange
-            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter();
+
+            var move = new Mock<IMove>();
+            move.Setup(
+                m => m.CalculateTarget(
+                    It.IsAny<Character>(),
+                    It.IsAny<IEnumerable<Character>>()
+                )
+            )
+            .Returns(target);
+
+            var moveSet = TestHelpers.CreateMoveSet(move.Object);
+
+            var user = TestHelpers.CreateBasicCharacter(moveSet: moveSet);
 
             // Act
             var moveUse = user.ChooseMove(new[] { target });

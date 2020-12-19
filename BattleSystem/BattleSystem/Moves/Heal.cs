@@ -1,5 +1,7 @@
-﻿using BattleSystem.Characters;
+﻿using System.Collections.Generic;
+using BattleSystem.Characters;
 using BattleSystem.Healing;
+using BattleSystem.Moves.Targets;
 
 namespace BattleSystem.Moves
 {
@@ -12,6 +14,11 @@ namespace BattleSystem.Moves
         /// The healing calculator.
         /// </summary>
         private readonly IHealingCalculator _healingCalculator;
+
+        /// <summary>
+        /// The move target calculator.
+        /// </summary>
+        private readonly IMoveTargetCalculator _moveTargetCalculator;
 
         /// <summary>
         /// Gets or sets the heal's name.
@@ -47,12 +54,19 @@ namespace BattleSystem.Moves
         /// Creates a new <see cref="Heal"/>.
         /// </summary>
         /// <param name="healingCalculator">The healing calculator.</param>
+        /// <param name="moveTargetCalculator">The move target calculator.</param>
         /// <param name="name">The name.</param>
         /// <param name="maxUses">The max uses.</param>
         /// <param name="amount">The healing amount.</param>
-        public Heal(IHealingCalculator healingCalculator, string name, int maxUses, int amount)
+        public Heal(
+            IHealingCalculator healingCalculator,
+            IMoveTargetCalculator moveTargetCalculator,
+            string name,
+            int maxUses,
+            int amount)
         {
             _healingCalculator = healingCalculator;
+            _moveTargetCalculator = moveTargetCalculator;
 
             Name = name;
 
@@ -77,6 +91,12 @@ namespace BattleSystem.Moves
             RemainingUses--;
         }
 
+        /// <inheritdoc />
+        public Character CalculateTarget(Character user, IEnumerable<Character> characters)
+        {
+            return _moveTargetCalculator.Calculate(user, characters);
+        }
+
         /// <summary>
         /// Returns a heal that heals the user by the given percentage of its max health.
         /// </summary>
@@ -85,7 +105,12 @@ namespace BattleSystem.Moves
         /// <param name="percentage">The percentage to heal by.</param>
         public static Heal ByPercentage(string name, int maxUses, int percentage)
         {
-            return new Heal(new PercentageHealingCalculator(), name, maxUses, percentage)
+            return new Heal(
+                new PercentageHealingCalculator(),
+                new UserMoveTargetCalculator(),
+                name,
+                maxUses,
+                percentage)
             {
                 Description = $"Heals the user by {percentage}% of their max health."
             };
@@ -99,7 +124,12 @@ namespace BattleSystem.Moves
         /// <param name="amount">The amount to heal by.</param>
         public static Heal ByAbsoluteAmount(string name, int maxUses, int amount)
         {
-            return new Heal(new AbsoluteHealingCalculator(), name, maxUses, amount)
+            return new Heal(
+                new AbsoluteHealingCalculator(),
+                new UserMoveTargetCalculator(),
+                name,
+                maxUses,
+                amount)
             {
                 Description = $"Heals the user by {amount} health."
             };

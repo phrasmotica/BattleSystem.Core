@@ -37,8 +37,8 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var moveSet = new MoveSet
             {
-                Move1 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move1"),
-                Move3 = TestHelpers.CreateBuff("move3"),
+                Move1 = TestHelpers.CreateAttack(name: "move1"),
+                Move3 = TestHelpers.CreateBuff(name: "move3"),
             };
 
             // Act
@@ -58,9 +58,9 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var moveSet = new MoveSet
             {
-                Move1 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move1"),
-                Move2 = TestHelpers.CreateHeal(new Mock<IHealingCalculator>().Object, "move2"),
-                Move4 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move4"),
+                Move1 = TestHelpers.CreateAttack(name: "move1"),
+                Move2 = TestHelpers.CreateHeal(name: "move2"),
+                Move4 = TestHelpers.CreateAttack(name: "move4"),
             };
 
             // Act
@@ -85,10 +85,10 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var moveSet = new MoveSet
             {
-                Move1 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move1"),
-                Move2 = TestHelpers.CreateHeal(new Mock<IHealingCalculator>().Object, "move2"),
-                Move3 = TestHelpers.CreateBuff("move3"),
-                Move4 = TestHelpers.CreateAttack(new Mock<IDamageCalculator>().Object, "move4"),
+                Move1 = TestHelpers.CreateAttack(name: "move1"),
+                Move2 = TestHelpers.CreateHeal(name: "move2"),
+                Move3 = TestHelpers.CreateBuff(name: "move3"),
+                Move4 = TestHelpers.CreateAttack(name: "move4"),
             };
 
             // Act

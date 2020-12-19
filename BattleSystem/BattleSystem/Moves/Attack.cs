@@ -1,5 +1,7 @@
-﻿using BattleSystem.Characters;
+﻿using System.Collections.Generic;
+using BattleSystem.Characters;
 using BattleSystem.Damage;
+using BattleSystem.Moves.Targets;
 
 namespace BattleSystem.Moves
 {
@@ -12,6 +14,11 @@ namespace BattleSystem.Moves
         /// The damage calculator.
         /// </summary>
         private readonly IDamageCalculator _damageCalculator;
+
+        /// <summary>
+        /// The move target calculator.
+        /// </summary>
+        private readonly IMoveTargetCalculator _moveTargetCalculator;
 
         /// <summary>
         /// Gets or sets the attack's name.
@@ -47,16 +54,19 @@ namespace BattleSystem.Moves
         /// Creates a new <see cref="Attack"/>.
         /// </summary>
         /// <param name="damageCalculator">The damage calculator.</param>
+        /// <param name="moveTargetCalculator">The move target calculator.</param>
         /// <param name="name">The name.</param>
         /// <param name="maxUses">The max uses.</param>
         /// <param name="power">The power.</param>
         public Attack(
             IDamageCalculator damageCalculator,
+            IMoveTargetCalculator moveTargetCalculator,
             string name,
             int maxUses,
             int power)
         {
             _damageCalculator = damageCalculator;
+            _moveTargetCalculator = moveTargetCalculator;
 
             Name = name;
 
@@ -81,6 +91,12 @@ namespace BattleSystem.Moves
             RemainingUses--;
         }
 
+        /// <inheritdoc />
+        public Character CalculateTarget(Character user, IEnumerable<Character> characters)
+        {
+            return _moveTargetCalculator.Calculate(user, characters);
+        }
+
         /// <summary>
         /// Returns an attack that calculates damage based on the difference between the user's
         /// attack stat and the target's defence stat.
@@ -90,7 +106,12 @@ namespace BattleSystem.Moves
         /// <param name="maxUses">The power.</param>
         public static Attack ByStatDifference(string name, int maxUses, int power)
         {
-            return new Attack(new StatDifferenceDamageCalculator(), name, maxUses, power)
+            return new Attack(
+                new StatDifferenceDamageCalculator(),
+                new FirstMoveTargetCalculator(),
+                name,
+                maxUses,
+                power)
             {
                 Description = $"Deals damage ({power} power) to the target."
             };
@@ -104,7 +125,12 @@ namespace BattleSystem.Moves
         /// <param name="power">The power.</param>
         public static Attack ByAbsolutePower(string name, int maxUses, int power)
         {
-            return new Attack(new AbsoluteDamageCalculator(), name, maxUses, power)
+            return new Attack(
+                new AbsoluteDamageCalculator(),
+                new FirstMoveTargetCalculator(),
+                name,
+                maxUses,
+                power)
             {
                 Description = $"Always deals {power} damage."
             };
@@ -118,7 +144,12 @@ namespace BattleSystem.Moves
         /// <param name="percentage">The percentage.</param>
         public static Attack ByPercentage(string name, int maxUses, int percentage)
         {
-            return new Attack(new PercentageDamageCalculator(), name, maxUses, percentage)
+            return new Attack(
+                new PercentageDamageCalculator(),
+                new FirstMoveTargetCalculator(),
+                name,
+                maxUses,
+                percentage)
             {
                 Description = $"Always deals damage equal to {percentage}% of the target's max health."
             };

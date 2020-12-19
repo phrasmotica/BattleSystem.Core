@@ -1,5 +1,4 @@
 ﻿using BattleSystem.Characters;
-using BattleSystem.Damage;
 using BattleSystem.Moves;
 using BattleSystem.Stats;
 using BattleSystemExample.Battles;
