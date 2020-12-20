@@ -15,7 +15,7 @@ namespace BattleSystem.Tests.Moves
         public void AddMove_AddsMove()
         {
             // Arrange
-            var moveSet = new MoveSet();
+            var moveSet = TestHelpers.CreateMoveSet();
 
             // Act
             moveSet.AddMove(TestHelpers.CreateMove());
@@ -28,7 +28,7 @@ namespace BattleSystem.Tests.Moves
         public void AddMove_NullMove_Throws()
         {
             // Arrange
-            var moveSet = new MoveSet();
+            var moveSet = TestHelpers.CreateMoveSet();
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => moveSet.AddMove(null));
@@ -119,7 +119,9 @@ namespace BattleSystem.Tests.Moves
         public void GetMove_InvalidIndex_Throws(int index)
         {
             // Arrange
-            var moveSet = TestHelpers.CreateMoveSet();
+            var moveSet = TestHelpers.CreateMoveSet(
+                TestHelpers.CreateMove()
+            );
 
             // Act and Assert
             Assert.Throws<ArgumentException>(() => _ = moveSet.GetMove(index));
