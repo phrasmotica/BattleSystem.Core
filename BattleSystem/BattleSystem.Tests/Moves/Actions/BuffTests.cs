@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Moves;
 using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
 using Moq;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Moves
+namespace BattleSystem.Tests.Moves.Actions
 {
     /// <summary>
     /// Unit tests for <see cref="Buff"/>.

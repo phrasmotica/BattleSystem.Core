@@ -1,27 +1,26 @@
 ﻿using BattleSystem.Characters;
-using BattleSystem.Healing;
-using BattleSystem.Moves;
+using BattleSystem.Damage;
 using BattleSystem.Moves.Actions;
 using BattleSystem.Moves.Targets;
 using Moq;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Moves
+namespace BattleSystem.Tests.Moves.Actions
 {
     /// <summary>
-    /// Unit tests for <see cref="Heal"/>.
+    /// Unit tests for <see cref="Attack"/>.
     /// </summary>
     [TestFixture]
-    public class HealTests
+    public class AttackTests
     {
         [Test]
-        public void Use_HealsTarget()
+        public void Use_DamagesTarget()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
             var otherCharacters = new[]
             {
-                TestHelpers.CreateBasicCharacter()
+                TestHelpers.CreateBasicCharacter(maxHealth: 8)
             };
 
             var moveTargetCalculator = new Mock<IMoveTargetCalculator>();
@@ -29,26 +28,24 @@ namespace BattleSystem.Tests.Moves
                 .Setup(m => m.Calculate(user, otherCharacters))
                 .Returns(otherCharacters[0]);
 
-            var healingCalculator = new Mock<IHealingCalculator>();
-            healingCalculator
+            var damageCalculator = new Mock<IDamageCalculator>();
+            damageCalculator
                 .Setup(
                     m => m.Calculate(
                         It.IsAny<Character>(),
-                        It.IsAny<Heal>(),
+                        It.IsAny<Attack>(),
                         It.IsAny<Character>()
                     )
                 )
-                .Returns(2);
+                .Returns(6);
 
-            var heal = TestHelpers.CreateHeal(healingCalculator.Object, moveTargetCalculator.Object);
-
-            otherCharacters[0].ReceiveDamage(2);
+            var attack = TestHelpers.CreateAttack(damageCalculator.Object, moveTargetCalculator.Object);
 
             // Act
-            heal.Use(user, otherCharacters);
+            attack.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(otherCharacters[0].CurrentHealth, Is.EqualTo(5));
+            Assert.That(otherCharacters[0].CurrentHealth, Is.EqualTo(2));
         }
     }
 }
