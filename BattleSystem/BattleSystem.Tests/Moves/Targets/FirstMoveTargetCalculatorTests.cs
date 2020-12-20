@@ -26,10 +26,10 @@ namespace BattleSystem.Tests.Moves.Targets
             };
 
             // Act
-            var target = calculator.Calculate(user, characters);
+            var targets = calculator.Calculate(user, characters);
 
             // Assert
-            Assert.That(target.Name, Is.EqualTo("the"));
+            Assert.That(targets.First().Name, Is.EqualTo("the"));
         }
 
         [Test]

@@ -45,9 +45,14 @@ namespace BattleSystem.Moves.Actions
         /// <inheritdoc />
         public virtual void Use(Character user, IEnumerable<Character> otherCharacters)
         {
-            var target = _moveTargetCalculator.Calculate(user, otherCharacters);
             user.ReceiveBuff(UserMultipliers);
-            target.ReceiveBuff(TargetMultipliers);
+
+            var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
+
+            foreach (var target in targets)
+            {
+                target.ReceiveBuff(TargetMultipliers);
+            }
         }
 
         /// <summary>

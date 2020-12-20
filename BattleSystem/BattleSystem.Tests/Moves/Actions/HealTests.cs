@@ -26,7 +26,7 @@ namespace BattleSystem.Tests.Moves.Actions
             var moveTargetCalculator = new Mock<IMoveTargetCalculator>();
             moveTargetCalculator
                 .Setup(m => m.Calculate(user, otherCharacters))
-                .Returns(otherCharacters[0]);
+                .Returns(otherCharacters);
 
             var healingCalculator = new Mock<IHealingCalculator>();
             healingCalculator

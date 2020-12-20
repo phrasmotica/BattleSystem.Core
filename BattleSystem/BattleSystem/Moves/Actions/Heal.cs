@@ -45,9 +45,13 @@ namespace BattleSystem.Moves.Actions
         /// <inheritdoc />
         public virtual void Use(Character user, IEnumerable<Character> otherCharacters)
         {
-            var target = _moveTargetCalculator.Calculate(user, otherCharacters);
-            var amount = _healingCalculator.Calculate(user, this, target);
-            target.Heal(amount);
+            var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
+
+            foreach (var target in targets)
+            {
+                var amount = _healingCalculator.Calculate(user, this, target);
+                target.Heal(amount);
+            }
         }
 
         /// <summary>

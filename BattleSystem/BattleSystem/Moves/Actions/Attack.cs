@@ -45,9 +45,13 @@ namespace BattleSystem.Moves.Actions
         /// <inheritdoc />
         public virtual void Use(Character user, IEnumerable<Character> otherCharacters)
         {
-            var target = _moveTargetCalculator.Calculate(user, otherCharacters);
-            var damage = _damageCalculator.Calculate(user, this, target);
-            target.ReceiveDamage(damage);
+            var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
+
+            foreach (var target in targets)
+            {
+                var damage = _damageCalculator.Calculate(user, this, target);
+                target.ReceiveDamage(damage);
+            }
         }
 
         /// <summary>

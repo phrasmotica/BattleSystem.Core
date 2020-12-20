@@ -11,14 +11,14 @@ namespace BattleSystem.Moves.Targets
     public class FirstMoveTargetCalculator : IMoveTargetCalculator
     {
         /// <inheritdoc />
-        public Character Calculate(Character user, IEnumerable<Character> otherCharacters)
+        public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
             if (!otherCharacters.Any())
             {
                 throw new ArgumentException("No other characters to choose as a target!");
             }
 
-            return otherCharacters.First();
+            return otherCharacters.Take(1);
         }
     }
 }
