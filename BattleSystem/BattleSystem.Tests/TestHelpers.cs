@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Damage;
 using BattleSystem.Healing;
@@ -60,16 +61,26 @@ namespace BattleSystem.Tests
         }
 
         /// <summary>
-        /// Returns a move set with one move.
+        /// Returns a move set with the given moves.
         /// </summary>
-        public static MoveSet CreateMoveSet(Move move1 = null)
+        public static MoveSet CreateMoveSet(params Move[] moves)
         {
-            return new MoveSet
+            var moveSet = new MoveSet();
+
+            if (!moves.Any())
             {
-                Move1 = move1 ?? CreateMove(
-                    moveActions: CreateAttack(new Mock<IDamageCalculator>().Object)
-                ),
-            };
+                var move = CreateMove(moveActions: CreateAttack(new Mock<IDamageCalculator>().Object));
+                moveSet.AddMove(move);
+            }
+            else
+            {
+                foreach (var move in moves)
+                {
+                    moveSet.AddMove(move);
+                }
+            }
+
+            return moveSet;
         }
 
         /// <summary>
