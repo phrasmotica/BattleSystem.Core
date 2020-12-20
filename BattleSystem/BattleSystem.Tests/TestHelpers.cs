@@ -60,16 +60,18 @@ namespace BattleSystem.Tests
         }
 
         /// <summary>
-        /// Returns a move set with one move.
+        /// Returns a move set with the given moves.
         /// </summary>
-        public static MoveSet CreateMoveSet(Move move1 = null)
+        public static MoveSet CreateMoveSet(params Move[] moves)
         {
-            return new MoveSet
+            var moveSet = new MoveSet();
+
+            foreach (var move in moves)
             {
-                Move1 = move1 ?? CreateMove(
-                    moveActions: CreateAttack(new Mock<IDamageCalculator>().Object)
-                ),
-            };
+                moveSet.AddMove(move);
+            }
+
+            return moveSet;
         }
 
         /// <summary>

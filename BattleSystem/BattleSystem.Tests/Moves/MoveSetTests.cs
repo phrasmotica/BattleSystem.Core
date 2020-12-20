@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Linq;
 using BattleSystem.Moves;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace BattleSystem.Tests.Moves
 {
@@ -12,14 +12,36 @@ namespace BattleSystem.Tests.Moves
     public class MoveSetTests
     {
         [Test]
+        public void AddMove_AddsMove()
+        {
+            // Arrange
+            var moveSet = TestHelpers.CreateMoveSet();
+
+            // Act
+            moveSet.AddMove(TestHelpers.CreateMove());
+
+            // Assert
+            Assert.That(moveSet.Moves.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void AddMove_NullMove_Throws()
+        {
+            // Arrange
+            var moveSet = TestHelpers.CreateMoveSet();
+
+            // Act and Assert
+            Assert.Throws<ArgumentNullException>(() => moveSet.AddMove(null));
+        }
+
+        [Test]
         public void ChooseRandom_DoesNotReturnNull()
         {
             // Arrange
-            var moveSet = new MoveSet
-            {
-                Move1 = TestHelpers.CreateMove(),
-                Move3 = TestHelpers.CreateMove(),
-            };
+            var moveSet = TestHelpers.CreateMoveSet(
+                TestHelpers.CreateMove(),
+                TestHelpers.CreateMove()
+            );
 
             // Act
             var move = moveSet.ChooseRandom();
@@ -32,11 +54,10 @@ namespace BattleSystem.Tests.Moves
         public void GetChoices_ContainsCorrectMoveNames()
         {
             // Arrange
-            var moveSet = new MoveSet
-            {
-                Move1 = TestHelpers.CreateMove(name: "move1"),
-                Move3 = TestHelpers.CreateMove(name: "move3"),
-            };
+            var moveSet = TestHelpers.CreateMoveSet(
+                TestHelpers.CreateMove(name: "move1"),
+                TestHelpers.CreateMove(name: "move3")
+            );
 
             // Act
             var choices = moveSet.GetChoices();
@@ -53,23 +74,22 @@ namespace BattleSystem.Tests.Moves
         public void GetIndexes_ReturnsCorrectIndexes()
         {
             // Arrange
-            var moveSet = new MoveSet
-            {
-                Move1 = TestHelpers.CreateMove(name: "move1"),
-                Move2 = TestHelpers.CreateMove(name: "move2"),
-                Move4 = TestHelpers.CreateMove(name: "move4"),
-            };
+            var moveSet = TestHelpers.CreateMoveSet(
+                TestHelpers.CreateMove(name: "move1"),
+                TestHelpers.CreateMove(name: "move2"),
+                TestHelpers.CreateMove(name: "move4")
+            );
 
             // Act
-            var indexes = moveSet.GetIndexes();
+            var indexes = moveSet.GetIndexes().ToList();
 
             // Assert
             Assert.Multiple(() =>
             {
+                Assert.That(indexes.Count, Is.EqualTo(3));
                 Assert.That(indexes, Contains.Item(1));
                 Assert.That(indexes, Contains.Item(2));
-                Assert.That(indexes, new NotConstraint(Contains.Item(3)));
-                Assert.That(indexes, Contains.Item(4));
+                Assert.That(indexes, Contains.Item(3));
             });
         }
 
@@ -80,13 +100,12 @@ namespace BattleSystem.Tests.Moves
         public void GetMove_ValidIndex_ReturnsCorrectMove(int index, string expectedName)
         {
             // Arrange
-            var moveSet = new MoveSet
-            {
-                Move1 = TestHelpers.CreateMove(name: "move1"),
-                Move2 = TestHelpers.CreateMove(name: "move2"),
-                Move3 = TestHelpers.CreateMove(name: "move3"),
-                Move4 = TestHelpers.CreateMove(name: "move4"),
-            };
+            var moveSet = TestHelpers.CreateMoveSet(
+                TestHelpers.CreateMove(name: "move1"),
+                TestHelpers.CreateMove(name: "move2"),
+                TestHelpers.CreateMove(name: "move3"),
+                TestHelpers.CreateMove(name: "move4")
+            );
 
             // Act
             var move = moveSet.GetMove(index);
@@ -99,8 +118,13 @@ namespace BattleSystem.Tests.Moves
         [TestCase(5)]
         public void GetMove_InvalidIndex_Throws(int index)
         {
-            // Arrange, Act and Assert
-            Assert.Throws<ArgumentException>(() => _ = new MoveSet().GetMove(index));
+            // Arrange
+            var moveSet = TestHelpers.CreateMoveSet(
+                TestHelpers.CreateMove()
+            );
+
+            // Act and Assert
+            Assert.Throws<ArgumentException>(() => _ = moveSet.GetMove(index));
         }
     }
 }
