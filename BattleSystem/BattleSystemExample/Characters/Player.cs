@@ -45,24 +45,20 @@ namespace BattleSystemExample.Characters
 
             var move = SelectMove();
 
-            // TODO: let move compute its preferred target
-            // currently heals always target the user
-            var target = otherCharacters.First();
-
             return new MoveUse
             {
                 Move = move,
                 User = this,
-                Target = target,
+                OtherCharacters = otherCharacters,
             };
         }
 
         /// <summary>
         /// Lets the player select a move and returns it.
         /// </summary>
-        private IMove SelectMove()
+        private Move SelectMove()
         {
-            IMove move = null;
+            Move move = null;
 
             var validIndexes = Moves.GetIndexes();
             int chosenIndex = -1;

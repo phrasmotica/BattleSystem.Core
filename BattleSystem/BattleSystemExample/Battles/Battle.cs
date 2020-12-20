@@ -87,7 +87,7 @@ namespace BattleSystemExample.Battles
         /// <param name="moveUse">The move use.</param>
         private void ShowMoveUse(MoveUse moveUse)
         {
-            _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name} against {moveUse.Target.Name}!");
+            _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name}!");
         }
 
         /// <summary>
@@ -134,11 +134,12 @@ namespace BattleSystemExample.Battles
                     var stat = change.Key;
                     var percentage = (int) (change.Value * 100);
 
-                    if (change.Value > 0)
+                    if (percentage > 0)
                     {
+                        // < 0 means the multiplier was lower before the move was used
                         _gameOutput.WriteLine($"{character.Name}'s {stat} rose by {percentage}%!");
                     }
-                    else if (change.Value < 0)
+                    else if (percentage < 0)
                     {
                         _gameOutput.WriteLine($"{character.Name}'s {stat} fell by {-percentage}%!");
                     }

@@ -12,22 +12,22 @@ namespace BattleSystem.Moves
         /// <summary>
         /// Gets or sets the first move.
         /// </summary>
-        public IMove Move1 { get; set; }
+        public Move Move1 { get; set; }
 
         /// <summary>
         /// Gets or sets the second move.
         /// </summary>
-        public IMove Move2 { get; set; }
+        public Move Move2 { get; set; }
 
         /// <summary>
         /// Gets or sets the third move.
         /// </summary>
-        public IMove Move3 { get; set; }
+        public Move Move3 { get; set; }
 
         /// <summary>
         /// Gets or sets the fourth move.
         /// </summary>
-        public IMove Move4 { get; set; }
+        public Move Move4 { get; set; }
 
         /// <summary>
         /// Returns the choices in this move set as a string.
@@ -92,7 +92,7 @@ namespace BattleSystem.Moves
         /// <summary>
         /// Returns a random move in the set.
         /// </summary>
-        public IMove ChooseRandom()
+        public Move ChooseRandom()
         {
             var moves = new[] { Move1, Move2, Move3, Move4 };
             var indexes = moves.Select((m, i) => m is not null ? i : -1).Where(i => i > -1).ToArray();
@@ -104,7 +104,7 @@ namespace BattleSystem.Moves
         /// Returns the move for the given index.
         /// </summary>
         /// <param name="index">The index.</param>
-        public IMove GetMove(int index)
+        public Move GetMove(int index)
         {
             return index switch
             {

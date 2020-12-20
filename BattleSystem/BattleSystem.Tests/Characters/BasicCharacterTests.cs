@@ -13,18 +13,24 @@ namespace BattleSystem.Tests.Characters
         public void ChooseMove_ReturnsMoveUse()
         {
             // Arrange
-            var user = TestHelpers.CreateBasicCharacter();
-            var target = TestHelpers.CreateBasicCharacter();
+            var move = TestHelpers.CreateMove();
+            var moveSet = TestHelpers.CreateMoveSet(move);
+
+            var user = TestHelpers.CreateBasicCharacter(moveSet: moveSet);
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter()
+            };
 
             // Act
-            var moveUse = user.ChooseMove(new[] { target });
+            var moveUse = user.ChooseMove(otherCharacters);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(moveUse.Move, Is.EqualTo(user.Moves.Move1));
+                Assert.That(moveUse.Move, Is.EqualTo(move));
                 Assert.That(moveUse.User, Is.EqualTo(user));
-                Assert.That(moveUse.Target, Is.EqualTo(target));
+                Assert.That(moveUse.OtherCharacters, Is.EqualTo(otherCharacters));
             });
         }
     }

@@ -1,5 +1,5 @@
 ﻿using BattleSystem.Characters;
-using BattleSystem.Moves;
+using BattleSystem.Moves.Actions;
 
 namespace BattleSystem.Damage
 {
