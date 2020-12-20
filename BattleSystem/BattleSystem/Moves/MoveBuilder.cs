@@ -1,4 +1,5 @@
 ﻿using BattleSystem.Moves.Actions;
+using BattleSystem.Moves.Success;
 
 namespace BattleSystem.Moves
 {
@@ -48,6 +49,33 @@ namespace BattleSystem.Moves
         {
             _move.SetMaxUses(maxUses);
             return this;
+        }
+
+        /// <summary>
+        /// Sets the built move's success calculator.
+        /// </summary>
+        /// <param name="accuracy">The built move's success calculator.</param>
+        public MoveBuilder WithSuccessCalculator(ISuccessCalculator successCalculator)
+        {
+            _move.SetSuccessCalculator(successCalculator);
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the built move's accuracy.
+        /// </summary>
+        /// <param name="accuracy">The built move's accuracy.</param>
+        public MoveBuilder WithAccuracy(int accuracy)
+        {
+            return WithSuccessCalculator(new AccuracySuccessCalculator(accuracy));
+        }
+
+        /// <summary>
+        /// Sets the built move to always succeed.
+        /// </summary>
+        public MoveBuilder AlwaysSucceeds()
+        {
+            return WithSuccessCalculator(new AlwaysSuccessCalculator());
         }
 
         /// <summary>

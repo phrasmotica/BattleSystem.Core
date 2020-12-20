@@ -94,7 +94,7 @@ namespace BattleSystem.Tests.Moves
             };
 
             // Act
-            move.Use(user, otherCharacters);
+            _ = move.Use(user, otherCharacters);
 
             // Assert
             Assert.That(move.RemainingUses, Is.EqualTo(4));

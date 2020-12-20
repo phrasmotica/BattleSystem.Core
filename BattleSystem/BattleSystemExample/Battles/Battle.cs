@@ -2,6 +2,7 @@
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Moves;
+using BattleSystem.Moves.Success;
 using BattleSystemExample.Input;
 
 namespace BattleSystemExample.Battles
@@ -87,7 +88,16 @@ namespace BattleSystemExample.Battles
         /// <param name="moveUse">The move use.</param>
         private void ShowMoveUse(MoveUse moveUse)
         {
-            _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name}!");
+            switch (moveUse.Result)
+            {
+                case MoveUseResult.Success:
+                    _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name}!");
+                    break;
+
+                case MoveUseResult.Miss:
+                    _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name} but missed!");
+                    break;
+            }
         }
 
         /// <summary>

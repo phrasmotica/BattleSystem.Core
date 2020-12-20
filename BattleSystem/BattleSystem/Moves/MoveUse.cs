@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
 using BattleSystem.Extensions;
+using BattleSystem.Moves.Success;
 using BattleSystem.Stats;
 
 namespace BattleSystem.Moves
@@ -23,6 +24,11 @@ namespace BattleSystem.Moves
         public IEnumerable<Character> OtherCharacters { get; set; }
 
         /// <summary>
+        /// Gets or sets the result of the move use.
+        /// </summary>
+        public MoveUseResult Result { get; set; }
+
+        /// <summary>
         /// Gets or sets the damage taken by the characters with the given IDs from this move use.
         /// </summary>
         public IDictionary<string, int> DamageTaken { get; private set; }
@@ -40,7 +46,7 @@ namespace BattleSystem.Moves
             var charactersStartingHealth = ComputeCharactersHealth();
             var charactersStartingStatMultipliers = ComputeCharactersStatMultipliers();
 
-            Move.Use(User, OtherCharacters);
+            Result = Move.Use(User, OtherCharacters);
 
             var charactersEndingHealth = ComputeCharactersHealth();
             var charactersEndingStatMultipliers = ComputeCharactersStatMultipliers();

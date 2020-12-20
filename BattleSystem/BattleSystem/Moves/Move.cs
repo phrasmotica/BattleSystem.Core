@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
 using BattleSystem.Moves.Actions;
+using BattleSystem.Moves.Success;
 
 namespace BattleSystem.Moves
 {
@@ -9,6 +10,16 @@ namespace BattleSystem.Moves
     /// </summary>
     public class Move
     {
+        /// <summary>
+        /// The success calculator.
+        /// </summary>
+        private ISuccessCalculator _successCalculator;
+
+        /// <summary>
+        /// The actions this move will apply in order.
+        /// </summary>
+        private readonly IList<IMoveAction> _moveActions;
+
         /// <summary>
         /// Gets or sets the name of the move.
         /// </summary>
@@ -33,11 +44,6 @@ namespace BattleSystem.Moves
         /// Gets or sets a summary of the move.
         /// </summary>
         public string Summary => $"{Name} ({RemainingUses}/{MaxUses} uses) - {Description}";
-
-        /// <summary>
-        /// The actions this move will apply in order.
-        /// </summary>
-        private readonly IList<IMoveAction> _moveActions;
 
         /// <summary>
         /// Creates a new <see cref="Move"/> instance.
@@ -82,6 +88,15 @@ namespace BattleSystem.Moves
         }
 
         /// <summary>
+        /// Sets the success calculator for this move.
+        /// </summary>
+        /// <param name="successCalculator">The success calculator.</param>
+        public void SetSuccessCalculator(ISuccessCalculator successCalculator)
+        {
+            _successCalculator = successCalculator;
+        }
+
+        /// <summary>
         /// Adds the given move action to the move.
         /// </summary>
         /// <param name="action">The move action to add.</param>
@@ -99,18 +114,25 @@ namespace BattleSystem.Moves
         }
 
         /// <summary>
-        /// Applies the effects of the move.
+        /// Applies the effects of the move, if it lands.
         /// </summary>
         /// <param name="user">The user of the move.</param>
         /// <param name="otherCharacters">The other characters.</param>
-        public void Use(Character user, IEnumerable<Character> otherCharacters)
+        public MoveUseResult Use(Character user, IEnumerable<Character> otherCharacters)
         {
-            foreach (var action in _moveActions)
+            var result = _successCalculator.Calculate(user, this, otherCharacters);
+
+            if (result == MoveUseResult.Success)
             {
-                action.Use(user, otherCharacters);
+                foreach (var action in _moveActions)
+                {
+                    action.Use(user, otherCharacters);
+                }
             }
 
             RemainingUses--;
+
+            return result;
         }
     }
 }
