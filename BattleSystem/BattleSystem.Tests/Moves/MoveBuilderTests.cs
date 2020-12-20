@@ -13,9 +13,12 @@ namespace BattleSystem.Tests.Moves
         public void Name_SetsMoveName()
         {
             // Arrange
-            var move = new MoveBuilder().Name("boost").Build();
+            var moveBuilder = new MoveBuilder();
+            
+            // Act
+            var move = moveBuilder.Name("boost").Build();
 
-            // Act and Assert
+            // Assert
             Assert.That(move.Name, Is.EqualTo("boost"));
         }
 
@@ -23,9 +26,12 @@ namespace BattleSystem.Tests.Moves
         public void Describe_SetsMoveDescription()
         {
             // Arrange
-            var move = new MoveBuilder().Describe("boost").Build();
+            var moveBuilder = new MoveBuilder();
 
-            // Act and Assert
+            // Act
+            var move = moveBuilder.Describe("boost").Build();
+
+            // Assert
             Assert.That(move.Description, Is.EqualTo("boost"));
         }
 
@@ -33,9 +39,12 @@ namespace BattleSystem.Tests.Moves
         public void WithMaxUses_SetsMaxAndRemainingUses()
         {
             // Arrange
-            var move = new MoveBuilder().WithMaxUses(10).Build();
+            var moveBuilder = new MoveBuilder();
 
-            // Act and Assert
+            // Act
+            var move = moveBuilder.WithMaxUses(10).Build();
+
+            // Assert
             Assert.Multiple(() =>
             {
                 Assert.That(move.MaxUses, Is.EqualTo(10));

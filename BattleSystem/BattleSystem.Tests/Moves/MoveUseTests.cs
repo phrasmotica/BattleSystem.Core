@@ -1,4 +1,5 @@
 ﻿using BattleSystem.Moves;
+using BattleSystem.Moves.Success;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Moves
@@ -10,7 +11,7 @@ namespace BattleSystem.Tests.Moves
     public class MoveUseTests
     {
         [Test]
-        public void Apply_UsesMove()
+        public void Apply_ReturnsResult()
         {
             // Arrange
             var move = TestHelpers.CreateMove();
@@ -29,7 +30,7 @@ namespace BattleSystem.Tests.Moves
             moveUse.Apply();
 
             // Assert
-            Assert.That(move.RemainingUses, Is.EqualTo(4));
+            Assert.That(moveUse.Result, Is.EqualTo(MoveUseResult.Success));
         }
     }
 }

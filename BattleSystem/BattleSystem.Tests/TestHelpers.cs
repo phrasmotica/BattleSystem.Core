@@ -4,6 +4,7 @@ using BattleSystem.Damage;
 using BattleSystem.Healing;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Actions;
+using BattleSystem.Moves.Success;
 using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
 using Moq;
@@ -81,12 +82,14 @@ namespace BattleSystem.Tests
             string name = "yeti",
             string description = "amon",
             int maxUses = 5,
+            ISuccessCalculator successCalculator = null,
             params IMoveAction[] moveActions)
         {
             var builder = new MoveBuilder()
                             .Name(name)
                             .Describe(description)
-                            .WithMaxUses(maxUses);
+                            .WithMaxUses(maxUses)
+                            .WithSuccessCalculator(successCalculator ?? new AlwaysSuccessCalculator());
 
             foreach (var action in moveActions)
             {
