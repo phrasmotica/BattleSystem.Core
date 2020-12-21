@@ -37,32 +37,34 @@ namespace BattleSystemExample.Moves.Targets
         /// <inheritdoc />
         public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
-            var targets = otherCharacters.Prepend(user);
-
             _gameOutput.WriteLine($"Select a target for the move:");
-            _gameOutput.WriteLine(GetChoices(targets));
+            _gameOutput.WriteLine(GetChoices(user, otherCharacters));
 
-            return new[] { SelectTarget(targets) };
+            return new[] { SelectTarget(user, otherCharacters) };
         }
 
         /// <summary>
         /// Returns a string describing the given characters as potential move targets.
         /// </summary>
-        /// <param name="targets">The move targets.</param>
-        private static string GetChoices(IEnumerable<Character> targets)
+        /// <param name="user">The user of the move.</param>
+        /// <param name="otherCharacters">The other characters.</param>
+        private static string GetChoices(Character user, IEnumerable<Character> otherCharacters)
         {
-            var choices = targets.Select((c, i) => $"{i + 1}: {c.Name}");
+            var choices = otherCharacters.Select((c, i) => $"{i + 1}: {c.Name}")
+                                         .Append($"{otherCharacters.Count() + 1}: {user.Name} (you)");
             return string.Join("\n", choices);
         }
 
         /// <summary>
         /// Lets the player select a move target and returns it.
         /// </summary>
-        /// <param name="targets">The move targets.</param>
-        private Character SelectTarget(IEnumerable<Character> targets)
+        /// <param name="user">The user of the move.</param>
+        /// <param name="otherCharacters">The other characters.</param>
+        private Character SelectTarget(Character user, IEnumerable<Character> otherCharacters)
         {
             Character character = null;
 
+            var targets = otherCharacters.Append(user);
             var validIndexes = targets.Select((_, i) => i + 1);
             int chosenIndex = -1;
 

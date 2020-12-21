@@ -120,12 +120,14 @@ namespace BattleSystem.Moves
         /// <param name="otherCharacters">The other characters.</param>
         public MoveUseResult Use(Character user, IEnumerable<Character> otherCharacters)
         {
+            // TODO: move success calculator to move actions
             var result = _successCalculator.Calculate(user, this, otherCharacters);
 
             if (result == MoveUseResult.Success)
             {
                 foreach (var action in _moveActions)
                 {
+                    // TODO: don't process further actions if one of them fails
                     action.Use(user, otherCharacters);
                 }
             }

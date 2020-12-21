@@ -107,10 +107,11 @@ namespace BattleSystem.Tests
             IMoveTargetCalculator moveTargetCalculator = null,
             int power = 2)
         {
-            return new Attack(
-                damageCalculator ?? new Mock<IDamageCalculator>().Object,
-                moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object,
-                power);
+            return new AttackBuilder()
+                .WithPower(power)
+                .WithDamageCalculator(damageCalculator ?? new Mock<IDamageCalculator>().Object)
+                .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object)
+                .Build();
         }
 
         /// <summary>

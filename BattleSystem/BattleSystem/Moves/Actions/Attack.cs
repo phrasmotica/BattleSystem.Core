@@ -13,12 +13,12 @@ namespace BattleSystem.Moves.Actions
         /// <summary>
         /// The damage calculator.
         /// </summary>
-        private readonly IDamageCalculator _damageCalculator;
+        private IDamageCalculator _damageCalculator;
 
         /// <summary>
         /// The move target calculator.
         /// </summary>
-        private readonly IMoveTargetCalculator _moveTargetCalculator;
+        private IMoveTargetCalculator _moveTargetCalculator;
 
         /// <summary>
         /// Gets or sets the attack's power.
@@ -28,18 +28,24 @@ namespace BattleSystem.Moves.Actions
         /// <summary>
         /// Creates a new <see cref="Attack"/>.
         /// </summary>
+        public Attack() { }
+
+        /// <summary>
+        /// Sets the damage calculator for this attack.
+        /// </summary>
         /// <param name="damageCalculator">The damage calculator.</param>
-        /// <param name="moveTargetCalculator">The move target calculator.</param>
-        /// <param name="power">The power.</param>
-        public Attack(
-            IDamageCalculator damageCalculator,
-            IMoveTargetCalculator moveTargetCalculator,
-            int power)
+        public void SetDamageCalculator(IDamageCalculator damageCalculator)
         {
             _damageCalculator = damageCalculator;
-            _moveTargetCalculator = moveTargetCalculator;
+        }
 
-            Power = power;
+        /// <summary>
+        /// Sets the move target calculator for this attack.
+        /// </summary>
+        /// <param name="moveTargetCalculator">The move target calculator.</param>
+        public void SetMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
+        {
+            _moveTargetCalculator = moveTargetCalculator;
         }
 
         /// <inheritdoc />
@@ -52,43 +58,6 @@ namespace BattleSystem.Moves.Actions
                 var damage = _damageCalculator.Calculate(user, this, target);
                 target.ReceiveDamage(damage);
             }
-        }
-
-        /// <summary>
-        /// Returns an attack that calculates damage based on the difference between the user's
-        /// attack stat and the target's defence stat.
-        /// </summary>
-        /// <param name="power">The power.</param>
-        public static Attack ByStatDifference(int power)
-        {
-            return new Attack(
-                new StatDifferenceDamageCalculator(),
-                new FirstMoveTargetCalculator(),
-                power);
-        }
-
-        /// <summary>
-        /// Returns an attack that calculates damage equal to its power.
-        /// </summary>
-        /// <param name="power">The power.</param>
-        public static Attack ByAbsolutePower(int power)
-        {
-            return new Attack(
-                new AbsoluteDamageCalculator(),
-                new FirstMoveTargetCalculator(),
-                power);
-        }
-
-        /// <summary>
-        /// Returns an attack that calculates damage equal to a percentage of the target's max health.
-        /// </summary>
-        /// <param name="percentage">The percentage.</param>
-        public static Attack ByPercentage(int percentage)
-        {
-            return new Attack(
-                new PercentageDamageCalculator(),
-                new FirstMoveTargetCalculator(),
-                percentage);
         }
     }
 }

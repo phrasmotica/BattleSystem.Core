@@ -1,9 +1,10 @@
-using BattleSystem.Characters;
+﻿using BattleSystem.Characters;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Actions;
 using BattleSystem.Stats;
 using BattleSystemExample.Battles;
 using BattleSystemExample.Characters;
+using BattleSystemExample.Extensions;
 using BattleSystemExample.Input;
 using BattleSystemExample.Output;
 
@@ -13,6 +14,7 @@ namespace BattleSystemExample
     {
         public static void Main(string[] args)
         {
+            var playerInput = new ConsoleInput();
             var gameOutput = new ConsoleOutput();
 
             gameOutput.WriteLine("Welcome to the Console Battle System!");
@@ -31,7 +33,13 @@ namespace BattleSystemExample
                                         .Describe("The user swings their sword to inflict damage.")
                                         .WithMaxUses(15)
                                         .WithAccuracy(100)
-                                        .WithAction(Attack.ByStatDifference(20))
+                                        .WithAction(
+                                            new AttackBuilder()
+                                                .WithPower(20)
+                                                .StatDifferenceDamage()
+                                                .UserSelectsSingleTarget(playerInput, gameOutput)
+                                                .Build()
+                                        )
                                         .Build()
                                 )
                                 .WithMove(
@@ -40,7 +48,13 @@ namespace BattleSystemExample
                                         .Describe("The user drives their weapon through the target's abdomen, and then raises their Attack stat.")
                                         .WithMaxUses(5)
                                         .WithAccuracy(50)
-                                        .WithAction(Attack.ByPercentage(40))
+                                        .WithAction(
+                                            new AttackBuilder()
+                                                .WithPower(40)
+                                                .PercentageDamage()
+                                                .UserSelectsSingleTarget(playerInput, gameOutput)
+                                                .Build()
+                                        )
                                         .WithAction(Buff.RaiseUserAttack())
                                         .Build()
                                 )
@@ -64,7 +78,6 @@ namespace BattleSystemExample
                                 )
                                 .Build();
 
-            var playerInput = new ConsoleInput();
             var user = new Player(playerInput, gameOutput, "Warrior", 100, userStats, userMoves);
 
             var enemyStats = new StatSet
@@ -81,7 +94,13 @@ namespace BattleSystemExample
                                         .Describe("The user fires a spectral missile to inflict 20 damage.")
                                         .WithMaxUses(15)
                                         .WithAccuracy(100)
-                                        .WithAction(Attack.ByAbsolutePower(20))
+                                        .WithAction(
+                                            new AttackBuilder()
+                                                .WithPower(20)
+                                                .AbsoluteDamage()
+                                                .TargetsFirst()
+                                                .Build()
+                                        )
                                         .Build()
                                 )
                                 .WithMove(
@@ -90,7 +109,13 @@ namespace BattleSystemExample
                                         .Describe("The user summons a lightning strike to deal damage equal to 30% of the target's health.")
                                         .WithMaxUses(5)
                                         .WithAccuracy(70)
-                                        .WithAction(Attack.ByPercentage(30))
+                                        .WithAction(
+                                            new AttackBuilder()
+                                                .WithPower(30)
+                                                .PercentageDamage()
+                                                .TargetsFirst()
+                                                .Build()
+                                        )
                                         .Build()
                                 )
                                 .WithMove(
