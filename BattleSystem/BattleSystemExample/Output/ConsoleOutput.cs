@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BattleSystemExample.Input
+namespace BattleSystemExample.Output
 {
     /// <summary>
     /// Class for game output via the console.

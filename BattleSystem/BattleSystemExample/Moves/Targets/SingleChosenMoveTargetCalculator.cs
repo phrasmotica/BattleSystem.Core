@@ -4,6 +4,7 @@ using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Moves.Targets;
 using BattleSystemExample.Input;
+using BattleSystemExample.Output;
 
 namespace BattleSystemExample.Moves.Targets
 {

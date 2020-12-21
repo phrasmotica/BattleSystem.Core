@@ -3,7 +3,7 @@ using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Success;
-using BattleSystemExample.Input;
+using BattleSystemExample.Output;
 
 namespace BattleSystemExample.Battles
 {

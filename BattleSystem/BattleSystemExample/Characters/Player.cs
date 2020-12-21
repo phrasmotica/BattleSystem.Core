@@ -4,6 +4,7 @@ using BattleSystem.Characters;
 using BattleSystem.Moves;
 using BattleSystem.Stats;
 using BattleSystemExample.Input;
+using BattleSystemExample.Output;
 
 namespace BattleSystemExample.Characters
 {

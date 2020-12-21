@@ -1,4 +1,4 @@
-﻿namespace BattleSystemExample.Input
+﻿namespace BattleSystemExample.Output
 {
     /// <summary>
     /// Interface for ways the game can output messages.

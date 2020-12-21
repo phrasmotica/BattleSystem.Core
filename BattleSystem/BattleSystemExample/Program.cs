@@ -1,10 +1,11 @@
-﻿using BattleSystem.Characters;
+using BattleSystem.Characters;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Actions;
 using BattleSystem.Stats;
 using BattleSystemExample.Battles;
 using BattleSystemExample.Characters;
 using BattleSystemExample.Input;
+using BattleSystemExample.Output;
 
 namespace BattleSystemExample
 {
