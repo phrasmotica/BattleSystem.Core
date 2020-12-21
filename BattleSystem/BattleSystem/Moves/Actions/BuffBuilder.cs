@@ -120,7 +120,7 @@ namespace BattleSystem.Moves.Actions
         {
             if (!_isMoveTargetCalculatorSet)
             {
-                throw new InvalidOperationException($"Cannot build a buff with no move target calculator!");
+                throw new InvalidOperationException("Cannot build a buff with no move target calculator!");
             }
 
             return _buff;

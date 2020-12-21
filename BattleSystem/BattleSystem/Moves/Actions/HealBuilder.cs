@@ -135,17 +135,17 @@ namespace BattleSystem.Moves.Actions
         {
             if (!_isAmountSet)
             {
-                throw new InvalidOperationException($"Cannot build a heal with no amount set!");
+                throw new InvalidOperationException("Cannot build a heal with no amount set!");
             }
 
             if (!_isHealingCalculatorSet)
             {
-                throw new InvalidOperationException($"Cannot build a heal with no healing calculator!");
+                throw new InvalidOperationException("Cannot build a heal with no healing calculator!");
             }
 
             if (!_isMoveTargetCalculatorSet)
             {
-                throw new InvalidOperationException($"Cannot build a heal with no move target calculator!");
+                throw new InvalidOperationException("Cannot build a heal with no move target calculator!");
             }
 
             return _heal;

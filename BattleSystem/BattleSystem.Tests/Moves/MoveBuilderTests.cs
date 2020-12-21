@@ -1,4 +1,5 @@
-﻿using BattleSystem.Moves;
+﻿using System;
+using BattleSystem.Moves;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Moves
@@ -9,47 +10,107 @@ namespace BattleSystem.Tests.Moves
     [TestFixture]
     public class MoveBuilderTests
     {
-        [Test]
-        public void Name_SetsMoveName()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("   ")]
+        public void Name_BadArgument_Throws(string name)
         {
             // Arrange
-            var moveBuilder = new MoveBuilder();
+            var builder = new MoveBuilder();
             
-            // Act
-            var move = moveBuilder.Name("boost").Build();
-
-            // Assert
-            Assert.That(move.Name, Is.EqualTo("boost"));
+            // Act and Assert
+            Assert.Throws<ArgumentException>(() => _ = builder.Name(name));
         }
 
-        [Test]
-        public void Describe_SetsMoveDescription()
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("   ")]
+        public void Describe_BadArgument_Throws(string description)
         {
             // Arrange
-            var moveBuilder = new MoveBuilder();
+            var builder = new MoveBuilder();
 
-            // Act
-            var move = moveBuilder.Describe("boost").Build();
-
-            // Assert
-            Assert.That(move.Description, Is.EqualTo("boost"));
+            // Act and Assert
+            Assert.Throws<ArgumentException>(() => _ = builder.Describe(description));
         }
 
         [TestCase]
-        public void WithMaxUses_SetsMaxAndRemainingUses()
+        public void WithSuccessCalculator_NullArgument_Throws()
         {
             // Arrange
-            var moveBuilder = new MoveBuilder();
+            var builder = new MoveBuilder();
+
+            // Act and Assert
+            Assert.Throws<ArgumentNullException>(() => _ = builder.WithSuccessCalculator(null));
+        }
+
+        [Test]
+        public void Build_CallsPresent_Succeeds()
+        {
+            // Arrange
+            var builder = new MoveBuilder()
+                                .Name("caribou")
+                                .Describe("andorra")
+                                .WithMaxUses(9)
+                                .WithAccuracy(100);
 
             // Act
-            var move = moveBuilder.WithMaxUses(10).Build();
+            var move = builder.Build();
 
             // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.That(move.MaxUses, Is.EqualTo(10));
-                Assert.That(move.RemainingUses, Is.EqualTo(10));
-            });
+            Assert.That(move, Is.Not.Null);
+        }
+
+        [Test]
+        public void Build_MissingName_Throws()
+        {
+            // Arrange
+            var builder = new MoveBuilder()
+                                .Describe("andorra")
+                                .WithMaxUses(9)
+                                .AlwaysSucceeds();
+
+            // Act and Assert
+            Assert.Throws<InvalidOperationException>(() => _ = builder.Build());
+        }
+
+        [Test]
+        public void Build_MissingDescription_Throws()
+        {
+            // Arrange
+            var builder = new MoveBuilder()
+                                .Name("caribou")
+                                .WithMaxUses(9)
+                                .AlwaysSucceeds();
+
+            // Act and Assert
+            Assert.Throws<InvalidOperationException>(() => _ = builder.Build());
+        }
+
+        [Test]
+        public void Build_MissingMaxUses_Throws()
+        {
+            // Arrange
+            var builder = new MoveBuilder()
+                                .Name("caribou")
+                                .Describe("andorra")
+                                .AlwaysSucceeds();
+
+            // Act and Assert
+            Assert.Throws<InvalidOperationException>(() => _ = builder.Build());
+        }
+
+        [Test]
+        public void Build_MissingSuccessCalculator_Throws()
+        {
+            // Arrange
+            var builder = new MoveBuilder()
+                                .Name("caribou")
+                                .Describe("andorra")
+                                .WithMaxUses(9);
+
+            // Act and Assert
+            Assert.Throws<InvalidOperationException>(() => _ = builder.Build());
         }
     }
 }

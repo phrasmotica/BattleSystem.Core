@@ -143,17 +143,17 @@ namespace BattleSystem.Moves.Actions
         {
             if (!_isPowerSet)
             {
-                throw new InvalidOperationException($"Cannot build an attack with no power set!");
+                throw new InvalidOperationException("Cannot build an attack with no power set!");
             }
 
             if (!_isDamageCalculatorSet)
             {
-                throw new InvalidOperationException($"Cannot build an attack with no damage calculator!");
+                throw new InvalidOperationException("Cannot build an attack with no damage calculator!");
             }
 
             if (!_isMoveTargetCalculatorSet)
             {
-                throw new InvalidOperationException($"Cannot build an attack with no move target calculator!");
+                throw new InvalidOperationException("Cannot build an attack with no move target calculator!");
             }
 
             return _attack;
