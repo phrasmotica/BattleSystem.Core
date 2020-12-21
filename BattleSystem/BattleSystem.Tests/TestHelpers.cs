@@ -119,16 +119,20 @@ namespace BattleSystem.Tests
         /// </summary>
         public static Buff CreateBuff(
             IMoveTargetCalculator moveTargetCalculator = null,
-            IDictionary<StatCategory, double> userMultipliers = null,
             IDictionary<StatCategory, double> targetMultipliers = null)
         {
-            return new Buff(
-                moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object,
-                userMultipliers ?? new Dictionary<StatCategory, double>
+            var builder = new BuffBuilder()
+                            .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object);
+
+            if (targetMultipliers is not null)
+            {
+                foreach (var multiplier in targetMultipliers)
                 {
-                    [StatCategory.Attack] = 0.2,
-                },
-                targetMultipliers);
+                    builder = builder.WithTargetMultiplier(multiplier.Key, multiplier.Value);
+                }
+            }
+
+            return builder.Build();
         }
 
         /// <summary>

@@ -91,7 +91,7 @@ namespace BattleSystem.Moves.Actions
         /// <summary>
         /// Sets the built attack's move target calculator.
         /// </summary>
-        /// <param name="name">The built move's move target calculator.</param>
+        /// <param name="name">The built attack's move target calculator.</param>
         public AttackBuilder WithMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
         {
             if (moveTargetCalculator is null)
@@ -137,7 +137,7 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <summary>
-        /// Returns the built move.
+        /// Returns the built attack.
         /// </summary>
         public Attack Build()
         {

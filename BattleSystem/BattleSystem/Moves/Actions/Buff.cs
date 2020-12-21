@@ -13,74 +13,39 @@ namespace BattleSystem.Moves.Actions
         /// <summary>
         /// The move target calculator.
         /// </summary>
-        private readonly IMoveTargetCalculator _moveTargetCalculator;
-
-        /// <summary>
-        /// Gets or sets the buff's stat multipliers for the user.
-        /// </summary>
-        public IDictionary<StatCategory, double> UserMultipliers { get; set; }
+        private IMoveTargetCalculator _moveTargetCalculator;
 
         /// <summary>
         /// Gets or sets the buff's stat multipliers for the target.
         /// </summary>
-        public IDictionary<StatCategory, double> TargetMultipliers { get; set; }
+        public IDictionary<StatCategory, double> TargetMultipliers { get; private set; }
 
         /// <summary>
         /// Creates a new <see cref="Buff"/>.
         /// </summary>
+        public Buff()
+        {
+            TargetMultipliers = new Dictionary<StatCategory, double>();
+        }
+
+        /// <summary>
+        /// Sets the move target calculator for this buff.
+        /// </summary>
         /// <param name="moveTargetCalculator">The move target calculator.</param>
-        /// <param name="userMultipliers">The user stat multipliers.</param>
-        /// <param name="targetMultipliers">The target stat multipliers.</param>
-        public Buff(
-            IMoveTargetCalculator moveTargetCalculator,
-            IDictionary<StatCategory, double> userMultipliers,
-            IDictionary<StatCategory, double> targetMultipliers)
+        public void SetMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
         {
             _moveTargetCalculator = moveTargetCalculator;
-
-            UserMultipliers = userMultipliers ?? new Dictionary<StatCategory, double>();
-            TargetMultipliers = targetMultipliers ?? new Dictionary<StatCategory, double>();
         }
 
         /// <inheritdoc />
         public virtual void Use(Character user, IEnumerable<Character> otherCharacters)
         {
-            user.ReceiveBuff(UserMultipliers);
-
             var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
 
             foreach (var target in targets)
             {
                 target.ReceiveBuff(TargetMultipliers);
             }
-        }
-
-        /// <summary>
-        /// Returns a buff that raises the user's attack by 10% of its base value.
-        /// </summary>
-        public static Buff RaiseUserAttack()
-        {
-            return new Buff(
-                new UserMoveTargetCalculator(),
-                new Dictionary<StatCategory, double>
-                {
-                    [StatCategory.Attack] = 0.1
-                },
-                null);
-        }
-
-        /// <summary>
-        /// Returns a buff that raises the user's defence by 10% of its base value.
-        /// </summary>
-        public static Buff RaiseUserDefence()
-        {
-            return new Buff(
-                new UserMoveTargetCalculator(),
-                new Dictionary<StatCategory, double>
-                {
-                    [StatCategory.Defence] = 0.1
-                },
-                null);
         }
     }
 }

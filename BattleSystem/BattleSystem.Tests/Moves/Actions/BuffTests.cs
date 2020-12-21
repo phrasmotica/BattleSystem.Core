@@ -29,7 +29,7 @@ namespace BattleSystem.Tests.Moves.Actions
 
             var buff = TestHelpers.CreateBuff(
                 moveTargetCalculator.Object,
-                targetMultipliers: new Dictionary<StatCategory, double>
+                new Dictionary<StatCategory, double>
                 {
                     [StatCategory.Attack] = 0.2
                 });
