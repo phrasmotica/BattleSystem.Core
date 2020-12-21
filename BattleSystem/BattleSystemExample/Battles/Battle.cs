@@ -28,9 +28,9 @@ namespace BattleSystemExample.Battles
         private readonly Character _user;
 
         /// <summary>
-        /// The enemy.
+        /// The enemies.
         /// </summary>
-        private readonly Character _enemy;
+        private readonly IEnumerable<Character> _enemies;
 
         /// <summary>
         /// Creates a new <see cref="Battle"/> instance.
@@ -39,12 +39,16 @@ namespace BattleSystemExample.Battles
         /// <param name="gameOutput">The game output.</param>
         /// <param name="user">The user.</param>
         /// <param name="enemy">The enemy.</param>
-        public Battle(MoveProcessor moveProcessor, IGameOutput gameOutput, Character user, Character enemy)
+        public Battle(
+            MoveProcessor moveProcessor,
+            IGameOutput gameOutput,
+            Character user,
+            IEnumerable<Character> enemies)
         {
             _moveProcessor = moveProcessor;
             _gameOutput = gameOutput;
             _user = user;
-            _enemy = enemy;
+            _enemies = enemies;
         }
 
         /// <summary>
@@ -52,13 +56,18 @@ namespace BattleSystemExample.Battles
         /// </summary>
         public void Start()
         {
-            while (!_user.IsDead && !_enemy.IsDead)
+            while (!_user.IsDead && _enemies.Any(e => !e.IsDead))
             {
                 _gameOutput.WriteLine();
-                _gameOutput.WriteLine($"{_enemy.Name}: {_enemy.CurrentHealth}/{_enemy.MaxHealth} HP");
-                _gameOutput.WriteLine($"{_user.Name}: {_user.CurrentHealth}/{_user.MaxHealth} HP");
 
-                var characterOrder = new[] { _user, _enemy }.OrderByDescending(c => c.CurrentSpeed);
+                foreach (var enemy in _enemies)
+                {
+                    _gameOutput.WriteLine($"{enemy.Name}: {enemy.CurrentHealth}/{enemy.MaxHealth} HP");
+                }
+
+                _gameOutput.WriteLine($"{_user.Name} (you): {_user.CurrentHealth}/{_user.MaxHealth} HP");
+
+                var characterOrder = _enemies.Append(_user).OrderByDescending(c => c.CurrentSpeed);
 
                 foreach (var character in characterOrder)
                 {
@@ -162,13 +171,13 @@ namespace BattleSystemExample.Battles
         /// </summary>
         private void ShowEndMessage()
         {
-            if (_enemy.IsDead)
+            if (_enemies.All(e => e.IsDead))
             {
-                _gameOutput.WriteLine($"{_enemy.Name} is dead! {_user.Name} wins!");
+                _gameOutput.WriteLine($"The enemies are dead! {_user.Name} wins!");
             }
             else if (_user.IsDead)
             {
-                _gameOutput.WriteLine($"{_user.Name} is dead! {_enemy.Name} wins!");
+                _gameOutput.WriteLine($"{_user.Name} is dead! The enemies win!");
             }
         }
     }

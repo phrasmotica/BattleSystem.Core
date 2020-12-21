@@ -173,7 +173,11 @@ namespace BattleSystemExample
 
             var enemy = new BasicCharacter("Mage", 100, enemyStats, enemyMoves);
 
-            new Battle(new MoveProcessor(), gameOutput, user, enemy).Start();
+            new Battle(
+                new MoveProcessor(),
+                gameOutput,
+                user,
+                new[] { enemy }).Start();
 
             playerInput.Confirm("The battle is over! Press any key to continue.");
         }
