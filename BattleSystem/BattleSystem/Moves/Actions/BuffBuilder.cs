@@ -30,7 +30,7 @@ namespace BattleSystem.Moves.Actions
         /// <summary>
         /// Sets the built buff's move target calculator.
         /// </summary>
-        /// <param name="name">The built buff's move target calculator.</param>
+        /// <param name="moveTargetCalculator">The built buff's move target calculator.</param>
         public BuffBuilder WithMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
         {
             if (moveTargetCalculator is null)
@@ -41,6 +41,14 @@ namespace BattleSystem.Moves.Actions
             _buff.SetMoveTargetCalculator(moveTargetCalculator);
             _isMoveTargetCalculatorSet = true;
             return this;
+        }
+
+        /// <summary>
+        /// Sets the built buff to target all characters including the user.
+        /// </summary>
+        public BuffBuilder TargetsAll()
+        {
+            return WithMoveTargetCalculator(new AllMoveTargetCalculator());
         }
 
         /// <summary>

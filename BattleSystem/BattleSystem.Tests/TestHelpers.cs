@@ -143,10 +143,11 @@ namespace BattleSystem.Tests
             IMoveTargetCalculator moveTargetCalculator = null,
             int amount = 5)
         {
-            return new Heal(
-                healingCalculator ?? new Mock<IHealingCalculator>().Object,
-                moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object,
-                amount);
+            return new HealBuilder()
+                .WithAmount(amount)
+                .WithHealingCalculator(healingCalculator ?? new Mock<IHealingCalculator>().Object)
+                .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object)
+                .Build();
         }
     }
 }

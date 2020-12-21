@@ -29,10 +29,10 @@ namespace BattleSystem.Tests.Moves.Actions
                                 .WithRaiseAttack(0.1);
 
             // Act
-            var attack = builder.Build();
+            var buff = builder.Build();
 
             // Assert
-            Assert.That(attack, Is.Not.Null);
+            Assert.That(buff, Is.Not.Null);
         }
 
         [Test]

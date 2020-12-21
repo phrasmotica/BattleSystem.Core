@@ -89,7 +89,13 @@ namespace BattleSystemExample
                                         .Describe("The user drinks a potion to restore 20 health.")
                                         .WithMaxUses(10)
                                         .AlwaysSucceeds()
-                                        .WithAction(Heal.ByAbsoluteAmount(20))
+                                        .WithAction(
+                                            new HealBuilder()
+                                                .WithAmount(20)
+                                                .AbsoluteHealing()
+                                                .TargetsUser()
+                                                .Build()
+                                        )
                                         .Build()
                                 )
                                 .Build();
@@ -154,7 +160,13 @@ namespace BattleSystemExample
                                         .Describe("The user regenerates 30% of their max health.")
                                         .WithMaxUses(10)
                                         .AlwaysSucceeds()
-                                        .WithAction(Heal.ByPercentage(30))
+                                        .WithAction(
+                                            new HealBuilder()
+                                                .WithAmount(30)
+                                                .PercentageHealing()
+                                                .TargetsUser()
+                                                .Build()
+                                        )
                                         .Build()
                                 )
                                 .Build();

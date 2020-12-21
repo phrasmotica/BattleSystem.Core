@@ -13,12 +13,12 @@ namespace BattleSystem.Moves.Actions
         /// <summary>
         /// The healing calculator.
         /// </summary>
-        private readonly IHealingCalculator _healingCalculator;
+        private IHealingCalculator _healingCalculator;
 
         /// <summary>
         /// The move target calculator.
         /// </summary>
-        private readonly IMoveTargetCalculator _moveTargetCalculator;
+        private IMoveTargetCalculator _moveTargetCalculator;
 
         /// <summary>
         /// Gets or sets the heal's healing amount.
@@ -28,18 +28,24 @@ namespace BattleSystem.Moves.Actions
         /// <summary>
         /// Creates a new <see cref="Heal"/>.
         /// </summary>
+        public Heal() { }
+
+        /// <summary>
+        /// Sets the healing calculator for this heal.
+        /// </summary>
         /// <param name="healingCalculator">The healing calculator.</param>
-        /// <param name="moveTargetCalculator">The move target calculator.</param>
-        /// <param name="amount">The healing amount.</param>
-        public Heal(
-            IHealingCalculator healingCalculator,
-            IMoveTargetCalculator moveTargetCalculator,
-            int amount)
+        public void SetHealingCalculator(IHealingCalculator healingCalculator)
         {
             _healingCalculator = healingCalculator;
-            _moveTargetCalculator = moveTargetCalculator;
+        }
 
-            Amount = amount;
+        /// <summary>
+        /// Sets the move target calculator for this heal.
+        /// </summary>
+        /// <param name="moveTargetCalculator">The move target calculator.</param>
+        public void SetMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
+        {
+            _moveTargetCalculator = moveTargetCalculator;
         }
 
         /// <inheritdoc />
@@ -52,30 +58,6 @@ namespace BattleSystem.Moves.Actions
                 var amount = _healingCalculator.Calculate(user, this, target);
                 target.Heal(amount);
             }
-        }
-
-        /// <summary>
-        /// Returns a heal that heals the user by the given percentage of its max health.
-        /// </summary>
-        /// <param name="percentage">The percentage to heal by.</param>
-        public static Heal ByPercentage(int percentage)
-        {
-            return new Heal(
-                new PercentageHealingCalculator(),
-                new UserMoveTargetCalculator(),
-                percentage);
-        }
-
-        /// <summary>
-        /// Returns a heal that heals the user by the given amount.
-        /// </summary>
-        /// <param name="amount">The amount to heal by.</param>
-        public static Heal ByAbsoluteAmount(int amount)
-        {
-            return new Heal(
-                new AbsoluteHealingCalculator(),
-                new UserMoveTargetCalculator(),
-                amount);
         }
     }
 }
