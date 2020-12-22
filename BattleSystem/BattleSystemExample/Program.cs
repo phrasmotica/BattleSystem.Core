@@ -102,14 +102,14 @@ namespace BattleSystemExample
 
             var user = new Player(playerInput, gameOutput, "Warrior", 100, userStats, userMoves);
 
-            var enemyStats = new StatSet
+            var mageStats = new StatSet
             {
                 Attack = new Stat(6),
                 Defence = new Stat(3),
                 Speed = new Stat(5),
             };
 
-            var enemyMoves = new MoveSetBuilder()
+            var mageMoves = new MoveSetBuilder()
                                 .WithMove(
                                     new MoveBuilder()
                                         .Name("Magic Missile")
@@ -171,13 +171,40 @@ namespace BattleSystemExample
                                 )
                                 .Build();
 
-            var enemy = new BasicCharacter("Mage", 100, enemyStats, enemyMoves);
+            var mage = new BasicCharacter("Mage", 100, mageStats, mageMoves);
+
+            var rogueStats = new StatSet
+            {
+                Attack = new Stat(3),
+                Defence = new Stat(2),
+                Speed = new Stat(3),
+            };
+
+            var rogueMoves = new MoveSetBuilder()
+                                .WithMove(
+                                    new MoveBuilder()
+                                        .Name("Stab")
+                                        .Describe("The user stabs the foe with a short knife.")
+                                        .WithMaxUses(10)
+                                        .WithAccuracy(100)
+                                        .WithAction(
+                                            new AttackBuilder()
+                                                .WithPower(10)
+                                                .StatDifferenceDamage()
+                                                .TargetsFirst()
+                                                .Build()
+                                        )
+                                        .Build()
+                                )
+                                .Build();
+
+            var rogue = new BasicCharacter("Rogue", 80, rogueStats, rogueMoves);
 
             new Battle(
                 new MoveProcessor(),
                 gameOutput,
                 user,
-                new[] { enemy }).Start();
+                new[] { mage, rogue }).Start();
 
             playerInput.Confirm("The battle is over! Press any key to continue.");
         }
