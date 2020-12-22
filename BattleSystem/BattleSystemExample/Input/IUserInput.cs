@@ -14,6 +14,13 @@
         /// Returns once the user has confirmed the given prompt.
         /// </summary>
         /// <param name="prompt">The prompt.</param>
+        /// <param name="choices">The choices.</param>
+        string SelectChoice(string prompt = null, params string[] choices);
+
+        /// <summary>
+        /// Returns once the user has confirmed the given prompt.
+        /// </summary>
+        /// <param name="prompt">The prompt.</param>
         void Confirm(string prompt = null);
     }
 }

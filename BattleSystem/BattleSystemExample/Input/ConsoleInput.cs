@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace BattleSystemExample.Input
 {
@@ -15,7 +16,7 @@ namespace BattleSystemExample.Input
 
             while (!choiceIsValid)
             {
-                var input = Console.ReadLine();
+                var input = Console.ReadLine()?.Trim();
                 choiceIsValid = int.TryParse(input, out chosenIndex);
 
                 if (!choiceIsValid)
@@ -25,6 +26,32 @@ namespace BattleSystemExample.Input
             }
 
             return chosenIndex;
+        }
+
+        /// <inheritdoc />
+        public string SelectChoice(string prompt = null, params string[] choices)
+        {
+            if (prompt is not null)
+            {
+                Console.WriteLine(prompt);
+            }
+
+            var choiceIsValid = false;
+            var choice = string.Empty;
+            choices = choices.Select(c => c.ToLower()).ToArray();
+
+            while (!choiceIsValid)
+            {
+                choice = Console.ReadLine()?.Trim();
+                choiceIsValid = choices.Contains(choice.ToLower());
+
+                if (!choiceIsValid)
+                {
+                    Console.WriteLine("Please enter a valid choice!");
+                }
+            }
+
+            return choice;
         }
 
         /// <inheritdoc />
