@@ -26,7 +26,7 @@ namespace BattleSystem.Moves
         /// <summary>
         /// Gets or sets the result of the move use.
         /// </summary>
-        public MoveUseResult Result { get; set; } = MoveUseResult.Ignored;
+        public MoveUseResult Result { get; private set; }
 
         /// <summary>
         /// Gets or sets whether any of the underlying move's actions were applied.
@@ -61,7 +61,7 @@ namespace BattleSystem.Moves
             CharactersStartingHealth = ComputeCharactersHealth();
             var charactersStartingStatMultipliers = ComputeCharactersStatMultipliers();
 
-            Result = Move.Use(User, OtherCharacters);
+            (Result, ActionsApplied) = Move.Use(User, OtherCharacters);
 
             CharactersEndingHealth = ComputeCharactersHealth();
             var charactersEndingStatMultipliers = ComputeCharactersStatMultipliers();

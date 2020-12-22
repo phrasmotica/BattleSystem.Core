@@ -50,15 +50,19 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <inheritdoc />
-        public virtual void Use(Character user, IEnumerable<Character> otherCharacters)
+        public virtual bool Use(Character user, IEnumerable<Character> otherCharacters)
         {
             var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
+            var applied = false;
 
             foreach (var target in targets.Where(c => !c.IsDead).ToArray())
             {
+                applied = true;
                 var damage = _damageCalculator.Calculate(user, this, target);
                 target.ReceiveDamage(damage);
             }
+
+            return applied;
         }
     }
 }

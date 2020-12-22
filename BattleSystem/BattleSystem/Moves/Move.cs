@@ -118,23 +118,31 @@ namespace BattleSystem.Moves
         /// </summary>
         /// <param name="user">The user of the move.</param>
         /// <param name="otherCharacters">The other characters.</param>
-        public MoveUseResult Use(Character user, IEnumerable<Character> otherCharacters)
+        public (MoveUseResult, bool) Use(Character user, IEnumerable<Character> otherCharacters)
         {
             // TODO: move success calculator to move actions
             var result = _successCalculator.Calculate(user, this, otherCharacters);
+            var actionsApplied = false;
 
             if (result == MoveUseResult.Success)
             {
                 foreach (var action in _moveActions)
                 {
-                    // TODO: don't process further actions if one of them fails
-                    action.Use(user, otherCharacters);
+                    var applied = action.Use(user, otherCharacters);
+                    if (applied)
+                    {
+                        actionsApplied = true;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 
             RemainingUses--;
 
-            return result;
+            return (result, actionsApplied);
         }
     }
 }
