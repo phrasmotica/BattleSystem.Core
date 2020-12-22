@@ -20,5 +20,16 @@ namespace BattleSystemExample.Extensions
         {
             return builder.WithMoveTargetCalculator(new SingleMoveTargetCalculator(userInput, gameOutput));
         }
+
+        /// <summary>
+        /// Sets the built buff to target a single other character chosen by the user.
+        /// </summary>
+        /// <param name="builder">The buff builder.</param>
+        /// <param name="userInput">The user input.</param>
+        /// <param name="gameOutput">The game output.</param>
+        public static BuffBuilder UserSelectsSingleOtherTarget(this BuffBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        {
+            return builder.WithMoveTargetCalculator(new SingleOtherMoveTargetCalculator(userInput, gameOutput));
+        }
     }
 }

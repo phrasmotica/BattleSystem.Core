@@ -37,7 +37,7 @@ namespace BattleSystemExample
                                             new AttackBuilder()
                                                 .WithPower(20)
                                                 .StatDifferenceDamage()
-                                                .UserSelectsSingleTarget(playerInput, gameOutput)
+                                                .UserSelectsSingleOtherTarget(playerInput, gameOutput)
                                                 .Build()
                                         )
                                         .Build()
@@ -52,7 +52,7 @@ namespace BattleSystemExample
                                             new AttackBuilder()
                                                 .WithPower(40)
                                                 .PercentageDamage()
-                                                .UserSelectsSingleTarget(playerInput, gameOutput)
+                                                .UserSelectsSingleOtherTarget(playerInput, gameOutput)
                                                 .Build()
                                         )
                                         .WithAction(
@@ -77,7 +77,7 @@ namespace BattleSystemExample
                                         )
                                         .WithAction(
                                             new BuffBuilder()
-                                                .UserSelectsSingleTarget(playerInput, gameOutput)
+                                                .UserSelectsSingleOtherTarget(playerInput, gameOutput)
                                                 .WithLowerDefence(0.1)
                                                 .Build()
                                         )

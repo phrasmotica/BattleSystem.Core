@@ -20,5 +20,16 @@ namespace BattleSystemExample.Extensions
         {
             return builder.WithMoveTargetCalculator(new SingleMoveTargetCalculator(userInput, gameOutput));
         }
+
+        /// <summary>
+        /// Sets the built attack to target a single other character chosen by the user.
+        /// </summary>
+        /// <param name="builder">The attack builder.</param>
+        /// <param name="userInput">The user input.</param>
+        /// <param name="gameOutput">The game output.</param>
+        public static AttackBuilder UserSelectsSingleOtherTarget(this AttackBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        {
+            return builder.WithMoveTargetCalculator(new SingleOtherMoveTargetCalculator(userInput, gameOutput));
+        }
     }
 }
