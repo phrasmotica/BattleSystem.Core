@@ -52,7 +52,7 @@ namespace BattleSystem.Tests.Moves.Actions
             // Arrange
             var builder = new AttackBuilder()
                                 .PercentageDamage()
-                                .TargetsFirst();
+                                .TargetsFirstEnemy();
 
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() => _ = builder.Build());

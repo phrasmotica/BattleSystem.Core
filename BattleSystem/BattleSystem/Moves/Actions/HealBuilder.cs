@@ -113,11 +113,11 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <summary>
-        /// Sets the built heal to target the first other character.
+        /// Sets the built heal to target the first ally.
         /// </summary>
-        public HealBuilder TargetsFirst()
+        public HealBuilder TargetsFirstAlly()
         {
-            return WithMoveTargetCalculator(new FirstMoveTargetCalculator());
+            return WithMoveTargetCalculator(new FirstAllyMoveTargetCalculator());
         }
 
         /// <summary>

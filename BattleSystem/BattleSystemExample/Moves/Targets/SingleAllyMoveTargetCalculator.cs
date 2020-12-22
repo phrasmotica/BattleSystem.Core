@@ -9,9 +9,9 @@ using BattleSystemExample.Output;
 namespace BattleSystemExample.Moves.Targets
 {
     /// <summary>
-    /// Lets the user choose a single other character as the move target.
+    /// Lets the user choose a single ally as the move target.
     /// </summary>
-    public class SingleOtherMoveTargetCalculator : IMoveTargetCalculator
+    public class SingleAllyMoveTargetCalculator : IMoveTargetCalculator
     {
         /// <summary>
         /// The user input.
@@ -24,11 +24,11 @@ namespace BattleSystemExample.Moves.Targets
         private readonly IGameOutput _gameOutput;
 
         /// <summary>
-        /// Creates a new <see cref="SingleOtherMoveTargetCalculator"/> instance.
+        /// Creates a new <see cref="SingleAllyMoveTargetCalculator"/> instance.
         /// </summary>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public SingleOtherMoveTargetCalculator(IUserInput userInput, IGameOutput gameOutput)
+        public SingleAllyMoveTargetCalculator(IUserInput userInput, IGameOutput gameOutput)
         {
             _userInput = userInput;
             _gameOutput = gameOutput;
@@ -42,7 +42,7 @@ namespace BattleSystemExample.Moves.Targets
                 throw new ArgumentException("Cannot select a move target when there are none to choose from!", nameof(otherCharacters));
             }
 
-            var targets = otherCharacters.ToArray();
+            var targets = otherCharacters.Where(c => c.Team == user.Team).ToArray();
             if (targets.Length == 1)
             {
                 return new[] { targets[0] };

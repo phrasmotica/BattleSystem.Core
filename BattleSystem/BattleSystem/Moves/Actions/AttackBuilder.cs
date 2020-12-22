@@ -121,11 +121,11 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <summary>
-        /// Sets the built attack to target the first other character.
+        /// Sets the built attack to target the first enemy.
         /// </summary>
-        public AttackBuilder TargetsFirst()
+        public AttackBuilder TargetsFirstEnemy()
         {
-            return WithMoveTargetCalculator(new FirstMoveTargetCalculator());
+            return WithMoveTargetCalculator(new FirstEnemyMoveTargetCalculator());
         }
 
         /// <summary>

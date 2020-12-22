@@ -37,21 +37,22 @@ namespace BattleSystemExample.Moves.Targets
         /// <inheritdoc />
         public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
-            _gameOutput.WriteLine($"Select a target for the move:");
-            _gameOutput.WriteLine(GetChoices(user, otherCharacters));
+            var targets = otherCharacters.Append(user);
 
-            return new[] { SelectTarget(user, otherCharacters) };
+            _gameOutput.WriteLine($"Select a target for the move:");
+            _gameOutput.WriteLine(GetChoices(targets));
+
+            return new[] { SelectTarget(targets) };
         }
 
         /// <summary>
         /// Returns a string describing the given characters as potential move targets.
         /// </summary>
         /// <param name="user">The user of the move.</param>
-        /// <param name="otherCharacters">The other characters.</param>
-        private static string GetChoices(Character user, IEnumerable<Character> otherCharacters)
+        /// <param name="targets">The potential move targets.</param>
+        private static string GetChoices(IEnumerable<Character> targets)
         {
-            var choices = otherCharacters.Select((c, i) => $"{i + 1}: {c.Name}")
-                                         .Append($"{otherCharacters.Count() + 1}: {user.Name} (you)");
+            var choices = targets.Select((c, i) => $"{i + 1}: {c.Name}");
             return string.Join("\n", choices);
         }
 
@@ -59,12 +60,11 @@ namespace BattleSystemExample.Moves.Targets
         /// Lets the player select a move target and returns it.
         /// </summary>
         /// <param name="user">The user of the move.</param>
-        /// <param name="otherCharacters">The other characters.</param>
-        private Character SelectTarget(Character user, IEnumerable<Character> otherCharacters)
+        /// <param name="targets">The potential move targets.</param>
+        private Character SelectTarget(IEnumerable<Character> targets)
         {
             Character character = null;
 
-            var targets = otherCharacters.Append(user);
             var validIndexes = targets.Select((_, i) => i + 1);
             int chosenIndex = -1;
 

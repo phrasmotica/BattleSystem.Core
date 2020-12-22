@@ -60,11 +60,11 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <summary>
-        /// Sets the built buff to target the first other character.
+        /// Sets the built buff to target the first ally.
         /// </summary>
-        public BuffBuilder TargetsFirst()
+        public BuffBuilder TargetsFirstAlly()
         {
-            return WithMoveTargetCalculator(new FirstMoveTargetCalculator());
+            return WithMoveTargetCalculator(new FirstAllyMoveTargetCalculator());
         }
 
         /// <summary>
