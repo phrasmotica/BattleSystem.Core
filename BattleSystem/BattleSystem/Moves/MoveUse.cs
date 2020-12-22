@@ -29,9 +29,24 @@ namespace BattleSystem.Moves
         public MoveUseResult Result { get; set; } = MoveUseResult.Ignored;
 
         /// <summary>
+        /// Gets or sets whether any of the underlying move's actions were applied.
+        /// </summary>
+        public bool ActionsApplied { get; private set; }
+
+        /// <summary>
+        /// The starting health of the characters, keyed by their IDs.
+        /// </summary>
+        private IDictionary<string, int> CharactersStartingHealth;
+
+        /// <summary>
+        /// The ending health of the characters, keyed by their IDs.
+        /// </summary>
+        private IDictionary<string, int> CharactersEndingHealth;
+
+        /// <summary>
         /// Gets or sets the damage taken by the characters with the given IDs from this move use.
         /// </summary>
-        public IDictionary<string, int> DamageTaken { get; private set; }
+        public IDictionary<string, int> DamageTaken => CharactersStartingHealth.Subtract(CharactersEndingHealth, includeZeroes: true);
 
         /// <summary>
         /// Gets or sets the changes in stat multipliers to the characters with the given IDs from this move use.
@@ -43,15 +58,13 @@ namespace BattleSystem.Moves
         /// </summary>
         public void Apply()
         {
-            var charactersStartingHealth = ComputeCharactersHealth();
+            CharactersStartingHealth = ComputeCharactersHealth();
             var charactersStartingStatMultipliers = ComputeCharactersStatMultipliers();
 
             Result = Move.Use(User, OtherCharacters);
 
-            var charactersEndingHealth = ComputeCharactersHealth();
+            CharactersEndingHealth = ComputeCharactersHealth();
             var charactersEndingStatMultipliers = ComputeCharactersStatMultipliers();
-
-            DamageTaken = charactersStartingHealth.Subtract(charactersEndingHealth, includeZeroes: true);
 
             StatMultiplierChanges = new Dictionary<string, IDictionary<StatCategory, double>>();
 
@@ -63,6 +76,20 @@ namespace BattleSystem.Moves
 
                 StatMultiplierChanges[characterId] = endingStatMultipliers.Subtract(startingStatMultipliers);
             }
+        }
+
+        /// <summary>
+        /// Returns whether the character with the given ID died from this move use.
+        /// </summary>
+        /// <param name="id">The ID of the character.</param>
+        public bool CharacterDied(string id)
+        {
+            if (CharactersEndingHealth.TryGetValue(id, out var health))
+            {
+                return health <= 0;
+            }
+
+            return false;
         }
 
         /// <summary>

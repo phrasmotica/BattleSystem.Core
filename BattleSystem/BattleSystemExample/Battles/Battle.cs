@@ -130,7 +130,7 @@ namespace BattleSystemExample.Battles
 
                 if (amount > 0)
                 {
-                    if (character.IsDead)
+                    if (moveUse.CharacterDied(character.Id))
                     {
                         _gameOutput.WriteLine($"{character.Name} took {amount} damage and died!");
                     }
