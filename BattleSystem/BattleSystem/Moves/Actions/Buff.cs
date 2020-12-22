@@ -43,7 +43,7 @@ namespace BattleSystem.Moves.Actions
         {
             var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
 
-            foreach (var target in targets.Where(c => !c.IsDead))
+            foreach (var target in targets.Where(c => !c.IsDead).ToArray())
             {
                 target.ReceiveBuff(TargetMultipliers);
             }
