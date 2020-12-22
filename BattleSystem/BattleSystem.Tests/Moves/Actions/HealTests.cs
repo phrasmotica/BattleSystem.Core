@@ -49,5 +49,66 @@ namespace BattleSystem.Tests.Moves.Actions
             // Assert
             Assert.That(otherCharacters[0].CurrentHealth, Is.EqualTo(5));
         }
+
+        [Test]
+        public void Use_WithTargets_AppliesActions()
+        {
+            // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter()
+            };
+
+            var heal = TestHelpers.CreateHeal(moveTargetCalculator: new OthersMoveTargetCalculator());
+
+            // Act
+            var appliedActions = heal.Use(user, otherCharacters);
+
+            // Assert
+            Assert.That(appliedActions, Is.True);
+        }
+
+        [Test]
+        public void Use_WithDeadTargets_AppliesNoActions()
+        {
+            // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
+
+            var target = TestHelpers.CreateBasicCharacter(maxHealth: 1);
+            var otherCharacters = new[]
+            {
+                target
+            };
+
+            target.ReceiveDamage(1);
+
+            var heal = TestHelpers.CreateHeal();
+
+            // Act
+            var appliedActions = heal.Use(user, otherCharacters);
+
+            // Assert
+            Assert.That(appliedActions, Is.False);
+        }
+
+        [Test]
+        public void Use_WithoutTargets_AppliesNoActions()
+        {
+            // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter()
+            };
+
+            var heal = TestHelpers.CreateHeal();
+
+            // Act
+            var appliedActions = heal.Use(user, otherCharacters);
+
+            // Assert
+            Assert.That(appliedActions, Is.False);
+        }
     }
 }
