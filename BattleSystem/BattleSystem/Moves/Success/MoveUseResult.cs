@@ -14,10 +14,5 @@
         /// The move failed to land on the target.
         /// </summary>
         Miss,
-
-        /// <summary>
-        /// The move was never applied.
-        /// </summary>
-        Ignored,
     }
 }
