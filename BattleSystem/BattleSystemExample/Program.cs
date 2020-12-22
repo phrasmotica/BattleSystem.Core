@@ -100,7 +100,14 @@ namespace BattleSystemExample
                                 )
                                 .Build();
 
-            var player = new Player(playerInput, gameOutput, "Warrior", 100, playerStats, playerMoves);
+            var player = new Player(
+                playerInput,
+                gameOutput,
+                "Warrior",
+                "a",
+                100,
+                playerStats,
+                playerMoves);
 
             var bardStats = new StatSet
             {
@@ -127,7 +134,7 @@ namespace BattleSystemExample
                                 )
                                 .Build();
 
-            var bard = new BasicCharacter("Bard", 100, bardStats, bardMoves);
+            var bard = new BasicCharacter("Bard", "a", 100, bardStats, bardMoves);
 
             var mageStats = new StatSet
             {
@@ -198,7 +205,7 @@ namespace BattleSystemExample
                                 )
                                 .Build();
 
-            var mage = new BasicCharacter("Mage", 100, mageStats, mageMoves);
+            var mage = new BasicCharacter("Mage", "b", 100, mageStats, mageMoves);
 
             var rogueStats = new StatSet
             {
@@ -225,7 +232,7 @@ namespace BattleSystemExample
                                 )
                                 .Build();
 
-            var rogue = new BasicCharacter("Rogue", 80, rogueStats, rogueMoves);
+            var rogue = new BasicCharacter("Rogue", "b", 80, rogueStats, rogueMoves);
 
             new Battle(
                 new MoveProcessor(),

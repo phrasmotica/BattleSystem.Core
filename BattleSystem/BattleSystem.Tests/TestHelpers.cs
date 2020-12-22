@@ -21,6 +21,7 @@ namespace BattleSystem.Tests
         /// </summary>
         public static BasicCharacter CreateBasicCharacter(
             string name = "yeti",
+            string team = "a",
             int maxHealth = 5,
             int attack = 1,
             int defence = 1,
@@ -34,6 +35,7 @@ namespace BattleSystem.Tests
 
             return new BasicCharacter(
                 name,
+                team,
                 maxHealth,
                 statSet,
                 moveSet ?? CreateMoveSet());

@@ -10,6 +10,8 @@ namespace BattleSystem.Moves.Targets
     /// </summary>
     public class FirstMoveTargetCalculator : IMoveTargetCalculator
     {
+        // TODO: split this into a FirstAllyTargetCalculator and FirstEnemyTargetCalculator
+
         /// <inheritdoc />
         public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)
         {

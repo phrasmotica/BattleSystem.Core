@@ -81,6 +81,7 @@ namespace BattleSystemExample.Battles
 
                 foreach (var character in characterOrder)
                 {
+                    // TODO: assign each character to a team. Determine allies and enemies using that
                     var otherCharacters = characterOrder.Where(c => c.Id != character.Id);
                     var moveUse = character.ChooseMove(otherCharacters);
                     _moveProcessor.Push(moveUse);

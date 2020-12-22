@@ -21,6 +21,11 @@ namespace BattleSystem.Characters
         public string Name { get; protected set; }
 
         /// <summary>
+        /// Gets or sets the character's team.
+        /// </summary>
+        public string Team { get; protected set; }
+
+        /// <summary>
         /// Gets or sets the character's max health.
         /// </summary>
         public int MaxHealth { get; protected set; }
@@ -53,9 +58,15 @@ namespace BattleSystem.Characters
         /// <summary>
         /// Creates a new character with the given name, max health, stats and moves.
         /// </summary>
-        public Character(string name, int maxHealth, StatSet stats, MoveSet moves)
+        public Character(
+            string name,
+            string team,
+            int maxHealth,
+            StatSet stats,
+            MoveSet moves)
         {
             Name = name;
+            Team = team;
 
             MaxHealth = maxHealth;
             CurrentHealth = maxHealth;
