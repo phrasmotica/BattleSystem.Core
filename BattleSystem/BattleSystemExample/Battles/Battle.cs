@@ -82,13 +82,20 @@ namespace BattleSystemExample.Battles
 
                 var moveUses = _moveProcessor.Apply();
 
-                foreach (var moveUse in moveUses.Where(m => m.ActionsApplied))
+                foreach (var moveUse in moveUses)
                 {
-                    ShowMoveUse(moveUse);
+                    // move might be cancelled due to the user dying or all targets dying
+                    var moveCancelled = moveUse.Result == MoveUseResult.Success && !moveUse.ActionsApplied;
+                    if (!moveCancelled)
+                    {
+                        ShowMoveUse(moveUse);
+                    }
 
-                    ShowDamageTaken(characterOrder, moveUse);
-
-                    ShowStatChanges(characterOrder, moveUse);
+                    if (moveUse.ActionsApplied)
+                    {
+                        ShowDamageTaken(characterOrder, moveUse);
+                        ShowStatChanges(characterOrder, moveUse);
+                    }
                 }
             }
 
