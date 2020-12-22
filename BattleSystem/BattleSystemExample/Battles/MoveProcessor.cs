@@ -74,8 +74,8 @@ namespace BattleSystemExample.Battles
         /// </summary>
         private void SortMoveUseQueue()
         {
-            // characters with higher speed go first
-            var sortedQueue = Queue.OrderByDescending(m => m.User.CurrentSpeed);
+            var sortedQueue = Queue.OrderByDescending(m => m.Move.Priority) // moves with higher priority go first
+                                   .ThenByDescending(m => m.User.CurrentSpeed); // characters with higher speed go first
 
             Queue = sortedQueue.ToList();
         }
