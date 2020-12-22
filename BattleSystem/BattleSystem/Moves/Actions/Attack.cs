@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Damage;
 using BattleSystem.Moves.Targets;
@@ -53,7 +54,7 @@ namespace BattleSystem.Moves.Actions
         {
             var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
 
-            foreach (var target in targets)
+            foreach (var target in targets.Where(c => !c.IsDead))
             {
                 var damage = _damageCalculator.Calculate(user, this, target);
                 target.ReceiveDamage(damage);

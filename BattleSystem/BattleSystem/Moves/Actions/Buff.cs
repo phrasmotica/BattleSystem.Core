@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
@@ -42,7 +43,7 @@ namespace BattleSystem.Moves.Actions
         {
             var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
 
-            foreach (var target in targets)
+            foreach (var target in targets.Where(c => !c.IsDead))
             {
                 target.ReceiveBuff(TargetMultipliers);
             }
