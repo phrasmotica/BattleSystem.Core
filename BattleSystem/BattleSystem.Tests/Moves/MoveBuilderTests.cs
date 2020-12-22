@@ -52,6 +52,7 @@ namespace BattleSystem.Tests.Moves
                                 .Name("caribou")
                                 .Describe("andorra")
                                 .WithMaxUses(9)
+                                .WithPriority(1)
                                 .WithAccuracy(100);
 
             // Act

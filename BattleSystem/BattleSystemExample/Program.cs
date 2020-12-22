@@ -54,8 +54,9 @@ namespace BattleSystemExample
                     .WithMove(
                         new MoveBuilder()
                             .Name("Sword Strike")
-                            .Describe("The user swings their sword to inflict damage.")
+                            .Describe("The user swings their sword to inflict damage. This move has increased priority.")
                             .WithMaxUses(15)
+                            .WithPriority(1)
                             .WithAccuracy(100)
                             .WithAction(
                                 new AttackBuilder()

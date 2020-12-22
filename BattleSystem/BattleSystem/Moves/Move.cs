@@ -41,6 +41,11 @@ namespace BattleSystem.Moves
         public int RemainingUses { get; private set; }
 
         /// <summary>
+        /// Gets or sets the priority of the move.
+        /// </summary>
+        public int Priority { get; private set; }
+
+        /// <summary>
         /// Gets or sets a summary of the move.
         /// </summary>
         public string Summary => $"{Name} ({RemainingUses}/{MaxUses} uses) - {Description}";
@@ -85,6 +90,15 @@ namespace BattleSystem.Moves
                 // ensure remaining uses is capped if new max uses is lower
                 RemainingUses = maxUses;
             }
+        }
+
+        /// <summary>
+        /// Sets the priority for this move.
+        /// </summary>
+        /// <param priority="priority">The priority.</param>
+        public void SetPriority(int priority)
+        {
+            Priority = priority;
         }
 
         /// <summary>
