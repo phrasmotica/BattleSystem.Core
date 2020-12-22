@@ -121,11 +121,35 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <summary>
+        /// Sets the built attack to target all enemies.
+        /// </summary>
+        public AttackBuilder TargetsEnemies()
+        {
+            return WithMoveTargetCalculator(new EnemiesMoveTargetCalculator());
+        }
+
+        /// <summary>
         /// Sets the built attack to target all characters on the user's team.
         /// </summary>
         public AttackBuilder TargetsTeam()
         {
             return WithMoveTargetCalculator(new TeamMoveTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built attack to target all other characters on the user's team.
+        /// </summary>
+        public AttackBuilder TargetsAllies()
+        {
+            return WithMoveTargetCalculator(new AlliesMoveTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built attack to target the user.
+        /// </summary>
+        public AttackBuilder TargetsUser()
+        {
+            return WithMoveTargetCalculator(new UserMoveTargetCalculator());
         }
 
         /// <summary>
@@ -137,11 +161,11 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <summary>
-        /// Sets the built attack to target the user.
+        /// Sets the built attack to target the first ally.
         /// </summary>
-        public AttackBuilder TargetsUser()
+        public AttackBuilder TargetsFirstAlly()
         {
-            return WithMoveTargetCalculator(new UserMoveTargetCalculator());
+            return WithMoveTargetCalculator(new FirstAllyMoveTargetCalculator());
         }
 
         /// <summary>

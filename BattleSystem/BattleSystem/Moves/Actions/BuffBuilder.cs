@@ -60,6 +60,14 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <summary>
+        /// Sets the built buff to target all enemies.
+        /// </summary>
+        public BuffBuilder TargetsEnemies()
+        {
+            return WithMoveTargetCalculator(new EnemiesMoveTargetCalculator());
+        }
+
+        /// <summary>
         /// Sets the built buff to target all characters on the user's team.
         /// </summary>
         public BuffBuilder TargetsTeam()
@@ -68,11 +76,11 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <summary>
-        /// Sets the built buff to target the first ally.
+        /// Sets the built buff to target all other characters on the user's team.
         /// </summary>
-        public BuffBuilder TargetsFirstAlly()
+        public BuffBuilder TargetsAllies()
         {
-            return WithMoveTargetCalculator(new FirstAllyMoveTargetCalculator());
+            return WithMoveTargetCalculator(new AlliesMoveTargetCalculator());
         }
 
         /// <summary>
@@ -81,6 +89,22 @@ namespace BattleSystem.Moves.Actions
         public BuffBuilder TargetsUser()
         {
             return WithMoveTargetCalculator(new UserMoveTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built buff to target the first enemy.
+        /// </summary>
+        public BuffBuilder TargetsFirstEnemy()
+        {
+            return WithMoveTargetCalculator(new FirstEnemyMoveTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built buff to target the first ally.
+        /// </summary>
+        public BuffBuilder TargetsFirstAlly()
+        {
+            return WithMoveTargetCalculator(new FirstAllyMoveTargetCalculator());
         }
 
         /// <summary>

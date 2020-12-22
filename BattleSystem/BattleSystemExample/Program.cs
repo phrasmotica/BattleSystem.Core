@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BattleSystem.Characters;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Actions;
@@ -90,13 +90,13 @@ namespace BattleSystemExample
                     .WithMove(
                         new MoveBuilder()
                             .Name("Threaten")
-                            .Describe("The user intimidates the target to lower their Defence stat while also raising their own.")
+                            .Describe("The user raises the Attack stat of its ally characters and lowers the Defence stat of a single enemy.")
                             .WithMaxUses(5)
                             .AlwaysSucceeds()
                             .WithAction(
                                 new BuffBuilder()
-                                    .TargetsUser()
-                                    .WithRaiseDefence(0.1)
+                                    .TargetsAllies()
+                                    .WithRaiseAttack(0.1)
                                     .Build()
                             )
                             .WithAction(
@@ -145,14 +145,14 @@ namespace BattleSystemExample
                     .WithMove(
                         new MoveBuilder()
                             .Name("Play Music")
-                            .Describe("The user shreds on their guitar to inflict 5 damage.")
+                            .Describe("The user shreds on their guitar to inflict 5 damage on all enemies.")
                             .WithMaxUses(25)
                             .WithAccuracy(100)
                             .WithAction(
                                 new AttackBuilder()
                                     .WithPower(5)
                                     .AbsoluteDamage()
-                                    .TargetsFirstEnemy()
+                                    .TargetsEnemies()
                                     .Build()
                             )
                             .Build()

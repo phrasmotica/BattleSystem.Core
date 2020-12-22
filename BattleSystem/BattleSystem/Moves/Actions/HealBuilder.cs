@@ -113,11 +113,27 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <summary>
-        /// Sets the built heal to target the first ally.
+        /// Sets the built heal to target all enemies.
         /// </summary>
-        public HealBuilder TargetsFirstAlly()
+        public HealBuilder TargetsEnemies()
         {
-            return WithMoveTargetCalculator(new FirstAllyMoveTargetCalculator());
+            return WithMoveTargetCalculator(new EnemiesMoveTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built heal to target all characters on the user's team.
+        /// </summary>
+        public HealBuilder TargetsTeam()
+        {
+            return WithMoveTargetCalculator(new TeamMoveTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built heal to target all other characters on the user's team.
+        /// </summary>
+        public HealBuilder TargetsAllies()
+        {
+            return WithMoveTargetCalculator(new AlliesMoveTargetCalculator());
         }
 
         /// <summary>
@@ -126,6 +142,22 @@ namespace BattleSystem.Moves.Actions
         public HealBuilder TargetsUser()
         {
             return WithMoveTargetCalculator(new UserMoveTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built heal to target the first enemy.
+        /// </summary>
+        public HealBuilder TargetsFirstEnemy()
+        {
+            return WithMoveTargetCalculator(new FirstAllyMoveTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built heal to target the first ally.
+        /// </summary>
+        public HealBuilder TargetsFirstAlly()
+        {
+            return WithMoveTargetCalculator(new FirstAllyMoveTargetCalculator());
         }
 
         /// <summary>
