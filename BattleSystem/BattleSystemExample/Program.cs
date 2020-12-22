@@ -203,13 +203,13 @@ namespace BattleSystemExample
                     .WithMove(
                         new MoveBuilder()
                             .Name("Meditate")
-                            .Describe("The user finds inner calm to raise their Attack stat.")
-                            .WithMaxUses(15)
+                            .Describe("The user finds inner calm to raise the Defence stat of all characters on their team.")
+                            .WithMaxUses(10)
                             .AlwaysSucceeds()
                             .WithAction(
                                 new BuffBuilder()
-                                    .TargetsUser()
-                                    .WithRaiseAttack(0.1)
+                                    .TargetsTeam()
+                                    .WithRaiseDefence(0.1)
                                     .Build()
                             )
                             .Build()

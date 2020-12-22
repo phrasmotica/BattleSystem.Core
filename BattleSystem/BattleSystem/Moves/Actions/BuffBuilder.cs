@@ -60,6 +60,14 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <summary>
+        /// Sets the built buff to target all characters on the user's team.
+        /// </summary>
+        public BuffBuilder TargetsTeam()
+        {
+            return WithMoveTargetCalculator(new TeamMoveTargetCalculator());
+        }
+
+        /// <summary>
         /// Sets the built buff to target the first ally.
         /// </summary>
         public BuffBuilder TargetsFirstAlly()

@@ -121,6 +121,14 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <summary>
+        /// Sets the built attack to target all characters on the user's team.
+        /// </summary>
+        public AttackBuilder TargetsTeam()
+        {
+            return WithMoveTargetCalculator(new TeamMoveTargetCalculator());
+        }
+
+        /// <summary>
         /// Sets the built attack to target the first enemy.
         /// </summary>
         public AttackBuilder TargetsFirstEnemy()
