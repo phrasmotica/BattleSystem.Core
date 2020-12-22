@@ -51,7 +51,7 @@ namespace BattleSystem.Moves
             var charactersEndingHealth = ComputeCharactersHealth();
             var charactersEndingStatMultipliers = ComputeCharactersStatMultipliers();
 
-            DamageTaken = charactersStartingHealth.Subtract(charactersEndingHealth);
+            DamageTaken = charactersStartingHealth.Subtract(charactersEndingHealth, includeZeroes: true);
 
             StatMultiplierChanges = new Dictionary<string, IDictionary<StatCategory, double>>();
 
