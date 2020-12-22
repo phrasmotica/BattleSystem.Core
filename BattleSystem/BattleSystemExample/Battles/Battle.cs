@@ -56,18 +56,23 @@ namespace BattleSystemExample.Battles
         /// </summary>
         public void Start()
         {
-            while (!_user.IsDead && _enemies.Any(e => !e.IsDead))
+            while (!_user.IsDead && _enemies.Any(c => !c.IsDead))
             {
                 _gameOutput.WriteLine();
 
-                foreach (var enemy in _enemies)
+                foreach (var enemy in _enemies.Where(c => !c.IsDead))
                 {
                     _gameOutput.WriteLine($"{enemy.Name}: {enemy.CurrentHealth}/{enemy.MaxHealth} HP");
                 }
 
                 _gameOutput.WriteLine($"{_user.Name} (you): {_user.CurrentHealth}/{_user.MaxHealth} HP");
 
-                var characterOrder = _enemies.Append(_user).OrderByDescending(c => c.CurrentSpeed);
+                _gameOutput.WriteLine();
+
+                var characterOrder = _enemies.Append(_user)
+                                             .Where(c => !c.IsDead)
+                                             .OrderByDescending(c => c.CurrentSpeed)
+                                             .ToArray();
 
                 foreach (var character in characterOrder)
                 {
@@ -125,7 +130,14 @@ namespace BattleSystemExample.Battles
 
                 if (amount > 0)
                 {
-                    _gameOutput.WriteLine($"{character.Name} took {amount} damage!");
+                    if (character.IsDead)
+                    {
+                        _gameOutput.WriteLine($"{character.Name} took {amount} damage and died!");
+                    }
+                    else
+                    {
+                        _gameOutput.WriteLine($"{character.Name} took {amount} damage!");
+                    }
                 }
                 else if (amount < 0)
                 {
@@ -146,21 +158,24 @@ namespace BattleSystemExample.Battles
             foreach (var statChanges in statMultiplierChanges)
             {
                 var character = characters.Single(c => c.Id == statChanges.Key);
-                var changeDict = statChanges.Value;
-
-                foreach (var change in changeDict)
+                if (!character.IsDead)
                 {
-                    var stat = change.Key;
-                    var percentage = (int) (change.Value * 100);
+                    var changeDict = statChanges.Value;
 
-                    if (percentage > 0)
+                    foreach (var change in changeDict)
                     {
-                        // < 0 means the multiplier was lower before the move was used
-                        _gameOutput.WriteLine($"{character.Name}'s {stat} rose by {percentage}%!");
-                    }
-                    else if (percentage < 0)
-                    {
-                        _gameOutput.WriteLine($"{character.Name}'s {stat} fell by {-percentage}%!");
+                        var stat = change.Key;
+                        var percentage = (int) (change.Value * 100);
+
+                        if (percentage > 0)
+                        {
+                            // < 0 means the multiplier was lower before the move was used
+                            _gameOutput.WriteLine($"{character.Name}'s {stat} rose by {percentage}%!");
+                        }
+                        else if (percentage < 0)
+                        {
+                            _gameOutput.WriteLine($"{character.Name}'s {stat} fell by {-percentage}%!");
+                        }
                     }
                 }
             }
