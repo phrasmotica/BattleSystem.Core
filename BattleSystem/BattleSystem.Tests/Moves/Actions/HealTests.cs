@@ -23,11 +23,6 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var moveTargetCalculator = new Mock<IMoveTargetCalculator>();
-            moveTargetCalculator
-                .Setup(m => m.Calculate(user, otherCharacters))
-                .Returns(otherCharacters);
-
             var healingCalculator = new Mock<IHealingCalculator>();
             healingCalculator
                 .Setup(
@@ -39,7 +34,7 @@ namespace BattleSystem.Tests.Moves.Actions
                 )
                 .Returns(2);
 
-            var heal = TestHelpers.CreateHeal(healingCalculator.Object, moveTargetCalculator.Object);
+            var heal = TestHelpers.CreateHeal(healingCalculator.Object, new OthersMoveTargetCalculator());
 
             otherCharacters[0].ReceiveDamage(2);
 
@@ -74,16 +69,12 @@ namespace BattleSystem.Tests.Moves.Actions
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
-
-            var target = TestHelpers.CreateBasicCharacter(maxHealth: 1);
             var otherCharacters = new[]
             {
-                target
+                TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            target.ReceiveDamage(1);
-
-            var heal = TestHelpers.CreateHeal();
+            var heal = TestHelpers.CreateHeal(moveTargetCalculator: new OthersMoveTargetCalculator());
 
             // Act
             var appliedActions = heal.Use(user, otherCharacters);

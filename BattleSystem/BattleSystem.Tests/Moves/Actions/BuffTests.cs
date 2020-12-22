@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
-using Moq;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Moves.Actions
@@ -22,20 +21,15 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter(attack: 10)
             };
 
-            var moveTargetCalculator = new Mock<IMoveTargetCalculator>();
-            moveTargetCalculator
-                .Setup(m => m.Calculate(user, otherCharacters))
-                .Returns(otherCharacters);
-
             var buff = TestHelpers.CreateBuff(
-                moveTargetCalculator.Object,
+                new OthersMoveTargetCalculator(),
                 new Dictionary<StatCategory, double>
                 {
                     [StatCategory.Attack] = 0.2
                 });
 
             // Act
-            buff.Use(user, otherCharacters);
+            _ = buff.Use(user, otherCharacters);
 
             // Assert
             Assert.That(otherCharacters[0].Stats.Attack.CurrentValue, Is.EqualTo(12));
@@ -51,7 +45,7 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var buff = TestHelpers.CreateBuff(moveTargetCalculator: new OthersMoveTargetCalculator());
+            var buff = TestHelpers.CreateBuff(new OthersMoveTargetCalculator());
 
             // Act
             var appliedActions = buff.Use(user, otherCharacters);
@@ -65,16 +59,12 @@ namespace BattleSystem.Tests.Moves.Actions
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
-
-            var target = TestHelpers.CreateBasicCharacter(maxHealth: 1);
             var otherCharacters = new[]
             {
-                target
+                TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            target.ReceiveDamage(1);
-
-            var buff = TestHelpers.CreateBuff();
+            var buff = TestHelpers.CreateBuff(new OthersMoveTargetCalculator());
 
             // Act
             var appliedActions = buff.Use(user, otherCharacters);

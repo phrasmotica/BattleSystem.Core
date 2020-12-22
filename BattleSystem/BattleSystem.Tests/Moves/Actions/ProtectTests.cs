@@ -1,8 +1,5 @@
-﻿using BattleSystem.Characters;
-using BattleSystem.Damage;
-using BattleSystem.Moves.Actions;
+﻿using BattleSystem.Moves.Actions;
 using BattleSystem.Moves.Targets;
-using Moq;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Moves.Actions
