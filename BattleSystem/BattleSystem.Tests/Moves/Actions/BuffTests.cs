@@ -25,11 +25,11 @@ namespace BattleSystem.Tests.Moves.Actions
             var moveTargetCalculator = new Mock<IMoveTargetCalculator>();
             moveTargetCalculator
                 .Setup(m => m.Calculate(user, otherCharacters))
-                .Returns(otherCharacters[0]);
+                .Returns(otherCharacters);
 
             var buff = TestHelpers.CreateBuff(
                 moveTargetCalculator.Object,
-                targetMultipliers: new Dictionary<StatCategory, double>
+                new Dictionary<StatCategory, double>
                 {
                     [StatCategory.Attack] = 0.2
                 });

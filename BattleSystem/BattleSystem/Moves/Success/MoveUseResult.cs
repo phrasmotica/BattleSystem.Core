@@ -1,7 +1,7 @@
 ﻿namespace BattleSystem.Moves.Success
 {
     /// <summary>
-    /// Represents the success results of a move use.
+    /// Represents the possible results of a move use.
     /// </summary>
     public enum MoveUseResult
     {
@@ -11,7 +11,7 @@
         Success,
 
         /// <summary>
-        /// The move fails.
+        /// The move failed to land on the target.
         /// </summary>
         Miss,
     }

@@ -21,6 +21,7 @@ namespace BattleSystem.Tests
         /// </summary>
         public static BasicCharacter CreateBasicCharacter(
             string name = "yeti",
+            string team = "a",
             int maxHealth = 5,
             int attack = 1,
             int defence = 1,
@@ -34,6 +35,7 @@ namespace BattleSystem.Tests
 
             return new BasicCharacter(
                 name,
+                team,
                 maxHealth,
                 statSet,
                 moveSet ?? CreateMoveSet());
@@ -107,10 +109,11 @@ namespace BattleSystem.Tests
             IMoveTargetCalculator moveTargetCalculator = null,
             int power = 2)
         {
-            return new Attack(
-                damageCalculator ?? new Mock<IDamageCalculator>().Object,
-                moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object,
-                power);
+            return new AttackBuilder()
+                .WithPower(power)
+                .WithDamageCalculator(damageCalculator ?? new Mock<IDamageCalculator>().Object)
+                .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object)
+                .Build();
         }
 
         /// <summary>
@@ -118,16 +121,20 @@ namespace BattleSystem.Tests
         /// </summary>
         public static Buff CreateBuff(
             IMoveTargetCalculator moveTargetCalculator = null,
-            IDictionary<StatCategory, double> userMultipliers = null,
             IDictionary<StatCategory, double> targetMultipliers = null)
         {
-            return new Buff(
-                moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object,
-                userMultipliers ?? new Dictionary<StatCategory, double>
+            var builder = new BuffBuilder()
+                            .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object);
+
+            if (targetMultipliers is not null)
+            {
+                foreach (var multiplier in targetMultipliers)
                 {
-                    [StatCategory.Attack] = 0.2,
-                },
-                targetMultipliers);
+                    builder = builder.WithTargetMultiplier(multiplier.Key, multiplier.Value);
+                }
+            }
+
+            return builder.Build();
         }
 
         /// <summary>
@@ -138,10 +145,11 @@ namespace BattleSystem.Tests
             IMoveTargetCalculator moveTargetCalculator = null,
             int amount = 5)
         {
-            return new Heal(
-                healingCalculator ?? new Mock<IHealingCalculator>().Object,
-                moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object,
-                amount);
+            return new HealBuilder()
+                .WithAmount(amount)
+                .WithHealingCalculator(healingCalculator ?? new Mock<IHealingCalculator>().Object)
+                .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object)
+                .Build();
         }
     }
 }

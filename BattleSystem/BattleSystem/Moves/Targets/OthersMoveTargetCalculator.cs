@@ -4,14 +4,14 @@ using BattleSystem.Characters;
 namespace BattleSystem.Moves.Targets
 {
     /// <summary>
-    /// Calculates the move target as the user.
+    /// Calculates the move targets as all of the other characters.
     /// </summary>
-    public class UserMoveTargetCalculator : IMoveTargetCalculator
+    public class OthersMoveTargetCalculator : IMoveTargetCalculator
     {
         /// <inheritdoc />
         public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
-            return new[] { user };
+            return otherCharacters;
         }
     }
 }

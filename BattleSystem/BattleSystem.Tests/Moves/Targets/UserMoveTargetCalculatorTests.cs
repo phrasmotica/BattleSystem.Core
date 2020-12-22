@@ -1,4 +1,5 @@
-﻿using BattleSystem.Moves.Targets;
+﻿using System.Linq;
+using BattleSystem.Moves.Targets;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Moves.Targets
@@ -23,10 +24,10 @@ namespace BattleSystem.Tests.Moves.Targets
             };
 
             // Act
-            var target = calculator.Calculate(user, otherCharacters);
+            var targets = calculator.Calculate(user, otherCharacters);
 
             // Assert
-            Assert.That(target.Name, Is.EqualTo("wire"));
+            Assert.That(targets.First().Name, Is.EqualTo("wire"));
         }
     }
 }

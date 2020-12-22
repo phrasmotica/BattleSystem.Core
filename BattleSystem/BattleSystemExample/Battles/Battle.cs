@@ -3,7 +3,7 @@ using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Success;
-using BattleSystemExample.Input;
+using BattleSystemExample.Output;
 
 namespace BattleSystemExample.Battles
 {
@@ -23,28 +23,29 @@ namespace BattleSystemExample.Battles
         private readonly IGameOutput _gameOutput;
 
         /// <summary>
-        /// The user.
+        /// The characters in the battle.
         /// </summary>
-        private readonly Character _user;
+        private readonly IEnumerable<Character> _characters;
 
         /// <summary>
-        /// The enemy.
+        /// Gets the teams involved in the battle.
         /// </summary>
-        private readonly Character _enemy;
+        private IEnumerable<IGrouping<string, Character>> Teams => _characters.GroupBy(c => c.Team);
 
         /// <summary>
         /// Creates a new <see cref="Battle"/> instance.
         /// </summary>
         /// <param name="moveProcessor">The move processor.</param>
         /// <param name="gameOutput">The game output.</param>
-        /// <param name="user">The user.</param>
-        /// <param name="enemy">The enemy.</param>
-        public Battle(MoveProcessor moveProcessor, IGameOutput gameOutput, Character user, Character enemy)
+        /// <param name="characters">The characters in the battle.</param>
+        public Battle(
+            MoveProcessor moveProcessor,
+            IGameOutput gameOutput,
+            IEnumerable<Character> characters)
         {
             _moveProcessor = moveProcessor;
             _gameOutput = gameOutput;
-            _user = user;
-            _enemy = enemy;
+            _characters = characters;
         }
 
         /// <summary>
@@ -52,13 +53,25 @@ namespace BattleSystemExample.Battles
         /// </summary>
         public void Start()
         {
-            while (!_user.IsDead && !_enemy.IsDead)
+            var teams = Teams.ToArray();
+
+            while (teams.All(t => t.Any(c => !c.IsDead)))
             {
                 _gameOutput.WriteLine();
-                _gameOutput.WriteLine($"{_enemy.Name}: {_enemy.CurrentHealth}/{_enemy.MaxHealth} HP");
-                _gameOutput.WriteLine($"{_user.Name}: {_user.CurrentHealth}/{_user.MaxHealth} HP");
 
-                var characterOrder = new[] { _user, _enemy }.OrderByDescending(c => c.CurrentSpeed);
+                foreach (var team in teams)
+                {
+                    foreach (var c in team.Where(c => !c.IsDead))
+                    {
+                        _gameOutput.WriteLine($"{c.Name}: {c.CurrentHealth}/{c.MaxHealth} HP");
+                    }
+
+                    _gameOutput.WriteLine();
+                }
+
+                var characterOrder = _characters.Where(c => !c.IsDead)
+                                                .OrderByDescending(c => c.CurrentSpeed)
+                                                .ToArray();
 
                 foreach (var character in characterOrder)
                 {
@@ -69,7 +82,7 @@ namespace BattleSystemExample.Battles
 
                 var moveUses = _moveProcessor.Apply();
 
-                foreach (var moveUse in moveUses)
+                foreach (var moveUse in moveUses.Where(m => m.ActionsApplied))
                 {
                     ShowMoveUse(moveUse);
 
@@ -116,7 +129,14 @@ namespace BattleSystemExample.Battles
 
                 if (amount > 0)
                 {
-                    _gameOutput.WriteLine($"{character.Name} took {amount} damage!");
+                    if (moveUse.CharacterDied(character.Id))
+                    {
+                        _gameOutput.WriteLine($"{character.Name} took {amount} damage and died!");
+                    }
+                    else
+                    {
+                        _gameOutput.WriteLine($"{character.Name} took {amount} damage!");
+                    }
                 }
                 else if (amount < 0)
                 {
@@ -137,21 +157,24 @@ namespace BattleSystemExample.Battles
             foreach (var statChanges in statMultiplierChanges)
             {
                 var character = characters.Single(c => c.Id == statChanges.Key);
-                var changeDict = statChanges.Value;
-
-                foreach (var change in changeDict)
+                if (!character.IsDead)
                 {
-                    var stat = change.Key;
-                    var percentage = (int) (change.Value * 100);
+                    var changeDict = statChanges.Value;
 
-                    if (percentage > 0)
+                    foreach (var change in changeDict)
                     {
-                        // < 0 means the multiplier was lower before the move was used
-                        _gameOutput.WriteLine($"{character.Name}'s {stat} rose by {percentage}%!");
-                    }
-                    else if (percentage < 0)
-                    {
-                        _gameOutput.WriteLine($"{character.Name}'s {stat} fell by {-percentage}%!");
+                        var stat = change.Key;
+                        var percentage = (int) (change.Value * 100);
+
+                        if (percentage > 0)
+                        {
+                            // < 0 means the multiplier was lower before the move was used
+                            _gameOutput.WriteLine($"{character.Name}'s {stat} rose by {percentage}%!");
+                        }
+                        else if (percentage < 0)
+                        {
+                            _gameOutput.WriteLine($"{character.Name}'s {stat} fell by {-percentage}%!");
+                        }
                     }
                 }
             }
@@ -162,14 +185,8 @@ namespace BattleSystemExample.Battles
         /// </summary>
         private void ShowEndMessage()
         {
-            if (_enemy.IsDead)
-            {
-                _gameOutput.WriteLine($"{_enemy.Name} is dead! {_user.Name} wins!");
-            }
-            else if (_user.IsDead)
-            {
-                _gameOutput.WriteLine($"{_user.Name} is dead! {_enemy.Name} wins!");
-            }
+            var winningTeam = Teams.Single(t => t.Any(c => !c.IsDead));
+            _gameOutput.WriteLine($"Team {winningTeam.Key} wins!");
         }
     }
 }

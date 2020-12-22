@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using BattleSystem.Characters;
 
 namespace BattleSystem.Moves.Targets
 {
     /// <summary>
-    /// Calculates the move target as the user.
+    /// Calculates the move targets as all of the characters, including the user.
     /// </summary>
-    public class UserMoveTargetCalculator : IMoveTargetCalculator
+    public class AllMoveTargetCalculator : IMoveTargetCalculator
     {
         /// <inheritdoc />
         public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
-            return new[] { user };
+            return otherCharacters.Prepend(user);
         }
     }
 }

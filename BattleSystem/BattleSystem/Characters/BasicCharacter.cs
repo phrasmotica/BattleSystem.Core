@@ -12,7 +12,12 @@ namespace BattleSystem.Characters
         /// <summary>
         /// Creates a new basic character with the given name, max health, stats and moves.
         /// </summary>
-        public BasicCharacter(string name, int maxHealth, StatSet stats, MoveSet moves) : base(name, maxHealth, stats, moves) { }
+        public BasicCharacter(
+            string name,
+            string team,
+            int maxHealth,
+            StatSet stats,
+            MoveSet moves) : base(name, team, maxHealth, stats, moves) { }
 
         /// <inheritdoc />
         public override MoveUse ChooseMove(IEnumerable<Character> otherCharacters)

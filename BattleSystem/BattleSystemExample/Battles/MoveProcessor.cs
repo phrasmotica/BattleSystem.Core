@@ -56,8 +56,12 @@ namespace BattleSystemExample.Battles
             for (var i = 0; i < numberOfMoves; i++)
             {
                 var moveUse = Queue[0];
-                moveUse.Apply();
-                moveUseInfo.Add(moveUse);
+
+                if (!moveUse.User.IsDead)
+                {
+                    moveUse.Apply();
+                    moveUseInfo.Add(moveUse);
+                }
 
                 Queue.RemoveAt(0);
             }

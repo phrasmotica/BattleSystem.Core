@@ -4,6 +4,7 @@ using BattleSystem.Characters;
 using BattleSystem.Moves;
 using BattleSystem.Stats;
 using BattleSystemExample.Input;
+using BattleSystemExample.Output;
 
 namespace BattleSystemExample.Characters
 {
@@ -29,9 +30,10 @@ namespace BattleSystemExample.Characters
             IUserInput userInput,
             IGameOutput gameOutput,
             string name,
+            string team,
             int maxHealth,
             StatSet stats,
-            MoveSet moves) : base(name, maxHealth, stats, moves)
+            MoveSet moves) : base(name, team, maxHealth, stats, moves)
         {
             _userInput = userInput;
             _gameOutput = gameOutput;
