@@ -83,7 +83,7 @@ namespace BattleSystemExample.Battles
 
                 var moveUses = _moveProcessor.Apply();
 
-                foreach (var moveUse in moveUses)
+                foreach (var moveUse in moveUses.Where(m => m.Result != MoveUseResult.Ignored))
                 {
                     ShowMoveUse(moveUse);
 
