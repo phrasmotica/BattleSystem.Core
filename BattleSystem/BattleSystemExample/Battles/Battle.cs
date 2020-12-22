@@ -23,32 +23,29 @@ namespace BattleSystemExample.Battles
         private readonly IGameOutput _gameOutput;
 
         /// <summary>
-        /// The user.
+        /// The characters in the battle.
         /// </summary>
-        private readonly IEnumerable<Character> _allies;
+        private readonly IEnumerable<Character> _characters;
 
         /// <summary>
-        /// The enemies.
+        /// Gets the teams involved in the battle.
         /// </summary>
-        private readonly IEnumerable<Character> _enemies;
+        private IEnumerable<IGrouping<string, Character>> Teams => _characters.GroupBy(c => c.Team);
 
         /// <summary>
         /// Creates a new <see cref="Battle"/> instance.
         /// </summary>
         /// <param name="moveProcessor">The move processor.</param>
         /// <param name="gameOutput">The game output.</param>
-        /// <param name="allies">The allies.</param>
-        /// <param name="enemies">The enemies.</param>
+        /// <param name="characters">The characters in the battle.</param>
         public Battle(
             MoveProcessor moveProcessor,
             IGameOutput gameOutput,
-            IEnumerable<Character> allies,
-            IEnumerable<Character> enemies)
+            IEnumerable<Character> characters)
         {
             _moveProcessor = moveProcessor;
             _gameOutput = gameOutput;
-            _allies = allies;
-            _enemies = enemies;
+            _characters = characters;
         }
 
         /// <summary>
@@ -56,28 +53,25 @@ namespace BattleSystemExample.Battles
         /// </summary>
         public void Start()
         {
-            while (_allies.Any(c => !c.IsDead) && _enemies.Any(c => !c.IsDead))
+            var teams = Teams.ToArray();
+
+            while (teams.All(t => t.Any(c => !c.IsDead)))
             {
                 _gameOutput.WriteLine();
 
-                foreach (var enemy in _enemies.Where(c => !c.IsDead))
+                foreach (var team in teams)
                 {
-                    _gameOutput.WriteLine($"{enemy.Name}: {enemy.CurrentHealth}/{enemy.MaxHealth} HP");
+                    foreach (var c in team.Where(c => !c.IsDead))
+                    {
+                        _gameOutput.WriteLine($"{c.Name}: {c.CurrentHealth}/{c.MaxHealth} HP");
+                    }
+
+                    _gameOutput.WriteLine();
                 }
 
-                _gameOutput.WriteLine();
-
-                foreach (var ally in _allies.Where(c => !c.IsDead))
-                {
-                    _gameOutput.WriteLine($"{ally.Name}: {ally.CurrentHealth}/{ally.MaxHealth} HP");
-                }
-
-                _gameOutput.WriteLine();
-
-                var characterOrder = _enemies.Union(_allies)
-                                             .Where(c => !c.IsDead)
-                                             .OrderByDescending(c => c.CurrentSpeed)
-                                             .ToArray();
+                var characterOrder = _characters.Where(c => !c.IsDead)
+                                                .OrderByDescending(c => c.CurrentSpeed)
+                                                .ToArray();
 
                 foreach (var character in characterOrder)
                 {
@@ -192,14 +186,8 @@ namespace BattleSystemExample.Battles
         /// </summary>
         private void ShowEndMessage()
         {
-            if (_enemies.All(c => c.IsDead))
-            {
-                _gameOutput.WriteLine("The enemies are dead! The allies win!");
-            }
-            else if (_allies.All(c => c.IsDead))
-            {
-                _gameOutput.WriteLine("The allies are dead! The enemies win!");
-            }
+            var winningTeam = Teams.Single(t => t.Any(c => !c.IsDead));
+            _gameOutput.WriteLine($"Team {winningTeam.Key} wins!");
         }
     }
 }

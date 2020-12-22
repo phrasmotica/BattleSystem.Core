@@ -237,8 +237,7 @@ namespace BattleSystemExample
             new Battle(
                 new MoveProcessor(),
                 gameOutput,
-                new Character[] { player, bard },
-                new[] { mage, rogue }).Start();
+                new Character[] { player, bard, mage, rogue }).Start();
 
             playerInput.Confirm("The battle is over! Press any key to continue.");
         }
