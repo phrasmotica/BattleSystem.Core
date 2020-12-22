@@ -25,7 +25,7 @@ namespace BattleSystemExample.Battles
         /// <summary>
         /// The user.
         /// </summary>
-        private readonly Character _user;
+        private readonly IEnumerable<Character> _allies;
 
         /// <summary>
         /// The enemies.
@@ -37,17 +37,17 @@ namespace BattleSystemExample.Battles
         /// </summary>
         /// <param name="moveProcessor">The move processor.</param>
         /// <param name="gameOutput">The game output.</param>
-        /// <param name="user">The user.</param>
-        /// <param name="enemy">The enemy.</param>
+        /// <param name="allies">The allies.</param>
+        /// <param name="enemies">The enemies.</param>
         public Battle(
             MoveProcessor moveProcessor,
             IGameOutput gameOutput,
-            Character user,
+            IEnumerable<Character> allies,
             IEnumerable<Character> enemies)
         {
             _moveProcessor = moveProcessor;
             _gameOutput = gameOutput;
-            _user = user;
+            _allies = allies;
             _enemies = enemies;
         }
 
@@ -56,7 +56,7 @@ namespace BattleSystemExample.Battles
         /// </summary>
         public void Start()
         {
-            while (!_user.IsDead && _enemies.Any(c => !c.IsDead))
+            while (_allies.Any(c => !c.IsDead) && _enemies.Any(c => !c.IsDead))
             {
                 _gameOutput.WriteLine();
 
@@ -65,11 +65,16 @@ namespace BattleSystemExample.Battles
                     _gameOutput.WriteLine($"{enemy.Name}: {enemy.CurrentHealth}/{enemy.MaxHealth} HP");
                 }
 
-                _gameOutput.WriteLine($"{_user.Name} (you): {_user.CurrentHealth}/{_user.MaxHealth} HP");
+                _gameOutput.WriteLine();
+
+                foreach (var ally in _allies.Where(c => !c.IsDead))
+                {
+                    _gameOutput.WriteLine($"{ally.Name}: {ally.CurrentHealth}/{ally.MaxHealth} HP");
+                }
 
                 _gameOutput.WriteLine();
 
-                var characterOrder = _enemies.Append(_user)
+                var characterOrder = _enemies.Union(_allies)
                                              .Where(c => !c.IsDead)
                                              .OrderByDescending(c => c.CurrentSpeed)
                                              .ToArray();
@@ -186,13 +191,13 @@ namespace BattleSystemExample.Battles
         /// </summary>
         private void ShowEndMessage()
         {
-            if (_enemies.All(e => e.IsDead))
+            if (_enemies.All(c => c.IsDead))
             {
-                _gameOutput.WriteLine($"The enemies are dead! {_user.Name} wins!");
+                _gameOutput.WriteLine("The enemies are dead! The allies win!");
             }
-            else if (_user.IsDead)
+            else if (_allies.All(c => c.IsDead))
             {
-                _gameOutput.WriteLine($"{_user.Name} is dead! The enemies win!");
+                _gameOutput.WriteLine("The allies are dead! The enemies win!");
             }
         }
     }

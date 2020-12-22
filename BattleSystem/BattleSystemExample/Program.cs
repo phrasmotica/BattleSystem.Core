@@ -19,14 +19,14 @@ namespace BattleSystemExample
 
             gameOutput.WriteLine("Welcome to the Console Battle System!");
 
-            var userStats = new StatSet
+            var playerStats = new StatSet
             {
                 Attack = new Stat(5),
                 Defence = new Stat(4),
                 Speed = new Stat(4),
             };
 
-            var userMoves = new MoveSetBuilder()
+            var playerMoves = new MoveSetBuilder()
                                 .WithMove(
                                     new MoveBuilder()
                                         .Name("Sword Strike")
@@ -100,7 +100,34 @@ namespace BattleSystemExample
                                 )
                                 .Build();
 
-            var user = new Player(playerInput, gameOutput, "Warrior", 100, userStats, userMoves);
+            var player = new Player(playerInput, gameOutput, "Warrior", 100, playerStats, playerMoves);
+
+            var bardStats = new StatSet
+            {
+                Attack = new Stat(4),
+                Defence = new Stat(3),
+                Speed = new Stat(4),
+            };
+
+            var bardMoves = new MoveSetBuilder()
+                                .WithMove(
+                                    new MoveBuilder()
+                                        .Name("Play Music")
+                                        .Describe("The user shreds on their guitar to inflict 5 damage.")
+                                        .WithMaxUses(25)
+                                        .WithAccuracy(100)
+                                        .WithAction(
+                                            new AttackBuilder()
+                                                .WithPower(5)
+                                                .AbsoluteDamage()
+                                                .TargetsFirst()
+                                                .Build()
+                                        )
+                                        .Build()
+                                )
+                                .Build();
+
+            var bard = new BasicCharacter("Bard", 100, bardStats, bardMoves);
 
             var mageStats = new StatSet
             {
@@ -203,7 +230,7 @@ namespace BattleSystemExample
             new Battle(
                 new MoveProcessor(),
                 gameOutput,
-                user,
+                new Character[] { player, bard },
                 new[] { mage, rogue }).Start();
 
             playerInput.Confirm("The battle is over! Press any key to continue.");
