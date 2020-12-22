@@ -46,6 +46,11 @@ namespace BattleSystem.Characters
         public MoveSet Moves { get; protected set; }
 
         /// <summary>
+        /// Gets or sets the character's protect counter.
+        /// </summary>
+        public int ProtectCounter { get; set; }
+
+        /// <summary>
         /// Gets the character's current speed.
         /// </summary>
         public int CurrentSpeed => Stats.Speed.CurrentValue;
@@ -84,12 +89,19 @@ namespace BattleSystem.Characters
         public abstract MoveUse ChooseMove(IEnumerable<Character> otherCharacters);
 
         /// <summary>
-        /// Takes the incoming damage.
+        /// Takes the incoming damage, pending the protection counter.
         /// </summary>
         /// <param name="damage">The incoming damage.</param>
         public virtual void ReceiveDamage(int damage)
         {
-            CurrentHealth -= damage;
+            if (ProtectCounter > 0)
+            {
+                ProtectCounter--;
+            }
+            else
+            {
+                CurrentHealth -= damage;
+            }
         }
 
         /// <summary>

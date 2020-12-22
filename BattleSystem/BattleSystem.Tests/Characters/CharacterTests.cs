@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
-using BattleSystem.Moves;
 using BattleSystem.Stats;
 using NUnit.Framework;
 
@@ -23,6 +22,20 @@ namespace BattleSystem.Tests.Characters
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(3));
+        }
+
+        [Test]
+        public void ReceiveDamage_WithProtectCounter_TakesNoDamage()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
+            target.ProtectCounter++;
+
+            // Act
+            target.ReceiveDamage(2);
+
+            // Assert
+            Assert.That(target.CurrentHealth, Is.EqualTo(5));
         }
 
         [Test]
