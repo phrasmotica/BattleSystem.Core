@@ -11,7 +11,7 @@ namespace BattleSystemExample.Moves.Targets
     /// <summary>
     /// Lets the user choose a single move target.
     /// </summary>
-    public class SingleChosenMoveTargetCalculator : IMoveTargetCalculator
+    public class SingleMoveTargetCalculator : IMoveTargetCalculator
     {
         /// <summary>
         /// The user input.
@@ -24,11 +24,11 @@ namespace BattleSystemExample.Moves.Targets
         private readonly IGameOutput _gameOutput;
 
         /// <summary>
-        /// Creates a new <see cref="SingleChosenMoveTargetCalculator"/> instance.
+        /// Creates a new <see cref="SingleMoveTargetCalculator"/> instance.
         /// </summary>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public SingleChosenMoveTargetCalculator(IUserInput userInput, IGameOutput gameOutput)
+        public SingleMoveTargetCalculator(IUserInput userInput, IGameOutput gameOutput)
         {
             _userInput = userInput;
             _gameOutput = gameOutput;

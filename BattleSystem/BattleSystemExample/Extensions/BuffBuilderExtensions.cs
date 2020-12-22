@@ -18,7 +18,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="gameOutput">The game output.</param>
         public static BuffBuilder UserSelectsSingleTarget(this BuffBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
-            return builder.WithMoveTargetCalculator(new SingleChosenMoveTargetCalculator(userInput, gameOutput));
+            return builder.WithMoveTargetCalculator(new SingleMoveTargetCalculator(userInput, gameOutput));
         }
     }
 }
