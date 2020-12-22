@@ -26,7 +26,7 @@ namespace BattleSystem.Moves
         /// <summary>
         /// Gets or sets the result of the move use.
         /// </summary>
-        public MoveUseResult Result { get; set; }
+        public MoveUseResult Result { get; set; } = MoveUseResult.Ignored;
 
         /// <summary>
         /// Gets or sets the damage taken by the characters with the given IDs from this move use.
