@@ -86,6 +86,16 @@ namespace BattleSystem.Moves
         }
 
         /// <summary>
+        /// Sets the built move's priority.
+        /// </summary>
+        /// <param name="priority">The built move's priority.</param>
+        public MoveBuilder WithPriority(int priority)
+        {
+            _move.SetPriority(priority);
+            return this;
+        }
+
+        /// <summary>
         /// Sets the built move's success calculator.
         /// </summary>
         /// <param name="accuracy">The built move's success calculator.</param>
