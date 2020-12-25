@@ -42,10 +42,10 @@ namespace BattleSystem.Tests.Moves.Actions
             var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
 
             // Act
-            var appliedActions = protect.Use(user, otherCharacters);
+            var actionResults = protect.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(appliedActions, Is.True);
+            Assert.That(actionResults, Is.Not.Empty);
         }
 
         [Test]
@@ -62,10 +62,10 @@ namespace BattleSystem.Tests.Moves.Actions
             var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
 
             // Act
-            var appliedActions = protect.Use(user, otherCharacters);
+            var actionResults = protect.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(appliedActions, Is.False);
+            Assert.That(actionResults, Is.Empty);
         }
 
         [Test]
@@ -81,10 +81,10 @@ namespace BattleSystem.Tests.Moves.Actions
             var protect = TestHelpers.CreateProtect();
 
             // Act
-            var appliedActions = protect.Use(user, otherCharacters);
+            var actionResults = protect.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(appliedActions, Is.False);
+            Assert.That(actionResults, Is.Empty);
         }
     }
 }

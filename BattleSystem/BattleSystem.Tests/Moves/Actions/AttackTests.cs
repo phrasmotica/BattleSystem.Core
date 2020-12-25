@@ -37,7 +37,7 @@ namespace BattleSystem.Tests.Moves.Actions
             var attack = TestHelpers.CreateAttack(damageCalculator.Object, new OthersMoveTargetCalculator());
 
             // Act
-            attack.Use(user, otherCharacters);
+            _ = attack.Use(user, otherCharacters);
 
             // Assert
             Assert.That(otherCharacters[0].CurrentHealth, Is.EqualTo(2));
@@ -56,10 +56,10 @@ namespace BattleSystem.Tests.Moves.Actions
             var attack = TestHelpers.CreateAttack(moveTargetCalculator: new OthersMoveTargetCalculator());
 
             // Act
-            var appliedActions = attack.Use(user, otherCharacters);
+            var actionResults = attack.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(appliedActions, Is.True);
+            Assert.That(actionResults, Is.Not.Empty);
         }
 
         [Test]
@@ -75,10 +75,10 @@ namespace BattleSystem.Tests.Moves.Actions
             var attack = TestHelpers.CreateAttack(moveTargetCalculator: new OthersMoveTargetCalculator());
 
             // Act
-            var appliedActions = attack.Use(user, otherCharacters);
+            var actionResults = attack.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(appliedActions, Is.False);
+            Assert.That(actionResults, Is.Empty);
         }
 
         [Test]
@@ -94,10 +94,10 @@ namespace BattleSystem.Tests.Moves.Actions
             var attack = TestHelpers.CreateAttack();
 
             // Act
-            var appliedActions = attack.Use(user, otherCharacters);
+            var actionResults = attack.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(appliedActions, Is.False);
+            Assert.That(actionResults, Is.Empty);
         }
     }
 }

@@ -48,10 +48,10 @@ namespace BattleSystem.Tests.Moves.Actions
             var buff = TestHelpers.CreateBuff(new OthersMoveTargetCalculator());
 
             // Act
-            var appliedActions = buff.Use(user, otherCharacters);
+            var actionResults = buff.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(appliedActions, Is.True);
+            Assert.That(actionResults, Is.Not.Empty);
         }
 
         [Test]
@@ -67,10 +67,10 @@ namespace BattleSystem.Tests.Moves.Actions
             var buff = TestHelpers.CreateBuff(new OthersMoveTargetCalculator());
 
             // Act
-            var appliedActions = buff.Use(user, otherCharacters);
+            var actionResults = buff.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(appliedActions, Is.False);
+            Assert.That(actionResults, Is.Empty);
         }
 
         [Test]
@@ -86,10 +86,10 @@ namespace BattleSystem.Tests.Moves.Actions
             var buff = TestHelpers.CreateBuff();
 
             // Act
-            var appliedActions = buff.Use(user, otherCharacters);
+            var actionResults = buff.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(appliedActions, Is.False);
+            Assert.That(actionResults, Is.Empty);
         }
     }
 }

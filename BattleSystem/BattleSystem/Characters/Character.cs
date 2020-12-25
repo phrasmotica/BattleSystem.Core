@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BattleSystem.Moves;
+using BattleSystem.Moves.Actions.Results;
 using BattleSystem.Stats;
 
 namespace BattleSystem.Characters
@@ -48,7 +49,7 @@ namespace BattleSystem.Characters
         /// <summary>
         /// Gets or sets the character's protect counter.
         /// </summary>
-        public int ProtectCounter { get; set; }
+        public int ProtectCounter { get; protected set; }
 
         /// <summary>
         /// Gets the character's current speed.
@@ -89,26 +90,36 @@ namespace BattleSystem.Characters
         public abstract MoveUse ChooseMove(IEnumerable<Character> otherCharacters);
 
         /// <summary>
-        /// Takes the incoming damage, pending the protection counter.
+        /// Takes the incoming damage and returns the result.
         /// </summary>
         /// <param name="damage">The incoming damage.</param>
-        public virtual void ReceiveDamage(int damage)
+        public virtual AttackResult ReceiveDamage(int damage)
         {
             if (ProtectCounter > 0)
             {
                 ProtectCounter--;
+
+                return new AttackResult
+                {
+                    Applied = false,
+                    TargetProtected = true,
+                };
             }
-            else
+
+            CurrentHealth -= damage;
+
+            return new AttackResult
             {
-                CurrentHealth -= damage;
-            }
+                Applied = true,
+                TargetProtected = false,
+            };
         }
 
         /// <summary>
-        /// Receives effects from the given buff.
+        /// Receives effects from the given buff and returns the result.
         /// </summary>
         /// <param name="multipliers">The effects of incoming buff.</param>
-        public virtual void ReceiveBuff(IDictionary<StatCategory, double> multipliers)
+        public virtual BuffResult ReceiveBuff(IDictionary<StatCategory, double> multipliers)
         {
             foreach (var mult in multipliers)
             {
@@ -132,15 +143,38 @@ namespace BattleSystem.Characters
                         throw new ArgumentException($"Unrecognised stat category {statCategory}!");
                 }
             }
+
+            return new BuffResult
+            {
+                Applied = true,
+            };
         }
 
         /// <summary>
-        /// Restores the given amount of health, capped by the character's max health.
+        /// Restores the given amount of health, capped by the character's max health, and returns the result.
         /// </summary>
         /// <param name="amount">The healing amount.</param>
-        public virtual void Heal(int amount)
+        public virtual HealResult Heal(int amount)
         {
             CurrentHealth += Math.Min(MaxHealth - CurrentHealth, amount);
+
+            return new HealResult
+            {
+                Applied = true,
+            };
+        }
+
+        /// <summary>
+        /// Protects the character from the next attack.
+        /// </summary>
+        public virtual ProtectResult Protect()
+        {
+            ProtectCounter++;
+
+            return new ProtectResult
+            {
+                Applied = true,
+            };
         }
     }
 }

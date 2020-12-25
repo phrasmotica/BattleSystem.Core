@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
+using BattleSystem.Moves.Actions.Results;
 
 namespace BattleSystem.Moves.Actions
 {
@@ -9,10 +10,10 @@ namespace BattleSystem.Moves.Actions
     public interface IMoveAction
     {
         /// <summary>
-        /// Applies the effects of the move action and returns whether it was applied to any characters.
+        /// Applies the effects of the move action and returns the results of its application to its targets.
         /// </summary>
         /// <param name="user">The user of the move.</param>
         /// <param name="otherCharacters">The other characters.</param>
-        bool Use(Character user, IEnumerable<Character> otherCharacters);
+        IEnumerable<IMoveActionResult> Use(Character user, IEnumerable<Character> otherCharacters);
     }
 }

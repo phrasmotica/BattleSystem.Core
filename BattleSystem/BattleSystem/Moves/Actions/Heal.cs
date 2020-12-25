@@ -2,6 +2,7 @@
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Healing;
+using BattleSystem.Moves.Actions.Results;
 using BattleSystem.Moves.Targets;
 
 namespace BattleSystem.Moves.Actions
@@ -50,19 +51,20 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <inheritdoc />
-        public virtual bool Use(Character user, IEnumerable<Character> otherCharacters)
+        public virtual IEnumerable<IMoveActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
         {
             var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
-            var applied = false;
+
+            var results = new List<IMoveActionResult>();
 
             foreach (var target in targets.Where(c => !c.IsDead).ToArray())
             {
-                applied = true;
                 var amount = _healingCalculator.Calculate(user, this, target);
-                target.Heal(amount);
+                var result = target.Heal(amount);
+                results.Add(result);
             }
 
-            return applied;
+            return results;
         }
     }
 }

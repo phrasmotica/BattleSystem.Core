@@ -36,7 +36,7 @@ namespace BattleSystem.Tests.Moves.Actions
 
             var heal = TestHelpers.CreateHeal(healingCalculator.Object, new OthersMoveTargetCalculator());
 
-            otherCharacters[0].ReceiveDamage(2);
+            _ = otherCharacters[0].ReceiveDamage(2);
 
             // Act
             heal.Use(user, otherCharacters);
@@ -58,10 +58,10 @@ namespace BattleSystem.Tests.Moves.Actions
             var heal = TestHelpers.CreateHeal(moveTargetCalculator: new OthersMoveTargetCalculator());
 
             // Act
-            var appliedActions = heal.Use(user, otherCharacters);
+            var actionResults = heal.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(appliedActions, Is.True);
+            Assert.That(actionResults, Is.Not.Empty);
         }
 
         [Test]
@@ -77,10 +77,10 @@ namespace BattleSystem.Tests.Moves.Actions
             var heal = TestHelpers.CreateHeal(moveTargetCalculator: new OthersMoveTargetCalculator());
 
             // Act
-            var appliedActions = heal.Use(user, otherCharacters);
+            var actionResults = heal.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(appliedActions, Is.False);
+            Assert.That(actionResults, Is.Empty);
         }
 
         [Test]
@@ -96,10 +96,10 @@ namespace BattleSystem.Tests.Moves.Actions
             var heal = TestHelpers.CreateHeal();
 
             // Act
-            var appliedActions = heal.Use(user, otherCharacters);
+            var actionResults = heal.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(appliedActions, Is.False);
+            Assert.That(actionResults, Is.Empty);
         }
     }
 }

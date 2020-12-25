@@ -18,7 +18,7 @@ namespace BattleSystem.Tests.Characters
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
 
             // Act
-            target.ReceiveDamage(2);
+            _ = target.ReceiveDamage(2);
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(3));
@@ -29,10 +29,10 @@ namespace BattleSystem.Tests.Characters
         {
             // Arrange
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
-            target.ProtectCounter++;
+            target.Protect();
 
             // Act
-            target.ReceiveDamage(2);
+            _ = target.ReceiveDamage(2);
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(5));
@@ -45,7 +45,7 @@ namespace BattleSystem.Tests.Characters
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
 
             // Act
-            target.ReceiveDamage(6);
+            _ = target.ReceiveDamage(6);
 
             // Assert
             Assert.That(target.IsDead, Is.True);
@@ -76,7 +76,7 @@ namespace BattleSystem.Tests.Characters
         {
             // Arrange
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
-            target.ReceiveDamage(2);
+            _ = target.ReceiveDamage(2);
 
             // Act
             target.Heal(2);

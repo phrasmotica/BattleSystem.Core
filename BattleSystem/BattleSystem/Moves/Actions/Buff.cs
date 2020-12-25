@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
+using BattleSystem.Moves.Actions.Results;
 using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
 
@@ -39,18 +40,19 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <inheritdoc />
-        public virtual bool Use(Character user, IEnumerable<Character> otherCharacters)
+        public virtual IEnumerable<IMoveActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
         {
             var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
-            var applied = false;
+
+            var results = new List<IMoveActionResult>();
 
             foreach (var target in targets.Where(c => !c.IsDead).ToArray())
             {
-                applied = true;
-                target.ReceiveBuff(TargetMultipliers);
+                var result = target.ReceiveBuff(TargetMultipliers);
+                results.Add(result);
             }
 
-            return applied;
+            return results;
         }
     }
 }

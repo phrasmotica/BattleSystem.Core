@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
 using BattleSystem.Extensions;
+using BattleSystem.Moves.Actions.Results;
 using BattleSystem.Moves.Success;
 using BattleSystem.Stats;
 
@@ -29,9 +30,9 @@ namespace BattleSystem.Moves
         public MoveUseResult Result { get; private set; }
 
         /// <summary>
-        /// Gets or sets whether any of the underlying move's actions were applied.
+        /// Gets or sets the results of each action in the move use.
         /// </summary>
-        public bool ActionsApplied { get; private set; }
+        public IEnumerable<IEnumerable<IMoveActionResult>> ActionsResults { get; private set; }
 
         /// <summary>
         /// The starting health of the characters, keyed by their IDs.
@@ -61,7 +62,7 @@ namespace BattleSystem.Moves
             CharactersStartingHealth = ComputeCharactersHealth();
             var charactersStartingStatMultipliers = ComputeCharactersStatMultipliers();
 
-            (Result, ActionsApplied) = Move.Use(User, OtherCharacters);
+            ActionsResults = Move.Use(User, OtherCharacters);
 
             CharactersEndingHealth = ComputeCharactersHealth();
             var charactersEndingStatMultipliers = ComputeCharactersStatMultipliers();

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Moves.Actions;
+using BattleSystem.Moves.Actions.Results;
 using BattleSystem.Moves.Success;
 
 namespace BattleSystem.Moves
@@ -132,31 +134,25 @@ namespace BattleSystem.Moves
         /// </summary>
         /// <param name="user">The user of the move.</param>
         /// <param name="otherCharacters">The other characters.</param>
-        public (MoveUseResult, bool) Use(Character user, IEnumerable<Character> otherCharacters)
+        public IEnumerable<IEnumerable<IMoveActionResult>> Use(Character user, IEnumerable<Character> otherCharacters)
         {
             // TODO: move success calculator to move actions
             var result = _successCalculator.Calculate(user, this, otherCharacters);
-            var actionsApplied = false;
+
+            var actionsResults = new List<IEnumerable<IMoveActionResult>>();
 
             if (result == MoveUseResult.Success)
             {
                 foreach (var action in _moveActions)
                 {
-                    var applied = action.Use(user, otherCharacters);
-                    if (applied)
-                    {
-                        actionsApplied = true;
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    var actionResults = action.Use(user, otherCharacters);
+                    actionsResults.Add(actionResults);
                 }
             }
 
             RemainingUses--;
 
-            return (result, actionsApplied);
+            return actionsResults;
         }
     }
 }
