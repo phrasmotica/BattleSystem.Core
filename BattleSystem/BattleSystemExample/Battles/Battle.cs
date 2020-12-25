@@ -2,6 +2,7 @@
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Moves;
+using BattleSystem.Moves.Actions.Results;
 using BattleSystem.Moves.Success;
 using BattleSystemExample.Output;
 
@@ -85,14 +86,11 @@ namespace BattleSystemExample.Battles
                 foreach (var moveUse in moveUses)
                 {
                     // move might be cancelled due to the user dying or all targets dying
-                    var moveCancelled = moveUse.Result == MoveUseResult.Success && !moveUse.ActionsApplied;
+                    var moveCancelled = !moveUse.ActionsResults.Any();
                     if (!moveCancelled)
                     {
                         ShowMoveUse(moveUse);
-                    }
-
-                    if (moveUse.ActionsApplied)
-                    {
+                        ShowProtectedCharacters(characterOrder, moveUse);
                         ShowDamageTaken(characterOrder, moveUse);
                         ShowStatChanges(characterOrder, moveUse);
                     }
@@ -117,6 +115,33 @@ namespace BattleSystemExample.Battles
                 case MoveUseResult.Miss:
                     _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name} but missed!");
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Outputs info about any character that were protected from the given move use.
+        /// </summary>
+        /// <param name="characters">The characters.</param>
+        /// <param name="moveUse">The move use.</param>
+        private void ShowProtectedCharacters(IEnumerable<Character> characters, MoveUse moveUse)
+        {
+            var protectedAttacks = moveUse.ActionsResults
+                                          .SelectMany(ar => ar)
+                                          .Where(r => r is AttackResult pr && pr.TargetProtected)
+                                          .Cast<AttackResult>();
+
+            foreach (var result in protectedAttacks)
+            {
+                var user = characters.Single(c => c.Id == result.ProtectUserId);
+                if (result.TargetId == user.Id)
+                {
+                    _gameOutput.WriteLine($"{user.Name} protected itself!");
+                }
+                else
+                {
+                    var target = characters.Single(c => c.Id == result.TargetId);
+                    _gameOutput.WriteLine($"{user.Name} protected {target.Name}!");
+                }
             }
         }
 
