@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Actions.Results;
 using BattleSystem.Stats;
@@ -47,9 +48,9 @@ namespace BattleSystem.Characters
         public MoveSet Moves { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the character's protect counter.
+        /// Gets or sets the list of characters who are protecting this character.
         /// </summary>
-        public int ProtectCounter { get; protected set; }
+        public List<string> ProtectStack { get; protected set; }
 
         /// <summary>
         /// Gets the character's current speed.
@@ -81,6 +82,8 @@ namespace BattleSystem.Characters
             Moves = moves;
 
             Id = Guid.NewGuid().ToString();
+
+            ProtectStack = new List<string>();
         }
 
         /// <summary>
@@ -95,14 +98,16 @@ namespace BattleSystem.Characters
         /// <param name="damage">The incoming damage.</param>
         public virtual AttackResult ReceiveDamage(int damage)
         {
-            if (ProtectCounter > 0)
+            if (ProtectStack.Count > 0)
             {
-                ProtectCounter--;
+                var userId = PopProtect();
 
                 return new AttackResult
                 {
                     Applied = false,
+                    TargetId = Id,
                     TargetProtected = true,
+                    ProtectUserId = userId,
                 };
             }
 
@@ -111,6 +116,7 @@ namespace BattleSystem.Characters
             return new AttackResult
             {
                 Applied = true,
+                TargetId = Id,
                 TargetProtected = false,
             };
         }
@@ -167,14 +173,29 @@ namespace BattleSystem.Characters
         /// <summary>
         /// Protects the character from the next attack.
         /// </summary>
-        public virtual ProtectResult Protect()
+        public virtual ProtectResult Protect(string userId)
         {
-            ProtectCounter++;
+            ProtectStack.Insert(0, userId);
 
             return new ProtectResult
             {
                 Applied = true,
             };
+        }
+
+        /// <summary>
+        /// Pops the next protect action from the stack and returns the ID of the protecting character.
+        /// </summary>
+        public string PopProtect()
+        {
+            if (ProtectStack.Count <= 0)
+            {
+                throw new InvalidOperationException($"Cannot get a protect action because there are none on the stack!");
+            }
+
+            var protectorId = ProtectStack[0];
+            ProtectStack.RemoveAt(0);
+            return protectorId;
         }
     }
 }

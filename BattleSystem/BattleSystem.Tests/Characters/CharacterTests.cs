@@ -29,7 +29,7 @@ namespace BattleSystem.Tests.Characters
         {
             // Arrange
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
-            target.Protect();
+            target.Protect("userId");
 
             // Act
             _ = target.ReceiveDamage(2);
