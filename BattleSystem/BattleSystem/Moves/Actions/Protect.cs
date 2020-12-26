@@ -39,7 +39,7 @@ namespace BattleSystem.Moves.Actions
 
             foreach (var target in targets.Where(c => !c.IsDead).ToArray())
             {
-                var result = target.Protect(user.Id);
+                var result = target.AddProtect(user.Id);
                 results.Add(result);
             }
 

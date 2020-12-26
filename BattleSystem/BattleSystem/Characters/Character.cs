@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Actions.Results;
 using BattleSystem.Stats;
@@ -50,7 +49,7 @@ namespace BattleSystem.Characters
         /// <summary>
         /// Gets or sets the list of characters who are protecting this character.
         /// </summary>
-        public List<string> ProtectStack { get; protected set; }
+        public List<string> ProtectQueue { get; protected set; }
 
         /// <summary>
         /// Gets the character's current speed.
@@ -83,7 +82,7 @@ namespace BattleSystem.Characters
 
             Id = Guid.NewGuid().ToString();
 
-            ProtectStack = new List<string>();
+            ProtectQueue = new List<string>();
         }
 
         /// <summary>
@@ -98,9 +97,9 @@ namespace BattleSystem.Characters
         /// <param name="damage">The incoming damage.</param>
         public virtual AttackResult ReceiveDamage(int damage)
         {
-            if (ProtectStack.Count > 0)
+            if (ProtectQueue.Count > 0)
             {
-                var userId = PopProtect();
+                var userId = ConsumeProtect();
 
                 return new AttackResult
                 {
@@ -171,11 +170,11 @@ namespace BattleSystem.Characters
         }
 
         /// <summary>
-        /// Protects the character from the next attack.
+        /// Adds an item to the protect queue, which protects the character from the next attack.
         /// </summary>
-        public virtual ProtectResult Protect(string userId)
+        public virtual ProtectResult AddProtect(string userId)
         {
-            ProtectStack.Insert(0, userId);
+            ProtectQueue.Add(userId);
 
             return new ProtectResult
             {
@@ -186,15 +185,15 @@ namespace BattleSystem.Characters
         /// <summary>
         /// Pops the next protect action from the stack and returns the ID of the protecting character.
         /// </summary>
-        public string PopProtect()
+        public string ConsumeProtect()
         {
-            if (ProtectStack.Count <= 0)
+            if (ProtectQueue.Count <= 0)
             {
-                throw new InvalidOperationException($"Cannot get a protect action because there are none on the stack!");
+                throw new InvalidOperationException($"Cannot consume a protect action because there are none in the queue!");
             }
 
-            var protectorId = ProtectStack[0];
-            ProtectStack.RemoveAt(0);
+            var protectorId = ProtectQueue[0];
+            ProtectQueue.RemoveAt(0);
             return protectorId;
         }
     }

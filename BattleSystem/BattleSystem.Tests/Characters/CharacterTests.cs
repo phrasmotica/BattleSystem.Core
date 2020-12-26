@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using BattleSystem.Characters;
 using BattleSystem.Stats;
 using NUnit.Framework;
@@ -29,7 +29,7 @@ namespace BattleSystem.Tests.Characters
         {
             // Arrange
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
-            target.Protect("userId");
+            target.AddProtect("userId");
 
             // Act
             _ = target.ReceiveDamage(2);
@@ -72,7 +72,7 @@ namespace BattleSystem.Tests.Characters
         }
 
         [Test]
-        public void ReceiveHeal_AddsHealth()
+        public void Heal_AddsHealth()
         {
             // Arrange
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
