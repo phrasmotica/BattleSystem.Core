@@ -140,5 +140,20 @@ namespace BattleSystem.Tests.Characters
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() => _ = target.ConsumeProtect());
         }
+
+        [Test]
+        public void ClearProtectQueue_EmptiesProtectQueue()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+            _ = target.AddProtect("DJ rozwell");
+            _ = target.AddProtect("DJ rozwell");
+
+            // Act
+            target.ClearProtectQueue();
+
+            // Act and Assert
+            Assert.That(target.ProtectCount, Is.Zero);
+        }
     }
 }

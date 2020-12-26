@@ -215,5 +215,13 @@ namespace BattleSystem.Characters
             ProtectQueue.RemoveAt(0);
             return protectorId;
         }
+
+        /// <summary>
+        /// Clears the protect action queue.
+        /// </summary>
+        public void ClearProtectQueue()
+        {
+            ProtectQueue.Clear();
+        }
     }
 }
