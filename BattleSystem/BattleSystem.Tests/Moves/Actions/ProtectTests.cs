@@ -26,7 +26,7 @@ namespace BattleSystem.Tests.Moves.Actions
             _ = protect.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(otherCharacters[0].ProtectStack.Count, Is.EqualTo(1));
+            Assert.That(otherCharacters[0].ProtectCount, Is.EqualTo(1));
         }
 
         [Test]

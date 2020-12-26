@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.Generic;
 using BattleSystem.Characters;
 using BattleSystem.Stats;
@@ -83,6 +84,61 @@ namespace BattleSystem.Tests.Characters
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void AddProtect_AddsProtectActionToQueue()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+
+            // Act
+            _ = target.AddProtect("DJ rozwell");
+
+            // Assert
+            Assert.That(target.ProtectCount, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void AddProtect_LimitReached_ProtectActionNotAddedToQueue()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+            _ = target.AddProtect("DJ rozwell");
+
+            // Act
+            _ = target.AddProtect("DJ rozwell");
+
+            // Assert
+            Assert.That(target.ProtectCount, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ConsumeProtect_ReturnsIdOfProtectUser()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+            _ = target.AddProtect("DJ rozwell");
+
+            // Act
+            var userId = target.ConsumeProtect();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(target.ProtectCount, Is.Zero);
+                Assert.That(userId, Is.EqualTo("DJ rozwell"));
+            });
+        }
+
+        [Test]
+        public void ConsumeProtect_EmptyProtectQueue_Throws()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+
+            // Act and Assert
+            Assert.Throws<InvalidOperationException>(() => _ = target.ConsumeProtect());
         }
     }
 }

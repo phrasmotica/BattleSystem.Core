@@ -49,7 +49,17 @@ namespace BattleSystem.Characters
         /// <summary>
         /// Gets or sets the list of characters who are protecting this character.
         /// </summary>
-        public List<string> ProtectQueue { get; protected set; }
+        protected List<string> ProtectQueue;
+
+        /// <summary>
+        /// The maximum allowed length of the protect queue.
+        /// </summary>
+        protected readonly int _protectCountLimit;
+
+        /// <summary>
+        /// Gets the length of the protect queue.
+        /// </summary>
+        public int ProtectCount => ProtectQueue?.Count ?? 0;
 
         /// <summary>
         /// Gets the character's current speed.
@@ -83,6 +93,7 @@ namespace BattleSystem.Characters
             Id = Guid.NewGuid().ToString();
 
             ProtectQueue = new List<string>();
+            _protectCountLimit = 1;
         }
 
         /// <summary>
@@ -174,6 +185,14 @@ namespace BattleSystem.Characters
         /// </summary>
         public virtual ProtectResult AddProtect(string userId)
         {
+            if (ProtectCount >= _protectCountLimit)
+            {
+                return new ProtectResult
+                {
+                    Applied = false,
+                };
+            }
+
             ProtectQueue.Add(userId);
 
             return new ProtectResult
