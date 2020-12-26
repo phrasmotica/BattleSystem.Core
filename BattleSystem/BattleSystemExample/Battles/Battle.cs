@@ -95,6 +95,11 @@ namespace BattleSystemExample.Battles
                         ShowStatChanges(characterOrder, moveUse);
                     }
                 }
+
+                foreach (var character in characterOrder)
+                {
+                    character.ClearProtectQueue();
+                }
             }
 
             ShowEndMessage();
