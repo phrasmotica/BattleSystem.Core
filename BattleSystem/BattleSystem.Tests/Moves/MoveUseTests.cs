@@ -1,5 +1,5 @@
-﻿using BattleSystem.Moves;
-using BattleSystem.Moves.Success;
+﻿using System.Linq;
+using BattleSystem.Moves;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Moves
@@ -14,7 +14,7 @@ namespace BattleSystem.Tests.Moves
         public void Apply_ReturnsResult()
         {
             // Arrange
-            var move = TestHelpers.CreateMove();
+            var move = TestHelpers.CreateMove(moveActions: TestHelpers.CreateAttack());
 
             var moveUse = new MoveUse
             {
@@ -30,7 +30,7 @@ namespace BattleSystem.Tests.Moves
             moveUse.Apply();
 
             // Assert
-            Assert.That(moveUse.Result, Is.EqualTo(MoveUseResult.Success));
+            Assert.That(moveUse.ActionsResults.ToArray().Length, Is.EqualTo(1));
         }
     }
 }

@@ -134,7 +134,7 @@ namespace BattleSystem.Moves
         /// </summary>
         /// <param name="user">The user of the move.</param>
         /// <param name="otherCharacters">The other characters.</param>
-        public IEnumerable<IEnumerable<IMoveActionResult>> Use(Character user, IEnumerable<Character> otherCharacters)
+        public (MoveUseResult, IEnumerable<IEnumerable<IMoveActionResult>>) Use(Character user, IEnumerable<Character> otherCharacters)
         {
             // TODO: move success calculator to move actions
             var result = _successCalculator.Calculate(user, this, otherCharacters);
@@ -152,7 +152,7 @@ namespace BattleSystem.Moves
 
             RemainingUses--;
 
-            return actionsResults;
+            return (result, actionsResults);
         }
     }
 }
