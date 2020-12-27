@@ -32,7 +32,7 @@ namespace BattleSystem.Moves.Actions
 
             var results = new List<IMoveActionResult>();
 
-            foreach (var target in targets.Where(c => !c.IsDead).ToArray())
+            foreach (var target in targets.Where(c => !c.IsDead))
             {
                 var result = target.AddProtect(user.Id);
                 results.Add(result);
