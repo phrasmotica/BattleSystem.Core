@@ -93,6 +93,7 @@ namespace BattleSystemExample.Battles
                         ShowProtectedCharacters(characterOrder, moveUse);
                         ShowDamageTaken(characterOrder, moveUse);
                         ShowStatChanges(characterOrder, moveUse);
+                        ShowProtectLimitChanges(characterOrder, moveUse);
                     }
                 }
 
@@ -212,6 +213,36 @@ namespace BattleSystemExample.Battles
                         {
                             _gameOutput.WriteLine($"{character.Name}'s {stat} fell by {-percentage}%!");
                         }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Outputs info about any character that were protected from the given move use.
+        /// </summary>
+        /// <param name="characters">The characters.</param>
+        /// <param name="moveUse">The move use.</param>
+        private void ShowProtectLimitChanges(IEnumerable<Character> characters, MoveUse moveUse)
+        {
+            var protectLimitChanges = moveUse.ActionsResults
+                                             .SelectMany(ar => ar)
+                                             .Where(r => r is ProtectLimitChangeResult)
+                                             .Cast<ProtectLimitChangeResult>();
+
+            foreach (var result in protectLimitChanges)
+            {
+                var target = characters.Single(c => c.Id == result.TargetId);
+
+                if (!target.IsDead)
+                {
+                    if (result.Amount > 0)
+                    {
+                        _gameOutput.WriteLine($"{target.Name} had its protection limit increased by {result.Amount}!");
+                    }
+                    else
+                    {
+                        _gameOutput.WriteLine($"{target.Name} had its protection limit decreased by {-result.Amount}!");
                     }
                 }
             }
