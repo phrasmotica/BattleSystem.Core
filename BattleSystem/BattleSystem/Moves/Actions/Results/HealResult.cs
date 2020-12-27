@@ -16,6 +16,16 @@
         public string TargetId { get; set; }
 
         /// <summary>
+        /// Gets or sets whether the character was protected from the heal.
+        /// </summary>
+        public bool TargetProtected { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ID of the character who protected the target from the heal, if applicable.
+        /// </summary>
+        public string ProtectUserId { get; set; }
+
+        /// <summary>
         /// Gets or sets the target's health before the heal.
         /// </summary>
         public int StartingHealth { get; set; }

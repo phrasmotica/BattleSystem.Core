@@ -14,5 +14,15 @@
         /// Gets or sets the ID of the character who was the target of the move action.
         /// </summary>
         string TargetId { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the character was protected from the move action.
+        /// </summary>
+        public bool TargetProtected { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ID of the character who protected the target from the move action, if applicable.
+        /// </summary>
+        public string ProtectUserId { get; set; }
     }
 }

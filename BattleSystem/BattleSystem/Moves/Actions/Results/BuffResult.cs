@@ -20,6 +20,16 @@ namespace BattleSystem.Moves.Actions.Results
         public string TargetId { get; set; }
 
         /// <summary>
+        /// Gets or sets whether the character was protected from the buff.
+        /// </summary>
+        public bool TargetProtected { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ID of the character who protected the target from the buff, if applicable.
+        /// </summary>
+        public string ProtectUserId { get; set; }
+
+        /// <summary>
         /// Gets or sets the changes in stat multipliers resulting from this buff.
         /// </summary>
         public IDictionary<StatCategory, double> StartingStatMultipliers { get; set; }

@@ -14,5 +14,15 @@
         /// Gets or sets the ID of the character who was the target of the protect.
         /// </summary>
         public string TargetId { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the character was protected from the protect.
+        /// </summary>
+        public bool TargetProtected { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ID of the character who protected the target from the protect, if applicable.
+        /// </summary>
+        public string ProtectUserId { get; set; }
     }
 }

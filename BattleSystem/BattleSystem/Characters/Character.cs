@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using BattleSystem.Extensions;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Actions.Results;
 using BattleSystem.Stats;
@@ -130,9 +129,9 @@ namespace BattleSystem.Characters
             {
                 Applied = true,
                 TargetId = Id,
+                TargetProtected = false,
                 StartingHealth = startingHealth,
                 EndingHealth = endingHealth,
-                TargetProtected = false,
             };
         }
 
@@ -142,6 +141,19 @@ namespace BattleSystem.Characters
         /// <param name="multipliers">The effects of incoming buff.</param>
         public virtual BuffResult ReceiveBuff(IDictionary<StatCategory, double> multipliers)
         {
+            if (ProtectQueue.Count > 0)
+            {
+                var userId = ConsumeProtect();
+
+                return new BuffResult
+                {
+                    Applied = false,
+                    TargetId = Id,
+                    TargetProtected = true,
+                    ProtectUserId = userId,
+                };
+            }
+
             var startingMultipliers = Stats.MultipliersAsDictionary();
 
             foreach (var mult in multipliers)
@@ -173,6 +185,7 @@ namespace BattleSystem.Characters
             {
                 Applied = true,
                 TargetId = Id,
+                TargetProtected = false,
                 StartingStatMultipliers = startingMultipliers,
                 EndingStatMultipliers = endingMultipliers,
             };
@@ -184,6 +197,19 @@ namespace BattleSystem.Characters
         /// <param name="amount">The healing amount.</param>
         public virtual HealResult Heal(int amount)
         {
+            if (ProtectQueue.Count > 0)
+            {
+                var userId = ConsumeProtect();
+
+                return new HealResult
+                {
+                    Applied = false,
+                    TargetId = Id,
+                    TargetProtected = true,
+                    ProtectUserId = userId,
+                };
+            }
+
             var startingHealth = CurrentHealth;
             CurrentHealth += Math.Min(MaxHealth - CurrentHealth, amount);
             var endingHealth = CurrentHealth;
@@ -192,6 +218,7 @@ namespace BattleSystem.Characters
             {
                 Applied = true,
                 TargetId = Id,
+                TargetProtected = false,
                 StartingHealth = startingHealth,
                 EndingHealth = endingHealth,
             };
@@ -202,6 +229,19 @@ namespace BattleSystem.Characters
         /// </summary>
         public virtual ProtectResult AddProtect(string userId)
         {
+            if (ProtectQueue.Count > 0)
+            {
+                var protectUserId = ConsumeProtect();
+
+                return new ProtectResult
+                {
+                    Applied = false,
+                    TargetId = Id,
+                    TargetProtected = true,
+                    ProtectUserId = protectUserId,
+                };
+            }
+
             if (ProtectCount >= ProtectLimit)
             {
                 return new ProtectResult
@@ -217,6 +257,7 @@ namespace BattleSystem.Characters
             {
                 Applied = true,
                 TargetId = Id,
+                TargetProtected = false,
             };
         }
 
@@ -225,12 +266,26 @@ namespace BattleSystem.Characters
         /// </summary>
         public ProtectLimitChangeResult ChangeProtectCountLimit(int amount)
         {
+            if (ProtectQueue.Count > 0)
+            {
+                var userId = ConsumeProtect();
+
+                return new ProtectLimitChangeResult
+                {
+                    Applied = false,
+                    TargetId = Id,
+                    TargetProtected = true,
+                    ProtectUserId = userId,
+                };
+            }
+
             ProtectLimit += amount;
 
             return new ProtectLimitChangeResult
             {
                 Applied = true,
                 TargetId = Id,
+                TargetProtected = false,
                 Amount = amount,
             };
         }
