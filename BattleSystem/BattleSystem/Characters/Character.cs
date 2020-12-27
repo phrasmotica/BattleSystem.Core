@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BattleSystem.Extensions;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Actions.Results;
 using BattleSystem.Stats;
@@ -121,12 +122,16 @@ namespace BattleSystem.Characters
                 };
             }
 
+            var startingHealth = CurrentHealth;
             CurrentHealth -= damage;
+            var endingHealth = CurrentHealth;
 
             return new AttackResult
             {
                 Applied = true,
                 TargetId = Id,
+                StartingHealth = startingHealth,
+                EndingHealth = endingHealth,
                 TargetProtected = false,
             };
         }
@@ -137,6 +142,8 @@ namespace BattleSystem.Characters
         /// <param name="multipliers">The effects of incoming buff.</param>
         public virtual BuffResult ReceiveBuff(IDictionary<StatCategory, double> multipliers)
         {
+            var startingMultipliers = Stats.MultipliersAsDictionary();
+
             foreach (var mult in multipliers)
             {
                 var statCategory = mult.Key;
@@ -160,10 +167,14 @@ namespace BattleSystem.Characters
                 }
             }
 
+            var endingMultipliers = Stats.MultipliersAsDictionary();
+
             return new BuffResult
             {
                 Applied = true,
                 TargetId = Id,
+                StartingStatMultipliers = startingMultipliers,
+                EndingStatMultipliers = endingMultipliers,
             };
         }
 
@@ -173,12 +184,16 @@ namespace BattleSystem.Characters
         /// <param name="amount">The healing amount.</param>
         public virtual HealResult Heal(int amount)
         {
+            var startingHealth = CurrentHealth;
             CurrentHealth += Math.Min(MaxHealth - CurrentHealth, amount);
+            var endingHealth = CurrentHealth;
 
             return new HealResult
             {
                 Applied = true,
                 TargetId = Id,
+                StartingHealth = startingHealth,
+                EndingHealth = endingHealth,
             };
         }
 

@@ -16,6 +16,26 @@
         public string TargetId { get; set; }
 
         /// <summary>
+        /// Gets or sets the target's health before the attack.
+        /// </summary>
+        public int StartingHealth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the target's health after the attack.
+        /// </summary>
+        public int EndingHealth { get; set; }
+
+        /// <summary>
+        /// Gets the damage taken by the target from the attack.
+        /// </summary>
+        public int Damage => StartingHealth - EndingHealth;
+
+        /// <summary>
+        /// Gets whether the target died from the attack.
+        /// </summary>
+        public bool TargetDied => EndingHealth <= 0;
+
+        /// <summary>
         /// Gets or sets whether the character was protected from the attack's damage.
         /// </summary>
         public bool TargetProtected { get; set; }
