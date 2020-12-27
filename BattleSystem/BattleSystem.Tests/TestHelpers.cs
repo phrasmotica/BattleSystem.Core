@@ -162,5 +162,18 @@ namespace BattleSystem.Tests
                 .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object)
                 .Build();
         }
+
+        /// <summary>
+        /// Returns a protect limit change action.
+        /// </summary>
+        public static ProtectLimitChange CreateProtectLimitChange(
+            IMoveTargetCalculator moveTargetCalculator = null,
+            int amount = 1)
+        {
+            return new ProtectLimitChangeBuilder()
+                .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object)
+                .WithAmount(amount)
+                .Build();
+        }
     }
 }

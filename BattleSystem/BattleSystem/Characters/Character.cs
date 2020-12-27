@@ -52,9 +52,9 @@ namespace BattleSystem.Characters
         protected List<string> ProtectQueue;
 
         /// <summary>
-        /// The maximum allowed length of the protect queue.
+        /// Gets or sets the maximum allowed length of the protect queue.
         /// </summary>
-        protected int _protectCountLimit;
+        public int ProtectLimit { get; protected set; }
 
         /// <summary>
         /// Gets the length of the protect queue.
@@ -93,7 +93,7 @@ namespace BattleSystem.Characters
             Id = Guid.NewGuid().ToString();
 
             ProtectQueue = new List<string>();
-            _protectCountLimit = 1;
+            ProtectLimit = 1;
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace BattleSystem.Characters
         /// </summary>
         public virtual ProtectResult AddProtect(string userId)
         {
-            if (ProtectCount >= _protectCountLimit)
+            if (ProtectCount >= ProtectLimit)
             {
                 return new ProtectResult
                 {
@@ -206,7 +206,7 @@ namespace BattleSystem.Characters
         /// </summary>
         public ProtectLimitChangeResult ChangeProtectCountLimit(int amount)
         {
-            _protectCountLimit += amount;
+            ProtectLimit += amount;
 
             return new ProtectLimitChangeResult
             {
