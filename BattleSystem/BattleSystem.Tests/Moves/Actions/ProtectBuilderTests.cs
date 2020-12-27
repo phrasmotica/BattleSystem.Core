@@ -31,7 +31,9 @@ namespace BattleSystem.Tests.Moves.Actions
 
             // Assert
             Assert.That(attack, Is.Not.Null);
-        }[Test]
+        }
+
+        [Test]
         public void Build_MissingMoveTargetCalculator_Throws()
         {
             // Arrange

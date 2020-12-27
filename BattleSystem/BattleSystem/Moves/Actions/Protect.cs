@@ -17,11 +17,6 @@ namespace BattleSystem.Moves.Actions
         private IMoveTargetCalculator _moveTargetCalculator;
 
         /// <summary>
-        /// Creates a new <see cref="Protect"/>.
-        /// </summary>
-        public Protect() { }
-
-        /// <summary>
         /// Sets the move target calculator for this protect action.
         /// </summary>
         /// <param name="moveTargetCalculator">The move target calculator.</param>

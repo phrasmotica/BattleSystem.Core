@@ -114,6 +114,21 @@ namespace BattleSystem.Tests.Characters
         }
 
         [Test]
+        public void ChangeProtectCountLimit_ChangesProtectCountLimit()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+            _ = target.AddProtect("DJ rozwell");
+            _ = target.ChangeProtectCountLimit(1);
+
+            // Act
+            _ = target.AddProtect("DJ rozwell");
+
+            // Assert
+            Assert.That(target.ProtectCount, Is.EqualTo(2));
+        }
+
+        [Test]
         public void ConsumeProtect_ReturnsIdOfProtectUser()
         {
             // Arrange

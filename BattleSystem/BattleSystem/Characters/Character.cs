@@ -54,7 +54,7 @@ namespace BattleSystem.Characters
         /// <summary>
         /// The maximum allowed length of the protect queue.
         /// </summary>
-        protected readonly int _protectCountLimit;
+        protected int _protectCountLimit;
 
         /// <summary>
         /// Gets the length of the protect queue.
@@ -202,7 +202,22 @@ namespace BattleSystem.Characters
         }
 
         /// <summary>
-        /// Pops the next protect action from the stack and returns the ID of the protecting character.
+        /// Changes the protect count limit by the given amount.
+        /// </summary>
+        public ProtectLimitChangeResult ChangeProtectCountLimit(int amount)
+        {
+            _protectCountLimit += amount;
+
+            return new ProtectLimitChangeResult
+            {
+                Applied = true,
+                TargetId = Id,
+                Amount = amount,
+            };
+        }
+
+        /// <summary>
+        /// Pops the next protect action from the queue and returns the ID of the protecting character.
         /// </summary>
         public string ConsumeProtect()
         {
