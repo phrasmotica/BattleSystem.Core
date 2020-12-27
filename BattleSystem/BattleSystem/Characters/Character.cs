@@ -163,6 +163,7 @@ namespace BattleSystem.Characters
             return new BuffResult
             {
                 Applied = true,
+                TargetId = Id,
             };
         }
 
@@ -177,6 +178,7 @@ namespace BattleSystem.Characters
             return new HealResult
             {
                 Applied = true,
+                TargetId = Id,
             };
         }
 
@@ -190,6 +192,7 @@ namespace BattleSystem.Characters
                 return new ProtectResult
                 {
                     Applied = false,
+                    TargetId = Id,
                 };
             }
 
@@ -198,6 +201,7 @@ namespace BattleSystem.Characters
             return new ProtectResult
             {
                 Applied = true,
+                TargetId = Id,
             };
         }
 

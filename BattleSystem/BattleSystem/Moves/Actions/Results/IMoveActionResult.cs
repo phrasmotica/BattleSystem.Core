@@ -9,5 +9,10 @@
         /// Gets or sets whether the move action was applied to the character.
         /// </summary>
         bool Applied { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ID of the character who was the target of the move action.
+        /// </summary>
+        string TargetId { get; set; }
     }
 }
