@@ -136,11 +136,12 @@ namespace BattleSystemExample.Battles
         /// <param name="result">The result.</param>
         private void ShowResult(IEnumerable<Character> characters, IMoveActionResult result)
         {
-            switch (result)
+            if (result.TargetProtected)
             {
-                case AttackResult ar when ar.TargetProtected:
-                    ShowProtectedAttack(characters, ar);
-                    break;
+                ShowProtectedResult(characters, result);
+            }
+            else switch (result)
+            {
                 case AttackResult ar:
                     ShowAttack(characters, ar);
                     break;
@@ -162,23 +163,23 @@ namespace BattleSystemExample.Battles
         }
 
         /// <summary>
-        /// Outputs info about the given protected attack result.
+        /// Outputs info about the given protected move action result.
         /// </summary>
         /// <param name="characters">The characters.</param>
-        /// <param name="attack">The protected attack result.</param>
-        private void ShowProtectedAttack(
+        /// <param name="result">The move action result.</param>
+        private void ShowProtectedResult(
             IEnumerable<Character> characters,
-            AttackResult attack)
+            IMoveActionResult result)
         {
-            var user = characters.Single(c => c.Id == attack.ProtectUserId);
+            var user = characters.Single(c => c.Id == result.ProtectUserId);
 
-            if (attack.TargetId == user.Id)
+            if (result.TargetId == user.Id)
             {
                 _gameOutput.WriteLine($"{user.Name} protected itself!");
             }
             else
             {
-                var target = characters.Single(c => c.Id == attack.TargetId);
+                var target = characters.Single(c => c.Id == result.TargetId);
                 _gameOutput.WriteLine($"{user.Name} protected {target.Name}!");
             }
         }
