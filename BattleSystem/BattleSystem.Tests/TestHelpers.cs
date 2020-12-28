@@ -102,7 +102,7 @@ namespace BattleSystem.Tests
             string description = "amon",
             int maxUses = 5,
             ISuccessCalculator successCalculator = null,
-            params IMoveAction[] moveActions)
+            params IAction[] moveActions)
         {
             var builder = new MoveBuilder()
                             .Name(name)

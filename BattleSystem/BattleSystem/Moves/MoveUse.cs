@@ -30,7 +30,7 @@ namespace BattleSystem.Moves
         /// <summary>
         /// Gets or sets the results of each action in the move use.
         /// </summary>
-        public IEnumerable<IEnumerable<IMoveActionResult>> ActionsResults { get; private set; }
+        public IEnumerable<IEnumerable<IActionResult>> ActionsResults { get; private set; }
 
         /// <summary>
         /// Applies the move.

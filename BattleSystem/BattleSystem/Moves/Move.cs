@@ -20,7 +20,7 @@ namespace BattleSystem.Moves
         /// <summary>
         /// The actions this move will apply in order.
         /// </summary>
-        private readonly IList<IMoveAction> _moveActions;
+        private readonly IList<IAction> _moveActions;
 
         /// <summary>
         /// Gets or sets the name of the move.
@@ -57,7 +57,7 @@ namespace BattleSystem.Moves
         /// </summary>
         public Move()
         {
-            _moveActions = new List<IMoveAction>();
+            _moveActions = new List<IAction>();
         }
 
         /// <summary>
@@ -113,10 +113,10 @@ namespace BattleSystem.Moves
         }
 
         /// <summary>
-        /// Adds the given move action to the move.
+        /// Adds the given action to the move.
         /// </summary>
-        /// <param name="action">The move action to add.</param>
-        public void AddAction(IMoveAction action)
+        /// <param name="action">The action to add.</param>
+        public void AddAction(IAction action)
         {
             _moveActions.Add(action);
         }
@@ -134,11 +134,11 @@ namespace BattleSystem.Moves
         /// </summary>
         /// <param name="user">The user of the move.</param>
         /// <param name="otherCharacters">The other characters.</param>
-        public (MoveUseResult, IEnumerable<IEnumerable<IMoveActionResult>>) Use(Character user, IEnumerable<Character> otherCharacters)
+        public (MoveUseResult, IEnumerable<IEnumerable<IActionResult>>) Use(Character user, IEnumerable<Character> otherCharacters)
         {
             var result = _successCalculator.Calculate(user, this, otherCharacters);
 
-            var actionsResults = new List<IEnumerable<IMoveActionResult>>();
+            var actionsResults = new List<IEnumerable<IActionResult>>();
 
             var targets = otherCharacters.ToArray();
 
@@ -149,7 +149,7 @@ namespace BattleSystem.Moves
                     var actionResults = action.Use(user, targets);
                     actionsResults.Add(actionResults);
 
-                    // ensure targets can't be affected by subsequent move actions
+                    // ensure targets can't be affected by subsequent actions
                     // if they weren't affected by the previous one
                     var affectedCharacters = actionResults.Where(ar => ar.Applied)
                                                           .Select(ar => ar.TargetId);

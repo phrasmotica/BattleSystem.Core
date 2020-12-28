@@ -3,7 +3,7 @@
     /// <summary>
     /// Class for the result of a heal being applied to a character.
     /// </summary>
-    public class HealResult : IMoveActionResult
+    public class HealResult : IActionResult
     {
         /// <summary>
         /// Gets or sets whether the heal was applied to the character.

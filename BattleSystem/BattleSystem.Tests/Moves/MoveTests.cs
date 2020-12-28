@@ -89,7 +89,7 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var move = TestHelpers.CreateMove(
                 maxUses: 5,
-                moveActions: new Mock<IMoveAction>().Object);
+                moveActions: new Mock<IAction>().Object);
 
             var user = TestHelpers.CreateBasicCharacter();
             var otherCharacters = new[]
@@ -114,17 +114,17 @@ namespace BattleSystem.Tests.Moves
                 TestHelpers.CreateBasicCharacter(),
             };
 
-            static IMoveActionResult MockActionResult(bool applied, string targetId)
+            static IActionResult MockActionResult(bool applied, string targetId)
             {
-                var result = new Mock<IMoveActionResult>();
+                var result = new Mock<IActionResult>();
                 result.SetupGet(m => m.Applied).Returns(applied);
                 result.SetupGet(m => m.TargetId).Returns(targetId);
                 return result.Object;
             }
 
-            static IMoveAction MockAction(bool applied = true)
+            static IAction MockAction(bool applied = true)
             {
-                var action = new Mock<IMoveAction>();
+                var action = new Mock<IAction>();
                 action
                     .Setup(
                         m => m.Use(

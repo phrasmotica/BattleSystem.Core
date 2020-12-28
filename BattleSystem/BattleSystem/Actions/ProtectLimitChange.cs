@@ -7,9 +7,9 @@ using BattleSystem.Moves.Targets;
 namespace BattleSystem.Actions
 {
     /// <summary>
-    /// Represents a move action that changes the protect limit of the target character.
+    /// Represents an action that changes the protect limit of the target character.
     /// </summary>
-    public class ProtectLimitChange : IMoveAction
+    public class ProtectLimitChange : IAction
     {
         /// <summary>
         /// The move target calculator.
@@ -31,11 +31,11 @@ namespace BattleSystem.Actions
         }
 
         /// <inheritdoc />
-        public IEnumerable<IMoveActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
+        public IEnumerable<IActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
         {
             var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
 
-            var results = new List<IMoveActionResult>();
+            var results = new List<IActionResult>();
 
             foreach (var target in targets.Where(c => !c.IsDead))
             {

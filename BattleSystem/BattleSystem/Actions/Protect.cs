@@ -7,9 +7,9 @@ using BattleSystem.Moves.Targets;
 namespace BattleSystem.Actions
 {
     /// <summary>
-    /// Represents a protecting move action, which nullifies all damage dealt by an attack.
+    /// Represents a protecting action.
     /// </summary>
-    public class Protect : IMoveAction
+    public class Protect : IAction
     {
         /// <summary>
         /// The move target calculator.
@@ -26,11 +26,11 @@ namespace BattleSystem.Actions
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<IMoveActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
+        public virtual IEnumerable<IActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
         {
             var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
 
-            var results = new List<IMoveActionResult>();
+            var results = new List<IActionResult>();
 
             foreach (var target in targets.Where(c => !c.IsDead))
             {

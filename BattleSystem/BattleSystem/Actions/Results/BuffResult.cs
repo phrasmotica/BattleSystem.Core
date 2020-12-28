@@ -7,7 +7,7 @@ namespace BattleSystem.Actions.Results
     /// <summary>
     /// Class for the result of a buff being applied to a character.
     /// </summary>
-    public class BuffResult : IMoveActionResult
+    public class BuffResult : IActionResult
     {
         /// <summary>
         /// Gets or sets whether the buff was applied to the character.

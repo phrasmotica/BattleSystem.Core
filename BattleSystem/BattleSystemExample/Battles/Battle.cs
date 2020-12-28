@@ -130,11 +130,11 @@ namespace BattleSystemExample.Battles
         }
 
         /// <summary>
-        /// Outputs the given move action result.
+        /// Outputs the given action result.
         /// </summary>
         /// <param name="characters">The characters.</param>
         /// <param name="result">The result.</param>
-        private void ShowResult(IEnumerable<Character> characters, IMoveActionResult result)
+        private void ShowResult(IEnumerable<Character> characters, IActionResult result)
         {
             if (result.TargetProtected)
             {
@@ -163,13 +163,13 @@ namespace BattleSystemExample.Battles
         }
 
         /// <summary>
-        /// Outputs info about the given protected move action result.
+        /// Outputs info about the given protected action result.
         /// </summary>
         /// <param name="characters">The characters.</param>
-        /// <param name="result">The move action result.</param>
+        /// <param name="result">The action result.</param>
         private void ShowProtectedResult(
             IEnumerable<Character> characters,
-            IMoveActionResult result)
+            IActionResult result)
         {
             var user = characters.Single(c => c.Id == result.ProtectUserId);
 

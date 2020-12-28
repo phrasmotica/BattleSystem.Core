@@ -3,7 +3,7 @@
     /// <summary>
     /// Class for the result of a protect limit change action being applied to a character.
     /// </summary>
-    public class ProtectLimitChangeResult : IMoveActionResult
+    public class ProtectLimitChangeResult : IActionResult
     {
         /// <summary>
         /// Gets or sets whether the protect limit change action was applied to the character.

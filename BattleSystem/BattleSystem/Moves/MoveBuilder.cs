@@ -132,7 +132,7 @@ namespace BattleSystem.Moves
         /// Adds the given action to the built move.
         /// </summary>
         /// <param name="action">The action to add to the built move.</param>
-        public MoveBuilder WithAction(IMoveAction action)
+        public MoveBuilder WithAction(IAction action)
         {
             _move.AddAction(action);
             return this;

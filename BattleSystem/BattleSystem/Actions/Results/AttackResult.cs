@@ -3,7 +3,7 @@
     /// <summary>
     /// Class for the result of an attack being applied to a character.
     /// </summary>
-    public class AttackResult : IMoveActionResult
+    public class AttackResult : IActionResult
     {
         /// <summary>
         /// Gets or sets whether the damage was applied to the character.
