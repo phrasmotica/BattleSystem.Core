@@ -2,7 +2,7 @@
 using BattleSystem.Damage;
 using BattleSystem.Moves.Targets;
 
-namespace BattleSystem.Moves.Actions
+namespace BattleSystem.Actions
 {
     /// <summary>
     /// Builder class for attacks.

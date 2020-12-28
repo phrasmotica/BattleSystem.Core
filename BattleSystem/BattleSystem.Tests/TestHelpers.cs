@@ -4,7 +4,7 @@ using BattleSystem.Damage;
 using BattleSystem.Healing;
 using BattleSystem.Items;
 using BattleSystem.Moves;
-using BattleSystem.Moves.Actions;
+using BattleSystem.Actions;
 using BattleSystem.Moves.Success;
 using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;

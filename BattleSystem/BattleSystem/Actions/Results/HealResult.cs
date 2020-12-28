@@ -1,4 +1,4 @@
-﻿namespace BattleSystem.Moves.Actions.Results
+﻿namespace BattleSystem.Actions.Results
 {
     /// <summary>
     /// Class for the result of a heal being applied to a character.

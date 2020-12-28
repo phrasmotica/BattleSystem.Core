@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
-using BattleSystem.Moves.Actions.Results;
+using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Success;
 
 namespace BattleSystem.Moves

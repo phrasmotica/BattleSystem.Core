@@ -2,7 +2,7 @@
 using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
 
-namespace BattleSystem.Moves.Actions
+namespace BattleSystem.Actions
 {
     /// <summary>
     /// Builder class for buffs.

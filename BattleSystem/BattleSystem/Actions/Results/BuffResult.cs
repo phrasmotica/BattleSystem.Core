@@ -2,7 +2,7 @@
 using BattleSystem.Extensions;
 using BattleSystem.Stats;
 
-namespace BattleSystem.Moves.Actions.Results
+namespace BattleSystem.Actions.Results
 {
     /// <summary>
     /// Class for the result of a buff being applied to a character.

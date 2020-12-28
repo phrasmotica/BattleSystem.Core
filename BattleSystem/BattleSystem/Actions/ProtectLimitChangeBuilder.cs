@@ -1,7 +1,7 @@
 ﻿using System;
 using BattleSystem.Moves.Targets;
 
-namespace BattleSystem.Moves.Actions
+namespace BattleSystem.Actions
 {
     /// <summary>
     /// Builder class for protect limit change actions.

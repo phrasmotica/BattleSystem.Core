@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
-using BattleSystem.Moves.Actions.Results;
+using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
 
-namespace BattleSystem.Moves.Actions
+namespace BattleSystem.Actions
 {
     /// <summary>
     /// Represents a buffing move action.

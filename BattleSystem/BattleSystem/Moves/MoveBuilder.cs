@@ -1,5 +1,5 @@
 ﻿using System;
-using BattleSystem.Moves.Actions;
+using BattleSystem.Actions;
 using BattleSystem.Moves.Success;
 
 namespace BattleSystem.Moves

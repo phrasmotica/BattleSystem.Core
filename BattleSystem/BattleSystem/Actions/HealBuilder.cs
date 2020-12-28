@@ -2,7 +2,7 @@
 using BattleSystem.Healing;
 using BattleSystem.Moves.Targets;
 
-namespace BattleSystem.Moves.Actions
+namespace BattleSystem.Actions
 {
     /// <summary>
     /// Builder class for heals.

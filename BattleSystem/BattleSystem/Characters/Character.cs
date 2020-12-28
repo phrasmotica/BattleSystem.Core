@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BattleSystem.Items;
 using BattleSystem.Items.Results;
 using BattleSystem.Moves;
-using BattleSystem.Moves.Actions.Results;
+using BattleSystem.Actions.Results;
 using BattleSystem.Stats;
 
 namespace BattleSystem.Characters

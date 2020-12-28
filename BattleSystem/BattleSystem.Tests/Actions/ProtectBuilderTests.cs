@@ -1,20 +1,20 @@
 ﻿using System;
-using BattleSystem.Moves.Actions;
+using BattleSystem.Actions;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Moves.Actions
+namespace BattleSystem.Tests.Actions
 {
     /// <summary>
-    /// Unit tests for <see cref="ProtectLimitChangeBuilder"/>.
+    /// Unit tests for <see cref="ProtectBuilder"/>.
     /// </summary>
     [TestFixture]
-    public class ProtectLimitChangeBuilderTests
+    public class ProtectBuilderTests
     {
         [Test]
         public void WithMoveTargetCalculator_NullArgument_Throws()
         {
             // Arrange
-            var builder = new ProtectLimitChangeBuilder();
+            var builder = new ProtectBuilder();
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => _ = builder.WithMoveTargetCalculator(null));
@@ -24,9 +24,7 @@ namespace BattleSystem.Tests.Moves.Actions
         public void Build_CallsPresent_Succeeds()
         {
             // Arrange
-            var builder = new ProtectLimitChangeBuilder()
-                            .WithAmount(1)
-                            .TargetsAll();
+            var builder = new ProtectBuilder().TargetsAll();
 
             // Act
             var attack = builder.Build();
@@ -36,22 +34,10 @@ namespace BattleSystem.Tests.Moves.Actions
         }
 
         [Test]
-        public void Build_MissingAmount_Throws()
-        {
-            // Arrange
-            var builder = new ProtectLimitChangeBuilder()
-                            .TargetsUser();
-
-            // Act and Assert
-            Assert.Throws<InvalidOperationException>(() => _ = builder.Build());
-        }
-
-        [Test]
         public void Build_MissingMoveTargetCalculator_Throws()
         {
             // Arrange
-            var builder = new ProtectLimitChangeBuilder()
-                            .WithAmount(1);
+            var builder = new ProtectBuilder();
 
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() => _ = builder.Build());

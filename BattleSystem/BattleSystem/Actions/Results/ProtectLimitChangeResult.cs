@@ -1,4 +1,4 @@
-﻿namespace BattleSystem.Moves.Actions.Results
+﻿namespace BattleSystem.Actions.Results
 {
     /// <summary>
     /// Class for the result of a protect limit change action being applied to a character.

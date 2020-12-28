@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
-using BattleSystem.Moves.Actions.Results;
+using BattleSystem.Actions.Results;
 
-namespace BattleSystem.Moves.Actions
+namespace BattleSystem.Actions
 {
     /// <summary>
     /// Interface for a move action.

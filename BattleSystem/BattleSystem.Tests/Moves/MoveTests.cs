@@ -2,8 +2,8 @@
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Moves;
-using BattleSystem.Moves.Actions;
-using BattleSystem.Moves.Actions.Results;
+using BattleSystem.Actions;
+using BattleSystem.Actions.Results;
 using Moq;
 using NUnit.Framework;
 

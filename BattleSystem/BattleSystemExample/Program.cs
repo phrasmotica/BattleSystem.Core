@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
 using BattleSystem.Moves;
-using BattleSystem.Moves.Actions;
+using BattleSystem.Actions;
 using BattleSystem.Stats;
 using BattleSystemExample.Battles;
 using BattleSystemExample.Characters;

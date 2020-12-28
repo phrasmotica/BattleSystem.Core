@@ -1,46 +1,32 @@
-﻿using BattleSystem.Characters;
-using BattleSystem.Damage;
-using BattleSystem.Moves.Actions;
+﻿using BattleSystem.Actions;
 using BattleSystem.Moves.Targets;
-using Moq;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Moves.Actions
+namespace BattleSystem.Tests.Actions
 {
     /// <summary>
-    /// Unit tests for <see cref="Attack"/>.
+    /// Unit tests for <see cref="Protect"/>.
     /// </summary>
     [TestFixture]
-    public class AttackTests
+    public class ProtectTests
     {
         [Test]
-        public void Use_WithTargets_DamagesTargets()
+        public void Use_WithTargets_BumpsTargetProtectCounter()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
             var otherCharacters = new[]
             {
-                TestHelpers.CreateBasicCharacter(maxHealth: 8)
+                TestHelpers.CreateBasicCharacter()
             };
 
-            var damageCalculator = new Mock<IDamageCalculator>();
-            damageCalculator
-                .Setup(
-                    m => m.Calculate(
-                        It.IsAny<Character>(),
-                        It.IsAny<Attack>(),
-                        It.IsAny<Character>()
-                    )
-                )
-                .Returns(6);
-
-            var attack = TestHelpers.CreateAttack(damageCalculator.Object, new OthersMoveTargetCalculator());
+            var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
 
             // Act
-            _ = attack.Use(user, otherCharacters);
+            _ = protect.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(otherCharacters[0].CurrentHealth, Is.EqualTo(2));
+            Assert.That(otherCharacters[0].ProtectCount, Is.EqualTo(1));
         }
 
         [Test]
@@ -53,10 +39,10 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var attack = TestHelpers.CreateAttack(moveTargetCalculator: new OthersMoveTargetCalculator());
+            var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = attack.Use(user, otherCharacters);
+            var actionResults = protect.Use(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Not.Empty);
@@ -67,15 +53,16 @@ namespace BattleSystem.Tests.Moves.Actions
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
+
             var otherCharacters = new[]
             {
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var attack = TestHelpers.CreateAttack(moveTargetCalculator: new OthersMoveTargetCalculator());
+            var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = attack.Use(user, otherCharacters);
+            var actionResults = protect.Use(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
@@ -91,10 +78,10 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var attack = TestHelpers.CreateAttack();
+            var protect = TestHelpers.CreateProtect();
 
             // Act
-            var actionResults = attack.Use(user, otherCharacters);
+            var actionResults = protect.Use(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);

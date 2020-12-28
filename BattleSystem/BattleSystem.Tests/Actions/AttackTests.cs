@@ -1,48 +1,46 @@
 ﻿using BattleSystem.Characters;
-using BattleSystem.Healing;
-using BattleSystem.Moves.Actions;
+using BattleSystem.Damage;
+using BattleSystem.Actions;
 using BattleSystem.Moves.Targets;
 using Moq;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Moves.Actions
+namespace BattleSystem.Tests.Actions
 {
     /// <summary>
-    /// Unit tests for <see cref="Heal"/>.
+    /// Unit tests for <see cref="Attack"/>.
     /// </summary>
     [TestFixture]
-    public class HealTests
+    public class AttackTests
     {
         [Test]
-        public void Use_HealsTarget()
+        public void Use_WithTargets_DamagesTargets()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
             var otherCharacters = new[]
             {
-                TestHelpers.CreateBasicCharacter()
+                TestHelpers.CreateBasicCharacter(maxHealth: 8)
             };
 
-            var healingCalculator = new Mock<IHealingCalculator>();
-            healingCalculator
+            var damageCalculator = new Mock<IDamageCalculator>();
+            damageCalculator
                 .Setup(
                     m => m.Calculate(
                         It.IsAny<Character>(),
-                        It.IsAny<Heal>(),
+                        It.IsAny<Attack>(),
                         It.IsAny<Character>()
                     )
                 )
-                .Returns(2);
+                .Returns(6);
 
-            var heal = TestHelpers.CreateHeal(healingCalculator.Object, new OthersMoveTargetCalculator());
-
-            _ = otherCharacters[0].ReceiveDamage(2, "omd");
+            var attack = TestHelpers.CreateAttack(damageCalculator.Object, new OthersMoveTargetCalculator());
 
             // Act
-            heal.Use(user, otherCharacters);
+            _ = attack.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(otherCharacters[0].CurrentHealth, Is.EqualTo(5));
+            Assert.That(otherCharacters[0].CurrentHealth, Is.EqualTo(2));
         }
 
         [Test]
@@ -55,10 +53,10 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var heal = TestHelpers.CreateHeal(moveTargetCalculator: new OthersMoveTargetCalculator());
+            var attack = TestHelpers.CreateAttack(moveTargetCalculator: new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = heal.Use(user, otherCharacters);
+            var actionResults = attack.Use(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Not.Empty);
@@ -74,10 +72,10 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var heal = TestHelpers.CreateHeal(moveTargetCalculator: new OthersMoveTargetCalculator());
+            var attack = TestHelpers.CreateAttack(moveTargetCalculator: new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = heal.Use(user, otherCharacters);
+            var actionResults = attack.Use(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
@@ -93,10 +91,10 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var heal = TestHelpers.CreateHeal();
+            var attack = TestHelpers.CreateAttack();
 
             // Act
-            var actionResults = heal.Use(user, otherCharacters);
+            var actionResults = attack.Use(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);

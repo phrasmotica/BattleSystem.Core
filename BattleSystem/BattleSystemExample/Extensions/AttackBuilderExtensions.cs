@@ -1,4 +1,4 @@
-﻿using BattleSystem.Moves.Actions;
+﻿using BattleSystem.Actions;
 using BattleSystemExample.Input;
 using BattleSystemExample.Moves.Targets;
 using BattleSystemExample.Output;

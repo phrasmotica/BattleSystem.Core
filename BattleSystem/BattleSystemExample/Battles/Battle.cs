@@ -2,7 +2,7 @@
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Moves;
-using BattleSystem.Moves.Actions.Results;
+using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Success;
 using BattleSystemExample.Output;
 

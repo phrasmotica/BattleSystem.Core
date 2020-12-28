@@ -1,4 +1,4 @@
-﻿namespace BattleSystem.Moves.Actions.Results
+﻿namespace BattleSystem.Actions.Results
 {
     /// <summary>
     /// Interface for the result of a move action being applied to a character.

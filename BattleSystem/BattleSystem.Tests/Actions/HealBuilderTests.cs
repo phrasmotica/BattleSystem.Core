@@ -1,8 +1,8 @@
 ﻿using System;
-using BattleSystem.Moves.Actions;
+using BattleSystem.Actions;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Moves.Actions
+namespace BattleSystem.Tests.Actions
 {
     /// <summary>
     /// Unit tests for <see cref="HealBuilder"/>.

@@ -2,10 +2,10 @@
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Healing;
-using BattleSystem.Moves.Actions.Results;
+using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Targets;
 
-namespace BattleSystem.Moves.Actions
+namespace BattleSystem.Actions
 {
     /// <summary>
     /// Represents a healing move action.

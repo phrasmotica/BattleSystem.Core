@@ -1,17 +1,17 @@
-﻿using BattleSystem.Moves.Actions;
+﻿using BattleSystem.Actions;
 using BattleSystem.Moves.Targets;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Moves.Actions
+namespace BattleSystem.Tests.Actions
 {
     /// <summary>
-    /// Unit tests for <see cref="Protect"/>.
+    /// Unit tests for <see cref="ProtectLimitChange"/>.
     /// </summary>
     [TestFixture]
-    public class ProtectTests
+    public class ProtectLimitChangeTests
     {
         [Test]
-        public void Use_WithTargets_BumpsTargetProtectCounter()
+        public void Use_WithTargets_BumpsTargetProtectLimitChange()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -20,13 +20,13 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
+            var change = TestHelpers.CreateProtectLimitChange(new OthersMoveTargetCalculator());
 
             // Act
-            _ = protect.Use(user, otherCharacters);
+            _ = change.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(otherCharacters[0].ProtectCount, Is.EqualTo(1));
+            Assert.That(otherCharacters[0].ProtectLimit, Is.EqualTo(2));
         }
 
         [Test]
@@ -39,10 +39,10 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
+            var change = TestHelpers.CreateProtectLimitChange(new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = protect.Use(user, otherCharacters);
+            var actionResults = change.Use(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Not.Empty);
@@ -59,10 +59,10 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
+            var change = TestHelpers.CreateProtectLimitChange(new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = protect.Use(user, otherCharacters);
+            var actionResults = change.Use(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
@@ -78,10 +78,10 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var protect = TestHelpers.CreateProtect();
+            var change = TestHelpers.CreateProtectLimitChange();
 
             // Act
-            var actionResults = protect.Use(user, otherCharacters);
+            var actionResults = change.Use(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);

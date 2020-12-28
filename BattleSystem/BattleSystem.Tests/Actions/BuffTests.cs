@@ -3,7 +3,7 @@ using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Moves.Actions
+namespace BattleSystem.Tests.Actions
 {
     /// <summary>
     /// Unit tests for <see cref="Buff"/>.
