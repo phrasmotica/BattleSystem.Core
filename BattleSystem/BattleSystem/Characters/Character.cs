@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using BattleSystem.Items;
+using BattleSystem.Items.Results;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Actions.Results;
 using BattleSystem.Stats;
@@ -47,6 +49,11 @@ namespace BattleSystem.Characters
         public MoveSet Moves { get; protected set; }
 
         /// <summary>
+        /// Gets or sets the character's item slot.
+        /// </summary>
+        public ItemSlot ItemSlot { get; protected set; }
+
+        /// <summary>
         /// Gets or sets the list of characters who are protecting this character.
         /// </summary>
         protected List<string> ProtectQueue;
@@ -81,6 +88,7 @@ namespace BattleSystem.Characters
             StatSet stats,
             MoveSet moves)
         {
+            Id = Guid.NewGuid().ToString();
             Name = name;
             Team = team;
 
@@ -90,7 +98,7 @@ namespace BattleSystem.Characters
             Stats = stats;
             Moves = moves;
 
-            Id = Guid.NewGuid().ToString();
+            ItemSlot = new ItemSlot();
 
             ProtectQueue = new List<string>();
             ProtectLimit = 1;
@@ -101,6 +109,53 @@ namespace BattleSystem.Characters
         /// </summary>
         /// <param name="otherCharacters">The other characters in the battle.</param>
         public abstract MoveUse ChooseMove(IEnumerable<Character> otherCharacters);
+
+        /// <summary>
+        /// Equips the given item and returns the result.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        public virtual EquipItemResult EquipItem(IItem item)
+        {
+            var hadPreviousItem = ItemSlot.HasItem;
+
+            IItem previousItem = null;
+            if (hadPreviousItem)
+            {
+                previousItem = ItemSlot.Current;
+            }
+
+            ItemSlot.Set(item);
+
+            return new EquipItemResult
+            {
+                Success = true,
+                HadPreviousItem = hadPreviousItem,
+                PreviousItem = previousItem,
+            };
+        }
+
+        /// <summary>
+        /// Removes the character's item and returns the result.
+        /// </summary>
+        public virtual RemoveItemResult RemoveItem()
+        {
+            if (!ItemSlot.HasItem)
+            {
+                return new RemoveItemResult
+                {
+                    Success = false,
+                };
+            }
+
+            var item = ItemSlot.Current;
+            ItemSlot.Remove();
+
+            return new RemoveItemResult
+            {
+                Success = true,
+                Item = item,
+            };
+        }
 
         /// <summary>
         /// Takes the incoming damage and returns the result.
