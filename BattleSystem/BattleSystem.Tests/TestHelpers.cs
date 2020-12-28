@@ -102,7 +102,7 @@ namespace BattleSystem.Tests
         }
 
         /// <summary>
-        /// Returns a basic attack with the given max uses and power.
+        /// Returns an attack action.
         /// </summary>
         public static Attack CreateAttack(
             IDamageCalculator damageCalculator = null,
@@ -117,7 +117,7 @@ namespace BattleSystem.Tests
         }
 
         /// <summary>
-        /// Returns a basic buff with the given max uses.
+        /// Returns a buff action.
         /// </summary>
         public static Buff CreateBuff(
             IMoveTargetCalculator moveTargetCalculator = null,
@@ -138,7 +138,7 @@ namespace BattleSystem.Tests
         }
 
         /// <summary>
-        /// Returns a basic heal with the given max uses, amount and mode.
+        /// Returns a heal action.
         /// </summary>
         public static Heal CreateHeal(
             IHealingCalculator healingCalculator = null,
@@ -149,6 +149,30 @@ namespace BattleSystem.Tests
                 .WithAmount(amount)
                 .WithHealingCalculator(healingCalculator ?? new Mock<IHealingCalculator>().Object)
                 .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object)
+                .Build();
+        }
+
+        /// <summary>
+        /// Returns a protect action.
+        /// </summary>
+        public static Protect CreateProtect(
+            IMoveTargetCalculator moveTargetCalculator = null)
+        {
+            return new ProtectBuilder()
+                .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object)
+                .Build();
+        }
+
+        /// <summary>
+        /// Returns a protect limit change action.
+        /// </summary>
+        public static ProtectLimitChange CreateProtectLimitChange(
+            IMoveTargetCalculator moveTargetCalculator = null,
+            int amount = 1)
+        {
+            return new ProtectLimitChangeBuilder()
+                .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object)
+                .WithAmount(amount)
                 .Build();
         }
     }

@@ -1,38 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using BattleSystem.Moves.Actions;
 using BattleSystem.Moves.Targets;
-using BattleSystem.Stats;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Moves.Actions
 {
     /// <summary>
-    /// Unit tests for <see cref="Buff"/>.
+    /// Unit tests for <see cref="Protect"/>.
     /// </summary>
     [TestFixture]
-    public class BuffTests
+    public class ProtectTests
     {
         [Test]
-        public void Use_BuffsTargetStat()
+        public void Use_WithTargets_BumpsTargetProtectCounter()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
             var otherCharacters = new[]
             {
-                TestHelpers.CreateBasicCharacter(attack: 10)
+                TestHelpers.CreateBasicCharacter()
             };
 
-            var buff = TestHelpers.CreateBuff(
-                new OthersMoveTargetCalculator(),
-                new Dictionary<StatCategory, double>
-                {
-                    [StatCategory.Attack] = 0.2
-                });
+            var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
 
             // Act
-            _ = buff.Use(user, otherCharacters);
+            _ = protect.Use(user, otherCharacters);
 
             // Assert
-            Assert.That(otherCharacters[0].Stats.Attack.CurrentValue, Is.EqualTo(12));
+            Assert.That(otherCharacters[0].ProtectCount, Is.EqualTo(1));
         }
 
         [Test]
@@ -45,10 +39,10 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var buff = TestHelpers.CreateBuff(new OthersMoveTargetCalculator());
+            var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = buff.Use(user, otherCharacters);
+            var actionResults = protect.Use(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Not.Empty);
@@ -59,15 +53,16 @@ namespace BattleSystem.Tests.Moves.Actions
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
+
             var otherCharacters = new[]
             {
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var buff = TestHelpers.CreateBuff(new OthersMoveTargetCalculator());
+            var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = buff.Use(user, otherCharacters);
+            var actionResults = protect.Use(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
@@ -83,10 +78,10 @@ namespace BattleSystem.Tests.Moves.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var buff = TestHelpers.CreateBuff();
+            var protect = TestHelpers.CreateProtect();
 
             // Act
-            var actionResults = buff.Use(user, otherCharacters);
+            var actionResults = protect.Use(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);

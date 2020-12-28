@@ -3,14 +3,13 @@ using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Moves.Actions.Results;
 using BattleSystem.Moves.Targets;
-using BattleSystem.Stats;
 
 namespace BattleSystem.Moves.Actions
 {
     /// <summary>
-    /// Represents a buffing move action.
+    /// Represents a protecting move action, which nullifies all damage dealt by an attack.
     /// </summary>
-    public class Buff : IMoveAction
+    public class Protect : IMoveAction
     {
         /// <summary>
         /// The move target calculator.
@@ -18,20 +17,7 @@ namespace BattleSystem.Moves.Actions
         private IMoveTargetCalculator _moveTargetCalculator;
 
         /// <summary>
-        /// Gets or sets the buff's stat multipliers for the target.
-        /// </summary>
-        public IDictionary<StatCategory, double> TargetMultipliers { get; private set; }
-
-        /// <summary>
-        /// Creates a new <see cref="Buff"/>.
-        /// </summary>
-        public Buff()
-        {
-            TargetMultipliers = new Dictionary<StatCategory, double>();
-        }
-
-        /// <summary>
-        /// Sets the move target calculator for this buff.
+        /// Sets the move target calculator for this protect action.
         /// </summary>
         /// <param name="moveTargetCalculator">The move target calculator.</param>
         public void SetMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
@@ -46,9 +32,9 @@ namespace BattleSystem.Moves.Actions
 
             var results = new List<IMoveActionResult>();
 
-            foreach (var target in targets.Where(c => !c.IsDead).ToArray())
+            foreach (var target in targets.Where(c => !c.IsDead))
             {
-                var result = target.ReceiveBuff(TargetMultipliers, user.Id);
+                var result = target.AddProtect(user.Id);
                 results.Add(result);
             }
 

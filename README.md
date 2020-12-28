@@ -45,6 +45,10 @@ This is a library that provides functionality for characters battling against ot
 - has `H` power
 - heals character for either up to `H` health or up to `H`% of their max health
 
+### Protect
+
+- nullifies all damage from next attack against the move target
+
 <a name="stat"></a>
 ## Stat
 

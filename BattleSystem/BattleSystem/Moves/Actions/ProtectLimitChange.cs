@@ -3,14 +3,13 @@ using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Moves.Actions.Results;
 using BattleSystem.Moves.Targets;
-using BattleSystem.Stats;
 
 namespace BattleSystem.Moves.Actions
 {
     /// <summary>
-    /// Represents a buffing move action.
+    /// Represents a move action that changes the protect limit of the target character.
     /// </summary>
-    public class Buff : IMoveAction
+    public class ProtectLimitChange : IMoveAction
     {
         /// <summary>
         /// The move target calculator.
@@ -18,20 +17,12 @@ namespace BattleSystem.Moves.Actions
         private IMoveTargetCalculator _moveTargetCalculator;
 
         /// <summary>
-        /// Gets or sets the buff's stat multipliers for the target.
+        /// Gets or sets the amount to change the target's protect limit by.
         /// </summary>
-        public IDictionary<StatCategory, double> TargetMultipliers { get; private set; }
+        public int Amount { get; set; }
 
         /// <summary>
-        /// Creates a new <see cref="Buff"/>.
-        /// </summary>
-        public Buff()
-        {
-            TargetMultipliers = new Dictionary<StatCategory, double>();
-        }
-
-        /// <summary>
-        /// Sets the move target calculator for this buff.
+        /// Sets the move target calculator for this protect limit change.
         /// </summary>
         /// <param name="moveTargetCalculator">The move target calculator.</param>
         public void SetMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
@@ -40,15 +31,15 @@ namespace BattleSystem.Moves.Actions
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<IMoveActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
+        public IEnumerable<IMoveActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
         {
             var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
 
             var results = new List<IMoveActionResult>();
 
-            foreach (var target in targets.Where(c => !c.IsDead).ToArray())
+            foreach (var target in targets.Where(c => !c.IsDead))
             {
-                var result = target.ReceiveBuff(TargetMultipliers, user.Id);
+                var result = target.ChangeProtectLimit(Amount, user.Id);
                 results.Add(result);
             }
 

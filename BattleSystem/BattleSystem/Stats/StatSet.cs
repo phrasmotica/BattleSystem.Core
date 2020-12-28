@@ -1,4 +1,6 @@
-﻿namespace BattleSystem.Stats
+﻿using System.Collections.Generic;
+
+namespace BattleSystem.Stats
 {
     /// <summary>
     /// Represents a set of stats.
@@ -19,5 +21,18 @@
         /// Gets or sets the speed stat.
         /// </summary>
         public Stat Speed { get; set; }
+
+        /// <summary>
+        /// Returns a dictionary of the stat multipliers of this stat set.
+        /// </summary>
+        public IDictionary<StatCategory, double> MultipliersAsDictionary()
+        {
+            return new Dictionary<StatCategory, double>
+            {
+                [StatCategory.Attack] = Attack.Multiplier,
+                [StatCategory.Defence] = Defence.Multiplier,
+                [StatCategory.Speed] = Speed.Multiplier,
+            };
+        }
     }
 }
