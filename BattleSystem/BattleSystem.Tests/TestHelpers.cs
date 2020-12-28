@@ -2,6 +2,7 @@
 using BattleSystem.Characters;
 using BattleSystem.Damage;
 using BattleSystem.Healing;
+using BattleSystem.Items;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Actions;
 using BattleSystem.Moves.Success;
@@ -75,6 +76,22 @@ namespace BattleSystem.Tests
             }
 
             return moveSet;
+        }
+
+        /// <summary>
+        /// Returns an item slot.
+        /// </summary>
+        public static ItemSlot CreateItemSlot()
+        {
+            return new ItemSlot();
+        }
+
+        /// <summary>
+        /// Returns an item.
+        /// </summary>
+        public static IItem CreateItem()
+        {
+            return new Item();
         }
 
         /// <summary>

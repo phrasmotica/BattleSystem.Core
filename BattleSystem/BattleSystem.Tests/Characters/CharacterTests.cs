@@ -13,6 +13,87 @@ namespace BattleSystem.Tests.Characters
     public class CharacterTests
     {
         [Test]
+        public void EquipItem_FirstItem_SetsItem()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+            var item = TestHelpers.CreateItem();
+
+            // Act
+            var result = target.EquipItem(item);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(target.ItemSlot.Current, Is.EqualTo(item));
+                Assert.That(result.Success, Is.True);
+                Assert.That(result.HadPreviousItem, Is.False);
+                Assert.That(result.PreviousItem, Is.Null);
+            });
+        }
+
+        [Test]
+        public void EquipItem_SubsequentItem_SetsItem()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+
+            var item1 = TestHelpers.CreateItem();
+            _ = target.EquipItem(item1);
+
+            var item2 = TestHelpers.CreateItem();
+
+            // Act
+            var result = target.EquipItem(item2);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(target.ItemSlot.Current, Is.EqualTo(item2));
+                Assert.That(result.Success, Is.True);
+                Assert.That(result.HadPreviousItem, Is.True);
+                Assert.That(result.PreviousItem, Is.EqualTo(item1));
+            });
+        }
+
+        [Test]
+        public void RemoveItem_HasItem_RemovesItem()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+            var item = TestHelpers.CreateItem();
+            _ = target.EquipItem(item);
+
+            // Act
+            var result = target.RemoveItem();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(target.ItemSlot.HasItem, Is.False);
+                Assert.That(result.Success, Is.True);
+                Assert.That(result.Item, Is.EqualTo(item));
+            });
+        }
+
+        [Test]
+        public void RemoveItem_HasNoItem_Fails()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+
+            // Act
+            var result = target.RemoveItem();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Success, Is.False);
+                Assert.That(result.Item, Is.Null);
+            });
+        }
+
+        [Test]
         public void ReceiveDamage_TakesDamage()
         {
             // Arrange
