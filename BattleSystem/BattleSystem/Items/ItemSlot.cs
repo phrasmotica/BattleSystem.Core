@@ -10,7 +10,7 @@ namespace BattleSystem.Items
         /// <summary>
         /// The items that have occupied this item slot.
         /// </summary>
-        private readonly Stack<IItem> Items;
+        private readonly Stack<Item> Items;
 
         /// <summary>
         /// Gets whether there is an active item in this item slot.
@@ -20,21 +20,21 @@ namespace BattleSystem.Items
         /// <summary>
         /// Gets the current item.
         /// </summary>
-        public IItem Current => Items.Peek();
+        public Item Current => Items.Peek();
 
         /// <summary>
         /// Creates a new <see cref="ItemSlot"/> instance.
         /// </summary>
         public ItemSlot()
         {
-            Items = new Stack<IItem>();
+            Items = new Stack<Item>();
         }
 
         /// <summary>
         /// Sets the current item to the given item.
         /// </summary>
         /// <param name="item">The item.</param>
-        public void Set(IItem item)
+        public void Set(Item item)
         {
             Items.Push(item);
         }

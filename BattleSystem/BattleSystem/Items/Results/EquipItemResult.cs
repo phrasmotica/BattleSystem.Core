@@ -18,6 +18,6 @@
         /// <summary>
         /// Gets or sets the item that was previously equipped to the character.
         /// </summary>
-        public IItem PreviousItem { get; set; }
+        public Item PreviousItem { get; set; }
     }
 }

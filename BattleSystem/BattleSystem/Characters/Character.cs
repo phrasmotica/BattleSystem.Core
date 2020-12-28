@@ -114,11 +114,11 @@ namespace BattleSystem.Characters
         /// Equips the given item and returns the result.
         /// </summary>
         /// <param name="item">The item.</param>
-        public virtual EquipItemResult EquipItem(IItem item)
+        public virtual EquipItemResult EquipItem(Item item)
         {
             var hadPreviousItem = ItemSlot.HasItem;
 
-            IItem previousItem = null;
+            Item previousItem = null;
             if (hadPreviousItem)
             {
                 previousItem = ItemSlot.Current;

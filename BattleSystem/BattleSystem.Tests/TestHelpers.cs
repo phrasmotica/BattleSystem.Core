@@ -89,7 +89,7 @@ namespace BattleSystem.Tests
         /// <summary>
         /// Returns an item.
         /// </summary>
-        public static IItem CreateItem()
+        public static Item CreateItem()
         {
             return new Item();
         }

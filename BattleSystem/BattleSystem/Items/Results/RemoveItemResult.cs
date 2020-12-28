@@ -13,6 +13,6 @@
         /// <summary>
         /// Gets or sets the item that was removed from the character.
         /// </summary>
-        public IItem Item { get; set; }
+        public Item Item { get; set; }
     }
 }
