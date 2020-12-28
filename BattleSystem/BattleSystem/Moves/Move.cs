@@ -136,17 +136,24 @@ namespace BattleSystem.Moves
         /// <param name="otherCharacters">The other characters.</param>
         public (MoveUseResult, IEnumerable<IEnumerable<IMoveActionResult>>) Use(Character user, IEnumerable<Character> otherCharacters)
         {
-            // TODO: move success calculator to move actions
             var result = _successCalculator.Calculate(user, this, otherCharacters);
 
             var actionsResults = new List<IEnumerable<IMoveActionResult>>();
+
+            var targets = otherCharacters.ToArray();
 
             if (result == MoveUseResult.Success)
             {
                 foreach (var action in _moveActions)
                 {
-                    var actionResults = action.Use(user, otherCharacters);
+                    var actionResults = action.Use(user, targets);
                     actionsResults.Add(actionResults);
+
+                    // ensure targets can't be affected by subsequent move actions
+                    // if they weren't affected by the previous one
+                    var affectedCharacters = actionResults.Where(ar => ar.Applied)
+                                                          .Select(ar => ar.TargetId);
+                    targets = targets.Where(t => affectedCharacters.Contains(t.Id)).ToArray();
                 }
             }
 
