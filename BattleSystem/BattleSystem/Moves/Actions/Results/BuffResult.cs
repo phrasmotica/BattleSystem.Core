@@ -32,12 +32,12 @@ namespace BattleSystem.Moves.Actions.Results
         /// <summary>
         /// Gets or sets the changes in stat multipliers resulting from this buff.
         /// </summary>
-        public IDictionary<StatCategory, double> StartingStatMultipliers { get; set; }
+        public IDictionary<StatCategory, double> StartingStatMultipliers { get; set; } = new Dictionary<StatCategory, double>();
 
         /// <summary>
         /// Gets or sets the changes in stat multipliers resulting from this buff.
         /// </summary>
-        public IDictionary<StatCategory, double> EndingStatMultipliers { get; set; }
+        public IDictionary<StatCategory, double> EndingStatMultipliers { get; set; } = new Dictionary<StatCategory, double>();
 
         /// <summary>
         /// Gets or sets the changes in stat multipliers resulting from this buff.
