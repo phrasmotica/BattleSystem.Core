@@ -19,7 +19,7 @@ namespace BattleSystem.Tests.Characters
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
 
             // Act
-            _ = target.ReceiveDamage(2);
+            _ = target.ReceiveDamage(2, "omd");
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(3));
@@ -33,7 +33,7 @@ namespace BattleSystem.Tests.Characters
             target.AddProtect("userId");
 
             // Act
-            _ = target.ReceiveDamage(2);
+            _ = target.ReceiveDamage(2, "omd");
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(5));
@@ -46,7 +46,7 @@ namespace BattleSystem.Tests.Characters
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
 
             // Act
-            _ = target.ReceiveDamage(6);
+            _ = target.ReceiveDamage(6, "omd");
 
             // Assert
             Assert.That(target.IsDead, Is.True);
@@ -64,7 +64,7 @@ namespace BattleSystem.Tests.Characters
                 [StatCategory.Attack] = 0.2,
                 [StatCategory.Defence] = -0.3,
                 [StatCategory.Speed] = -0.1,
-            });
+            }, "omd");
 
             // Assert
             Assert.That(target.Stats.Attack.CurrentValue, Is.EqualTo(12));
@@ -77,10 +77,10 @@ namespace BattleSystem.Tests.Characters
         {
             // Arrange
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
-            _ = target.ReceiveDamage(2);
+            _ = target.ReceiveDamage(2, "omd");
 
             // Act
-            target.Heal(2);
+            target.Heal(2, "omd");
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(5));
@@ -107,22 +107,22 @@ namespace BattleSystem.Tests.Characters
             _ = target.AddProtect("DJ rozwell");
 
             // Act
-            _ = target.AddProtect("DJ rozwell");
+            _ = target.AddProtect(target.Id);
 
             // Assert
             Assert.That(target.ProtectCount, Is.EqualTo(1));
         }
 
         [Test]
-        public void ChangeProtectCountLimit_ChangesProtectCountLimit()
+        public void ChangeProtectLimit_ChangesProtectLimit()
         {
             // Arrange
             var target = TestHelpers.CreateBasicCharacter();
             _ = target.AddProtect("DJ rozwell");
-            _ = target.ChangeProtectCountLimit(1);
+            _ = target.ChangeProtectLimit(1, target.Id); // ensures this isn't protected against
 
             // Act
-            _ = target.AddProtect("DJ rozwell");
+            _ = target.AddProtect(target.Id); // ensures this isn't protected against
 
             // Assert
             Assert.That(target.ProtectCount, Is.EqualTo(2));

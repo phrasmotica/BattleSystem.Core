@@ -60,7 +60,7 @@ namespace BattleSystem.Moves.Actions
             foreach (var target in targets.Where(c => !c.IsDead).ToArray())
             {
                 var damage = _damageCalculator.Calculate(user, this, target);
-                var result = target.ReceiveDamage(damage);
+                var result = target.ReceiveDamage(damage, user.Id);
                 results.Add(result);
             }
 

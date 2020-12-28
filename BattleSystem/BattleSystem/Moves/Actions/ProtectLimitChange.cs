@@ -39,7 +39,7 @@ namespace BattleSystem.Moves.Actions
 
             foreach (var target in targets.Where(c => !c.IsDead))
             {
-                var result = target.ChangeProtectCountLimit(Amount);
+                var result = target.ChangeProtectLimit(Amount, user.Id);
                 results.Add(result);
             }
 

@@ -36,7 +36,7 @@ namespace BattleSystem.Tests.Moves.Actions
 
             var heal = TestHelpers.CreateHeal(healingCalculator.Object, new OthersMoveTargetCalculator());
 
-            _ = otherCharacters[0].ReceiveDamage(2);
+            _ = otherCharacters[0].ReceiveDamage(2, "omd");
 
             // Act
             heal.Use(user, otherCharacters);

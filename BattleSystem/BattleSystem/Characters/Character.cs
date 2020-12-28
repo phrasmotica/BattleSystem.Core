@@ -106,18 +106,19 @@ namespace BattleSystem.Characters
         /// Takes the incoming damage and returns the result.
         /// </summary>
         /// <param name="damage">The incoming damage.</param>
-        public virtual AttackResult ReceiveDamage(int damage)
+        /// <param name="userId">The ID of the character who inflicted the incoming damage.</param>
+        public virtual AttackResult ReceiveDamage(int damage, string userId)
         {
-            if (ProtectQueue.Count > 0)
+            if (userId != Id && ProtectQueue.Count > 0)
             {
-                var userId = ConsumeProtect();
+                var protectUserId = ConsumeProtect();
 
                 return new AttackResult
                 {
                     Applied = false,
                     TargetId = Id,
                     TargetProtected = true,
-                    ProtectUserId = userId,
+                    ProtectUserId = protectUserId,
                 };
             }
 
@@ -139,18 +140,21 @@ namespace BattleSystem.Characters
         /// Receives effects from the given buff and returns the result.
         /// </summary>
         /// <param name="multipliers">The effects of incoming buff.</param>
-        public virtual BuffResult ReceiveBuff(IDictionary<StatCategory, double> multipliers)
+        /// <param name="userId">The ID of the character who used the incoming buff.</param>
+        public virtual BuffResult ReceiveBuff(
+            IDictionary<StatCategory, double> multipliers,
+            string userId)
         {
-            if (ProtectQueue.Count > 0)
+            if (userId != Id && ProtectQueue.Count > 0)
             {
-                var userId = ConsumeProtect();
+                var protectUserId = ConsumeProtect();
 
                 return new BuffResult
                 {
                     Applied = false,
                     TargetId = Id,
                     TargetProtected = true,
-                    ProtectUserId = userId,
+                    ProtectUserId = protectUserId,
                 };
             }
 
@@ -195,18 +199,19 @@ namespace BattleSystem.Characters
         /// Restores the given amount of health, capped by the character's max health, and returns the result.
         /// </summary>
         /// <param name="amount">The healing amount.</param>
-        public virtual HealResult Heal(int amount)
+        /// <param name="userId">The ID of the character who used the incoming heal.</param>
+        public virtual HealResult Heal(int amount, string userId)
         {
-            if (ProtectQueue.Count > 0)
+            if (userId != Id && ProtectQueue.Count > 0)
             {
-                var userId = ConsumeProtect();
+                var protectUserId = ConsumeProtect();
 
                 return new HealResult
                 {
                     Applied = false,
                     TargetId = Id,
                     TargetProtected = true,
-                    ProtectUserId = userId,
+                    ProtectUserId = protectUserId,
                 };
             }
 
@@ -227,9 +232,10 @@ namespace BattleSystem.Characters
         /// <summary>
         /// Adds an item to the protect queue, which protects the character from the next attack.
         /// </summary>
+        /// <param name="userId">The ID of the character who protected this character.</param>
         public virtual ProtectResult AddProtect(string userId)
         {
-            if (ProtectQueue.Count > 0)
+            if (userId != Id && ProtectQueue.Count > 0)
             {
                 var protectUserId = ConsumeProtect();
 
@@ -262,20 +268,22 @@ namespace BattleSystem.Characters
         }
 
         /// <summary>
-        /// Changes the protect count limit by the given amount.
+        /// Changes the protect limit by the given amount.
         /// </summary>
-        public ProtectLimitChangeResult ChangeProtectCountLimit(int amount)
+        /// <param name="amount">The amount.</param>
+        /// <param name="userId">The ID of the character who caused this protect limit change.</param>
+        public ProtectLimitChangeResult ChangeProtectLimit(int amount, string userId)
         {
-            if (ProtectQueue.Count > 0)
+            if (userId != Id && ProtectQueue.Count > 0)
             {
-                var userId = ConsumeProtect();
+                var protectUserId = ConsumeProtect();
 
                 return new ProtectLimitChangeResult
                 {
                     Applied = false,
                     TargetId = Id,
                     TargetProtected = true,
-                    ProtectUserId = userId,
+                    ProtectUserId = protectUserId,
                 };
             }
 

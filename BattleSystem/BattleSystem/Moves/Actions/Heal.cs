@@ -60,7 +60,7 @@ namespace BattleSystem.Moves.Actions
             foreach (var target in targets.Where(c => !c.IsDead).ToArray())
             {
                 var amount = _healingCalculator.Calculate(user, this, target);
-                var result = target.Heal(amount);
+                var result = target.Heal(amount, user.Id);
                 results.Add(result);
             }
 

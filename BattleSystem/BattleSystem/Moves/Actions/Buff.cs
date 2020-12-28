@@ -48,7 +48,7 @@ namespace BattleSystem.Moves.Actions
 
             foreach (var target in targets.Where(c => !c.IsDead).ToArray())
             {
-                var result = target.ReceiveBuff(TargetMultipliers);
+                var result = target.ReceiveBuff(TargetMultipliers, user.Id);
                 results.Add(result);
             }
 

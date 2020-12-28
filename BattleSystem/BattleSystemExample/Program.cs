@@ -111,7 +111,7 @@ namespace BattleSystemExample
                     .WithMove(
                         new MoveBuilder()
                             .Name("Restore")
-                            .Describe("The user drinks a potion to restore 20 health, while also increasing their protect count limit by one.")
+                            .Describe("The user drinks a potion to restore 20 health, while also increasing their protect limit by one.")
                             .WithMaxUses(10)
                             .AlwaysSucceeds()
                             .WithAction(
