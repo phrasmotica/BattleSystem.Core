@@ -29,6 +29,12 @@ namespace BattleSystemExample.Input
         }
 
         /// <inheritdoc />
+        public string ReadLine()
+        {
+            return Console.ReadLine();
+        }
+
+        /// <inheritdoc />
         public string SelectChoice(string prompt = null, params string[] choices)
         {
             if (prompt is not null)

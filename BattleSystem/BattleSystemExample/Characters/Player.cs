@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Moves;
 using BattleSystem.Stats;
+using BattleSystemExample.Extensions;
 using BattleSystemExample.Input;
 using BattleSystemExample.Output;
 
@@ -42,10 +44,7 @@ namespace BattleSystemExample.Characters
         /// <inheritdoc/>
         public override MoveUse ChooseMove(IEnumerable<Character> otherCharacters)
         {
-            _gameOutput.WriteLine($"What will {Name} do?");
-            _gameOutput.WriteLine(Moves.Summarise(true));
-
-            var move = SelectMove();
+            var move = SelectMove(otherCharacters);
 
             return new MoveUse
             {
@@ -58,16 +57,40 @@ namespace BattleSystemExample.Characters
         /// <summary>
         /// Lets the player select a move and returns it.
         /// </summary>
-        private Move SelectMove()
+        /// <param name="otherCharacters">The other characters in the battle.</param>
+        private Move SelectMove(IEnumerable<Character> otherCharacters)
         {
             Move move = null;
 
             var validIndexes = Moves.GetIndexes();
             int chosenIndex = -1;
 
+            var allCharacters = otherCharacters.Prepend(this).ToArray();
+
             while (!validIndexes.Contains(chosenIndex) || !(move?.CanUse() ?? false))
             {
-                chosenIndex = _userInput.SelectIndex();
+                _gameOutput.WriteLine();
+                _gameOutput.WriteLine($"What will {Name} do?");
+                _gameOutput.WriteLine(Moves.Summarise(true));
+                _gameOutput.WriteLine();
+
+                var inspectChoices = allCharacters.Select((_, i) => $"inspect {i + 1}").ToArray();
+
+                var input = _userInput.ReadLine();
+                if (input == "view")
+                {
+                    ViewCharacters(otherCharacters);
+                    continue;
+                }
+
+                var index = Array.IndexOf(inspectChoices, input);
+                if (index > -1)
+                {
+                    InspectPlayer(allCharacters[index]);
+                    continue;
+                }
+
+                var inputIsValid = int.TryParse(input, out chosenIndex);
 
                 if (!validIndexes.Contains(chosenIndex))
                 {
@@ -75,7 +98,7 @@ namespace BattleSystemExample.Characters
                     continue;
                 }
 
-                // chosenIndex is between 1 and 4, so subtract 1 to avoid off-by-one errors
+                // chosenIndex starts from 1, so subtract 1 to avoid off-by-one errors
                 move = Moves.GetMove(chosenIndex - 1);
 
                 if (!move.CanUse())
@@ -85,6 +108,49 @@ namespace BattleSystemExample.Characters
             }
 
             return move;
+        }
+
+        /// <summary>
+        /// Views a summary of all the characters.
+        /// </summary>
+        private void ViewCharacters(IEnumerable<Character> otherCharacters)
+        {
+            var allCharacters = otherCharacters.Prepend(this).ToArray();
+            var teams = allCharacters.GroupBy(c => c.Team).ToArray();
+
+            foreach (var team in teams)
+            {
+                _gameOutput.WriteLine();
+
+                foreach (var c in team.Where(c => !c.IsDead))
+                {
+                    _gameOutput.WriteLine(c.Summarise());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Inspects the given character.
+        /// </summary>
+        /// <param name="character">The character.</param>
+        private void InspectPlayer(Character character)
+        {
+            _gameOutput.WriteLine();
+            _gameOutput.WriteLine(character.Summarise());
+
+            if (character.Team == Team)
+            {
+                _gameOutput.WriteLine();
+                _gameOutput.WriteLine("Moves:");
+                _gameOutput.WriteLine(character.Moves.Summarise());
+
+                if (character.ItemSlot.HasItem)
+                {
+                    _gameOutput.WriteLine();
+                    _gameOutput.WriteLine("Item:");
+                    _gameOutput.WriteLine(character.ItemSlot.Current.Summarise());
+                }
+            }
         }
     }
 }

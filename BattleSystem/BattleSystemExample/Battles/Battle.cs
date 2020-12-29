@@ -5,6 +5,7 @@ using BattleSystem.Moves;
 using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Success;
 using BattleSystemExample.Output;
+using BattleSystemExample.Extensions;
 
 namespace BattleSystemExample.Battles
 {
@@ -58,16 +59,14 @@ namespace BattleSystemExample.Battles
 
             while (teams.All(t => t.Any(c => !c.IsDead)))
             {
-                _gameOutput.WriteLine();
-
                 foreach (var team in teams)
                 {
+                    _gameOutput.WriteLine();
+
                     foreach (var c in team.Where(c => !c.IsDead))
                     {
-                        _gameOutput.WriteLine($"{c.Name}: {c.CurrentHealth}/{c.MaxHealth} HP");
+                        _gameOutput.WriteLine(c.Summarise());
                     }
-
-                    _gameOutput.WriteLine();
                 }
 
                 var characterOrder = _characters.Where(c => !c.IsDead)
