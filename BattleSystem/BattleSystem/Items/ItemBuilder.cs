@@ -80,8 +80,12 @@ namespace BattleSystem.Items
         {
             return WithStatsTransform(ss =>
             {
-                ss.Attack.BaseValue = (int) (ss.Attack.BaseValue * (1 + factor));
-                return ss;
+                return new StatSet
+                {
+                    Attack = new Stat((int) (ss.Attack.BaseValue * (1 + factor)), ss.Defence.Multiplier),
+                    Defence = new Stat(ss.Defence.BaseValue, ss.Defence.Multiplier),
+                    Speed = new Stat(ss.Speed.BaseValue, ss.Speed.Multiplier),
+                };
             });
         }
 

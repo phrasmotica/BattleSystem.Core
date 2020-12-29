@@ -38,10 +38,12 @@ namespace BattleSystem.Tests.Characters
 
             var item = TestHelpers.CreateItem(statTransforms: ss =>
             {
-                ss.Attack.BaseValue = (int) (ss.Attack.BaseValue * 1.1);
-                ss.Defence.BaseValue = (int) (ss.Defence.BaseValue * 1.2);
-                ss.Speed.BaseValue = (int) (ss.Speed.BaseValue * 1.3);
-                return ss;
+                return new StatSet
+                {
+                    Attack = new Stat((int) (ss.Attack.BaseValue * 1.1)),
+                    Defence = new Stat((int) (ss.Defence.BaseValue * 1.2)),
+                    Speed = new Stat((int) (ss.Speed.BaseValue * 1.3)),
+                };
             });
             _ = character.EquipItem(item);
 
