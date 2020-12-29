@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Characters;
-using BattleSystem.Moves;
 using BattleSystem.Actions;
+using BattleSystem.Characters;
+using BattleSystem.Items;
+using BattleSystem.Moves;
 using BattleSystem.Stats;
 using BattleSystemExample.Battles;
 using BattleSystemExample.Characters;
@@ -139,6 +140,14 @@ namespace BattleSystemExample
                 100,
                 playerStats,
                 playerMoves);
+
+            player.EquipItem(
+                new ItemBuilder()
+                    .Name("Might Relic")
+                    .Describe("Increases the holder's Attack stat by 50%.")
+                    .WithIncreaseAttack(0.5)
+                    .Build()
+            );
 
             var bardStats = new StatSet
             {
