@@ -43,7 +43,7 @@ namespace BattleSystemExample.Characters
         public override MoveUse ChooseMove(IEnumerable<Character> otherCharacters)
         {
             _gameOutput.WriteLine($"What will {Name} do?");
-            _gameOutput.WriteLine(Moves.GetChoices());
+            _gameOutput.WriteLine(Moves.Summarise(true));
 
             var move = SelectMove();
 

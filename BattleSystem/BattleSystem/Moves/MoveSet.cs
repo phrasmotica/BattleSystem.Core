@@ -56,11 +56,18 @@ namespace BattleSystem.Moves
         }
 
         /// <summary>
-        /// Returns the choices in this move set as a string.
+        /// Returns the choices in this move set as a string. Optionally prepends each choice with a
+        /// numeric index.
         /// </summary>
-        public string GetChoices()
+        public string Summarise(bool includeIndexes = false)
         {
-            var choices = Moves.Select((move, index) => $"{index + 1}: {move.Summary}");
+            var choices = Moves.Select(move => move.Summary);
+
+            if (includeIndexes)
+            {
+                choices = choices.Select((choice, index) => $"{index + 1}: {choice}");
+            }
+
             return string.Join("\n", choices);
         }
 

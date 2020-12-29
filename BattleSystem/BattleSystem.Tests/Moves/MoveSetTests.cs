@@ -51,7 +51,7 @@ namespace BattleSystem.Tests.Moves
         }
 
         [Test]
-        public void GetChoices_ContainsCorrectMoveNames()
+        public void Summarise_ContainsCorrectSummaries()
         {
             // Arrange
             var moveSet = TestHelpers.CreateMoveSet(
@@ -60,13 +60,33 @@ namespace BattleSystem.Tests.Moves
             );
 
             // Act
-            var choices = moveSet.GetChoices();
+            var choices = moveSet.Summarise();
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.That(choices, Contains.Substring("move1"));
                 Assert.That(choices, Contains.Substring("move3"));
+            });
+        }
+
+        [Test]
+        public void Summarise_WithIndexes_ContainsCorrectSummaries()
+        {
+            // Arrange
+            var moveSet = TestHelpers.CreateMoveSet(
+                TestHelpers.CreateMove(name: "move1"),
+                TestHelpers.CreateMove(name: "move3")
+            );
+
+            // Act
+            var choices = moveSet.Summarise(true);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(choices, Contains.Substring("1: move1"));
+                Assert.That(choices, Contains.Substring("2: move3"));
             });
         }
 
