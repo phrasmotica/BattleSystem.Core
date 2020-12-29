@@ -74,13 +74,13 @@ namespace BattleSystem.Items
         }
 
         /// <summary>
-        /// Adds a stats transform for increasing attack by 10% to the built item.
+        /// Adds a stats transform for increasing attack by the given factor to the built item.
         /// </summary>
-        public ItemBuilder WithIncreaseAttack()
+        public ItemBuilder WithIncreaseAttack(double factor = 0.1)
         {
             return WithStatsTransform(ss =>
             {
-                ss.Attack.BaseValue = (int) (ss.Attack.BaseValue * 1.1);
+                ss.Attack.BaseValue = (int) (ss.Attack.BaseValue * (1 + factor));
                 return ss;
             });
         }

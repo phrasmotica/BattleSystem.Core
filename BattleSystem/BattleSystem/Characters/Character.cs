@@ -41,7 +41,12 @@ namespace BattleSystem.Characters
         /// <summary>
         /// Gets or sets the character's stats.
         /// </summary>
-        public StatSet Stats { get; protected set; }
+        public StatSet Stats
+        {
+            get => TransformStats(stats);
+            protected set => stats = value;
+        }
+        private StatSet stats;
 
         /// <summary>
         /// Gets or sets the character's moves.
@@ -374,6 +379,20 @@ namespace BattleSystem.Characters
         public void ClearProtectQueue()
         {
             ProtectQueue.Clear();
+        }
+
+        /// <summary>
+        /// Transforms the given stat set based on the character's item.
+        /// </summary>
+        /// <param name="stats">The stat set.</param>
+        protected StatSet TransformStats(StatSet stats)
+        {
+            if (ItemSlot.HasItem)
+            {
+                return ItemSlot.Current.TransformStats(stats);
+            }
+
+            return stats;
         }
     }
 }

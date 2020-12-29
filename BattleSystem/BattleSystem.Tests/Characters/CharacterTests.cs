@@ -13,6 +13,51 @@ namespace BattleSystem.Tests.Characters
     public class CharacterTests
     {
         [Test]
+        public void Stats_Get_NoItem_ReturnsStats()
+        {
+            // Arrange
+            var character = TestHelpers.CreateBasicCharacter(attack: 1, defence: 2, speed: 3);
+
+            // Act
+            var stats = character.Stats;
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(stats.Attack.BaseValue, Is.EqualTo(1));
+                Assert.That(stats.Defence.BaseValue, Is.EqualTo(2));
+                Assert.That(stats.Speed.BaseValue, Is.EqualTo(3));
+            });
+        }
+
+        [Test]
+        public void Stats_Get_WithItem_ReturnsTransformedStats()
+        {
+            // Arrange
+            var character = TestHelpers.CreateBasicCharacter(attack: 10, defence: 20, speed: 30);
+
+            var item = TestHelpers.CreateItem(statTransforms: ss =>
+            {
+                ss.Attack.BaseValue = (int) (ss.Attack.BaseValue * 1.1);
+                ss.Defence.BaseValue = (int) (ss.Defence.BaseValue * 1.2);
+                ss.Speed.BaseValue = (int) (ss.Speed.BaseValue * 1.3);
+                return ss;
+            });
+            _ = character.EquipItem(item);
+
+            // Act
+            var stats = character.Stats;
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(stats.Attack.BaseValue, Is.EqualTo(11));
+                Assert.That(stats.Defence.BaseValue, Is.EqualTo(24));
+                Assert.That(stats.Speed.BaseValue, Is.EqualTo(39));
+            });
+        }
+
+        [Test]
         public void EquipItem_FirstItem_SetsItem()
         {
             // Arrange

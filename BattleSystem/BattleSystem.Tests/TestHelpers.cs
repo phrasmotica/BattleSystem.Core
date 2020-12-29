@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using BattleSystem.Actions;
 using BattleSystem.Characters;
 using BattleSystem.Damage;
 using BattleSystem.Healing;
 using BattleSystem.Items;
 using BattleSystem.Moves;
-using BattleSystem.Actions;
 using BattleSystem.Moves.Success;
 using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
@@ -89,9 +90,21 @@ namespace BattleSystem.Tests
         /// <summary>
         /// Returns an item.
         /// </summary>
-        public static Item CreateItem()
+        public static Item CreateItem(
+            string name = "jim",
+            string description = "eureka",
+            params Func<StatSet, StatSet>[] statTransforms)
         {
-            return new Item();
+            var builder = new ItemBuilder()
+                            .Name(name)
+                            .Describe(description);
+
+            foreach (var t in statTransforms)
+            {
+                builder = builder.WithStatsTransform(t);
+            }
+
+            return builder.Build();
         }
 
         /// <summary>
