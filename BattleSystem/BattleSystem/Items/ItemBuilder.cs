@@ -1,4 +1,5 @@
 ﻿using System;
+using BattleSystem.Moves;
 using BattleSystem.Stats;
 
 namespace BattleSystem.Items
@@ -87,6 +88,16 @@ namespace BattleSystem.Items
                     Speed = new Stat(ss.Speed.BaseValue, ss.Speed.Multiplier),
                 };
             });
+        }
+
+        /// <summary>
+        /// Adds the given move use transform to the built item.
+        /// </summary>
+        /// <param name="transform">The move use transform for the built item.</param>
+        public ItemBuilder WithMoveUseTransform(Func<MoveUse, MoveUse> transform)
+        {
+            _item.AddMoveUseTransform(transform);
+            return this;
         }
 
         /// <summary>

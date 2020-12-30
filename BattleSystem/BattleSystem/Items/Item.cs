@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BattleSystem.Moves;
 using BattleSystem.Stats;
 
 namespace BattleSystem.Items
@@ -25,11 +26,17 @@ namespace BattleSystem.Items
         private List<Func<StatSet, StatSet>> _statsTransforms;
 
         /// <summary>
+        /// The move use transform functions.
+        /// </summary>
+        private List<Func<MoveUse, MoveUse>> _moveUseTransforms;
+
+        /// <summary>
         /// Creates a new <see cref="Item"/> instance.
         /// </summary>
         public Item()
         {
             _statsTransforms = new List<Func<StatSet, StatSet>>();
+            _moveUseTransforms = new List<Func<MoveUse, MoveUse>>();
         }
 
         /// <summary>
@@ -60,6 +67,15 @@ namespace BattleSystem.Items
         }
 
         /// <summary>
+        /// Adds a move use transform function for this item.
+        /// </summary>
+        /// <param name="transform">The move use transform function to add.</param>
+        public void AddMoveUseTransform(Func<MoveUse, MoveUse> transform)
+        {
+            _moveUseTransforms.Add(transform);
+        }
+
+        /// <summary>
         /// Returns a transformed copy of the given stat set.
         /// </summary>
         /// <param name="stats">The stat set to transform.</param>
@@ -73,6 +89,22 @@ namespace BattleSystem.Items
             }
 
             return transformedStats;
+        }
+
+        /// <summary>
+        /// Returns a transformed copy of the given move use.
+        /// </summary>
+        /// <param name="moveUse">The move use to transform.</param>
+        public MoveUse TransformMoveUse(MoveUse moveUse)
+        {
+            var transformedMoveUse = moveUse;
+
+            foreach (var t in _moveUseTransforms)
+            {
+                transformedMoveUse = t(transformedMoveUse);
+            }
+
+            return transformedMoveUse;
         }
     }
 }
