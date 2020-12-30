@@ -10,6 +10,8 @@ using BattleSystem.Moves.Success;
 using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
 using Moq;
+using static BattleSystem.Actions.Attack;
+using static BattleSystem.Items.Item;
 
 namespace BattleSystem.Tests
 {
@@ -30,29 +32,24 @@ namespace BattleSystem.Tests
             int speed = 1,
             MoveSet moveSet = null)
         {
-            var statSet = CreateStatSet();
-            statSet.Attack.BaseValue = attack;
-            statSet.Defence.BaseValue = defence;
-            statSet.Speed.BaseValue = speed;
-
             return new BasicCharacter(
                 name,
                 team,
                 maxHealth,
-                statSet,
+                CreateStatSet(attack, defence, speed),
                 moveSet ?? CreateMoveSet());
         }
 
         /// <summary>
         /// Returns a stat set with default base values in each stat.
         /// </summary>
-        public static StatSet CreateStatSet()
+        public static StatSet CreateStatSet(int attack, int defence, int speed)
         {
             return new StatSet
             {
-                Attack = CreateStat(),
-                Defence = CreateStat(),
-                Speed = CreateStat(),
+                Attack = CreateStat(attack),
+                Defence = CreateStat(defence),
+                Speed = CreateStat(speed),
             };
         }
 
@@ -93,15 +90,45 @@ namespace BattleSystem.Tests
         public static Item CreateItem(
             string name = "jim",
             string description = "eureka",
-            params Func<StatSet, StatSet>[] statTransforms)
+            StatBaseValueTransform[] attackBaseValueTransforms = null,
+            StatBaseValueTransform[] defenceBaseValueTransforms = null,
+            StatBaseValueTransform[] speedBaseValueTransforms = null,
+            PowerTransform[] attackPowerTransforms = null)
         {
             var builder = new ItemBuilder()
                             .Name(name)
                             .Describe(description);
 
-            foreach (var t in statTransforms)
+            if (attackBaseValueTransforms is not null)
             {
-                builder = builder.WithStatsTransform(t);
+                foreach (var t in attackBaseValueTransforms)
+                {
+                    builder = builder.WithAttackBaseValueTransform(t);
+                }
+            }
+
+            if (defenceBaseValueTransforms is not null)
+            {
+                foreach (var t in defenceBaseValueTransforms)
+                {
+                    builder = builder.WithDefenceBaseValueTransform(t);
+                }
+            }
+
+            if (speedBaseValueTransforms is not null)
+            {
+                foreach (var t in speedBaseValueTransforms)
+                {
+                    builder = builder.WithSpeedBaseValueTransform(t);
+                }
+            }
+
+            if (attackPowerTransforms is not null)
+            {
+                foreach (var t in attackPowerTransforms)
+                {
+                    builder = builder.WithAttackPowerTransform(t);
+                }
             }
 
             return builder.Build();

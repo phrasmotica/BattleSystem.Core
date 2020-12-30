@@ -1,5 +1,6 @@
 ﻿using System;
-using BattleSystem.Stats;
+using static BattleSystem.Actions.Attack;
+using static BattleSystem.Items.Item;
 
 namespace BattleSystem.Items
 {
@@ -64,12 +65,32 @@ namespace BattleSystem.Items
         }
 
         /// <summary>
-        /// Adds the given stats transform to the built item.
+        /// Adds the given attack base value transform to the built item.
         /// </summary>
-        /// <param name="transform">The stats transform for the built item.</param>
-        public ItemBuilder WithStatsTransform(Func<StatSet, StatSet> transform)
+        /// <param name="transform">The attack base value transform for the built item.</param>
+        public ItemBuilder WithAttackBaseValueTransform(StatBaseValueTransform transform)
         {
-            _item.AddStatsTransform(transform);
+            _item.AddAttackBaseValueTransform(transform);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the given defence base value transform to the built item.
+        /// </summary>
+        /// <param name="transform">The defence base value transform for the built item.</param>
+        public ItemBuilder WithDefenceBaseValueTransform(StatBaseValueTransform transform)
+        {
+            _item.AddDefenceBaseValueTransform(transform);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the given speed base value transform to the built item.
+        /// </summary>
+        /// <param name="transform">The speed base value transform for the built item.</param>
+        public ItemBuilder WithSpeedBaseValueTransform(StatBaseValueTransform transform)
+        {
+            _item.AddSpeedBaseValueTransform(transform);
             return this;
         }
 
@@ -78,15 +99,17 @@ namespace BattleSystem.Items
         /// </summary>
         public ItemBuilder WithIncreaseAttack(double factor = 0.1)
         {
-            return WithStatsTransform(ss =>
-            {
-                return new StatSet
-                {
-                    Attack = new Stat((int) (ss.Attack.BaseValue * (1 + factor)), ss.Defence.Multiplier),
-                    Defence = new Stat(ss.Defence.BaseValue, ss.Defence.Multiplier),
-                    Speed = new Stat(ss.Speed.BaseValue, ss.Speed.Multiplier),
-                };
-            });
+            return WithAttackBaseValueTransform(a => (int) (a * (1 + factor)));
+        }
+
+        /// <summary>
+        /// Adds the given attack power transform to the built item.
+        /// </summary>
+        /// <param name="transform">The attack power transform for the built item.</param>
+        public ItemBuilder WithAttackPowerTransform(PowerTransform transform)
+        {
+            _item.AddAttackPowerTransform(transform);
+            return this;
         }
 
         /// <summary>

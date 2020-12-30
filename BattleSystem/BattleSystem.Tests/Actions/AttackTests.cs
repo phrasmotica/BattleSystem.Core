@@ -4,6 +4,7 @@ using BattleSystem.Actions;
 using BattleSystem.Moves.Targets;
 using Moq;
 using NUnit.Framework;
+using static BattleSystem.Actions.Attack;
 
 namespace BattleSystem.Tests.Actions
 {
@@ -98,6 +99,25 @@ namespace BattleSystem.Tests.Actions
 
             // Assert
             Assert.That(actionResults, Is.Empty);
+        }
+
+        [Test]
+        public void Power_Get_WithPowerTransforms_ReturnsTransformedPower()
+        {
+            // Arrange
+            var attack = TestHelpers.CreateAttack(power: 10);
+
+            var transforms = new PowerTransform[]
+            {
+                p => p + 10,
+                p => p * 2,
+            };
+            var item = TestHelpers.CreateItem(attackPowerTransforms: transforms);
+
+            attack.ReceiveTransforms(item);
+
+            // Act and Assert
+            Assert.That(attack.Power, Is.EqualTo(40));
         }
     }
 }

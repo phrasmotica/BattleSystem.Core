@@ -4,6 +4,7 @@ using BattleSystem.Characters;
 using BattleSystem.Damage;
 using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Targets;
+using BattleSystem.Items;
 
 namespace BattleSystem.Actions
 {
@@ -12,6 +13,12 @@ namespace BattleSystem.Actions
     /// </summary>
     public class Attack : IAction
     {
+        /// <summary>
+        /// Delegate for a function that transforms the given power.
+        /// </summary>
+        /// <param name="power">The power.</param>
+        public delegate int PowerTransform(int power);
+
         /// <summary>
         /// The damage calculator.
         /// </summary>
@@ -25,12 +32,25 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Gets or sets the attack's power.
         /// </summary>
-        public int Power { get; set; }
+        public int Power
+        {
+            get => TransformPower(power);
+            set => power = value;
+        }
+        private int power;
+
+        /// <summary>
+        /// Gets or sets the list of power transforms.
+        /// </summary>
+        public List<PowerTransform> PowerTransforms { get; private set; }
 
         /// <summary>
         /// Creates a new <see cref="Attack"/>.
         /// </summary>
-        public Attack() { }
+        public Attack()
+        {
+            PowerTransforms = new List<PowerTransform>();
+        }
 
         /// <summary>
         /// Sets the damage calculator for this attack.
@@ -65,6 +85,34 @@ namespace BattleSystem.Actions
             }
 
             return results;
+        }
+
+        /// <inheritdoc />
+        public void ReceiveTransforms(Item item)
+        {
+            PowerTransforms.AddRange(item.AttackPowerTransforms);
+        }
+
+        /// <inheritdoc />
+        public void ClearTransforms()
+        {
+            PowerTransforms.Clear();
+        }
+
+        /// <summary>
+        /// Transforms the given power based on the list of power transforms.
+        /// </summary>
+        /// <param name="power">The power.</param>
+        protected int TransformPower(int power)
+        {
+            var transformedPower = power;
+
+            foreach (var t in PowerTransforms)
+            {
+                transformedPower = t(transformedPower);
+            }
+
+            return transformedPower;
         }
     }
 }

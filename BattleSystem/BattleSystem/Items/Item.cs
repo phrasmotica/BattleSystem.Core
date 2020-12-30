@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BattleSystem.Stats;
+using static BattleSystem.Actions.Attack;
 
 namespace BattleSystem.Items
 {
@@ -9,6 +9,12 @@ namespace BattleSystem.Items
     /// </summary>
     public class Item
     {
+        /// <summary>
+        /// Delegate for a function that transforms the given base value of some stat.
+        /// </summary>
+        /// <param name="stats">The stat set.</param>
+        public delegate int StatBaseValueTransform(int baseValue);
+
         /// <summary>
         /// Gets or sets the name of the item.
         /// </summary>
@@ -20,16 +26,28 @@ namespace BattleSystem.Items
         public string Description { get; private set; }
 
         /// <summary>
-        /// The stats transform functions.
+        /// Gets or sets the map of stat base value transform functions.
         /// </summary>
-        private List<Func<StatSet, StatSet>> _statsTransforms;
+        public IDictionary<StatCategory, List<StatBaseValueTransform>> StatBaseValueTransforms { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the attack power transform functions.
+        /// </summary>
+        public List<PowerTransform> AttackPowerTransforms { get; private set; }
 
         /// <summary>
         /// Creates a new <see cref="Item"/> instance.
         /// </summary>
         public Item()
         {
-            _statsTransforms = new List<Func<StatSet, StatSet>>();
+            StatBaseValueTransforms = new Dictionary<StatCategory, List<StatBaseValueTransform>>
+            {
+                [StatCategory.Attack] = new List<StatBaseValueTransform>(),
+                [StatCategory.Defence] = new List<StatBaseValueTransform>(),
+                [StatCategory.Speed] = new List<StatBaseValueTransform>(),
+            };
+
+            AttackPowerTransforms = new List<PowerTransform>();
         }
 
         /// <summary>
@@ -51,28 +69,39 @@ namespace BattleSystem.Items
         }
 
         /// <summary>
-        /// Adds a stats transform function for this item.
+        /// Adds an attack base value transform function for this item.
         /// </summary>
-        /// <param name="transform">The stats transform function to add.</param>
-        public void AddStatsTransform(Func<StatSet, StatSet> transform)
+        /// <param name="transform">The attack base value transform function to add.</param>
+        public void AddAttackBaseValueTransform(StatBaseValueTransform transform)
         {
-            _statsTransforms.Add(transform);
+            StatBaseValueTransforms[StatCategory.Attack].Add(transform);
         }
 
         /// <summary>
-        /// Returns a transformed copy of the given stat set.
+        /// Adds an defence base value transform function for this item.
         /// </summary>
-        /// <param name="stats">The stat set to transform.</param>
-        public StatSet TransformStats(StatSet stats)
+        /// <param name="transform">The defence base value transform function to add.</param>
+        public void AddDefenceBaseValueTransform(StatBaseValueTransform transform)
         {
-            var transformedStats = stats;
+            StatBaseValueTransforms[StatCategory.Defence].Add(transform);
+        }
 
-            foreach (var t in _statsTransforms)
-            {
-                transformedStats = t(transformedStats);
-            }
+        /// <summary>
+        /// Adds an speed base value transform function for this item.
+        /// </summary>
+        /// <param name="transform">The speed base value transform function to add.</param>
+        public void AddSpeedBaseValueTransform(StatBaseValueTransform transform)
+        {
+            StatBaseValueTransforms[StatCategory.Speed].Add(transform);
+        }
 
-            return transformedStats;
+        /// <summary>
+        /// Adds an attack power transform function for this item.
+        /// </summary>
+        /// <param name="transform">The attack power transform function to add.</param>
+        public void AddAttackPowerTransform(PowerTransform transform)
+        {
+            AttackPowerTransforms.Add(transform);
         }
     }
 }

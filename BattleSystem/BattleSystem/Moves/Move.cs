@@ -146,6 +146,11 @@ namespace BattleSystem.Moves
             {
                 foreach (var action in _moveActions)
                 {
+                    if (user.ItemSlot.HasItem)
+                    {
+                        action.ReceiveTransforms(user.ItemSlot.Current);
+                    }
+
                     var actionResults = action.Use(user, targets);
                     actionsResults.Add(actionResults);
 
@@ -154,6 +159,8 @@ namespace BattleSystem.Moves
                     var affectedCharacters = actionResults.Where(ar => ar.Applied)
                                                           .Select(ar => ar.TargetId);
                     targets = targets.Where(t => affectedCharacters.Contains(t.Id)).ToArray();
+
+                    action.ClearTransforms();
                 }
             }
 

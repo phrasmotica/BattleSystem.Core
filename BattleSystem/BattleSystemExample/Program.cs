@@ -144,8 +144,8 @@ namespace BattleSystemExample
             player.EquipItem(
                 new ItemBuilder()
                     .Name("Might Relic")
-                    .Describe("Increases the holder's Attack stat by 50%.")
-                    .WithIncreaseAttack(0.5)
+                    .Describe("Increases the holder's base Attack stat by 2.")
+                    .WithAttackBaseValueTransform(v => v + 2)
                     .Build()
             );
 
@@ -176,6 +176,14 @@ namespace BattleSystemExample
                     .Build();
 
             var bard = new BasicCharacter("Bard", "a", 100, bardStats, bardMoves);
+
+            bard.EquipItem(
+                new ItemBuilder()
+                    .Name("Capo")
+                    .Describe("Makes the holder's music better, increasing the power of their attacks by 1.")
+                    .WithAttackPowerTransform(p => p + 1)
+                    .Build()
+            );
 
             var mageStats = new StatSet
             {
