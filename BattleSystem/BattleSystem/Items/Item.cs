@@ -23,12 +23,12 @@ namespace BattleSystem.Items
         /// <summary>
         /// The stats transform functions.
         /// </summary>
-        private List<Func<StatSet, StatSet>> _statsTransforms;
+        private readonly List<Func<StatSet, StatSet>> _statsTransforms;
 
         /// <summary>
         /// The move use transform functions.
         /// </summary>
-        private List<Func<MoveUse, MoveUse>> _moveUseTransforms;
+        private readonly List<Func<MoveUse, MoveUse>> _moveUseTransforms;
 
         /// <summary>
         /// Creates a new <see cref="Item"/> instance.
