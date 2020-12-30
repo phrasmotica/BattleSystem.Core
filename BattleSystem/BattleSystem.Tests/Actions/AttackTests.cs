@@ -102,17 +102,19 @@ namespace BattleSystem.Tests.Actions
         }
 
         [Test]
-        public void Use_WithPowerTransforms_ReturnsTransformedPower()
+        public void Power_Get_WithPowerTransforms_ReturnsTransformedPower()
         {
             // Arrange
-            var attack = TestHelpers.CreateAttack(
-                power: 10,
-                powerTransforms: new PowerTransform[]
-                {
-                    p => p + 10,
-                    p => p * 2,
-                }
-            );
+            var attack = TestHelpers.CreateAttack(power: 10);
+
+            var transforms = new PowerTransform[]
+            {
+                p => p + 10,
+                p => p * 2,
+            };
+            var item = TestHelpers.CreateItem(attackPowerTransforms: transforms);
+
+            attack.ReceiveTransforms(item);
 
             // Act and Assert
             Assert.That(attack.Power, Is.EqualTo(40));
