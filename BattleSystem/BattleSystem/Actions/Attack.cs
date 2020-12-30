@@ -66,5 +66,15 @@ namespace BattleSystem.Actions
 
             return results;
         }
+
+        /// <inheritdoc />
+        public void ReceiveTransforms(Item item)
+        {
+        }
+
+        /// <inheritdoc />
+        public void ClearTransforms()
+        {
+        }
     }
 }
