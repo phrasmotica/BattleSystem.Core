@@ -1,5 +1,6 @@
 ﻿using System;
 using BattleSystem.Stats;
+using static BattleSystem.Actions.Attack;
 using static BattleSystem.Items.Item;
 
 namespace BattleSystem.Items
@@ -91,12 +92,12 @@ namespace BattleSystem.Items
         }
 
         /// <summary>
-        /// Adds the given move use transform to the built item.
+        /// Adds the given attack power transform to the built item.
         /// </summary>
-        /// <param name="transform">The move use transform for the built item.</param>
-        public ItemBuilder WithMoveUseTransform(MoveUseTransform transform)
+        /// <param name="transform">The attack power transform for the built item.</param>
+        public ItemBuilder WithAttackPowerTransform(PowerTransform transform)
         {
-            _item.AddMoveUseTransform(transform);
+            _item.AddAttackPowerTransform(transform);
             return this;
         }
 

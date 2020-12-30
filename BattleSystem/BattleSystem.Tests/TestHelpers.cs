@@ -10,6 +10,8 @@ using BattleSystem.Moves.Success;
 using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
 using Moq;
+using static BattleSystem.Actions.Attack;
+using static BattleSystem.Items.Item;
 
 namespace BattleSystem.Tests
 {
@@ -94,14 +96,26 @@ namespace BattleSystem.Tests
             string name = "jim",
             string description = "eureka",
             StatSetTransform[] statTransforms = null,
+            PowerTransform[] attackPowerTransforms = null)
         {
             var builder = new ItemBuilder()
                             .Name(name)
                             .Describe(description);
 
-            foreach (var t in statTransforms)
+            if (statTransforms is not null)
             {
-                builder = builder.WithStatsTransform(t);
+                foreach (var t in statTransforms)
+                {
+                    builder = builder.WithStatsTransform(t);
+                }
+            }
+
+            if (attackPowerTransforms is not null)
+            {
+                foreach (var t in attackPowerTransforms)
+                {
+                    builder = builder.WithAttackPowerTransform(t);
+                }
             }
 
             return builder.Build();

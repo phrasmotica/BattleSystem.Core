@@ -68,7 +68,7 @@ namespace BattleSystem.Tests.Items
             // Arrange
             var builder = new ItemBuilder()
                                 .Name("caribou")
-                                .WithMoveUseTransform(mu => mu);
+                                .WithAttackPowerTransform(p => p);
 
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() => _ = builder.Build());
