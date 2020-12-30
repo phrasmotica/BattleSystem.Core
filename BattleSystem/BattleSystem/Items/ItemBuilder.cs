@@ -1,6 +1,6 @@
 ﻿using System;
-using BattleSystem.Moves;
 using BattleSystem.Stats;
+using static BattleSystem.Items.Item;
 
 namespace BattleSystem.Items
 {
@@ -68,7 +68,7 @@ namespace BattleSystem.Items
         /// Adds the given stats transform to the built item.
         /// </summary>
         /// <param name="transform">The stats transform for the built item.</param>
-        public ItemBuilder WithStatsTransform(Func<StatSet, StatSet> transform)
+        public ItemBuilder WithStatsTransform(StatSetTransform transform)
         {
             _item.AddStatsTransform(transform);
             return this;
@@ -94,7 +94,7 @@ namespace BattleSystem.Items
         /// Adds the given move use transform to the built item.
         /// </summary>
         /// <param name="transform">The move use transform for the built item.</param>
-        public ItemBuilder WithMoveUseTransform(Func<MoveUse, MoveUse> transform)
+        public ItemBuilder WithMoveUseTransform(MoveUseTransform transform)
         {
             _item.AddMoveUseTransform(transform);
             return this;

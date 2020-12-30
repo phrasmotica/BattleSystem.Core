@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BattleSystem.Moves;
 using BattleSystem.Stats;
 
@@ -10,6 +9,18 @@ namespace BattleSystem.Items
     /// </summary>
     public class Item
     {
+        /// <summary>
+        /// Delegate for a function that transforms the given stat set.
+        /// </summary>
+        /// <param name="stats">The stat set.</param>
+        public delegate StatSet StatSetTransform(StatSet stats);
+
+        /// <summary>
+        /// Delegate for a function that transforms the given move use.
+        /// </summary>
+        /// <param name="moveUse">The move use.</param>
+        public delegate MoveUse MoveUseTransform(MoveUse moveUse);
+
         /// <summary>
         /// Gets or sets the name of the item.
         /// </summary>
@@ -23,20 +34,20 @@ namespace BattleSystem.Items
         /// <summary>
         /// The stats transform functions.
         /// </summary>
-        private readonly List<Func<StatSet, StatSet>> _statsTransforms;
+        private readonly List<StatSetTransform> _statsTransforms;
 
         /// <summary>
         /// The move use transform functions.
         /// </summary>
-        private readonly List<Func<MoveUse, MoveUse>> _moveUseTransforms;
+        private readonly List<MoveUseTransform> _moveUseTransforms;
 
         /// <summary>
         /// Creates a new <see cref="Item"/> instance.
         /// </summary>
         public Item()
         {
-            _statsTransforms = new List<Func<StatSet, StatSet>>();
-            _moveUseTransforms = new List<Func<MoveUse, MoveUse>>();
+            _statsTransforms = new List<StatSetTransform>();
+            _moveUseTransforms = new List<MoveUseTransform>();
         }
 
         /// <summary>
@@ -61,7 +72,7 @@ namespace BattleSystem.Items
         /// Adds a stats transform function for this item.
         /// </summary>
         /// <param name="transform">The stats transform function to add.</param>
-        public void AddStatsTransform(Func<StatSet, StatSet> transform)
+        public void AddStatsTransform(StatSetTransform transform)
         {
             _statsTransforms.Add(transform);
         }
@@ -70,7 +81,7 @@ namespace BattleSystem.Items
         /// Adds a move use transform function for this item.
         /// </summary>
         /// <param name="transform">The move use transform function to add.</param>
-        public void AddMoveUseTransform(Func<MoveUse, MoveUse> transform)
+        public void AddMoveUseTransform(MoveUseTransform transform)
         {
             _moveUseTransforms.Add(transform);
         }

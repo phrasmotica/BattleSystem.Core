@@ -93,7 +93,7 @@ namespace BattleSystem.Tests
         public static Item CreateItem(
             string name = "jim",
             string description = "eureka",
-            params Func<StatSet, StatSet>[] statTransforms)
+            StatSetTransform[] statTransforms = null,
         {
             var builder = new ItemBuilder()
                             .Name(name)
