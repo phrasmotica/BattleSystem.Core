@@ -62,20 +62,20 @@ namespace BattleSystem.Tests.Characters
             // Arrange
             var character = TestHelpers.CreateBasicCharacter(attack: 10, defence: 20, speed: 30);
 
-            var transforms = new StatSetTransform[]
-            {
-                ss =>
+            var item = TestHelpers.CreateItem(
+                attackBaseValueTransforms: new StatBaseValueTransform[]
                 {
-                    return new StatSet
-                    {
-                        Attack = new Stat((int) (ss.Attack.BaseValue * 1.1)),
-                        Defence = new Stat((int) (ss.Defence.BaseValue * 1.2)),
-                        Speed = new Stat((int) (ss.Speed.BaseValue * 1.3)),
-                    };
+                    v => (int) (v * 1.1),
+                },
+                defenceBaseValueTransforms: new StatBaseValueTransform[]
+                {
+                    v => (int) (v * 1.2),
+                },
+                speedBaseValueTransforms: new StatBaseValueTransform[]
+                {
+                    v => (int) (v * 1.3),
                 }
-            };
-
-            var item = TestHelpers.CreateItem(statTransforms: transforms);
+            );
             _ = character.EquipItem(item);
 
             // Act
@@ -84,9 +84,9 @@ namespace BattleSystem.Tests.Characters
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(stats.Attack.BaseValue, Is.EqualTo(11));
-                Assert.That(stats.Defence.BaseValue, Is.EqualTo(24));
-                Assert.That(stats.Speed.BaseValue, Is.EqualTo(39));
+                Assert.That(stats.Attack.CurrentValue, Is.EqualTo(11));
+                Assert.That(stats.Defence.CurrentValue, Is.EqualTo(24));
+                Assert.That(stats.Speed.CurrentValue, Is.EqualTo(39));
             });
         }
 

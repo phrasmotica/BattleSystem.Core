@@ -144,8 +144,8 @@ namespace BattleSystemExample
             player.EquipItem(
                 new ItemBuilder()
                     .Name("Might Relic")
-                    .Describe("Increases the power of the holder's attacks by 2.")
-                    .WithAttackPowerTransform(p => p + 2)
+                    .Describe("Increases the holder's base Attack stat by 2.")
+                    .WithAttackBaseValueTransform(p => p + 2)
                     .Build()
             );
 
