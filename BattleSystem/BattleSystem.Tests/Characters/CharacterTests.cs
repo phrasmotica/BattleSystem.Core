@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BattleSystem.Characters;
 using BattleSystem.Stats;
 using NUnit.Framework;
+using static BattleSystem.Items.Item;
 
 namespace BattleSystem.Tests.Characters
 {
@@ -36,15 +37,20 @@ namespace BattleSystem.Tests.Characters
             // Arrange
             var character = TestHelpers.CreateBasicCharacter(attack: 10, defence: 20, speed: 30);
 
-            var item = TestHelpers.CreateItem(statTransforms: ss =>
+            var transforms = new StatSetTransform[]
             {
-                return new StatSet
+                ss =>
                 {
-                    Attack = new Stat((int) (ss.Attack.BaseValue * 1.1)),
-                    Defence = new Stat((int) (ss.Defence.BaseValue * 1.2)),
-                    Speed = new Stat((int) (ss.Speed.BaseValue * 1.3)),
-                };
-            });
+                    return new StatSet
+                    {
+                        Attack = new Stat((int) (ss.Attack.BaseValue * 1.1)),
+                        Defence = new Stat((int) (ss.Defence.BaseValue * 1.2)),
+                        Speed = new Stat((int) (ss.Speed.BaseValue * 1.3)),
+                    };
+                }
+            };
+
+            var item = TestHelpers.CreateItem(statTransforms: transforms);
             _ = character.EquipItem(item);
 
             // Act
