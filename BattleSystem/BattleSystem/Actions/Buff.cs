@@ -4,7 +4,6 @@ using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Targets;
 using BattleSystem.Stats;
-using BattleSystem.Items;
 
 namespace BattleSystem.Actions
 {
@@ -54,16 +53,6 @@ namespace BattleSystem.Actions
             }
 
             return results;
-        }
-
-        /// <inheritdoc />
-        public void ReceiveTransforms(Item item)
-        {
-        }
-
-        /// <inheritdoc />
-        public void ClearTransforms()
-        {
         }
     }
 }

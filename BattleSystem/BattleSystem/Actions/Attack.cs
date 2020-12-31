@@ -11,7 +11,7 @@ namespace BattleSystem.Actions
     /// <summary>
     /// Represents an attacking action.
     /// </summary>
-    public class Attack : IAction
+    public class Attack : IAction, ITransformable
     {
         /// <summary>
         /// Delegate for a function that transforms the given power.

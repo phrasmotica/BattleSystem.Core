@@ -148,7 +148,7 @@ namespace BattleSystem.Moves
                 {
                     if (user.HasItem)
                     {
-                        action.ReceiveTransforms(user.Item);
+                        (action as ITransformable)?.ReceiveTransforms(user.Item);
                     }
 
                     var actionResults = action.Use(user, targets);
@@ -160,7 +160,7 @@ namespace BattleSystem.Moves
                                                           .Select(ar => ar.TargetId);
                     targets = targets.Where(t => affectedCharacters.Contains(t.Id)).ToArray();
 
-                    action.ClearTransforms();
+                    (action as ITransformable)?.ClearTransforms();
                 }
             }
 
