@@ -103,7 +103,7 @@ namespace BattleSystem.Tests.Characters
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(target.ItemSlot.Current, Is.EqualTo(item));
+                Assert.That(target.Item, Is.EqualTo(item));
                 Assert.That(result.Success, Is.True);
                 Assert.That(result.HadPreviousItem, Is.False);
                 Assert.That(result.PreviousItem, Is.Null);
@@ -127,7 +127,7 @@ namespace BattleSystem.Tests.Characters
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(target.ItemSlot.Current, Is.EqualTo(item2));
+                Assert.That(target.Item, Is.EqualTo(item2));
                 Assert.That(result.Success, Is.True);
                 Assert.That(result.HadPreviousItem, Is.True);
                 Assert.That(result.PreviousItem, Is.EqualTo(item1));
@@ -148,7 +148,7 @@ namespace BattleSystem.Tests.Characters
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(target.ItemSlot.HasItem, Is.False);
+                Assert.That(target.HasItem, Is.False);
                 Assert.That(result.Success, Is.True);
                 Assert.That(result.Item, Is.EqualTo(item));
             });

@@ -54,6 +54,16 @@ namespace BattleSystem.Characters
         public ItemSlot ItemSlot { get; protected set; }
 
         /// <summary>
+        /// Gets whether the character is holding an item.
+        /// </summary>
+        public bool HasItem => ItemSlot.HasItem;
+
+        /// <summary>
+        /// Gets the character's item.
+        /// </summary>
+        public Item Item => ItemSlot.Current;
+
+        /// <summary>
         /// Gets or sets the list of characters who are protecting this character.
         /// </summary>
         protected List<string> ProtectQueue;
@@ -116,12 +126,12 @@ namespace BattleSystem.Characters
         /// <param name="item">The item.</param>
         public virtual EquipItemResult EquipItem(Item item)
         {
-            var hadPreviousItem = ItemSlot.HasItem;
+            var hadPreviousItem = HasItem;
 
             Item previousItem = null;
             if (hadPreviousItem)
             {
-                previousItem = ItemSlot.Current;
+                previousItem = Item;
             }
 
             ItemSlot.Set(item);
@@ -145,7 +155,7 @@ namespace BattleSystem.Characters
         /// </summary>
         public virtual RemoveItemResult RemoveItem()
         {
-            if (!ItemSlot.HasItem)
+            if (!HasItem)
             {
                 return new RemoveItemResult
                 {
@@ -153,7 +163,7 @@ namespace BattleSystem.Characters
                 };
             }
 
-            var item = ItemSlot.Current;
+            var item = Item;
             ItemSlot.Remove();
 
             return new RemoveItemResult

@@ -146,9 +146,9 @@ namespace BattleSystem.Moves
             {
                 foreach (var action in _moveActions)
                 {
-                    if (user.ItemSlot.HasItem)
+                    if (user.HasItem)
                     {
-                        action.ReceiveTransforms(user.ItemSlot.Current);
+                        action.ReceiveTransforms(user.Item);
                     }
 
                     var actionResults = action.Use(user, targets);

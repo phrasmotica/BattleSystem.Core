@@ -144,11 +144,11 @@ namespace BattleSystemExample.Characters
                 _gameOutput.WriteLine("Moves:");
                 _gameOutput.WriteLine(character.Moves.Summarise());
 
-                if (character.ItemSlot.HasItem)
+                if (character.HasItem)
                 {
                     _gameOutput.WriteLine();
                     _gameOutput.WriteLine("Item:");
-                    _gameOutput.WriteLine(character.ItemSlot.Current.Summarise());
+                    _gameOutput.WriteLine(character.Item.Summarise());
                 }
             }
         }
