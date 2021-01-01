@@ -13,15 +13,15 @@ namespace BattleSystemExample.Extensions.ActionResults
         /// <param name="result">The action result.</param>
         public static string DescribeProtected<TSource>(this IActionResult<TSource> result)
         {
-            var user = result.User;
             var target = result.Target;
+            var protectUser = result.ProtectUser;
 
-            if (result.Target.Id == user.Id)
+            if (target == protectUser)
             {
-                return $"{user.Name} protected itself!";
+                return $"{target.Name} protected itself!";
             }
 
-            return $"{user.Name} protected {target.Name}!";
+            return $"{target.Name} was protected by {protectUser.Name}!";
         }
     }
 }
