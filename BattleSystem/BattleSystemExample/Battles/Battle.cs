@@ -6,7 +6,6 @@ using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Success;
 using BattleSystemExample.Output;
 using BattleSystemExample.Extensions;
-using BattleSystem.Items;
 using BattleSystemExample.Extensions.ActionResults;
 
 namespace BattleSystemExample.Battles
@@ -37,6 +36,12 @@ namespace BattleSystemExample.Battles
         private IEnumerable<IGrouping<string, Character>> Teams => _characters.GroupBy(c => c.Team);
 
         /// <summary>
+        /// Gets whether the battle is over, i.e. whether there is some team
+        /// whose characters are all dead.
+        /// </summary>
+        private bool IsOver => Teams.Any(t => t.All(c => c.IsDead));
+
+        /// <summary>
         /// Creates a new <see cref="Battle"/> instance.
         /// </summary>
         /// <param name="moveProcessor">The move processor.</param>
@@ -59,7 +64,7 @@ namespace BattleSystemExample.Battles
         {
             var teams = Teams.ToArray();
 
-            while (teams.All(t => t.Any(c => !c.IsDead)))
+            while (!IsOver)
             {
                 foreach (var team in teams)
                 {
@@ -87,6 +92,11 @@ namespace BattleSystemExample.Battles
                 foreach (var moveUse in moveUses)
                 {
                     ShowMoveUse(moveUse);
+                }
+
+                if (IsOver)
+                {
+                    break;
                 }
 
                 foreach (var character in characterOrder)
