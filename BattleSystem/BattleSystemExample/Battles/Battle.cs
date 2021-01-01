@@ -84,12 +84,7 @@ namespace BattleSystemExample.Battles
 
                 foreach (var moveUse in moveUses)
                 {
-                    // move might be cancelled due to the user dying or all targets dying
-                    var moveCancelled = !moveUse.ActionsResults.Any();
-                    if (!moveCancelled)
-                    {
-                        ShowMoveUse(characterOrder, moveUse);
-                    }
+                    ShowMoveUse(characterOrder, moveUse);
                 }
 
                 foreach (var character in characterOrder)
