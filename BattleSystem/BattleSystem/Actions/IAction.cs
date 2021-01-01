@@ -17,7 +17,7 @@ namespace BattleSystem.Actions
         void SetTargets(Character user, IEnumerable<Character> otherCharacters);
 
         /// <summary>
-        /// Applies the effects of the action and returns the results of its application to its targets.
+        /// Applies the action and returns the results of its application to its targets.
         /// </summary>
         /// <param name="user">The user of the action.</param>
         /// <param name="otherCharacters">The other characters.</param>

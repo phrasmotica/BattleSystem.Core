@@ -143,7 +143,7 @@ namespace BattleSystem.Moves
         }
 
         /// <summary>
-        /// Applies the effects of the move, if it lands.
+        /// Applies the actions of the move, if it succeeds.
         /// </summary>
         /// <param name="user">The user of the move.</param>
         /// <param name="otherCharacters">The other characters.</param>

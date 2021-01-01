@@ -1,9 +1,9 @@
 ﻿namespace BattleSystemExample.Constants
 {
     /// <summary>
-    /// Constants class for tags to be attached to effects.
+    /// Constants class for tags to be attached to tagged actions.
     /// </summary>
-    public static class EffectTags
+    public static class ActionTags
     {
         public const string EndTurn = "EndTurn";
     }

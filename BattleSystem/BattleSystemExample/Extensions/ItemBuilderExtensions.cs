@@ -15,7 +15,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="action">The action.</param>
         public static ItemBuilder WithEndTurnAction(this ItemBuilder builder, IAction action)
         {
-            return builder.WithTaggedAction(action, EffectTags.EndTurn);
+            return builder.WithTaggedAction(action, ActionTags.EndTurn);
         }
     }
 }

@@ -31,12 +31,12 @@ namespace BattleSystemExample.Extensions
 
             if (character.HasItem)
             {
-                var effects = character.Item.GetCharacterEffects(EffectTags.EndTurn);
-                foreach (var e in effects)
+                var taggedActions = character.Item.GetCharacterTaggedActions(ActionTags.EndTurn);
+                foreach (var a in taggedActions)
                 {
-                    e.Action.SetTargets(character, otherCharacters);
+                    a.Action.SetTargets(character, otherCharacters);
 
-                    var actionResults = e.Action.Use<Item>(character, otherCharacters);
+                    var actionResults = a.Action.Use<Item>(character, otherCharacters);
                     foreach (var r in actionResults)
                     {
                         r.Source = character.Item;
