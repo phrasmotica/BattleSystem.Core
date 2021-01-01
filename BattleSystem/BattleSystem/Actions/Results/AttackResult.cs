@@ -1,4 +1,6 @@
-﻿namespace BattleSystem.Actions.Results
+﻿using BattleSystem.Characters;
+
+namespace BattleSystem.Actions.Results
 {
     /// <summary>
     /// Class for the result of an attack being applied to a character.
@@ -12,7 +14,12 @@
         public bool Applied { get; set; }
 
         /// <summary>
-        /// Gets or sets the source of the attack.
+        /// Gets or sets the character who caused the attack.
+        /// </summary>
+        public Character User { get; set; }
+
+        /// <summary>
+        /// Gets or sets the source of the attack - for example, the user's item.
         /// </summary>
         public TSource Source { get; set; }
 

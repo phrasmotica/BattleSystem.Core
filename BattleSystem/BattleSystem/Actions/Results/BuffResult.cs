@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BattleSystem.Characters;
 using BattleSystem.Extensions;
 using BattleSystem.Stats;
 
@@ -16,7 +17,12 @@ namespace BattleSystem.Actions.Results
         public bool Applied { get; set; }
 
         /// <summary>
-        /// Gets or sets the source of the buff.
+        /// Gets or sets the character who caused the buff.
+        /// </summary>
+        public Character User { get; set; }
+
+        /// <summary>
+        /// Gets or sets the source of the buff - for example, the user's item.
         /// </summary>
         public TSource Source { get; set; }
 
