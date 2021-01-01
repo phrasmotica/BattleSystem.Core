@@ -296,7 +296,7 @@ namespace BattleSystem.Tests.Characters
         }
 
         [Test]
-        public void ConsumeProtect_ReturnsIdOfProtectUser()
+        public void ConsumeProtect_ReturnsProtectUser()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -304,13 +304,13 @@ namespace BattleSystem.Tests.Characters
             _ = target.AddProtect<string>(user);
 
             // Act
-            var userId = target.ConsumeProtect();
+            var protectingUser = target.ConsumeProtect();
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.That(target.ProtectCount, Is.Zero);
-                Assert.That(userId, Is.EqualTo(user.Id));
+                Assert.That(protectingUser, Is.EqualTo(user));
             });
         }
 

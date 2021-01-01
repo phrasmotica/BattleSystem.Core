@@ -67,7 +67,7 @@ namespace BattleSystem.Characters
         /// <summary>
         /// Gets or sets the list of characters who are protecting this character.
         /// </summary>
-        protected List<string> ProtectQueue;
+        protected List<Character> ProtectQueue;
 
         /// <summary>
         /// Gets or sets the maximum allowed length of the protect queue.
@@ -111,7 +111,7 @@ namespace BattleSystem.Characters
 
             ItemSlot = new ItemSlot();
 
-            ProtectQueue = new List<string>();
+            ProtectQueue = new List<Character>();
             ProtectLimit = 1;
         }
 
@@ -186,7 +186,7 @@ namespace BattleSystem.Characters
         {
             if (user.Id != Id && ProtectQueue.Any())
             {
-                var protectUserId = ConsumeProtect();
+                var protectUser = ConsumeProtect();
 
                 return new AttackResult<TSource>
                 {
@@ -194,7 +194,7 @@ namespace BattleSystem.Characters
                     User = user,
                     Target = this,
                     TargetProtected = true,
-                    ProtectUserId = protectUserId,
+                    ProtectUser = protectUser,
                 };
             }
 
@@ -225,7 +225,7 @@ namespace BattleSystem.Characters
         {
             if (user.Id != Id && ProtectQueue.Any())
             {
-                var protectUserId = ConsumeProtect();
+                var protectUser = ConsumeProtect();
 
                 return new BuffResult<TSource>
                 {
@@ -233,7 +233,7 @@ namespace BattleSystem.Characters
                     User = user,
                     Target = this,
                     TargetProtected = true,
-                    ProtectUserId = protectUserId,
+                    ProtectUser = protectUser,
                 };
             }
 
@@ -287,7 +287,7 @@ namespace BattleSystem.Characters
         {
             if (user.Id != Id && ProtectQueue.Any())
             {
-                var protectUserId = ConsumeProtect();
+                var protectUser = ConsumeProtect();
 
                 return new HealResult<TSource>
                 {
@@ -295,7 +295,7 @@ namespace BattleSystem.Characters
                     User = user,
                     Target = this,
                     TargetProtected = true,
-                    ProtectUserId = protectUserId,
+                    ProtectUser = protectUser,
                 };
             }
 
@@ -323,7 +323,7 @@ namespace BattleSystem.Characters
         {
             if (user.Id != Id && ProtectQueue.Any())
             {
-                var protectUserId = ConsumeProtect();
+                var protectUser = ConsumeProtect();
 
                 return new ProtectResult<TSource>
                 {
@@ -331,7 +331,7 @@ namespace BattleSystem.Characters
                     User = user,
                     Target = this,
                     TargetProtected = true,
-                    ProtectUserId = protectUserId,
+                    ProtectUser = protectUser,
                 };
             }
 
@@ -345,7 +345,7 @@ namespace BattleSystem.Characters
                 };
             }
 
-            ProtectQueue.Add(user.Id);
+            ProtectQueue.Add(user);
 
             return new ProtectResult<TSource>
             {
@@ -368,7 +368,7 @@ namespace BattleSystem.Characters
         {
             if (user.Id != Id && ProtectQueue.Any())
             {
-                var protectUserId = ConsumeProtect();
+                var protectUser = ConsumeProtect();
 
                 return new ProtectLimitChangeResult<TSource>
                 {
@@ -376,7 +376,7 @@ namespace BattleSystem.Characters
                     User = user,
                     Target = this,
                     TargetProtected = true,
-                    ProtectUserId = protectUserId,
+                    ProtectUser = protectUser,
                 };
             }
 
@@ -393,18 +393,18 @@ namespace BattleSystem.Characters
         }
 
         /// <summary>
-        /// Pops the next protect action from the queue and returns the ID of the protecting character.
+        /// Pops the next protect action from the queue and returns the protecting character.
         /// </summary>
-        public string ConsumeProtect()
+        public Character ConsumeProtect()
         {
             if (ProtectQueue.Count <= 0)
             {
                 throw new InvalidOperationException($"Cannot consume a protect action because there are none in the queue!");
             }
 
-            var protectorId = ProtectQueue[0];
+            var protectingCharacter = ProtectQueue[0];
             ProtectQueue.RemoveAt(0);
-            return protectorId;
+            return protectingCharacter;
         }
 
         /// <summary>

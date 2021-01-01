@@ -39,9 +39,9 @@ namespace BattleSystem.Actions.Results
         public bool TargetProtected { get; set; }
 
         /// <summary>
-        /// Gets or sets the ID of the character who protected the target from the protect limit change, if applicable.
+        /// Gets or sets the character who protected the target from the protect limit change, if applicable.
         /// </summary>
-        public string ProtectUserId { get; set; }
+        public Character ProtectUser { get; set; }
 
         /// <summary>
         /// Gets or sets the amount that the character's protect limit changed by.

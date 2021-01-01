@@ -42,9 +42,9 @@ namespace BattleSystem.Actions.Results
         public bool TargetProtected { get; set; }
 
         /// <summary>
-        /// Gets or sets the ID of the character who protected the target from the buff, if applicable.
+        /// Gets or sets the character who protected the target from the buff, if applicable.
         /// </summary>
-        public string ProtectUserId { get; set; }
+        public Character ProtectUser { get; set; }
 
         /// <summary>
         /// Gets or sets the changes in stat multipliers resulting from this buff.

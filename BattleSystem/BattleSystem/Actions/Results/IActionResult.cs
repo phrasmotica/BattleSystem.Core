@@ -31,11 +31,11 @@ namespace BattleSystem.Actions.Results
         /// <summary>
         /// Gets or sets whether the character was protected from the action.
         /// </summary>
-        public bool TargetProtected { get; set; }
+        bool TargetProtected { get; set; }
 
         /// <summary>
-        /// Gets or sets the ID of the character who protected the target from the action, if applicable.
+        /// Gets or sets the character who protected the target from the action, if applicable.
         /// </summary>
-        public string ProtectUserId { get; set; }
+        Character ProtectUser { get; set; }
     }
 }
