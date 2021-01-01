@@ -152,6 +152,11 @@ namespace BattleSystem.Moves
                     }
 
                     var actionResults = action.Use<Move>(user, targets);
+                    foreach (var r in actionResults)
+                    {
+                        r.Source = this;
+                    }
+
                     actionsResults.Add(actionResults);
 
                     // ensure targets can't be affected by subsequent actions
