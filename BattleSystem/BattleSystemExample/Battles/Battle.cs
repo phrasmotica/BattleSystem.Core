@@ -62,11 +62,9 @@ namespace BattleSystemExample.Battles
         /// </summary>
         public void Start()
         {
-            var teams = Teams.ToArray();
-
             while (!IsOver)
             {
-                foreach (var team in teams)
+                foreach (var team in Teams)
                 {
                     _gameOutput.WriteLine();
 
@@ -113,26 +111,32 @@ namespace BattleSystemExample.Battles
         /// <summary>
         /// Outputs a summary of the given move use.
         /// </summary>
-        /// <param name="characters">The characters.</param>
         /// <param name="moveUse">The move use.</param>
         private void ShowMoveUse(MoveUse moveUse)
         {
-            switch (moveUse.Result)
-            {
-                case MoveUseResult.Success:
-                    _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name}!");
-                    break;
+            // don't show use if move was successful but all targets were dead
+            var moveCancelled = moveUse.Result == MoveUseResult.Success
+                             && moveUse.ActionsResults.All(ars => !ars.Any());
 
-                case MoveUseResult.Miss:
-                    _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name} but missed!");
-                    break;
-            }
-
-            foreach (var actionResults in moveUse.ActionsResults)
+            if (!moveCancelled)
             {
-                foreach (var result in actionResults)
+                switch (moveUse.Result)
                 {
-                    ShowResult(result);
+                    case MoveUseResult.Success:
+                        _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name}!");
+                        break;
+
+                    case MoveUseResult.Miss:
+                        _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name} but missed!");
+                        break;
+                }
+
+                foreach (var actionResults in moveUse.ActionsResults)
+                {
+                    foreach (var result in actionResults)
+                    {
+                        ShowResult(result);
+                    }
                 }
             }
         }
