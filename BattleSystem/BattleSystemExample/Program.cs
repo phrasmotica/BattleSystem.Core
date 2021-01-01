@@ -6,6 +6,7 @@ using BattleSystem.Moves;
 using BattleSystem.Stats;
 using BattleSystemExample.Battles;
 using BattleSystemExample.Characters;
+using BattleSystemExample.Constants;
 using BattleSystemExample.Extensions;
 using BattleSystemExample.Input;
 using BattleSystemExample.Output;
@@ -144,8 +145,13 @@ namespace BattleSystemExample
             player.EquipItem(
                 new ItemBuilder()
                     .Name("Might Relic")
-                    .Describe("Increases the holder's base Attack stat by 2.")
-                    .WithAttackBaseValueTransform(v => v + 2)
+                    .Describe("Increases the holder's Attack by 5% at the end of each turn.")
+                    .WithEndTurnAction(
+                        new BuffBuilder()
+                            .TargetsUser()
+                            .WithRaiseAttack(0.05)
+                            .Build()
+                    )
                     .Build()
             );
 

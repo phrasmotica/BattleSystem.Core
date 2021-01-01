@@ -6,6 +6,7 @@ using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Success;
 using BattleSystemExample.Output;
 using BattleSystemExample.Extensions;
+using BattleSystem.Items;
 
 namespace BattleSystemExample.Battles
 {
@@ -89,7 +90,9 @@ namespace BattleSystemExample.Battles
 
                 foreach (var character in characterOrder)
                 {
-                    character.ClearProtectQueue();
+                    var otherCharacters = characterOrder.Where(c => c.Id != character.Id);
+                    var endTurnResult = character.OnEndTurn(otherCharacters);
+                    ShowBattlePhaseResult(characterOrder, endTurnResult);
                 }
             }
 
@@ -285,6 +288,24 @@ namespace BattleSystemExample.Battles
             if (!target.IsDead)
             {
                 _gameOutput.WriteLine($"{target.Name} became protected!");
+            }
+        }
+
+        /// <summary>
+        /// Outputs the given battle phase result.
+        /// </summary>
+        /// <param name="characters">The characters.</param>
+        /// <param name="battlePhaseResult">The battle phase result.</param>
+        private void ShowBattlePhaseResult(
+            IEnumerable<Character> characters,
+            BattlePhaseResult battlePhaseResult)
+        {
+            foreach (var actionResults in battlePhaseResult.ItemActionsResults)
+            {
+                foreach (var result in actionResults)
+                {
+                    ShowResult(characters, result);
+                }
             }
         }
 
