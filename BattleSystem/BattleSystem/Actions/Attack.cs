@@ -80,7 +80,7 @@ namespace BattleSystem.Actions
             foreach (var target in targets.Where(c => !c.IsDead).ToArray())
             {
                 var damage = _damageCalculator.Calculate(user, this, target);
-                var result = target.ReceiveDamage<TSource>(damage, user.Id);
+                var result = target.ReceiveDamage<TSource>(damage, user);
                 results.Add(result);
             }
 

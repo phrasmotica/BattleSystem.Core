@@ -35,7 +35,7 @@ namespace BattleSystem.Actions
 
             foreach (var target in targets.Where(c => !c.IsDead))
             {
-                var result = target.AddProtect<TSource>(user.Id);
+                var result = target.AddProtect<TSource>(user);
                 results.Add(result);
             }
 

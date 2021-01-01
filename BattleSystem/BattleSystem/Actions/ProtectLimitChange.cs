@@ -40,7 +40,7 @@ namespace BattleSystem.Actions
 
             foreach (var target in targets.Where(c => !c.IsDead))
             {
-                var result = target.ChangeProtectLimit<TSource>(Amount, user.Id);
+                var result = target.ChangeProtectLimit<TSource>(Amount, user);
                 results.Add(result);
             }
 

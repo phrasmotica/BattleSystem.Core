@@ -61,7 +61,7 @@ namespace BattleSystem.Actions
             foreach (var target in targets.Where(c => !c.IsDead).ToArray())
             {
                 var amount = _healingCalculator.Calculate(user, this, target);
-                var result = target.Heal<TSource>(amount, user.Id);
+                var result = target.Heal<TSource>(amount, user);
                 results.Add(result);
             }
 

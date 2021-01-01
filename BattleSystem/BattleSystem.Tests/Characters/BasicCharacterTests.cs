@@ -175,10 +175,11 @@ namespace BattleSystem.Tests.Characters
         public void ReceiveDamage_TakesDamage()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
 
             // Act
-            _ = target.ReceiveDamage<string>(2, "omd");
+            _ = target.ReceiveDamage<string>(2, user);
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(3));
@@ -188,11 +189,12 @@ namespace BattleSystem.Tests.Characters
         public void ReceiveDamage_WithProtectCounter_TakesNoDamage()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
-            target.AddProtect<string>("userId");
+            target.AddProtect<string>(user);
 
             // Act
-            _ = target.ReceiveDamage<string>(2, "omd");
+            _ = target.ReceiveDamage<string>(2, user);
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(5));
@@ -202,10 +204,11 @@ namespace BattleSystem.Tests.Characters
         public void ReceiveDamage_IsDeadIfNoHealthLeft()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
 
             // Act
-            _ = target.ReceiveDamage<string>(6, "omd");
+            _ = target.ReceiveDamage<string>(6, user);
 
             // Assert
             Assert.That(target.IsDead, Is.True);
@@ -215,6 +218,7 @@ namespace BattleSystem.Tests.Characters
         public void ReceiveBuff_ChangesStatMultipliers()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter(attack: 10, defence: 10, speed: 10);
 
             // Act
@@ -223,7 +227,7 @@ namespace BattleSystem.Tests.Characters
                 [StatCategory.Attack] = 0.2,
                 [StatCategory.Defence] = -0.3,
                 [StatCategory.Speed] = -0.1,
-            }, "omd");
+            }, user);
 
             // Assert
             Assert.That(target.Stats.Attack.CurrentValue, Is.EqualTo(12));
@@ -235,11 +239,12 @@ namespace BattleSystem.Tests.Characters
         public void Heal_AddsHealth()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
-            _ = target.ReceiveDamage<string>(2, "omd");
+            _ = target.ReceiveDamage<string>(2, user);
 
             // Act
-            target.Heal<string>(2, "omd");
+            target.Heal<string>(2, user);
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(5));
@@ -249,10 +254,11 @@ namespace BattleSystem.Tests.Characters
         public void AddProtect_AddsProtectActionToQueue()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter();
 
             // Act
-            _ = target.AddProtect<string>("DJ rozwell");
+            _ = target.AddProtect<string>(user);
 
             // Assert
             Assert.That(target.ProtectCount, Is.EqualTo(1));
@@ -262,11 +268,12 @@ namespace BattleSystem.Tests.Characters
         public void AddProtect_LimitReached_ProtectActionNotAddedToQueue()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter();
-            _ = target.AddProtect<string>("DJ rozwell");
+            _ = target.AddProtect<string>(user);
 
             // Act
-            _ = target.AddProtect<string>(target.Id);
+            _ = target.AddProtect<string>(target);
 
             // Assert
             Assert.That(target.ProtectCount, Is.EqualTo(1));
@@ -276,12 +283,13 @@ namespace BattleSystem.Tests.Characters
         public void ChangeProtectLimit_ChangesProtectLimit()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter();
-            _ = target.AddProtect<string>("DJ rozwell");
-            _ = target.ChangeProtectLimit<string>(1, target.Id); // ensures this isn't protected against
+            _ = target.AddProtect<string>(user);
+            _ = target.ChangeProtectLimit<string>(1, target); // ensures this isn't protected against
 
             // Act
-            _ = target.AddProtect<string>(target.Id); // ensures this isn't protected against
+            _ = target.AddProtect<string>(target); // ensures this isn't protected against
 
             // Assert
             Assert.That(target.ProtectCount, Is.EqualTo(2));
@@ -291,8 +299,9 @@ namespace BattleSystem.Tests.Characters
         public void ConsumeProtect_ReturnsIdOfProtectUser()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter();
-            _ = target.AddProtect<string>("DJ rozwell");
+            _ = target.AddProtect<string>(user);
 
             // Act
             var userId = target.ConsumeProtect();
@@ -301,7 +310,7 @@ namespace BattleSystem.Tests.Characters
             Assert.Multiple(() =>
             {
                 Assert.That(target.ProtectCount, Is.Zero);
-                Assert.That(userId, Is.EqualTo("DJ rozwell"));
+                Assert.That(userId, Is.EqualTo(user.Id));
             });
         }
 
@@ -319,9 +328,10 @@ namespace BattleSystem.Tests.Characters
         public void ClearProtectQueue_EmptiesProtectQueue()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter();
-            _ = target.AddProtect<string>("DJ rozwell");
-            _ = target.AddProtect<string>("DJ rozwell");
+            _ = target.AddProtect<string>(user);
+            _ = target.AddProtect<string>(user);
 
             // Act
             target.ClearProtectQueue();
