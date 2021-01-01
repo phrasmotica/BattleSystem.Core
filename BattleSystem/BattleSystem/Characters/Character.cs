@@ -178,13 +178,14 @@ namespace BattleSystem.Characters
         /// </summary>
         /// <param name="damage">The incoming damage.</param>
         /// <param name="userId">The ID of the character who inflicted the incoming damage.</param>
-        public virtual AttackResult ReceiveDamage(int damage, string userId)
+        /// <typeparam name="TSource">The type of the source of the incoming damage.</typeparam>
+        public virtual AttackResult<TSource> ReceiveDamage<TSource>(int damage, string userId)
         {
             if (userId != Id && ProtectQueue.Count > 0)
             {
                 var protectUserId = ConsumeProtect();
 
-                return new AttackResult
+                return new AttackResult<TSource>
                 {
                     Applied = false,
                     TargetId = Id,
@@ -197,7 +198,7 @@ namespace BattleSystem.Characters
             CurrentHealth -= damage;
             var endingHealth = CurrentHealth;
 
-            return new AttackResult
+            return new AttackResult<TSource>
             {
                 Applied = true,
                 TargetId = Id,
@@ -212,7 +213,8 @@ namespace BattleSystem.Characters
         /// </summary>
         /// <param name="multipliers">The effects of incoming buff.</param>
         /// <param name="userId">The ID of the character who used the incoming buff.</param>
-        public virtual BuffResult ReceiveBuff(
+        /// <typeparam name="TSource">The type of the source of the incoming buff.</typeparam>
+        public virtual BuffResult<TSource> ReceiveBuff<TSource>(
             IDictionary<StatCategory, double> multipliers,
             string userId)
         {
@@ -220,7 +222,7 @@ namespace BattleSystem.Characters
             {
                 var protectUserId = ConsumeProtect();
 
-                return new BuffResult
+                return new BuffResult<TSource>
                 {
                     Applied = false,
                     TargetId = Id,
@@ -256,7 +258,7 @@ namespace BattleSystem.Characters
 
             var endingMultipliers = Stats.MultipliersAsDictionary();
 
-            return new BuffResult
+            return new BuffResult<TSource>
             {
                 Applied = true,
                 TargetId = Id,
@@ -271,13 +273,14 @@ namespace BattleSystem.Characters
         /// </summary>
         /// <param name="amount">The healing amount.</param>
         /// <param name="userId">The ID of the character who used the incoming heal.</param>
-        public virtual HealResult Heal(int amount, string userId)
+        /// <typeparam name="TSource">The type of the source of the incoming heal.</typeparam>
+        public virtual HealResult<TSource> Heal<TSource>(int amount, string userId)
         {
             if (userId != Id && ProtectQueue.Count > 0)
             {
                 var protectUserId = ConsumeProtect();
 
-                return new HealResult
+                return new HealResult<TSource>
                 {
                     Applied = false,
                     TargetId = Id,
@@ -290,7 +293,7 @@ namespace BattleSystem.Characters
             CurrentHealth += Math.Min(MaxHealth - CurrentHealth, amount);
             var endingHealth = CurrentHealth;
 
-            return new HealResult
+            return new HealResult<TSource>
             {
                 Applied = true,
                 TargetId = Id,
@@ -304,13 +307,14 @@ namespace BattleSystem.Characters
         /// Adds an item to the protect queue, which protects the character from the next attack.
         /// </summary>
         /// <param name="userId">The ID of the character who protected this character.</param>
-        public virtual ProtectResult AddProtect(string userId)
+        /// <typeparam name="TSource">The type of the source of the incoming protect action.</typeparam>
+        public virtual ProtectResult<TSource> AddProtect<TSource>(string userId)
         {
             if (userId != Id && ProtectQueue.Count > 0)
             {
                 var protectUserId = ConsumeProtect();
 
-                return new ProtectResult
+                return new ProtectResult<TSource>
                 {
                     Applied = false,
                     TargetId = Id,
@@ -321,7 +325,7 @@ namespace BattleSystem.Characters
 
             if (ProtectCount >= ProtectLimit)
             {
-                return new ProtectResult
+                return new ProtectResult<TSource>
                 {
                     Applied = false,
                     TargetId = Id,
@@ -330,7 +334,7 @@ namespace BattleSystem.Characters
 
             ProtectQueue.Add(userId);
 
-            return new ProtectResult
+            return new ProtectResult<TSource>
             {
                 Applied = true,
                 TargetId = Id,
@@ -343,13 +347,14 @@ namespace BattleSystem.Characters
         /// </summary>
         /// <param name="amount">The amount.</param>
         /// <param name="userId">The ID of the character who caused this protect limit change.</param>
-        public ProtectLimitChangeResult ChangeProtectLimit(int amount, string userId)
+        /// <typeparam name="TSource">The type of the source of the incoming protect limit change.</typeparam>
+        public ProtectLimitChangeResult<TSource> ChangeProtectLimit<TSource>(int amount, string userId)
         {
             if (userId != Id && ProtectQueue.Count > 0)
             {
                 var protectUserId = ConsumeProtect();
 
-                return new ProtectLimitChangeResult
+                return new ProtectLimitChangeResult<TSource>
                 {
                     Applied = false,
                     TargetId = Id,
@@ -360,7 +365,7 @@ namespace BattleSystem.Characters
 
             ProtectLimit += amount;
 
-            return new ProtectLimitChangeResult
+            return new ProtectLimitChangeResult<TSource>
             {
                 Applied = true,
                 TargetId = Id,

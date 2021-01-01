@@ -133,7 +133,9 @@ namespace BattleSystemExample.Battles
         /// </summary>
         /// <param name="characters">The characters.</param>
         /// <param name="result">The result.</param>
-        private void ShowResult(IEnumerable<Character> characters, IActionResult result)
+        private void ShowResult<TSource>(
+            IEnumerable<Character> characters,
+            IActionResult<TSource> result)
         {
             if (result.TargetProtected)
             {
@@ -141,19 +143,19 @@ namespace BattleSystemExample.Battles
             }
             else switch (result)
             {
-                case AttackResult ar:
+                case AttackResult<TSource> ar:
                     ShowAttack(characters, ar);
                     break;
-                case BuffResult br:
+                case BuffResult<TSource> br:
                     ShowBuff(characters, br);
                     break;
-                case HealResult hr:
+                case HealResult<TSource> hr:
                     ShowHeal(characters, hr);
                     break;
-                case ProtectLimitChangeResult plcr:
+                case ProtectLimitChangeResult<TSource> plcr:
                     ShowProtectLimitChangeResult(characters, plcr);
                     break;
-                case ProtectResult pr:
+                case ProtectResult<TSource> pr:
                     ShowProtectResult(characters, pr);
                     break;
                 default:
@@ -166,9 +168,9 @@ namespace BattleSystemExample.Battles
         /// </summary>
         /// <param name="characters">The characters.</param>
         /// <param name="result">The action result.</param>
-        private void ShowProtectedResult(
+        private void ShowProtectedResult<TSource>(
             IEnumerable<Character> characters,
-            IActionResult result)
+            IActionResult<TSource> result)
         {
             var user = characters.Single(c => c.Id == result.ProtectUserId);
 
@@ -188,9 +190,9 @@ namespace BattleSystemExample.Battles
         /// </summary>
         /// <param name="characters">The characters.</param>
         /// <param name="attack">The attack result.</param>
-        private void ShowAttack(
+        private void ShowAttack<TSource>(
             IEnumerable<Character> characters,
-            AttackResult attack)
+            AttackResult<TSource> attack)
         {
             var target = characters.Single(c => c.Id == attack.TargetId);
             var amount = attack.Damage;
@@ -210,9 +212,9 @@ namespace BattleSystemExample.Battles
         /// </summary>
         /// <param name="characters">The characters.</param>
         /// <param name="buff">The buff result.</param>
-        private void ShowBuff(
+        private void ShowBuff<TSource>(
             IEnumerable<Character> characters,
-            BuffResult buff)
+            BuffResult<TSource> buff)
         {
             var target = characters.Single(c => c.Id == buff.TargetId);
             if (!target.IsDead)
@@ -242,9 +244,9 @@ namespace BattleSystemExample.Battles
         /// </summary>
         /// <param name="characters">The characters.</param>
         /// <param name="heal">The heal result.</param>
-        private void ShowHeal(
+        private void ShowHeal<TSource>(
             IEnumerable<Character> characters,
-            HealResult heal)
+            HealResult<TSource> heal)
         {
             var target = characters.Single(c => c.Id == heal.TargetId);
 
@@ -256,9 +258,9 @@ namespace BattleSystemExample.Battles
         /// </summary>
         /// <param name="characters">The characters.</param>
         /// <param name="result">The protect limit change result.</param>
-        private void ShowProtectLimitChangeResult(
+        private void ShowProtectLimitChangeResult<TSource>(
             IEnumerable<Character> characters,
-            ProtectLimitChangeResult result)
+            ProtectLimitChangeResult<TSource> result)
         {
             var target = characters.Single(c => c.Id == result.TargetId);
 
@@ -280,9 +282,9 @@ namespace BattleSystemExample.Battles
         /// </summary>
         /// <param name="characters">The characters.</param>
         /// <param name="protect">The protect limit change result.</param>
-        private void ShowProtectResult(
+        private void ShowProtectResult<TSource>(
             IEnumerable<Character> characters,
-            ProtectResult protect)
+            ProtectResult<TSource> protect)
         {
             var target = characters.Single(c => c.Id == protect.TargetId);
             if (!target.IsDead)

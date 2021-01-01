@@ -114,9 +114,9 @@ namespace BattleSystem.Tests.Moves
                 TestHelpers.CreateBasicCharacter(),
             };
 
-            static IActionResult MockActionResult(bool applied, string targetId)
+            static IActionResult<Move> MockActionResult(bool applied, string targetId)
             {
-                var result = new Mock<IActionResult>();
+                var result = new Mock<IActionResult<Move>>();
                 result.SetupGet(m => m.Applied).Returns(applied);
                 result.SetupGet(m => m.TargetId).Returns(targetId);
                 return result.Object;
@@ -127,7 +127,7 @@ namespace BattleSystem.Tests.Moves
                 var action = new Mock<IAction>();
                 action
                     .Setup(
-                        m => m.Use(
+                        m => m.Use<Move>(
                             It.IsAny<Character>(),
                             It.IsAny<IEnumerable<Character>>()
                         )
@@ -141,7 +141,7 @@ namespace BattleSystem.Tests.Moves
             }
 
             // second action not applying to other characters means third and fourth
-            // should not be applied either
+            // should not be executed at all
             var move = TestHelpers.CreateMove(
                 moveActions: new[] { MockAction(), MockAction(false), MockAction(), MockAction() });
 

@@ -52,16 +52,16 @@ namespace BattleSystem.Actions
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<IActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
+        public virtual IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
             var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
 
-            var results = new List<IActionResult>();
+            var results = new List<IActionResult<TSource>>();
 
             foreach (var target in targets.Where(c => !c.IsDead).ToArray())
             {
                 var amount = _healingCalculator.Calculate(user, this, target);
-                var result = target.Heal(amount, user.Id);
+                var result = target.Heal<TSource>(amount, user.Id);
                 results.Add(result);
             }
 

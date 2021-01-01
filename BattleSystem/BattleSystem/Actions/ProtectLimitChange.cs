@@ -32,15 +32,15 @@ namespace BattleSystem.Actions
         }
 
         /// <inheritdoc />
-        public IEnumerable<IActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
+        public IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
             var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
 
-            var results = new List<IActionResult>();
+            var results = new List<IActionResult<TSource>>();
 
             foreach (var target in targets.Where(c => !c.IsDead))
             {
-                var result = target.ChangeProtectLimit(Amount, user.Id);
+                var result = target.ChangeProtectLimit<TSource>(Amount, user.Id);
                 results.Add(result);
             }
 

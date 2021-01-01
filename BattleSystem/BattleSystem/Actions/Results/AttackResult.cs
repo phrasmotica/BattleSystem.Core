@@ -3,12 +3,18 @@
     /// <summary>
     /// Class for the result of an attack being applied to a character.
     /// </summary>
-    public class AttackResult : IActionResult
+    /// <typeparam name="TSource">The type of the source of the attack.</typeparam>
+    public class AttackResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
         /// Gets or sets whether the damage was applied to the character.
         /// </summary>
         public bool Applied { get; set; }
+
+        /// <summary>
+        /// Gets or sets the source of the attack.
+        /// </summary>
+        public TSource Source { get; set; }
 
         /// <summary>
         /// Gets or sets the ID of the character who was the target of the attack.

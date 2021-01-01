@@ -3,12 +3,18 @@
     /// <summary>
     /// Class for the result of a protect limit change action being applied to a character.
     /// </summary>
-    public class ProtectLimitChangeResult : IActionResult
+    /// <typeparam name="TSource">The type of the source of the protect limit change action.</typeparam>
+    public class ProtectLimitChangeResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
         /// Gets or sets whether the protect limit change action was applied to the character.
         /// </summary>
         public bool Applied { get; set; }
+
+        /// <summary>
+        /// Gets or sets the source of the attack.
+        /// </summary>
+        public TSource Source { get; set; }
 
         /// <summary>
         /// Gets or sets the ID of the character whose protect limit was changed.

@@ -29,7 +29,7 @@ namespace BattleSystem.Tests.Actions
                 });
 
             // Act
-            _ = buff.Use(user, otherCharacters);
+            _ = buff.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(otherCharacters[0].Stats.Attack.CurrentValue, Is.EqualTo(12));
@@ -48,7 +48,7 @@ namespace BattleSystem.Tests.Actions
             var buff = TestHelpers.CreateBuff(new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = buff.Use(user, otherCharacters);
+            var actionResults = buff.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Not.Empty);
@@ -67,7 +67,7 @@ namespace BattleSystem.Tests.Actions
             var buff = TestHelpers.CreateBuff(new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = buff.Use(user, otherCharacters);
+            var actionResults = buff.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
@@ -86,7 +86,7 @@ namespace BattleSystem.Tests.Actions
             var buff = TestHelpers.CreateBuff();
 
             // Act
-            var actionResults = buff.Use(user, otherCharacters);
+            var actionResults = buff.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);

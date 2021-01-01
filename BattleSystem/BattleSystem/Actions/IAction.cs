@@ -14,6 +14,7 @@ namespace BattleSystem.Actions
         /// </summary>
         /// <param name="user">The user of the action.</param>
         /// <param name="otherCharacters">The other characters.</param>
-        IEnumerable<IActionResult> Use(Character user, IEnumerable<Character> otherCharacters);
+        /// <typeparam name="TSource">The type of the source of the action.</typeparam>
+        IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters);
     }
 }

@@ -36,10 +36,10 @@ namespace BattleSystem.Tests.Actions
 
             var heal = TestHelpers.CreateHeal(healingCalculator.Object, new OthersMoveTargetCalculator());
 
-            _ = otherCharacters[0].ReceiveDamage(2, "omd");
+            _ = otherCharacters[0].ReceiveDamage<string>(2, "omd");
 
             // Act
-            heal.Use(user, otherCharacters);
+            heal.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(otherCharacters[0].CurrentHealth, Is.EqualTo(5));
@@ -58,7 +58,7 @@ namespace BattleSystem.Tests.Actions
             var heal = TestHelpers.CreateHeal(moveTargetCalculator: new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = heal.Use(user, otherCharacters);
+            var actionResults = heal.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Not.Empty);
@@ -77,7 +77,7 @@ namespace BattleSystem.Tests.Actions
             var heal = TestHelpers.CreateHeal(moveTargetCalculator: new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = heal.Use(user, otherCharacters);
+            var actionResults = heal.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
@@ -96,7 +96,7 @@ namespace BattleSystem.Tests.Actions
             var heal = TestHelpers.CreateHeal();
 
             // Act
-            var actionResults = heal.Use(user, otherCharacters);
+            var actionResults = heal.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);

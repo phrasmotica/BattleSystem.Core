@@ -40,15 +40,15 @@ namespace BattleSystem.Actions
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<IActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
+        public virtual IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
             var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
 
-            var results = new List<IActionResult>();
+            var results = new List<IActionResult<TSource>>();
 
             foreach (var target in targets.Where(c => !c.IsDead).ToArray())
             {
-                var result = target.ReceiveBuff(TargetMultipliers, user.Id);
+                var result = target.ReceiveBuff<TSource>(TargetMultipliers, user.Id);
                 results.Add(result);
             }
 

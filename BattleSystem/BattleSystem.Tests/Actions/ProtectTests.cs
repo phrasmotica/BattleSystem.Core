@@ -23,7 +23,7 @@ namespace BattleSystem.Tests.Actions
             var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
 
             // Act
-            _ = protect.Use(user, otherCharacters);
+            _ = protect.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(otherCharacters[0].ProtectCount, Is.EqualTo(1));
@@ -42,7 +42,7 @@ namespace BattleSystem.Tests.Actions
             var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = protect.Use(user, otherCharacters);
+            var actionResults = protect.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Not.Empty);
@@ -62,7 +62,7 @@ namespace BattleSystem.Tests.Actions
             var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = protect.Use(user, otherCharacters);
+            var actionResults = protect.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
@@ -81,7 +81,7 @@ namespace BattleSystem.Tests.Actions
             var protect = TestHelpers.CreateProtect();
 
             // Act
-            var actionResults = protect.Use(user, otherCharacters);
+            var actionResults = protect.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);

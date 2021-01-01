@@ -23,7 +23,7 @@ namespace BattleSystem.Tests.Actions
             var change = TestHelpers.CreateProtectLimitChange(new OthersMoveTargetCalculator());
 
             // Act
-            _ = change.Use(user, otherCharacters);
+            _ = change.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(otherCharacters[0].ProtectLimit, Is.EqualTo(2));
@@ -42,7 +42,7 @@ namespace BattleSystem.Tests.Actions
             var change = TestHelpers.CreateProtectLimitChange(new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = change.Use(user, otherCharacters);
+            var actionResults = change.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Not.Empty);
@@ -62,7 +62,7 @@ namespace BattleSystem.Tests.Actions
             var change = TestHelpers.CreateProtectLimitChange(new OthersMoveTargetCalculator());
 
             // Act
-            var actionResults = change.Use(user, otherCharacters);
+            var actionResults = change.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
@@ -81,7 +81,7 @@ namespace BattleSystem.Tests.Actions
             var change = TestHelpers.CreateProtectLimitChange();
 
             // Act
-            var actionResults = change.Use(user, otherCharacters);
+            var actionResults = change.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);

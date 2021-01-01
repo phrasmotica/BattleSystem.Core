@@ -134,11 +134,11 @@ namespace BattleSystem.Moves
         /// </summary>
         /// <param name="user">The user of the move.</param>
         /// <param name="otherCharacters">The other characters.</param>
-        public (MoveUseResult, IEnumerable<IEnumerable<IActionResult>>) Use(Character user, IEnumerable<Character> otherCharacters)
+        public (MoveUseResult, IEnumerable<IEnumerable<IActionResult<Move>>>) Use(Character user, IEnumerable<Character> otherCharacters)
         {
             var result = _successCalculator.Calculate(user, this, otherCharacters);
 
-            var actionsResults = new List<IEnumerable<IActionResult>>();
+            var actionsResults = new List<IEnumerable<IActionResult<Move>>>();
 
             var targets = otherCharacters.ToArray();
 
@@ -151,7 +151,7 @@ namespace BattleSystem.Moves
                         (action as ITransformable)?.ReceiveTransforms(user.Item);
                     }
 
-                    var actionResults = action.Use(user, targets);
+                    var actionResults = action.Use<Move>(user, targets);
                     actionsResults.Add(actionResults);
 
                     // ensure targets can't be affected by subsequent actions
