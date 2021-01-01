@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
 
-namespace BattleSystem.Moves.Targets
+namespace BattleSystem.Actions.Targets
 {
     /// <summary>
-    /// Calculates the move target as the first of the move user's allies.
+    /// Calculates the action target as the first of the move user's allies.
     /// </summary>
-    public class FirstAllyMoveTargetCalculator : IMoveTargetCalculator
+    public class FirstAllyActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
         public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)

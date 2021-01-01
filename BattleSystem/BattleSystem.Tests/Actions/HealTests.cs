@@ -1,7 +1,7 @@
 ﻿using BattleSystem.Characters;
 using BattleSystem.Healing;
 using BattleSystem.Actions;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 using Moq;
 using NUnit.Framework;
 
@@ -34,7 +34,7 @@ namespace BattleSystem.Tests.Actions
                 )
                 .Returns(2);
 
-            var heal = TestHelpers.CreateHeal(healingCalculator.Object, new OthersMoveTargetCalculator());
+            var heal = TestHelpers.CreateHeal(healingCalculator.Object, new OthersActionTargetCalculator());
 
             _ = otherCharacters[0].ReceiveDamage<string>(2, user);
 
@@ -55,7 +55,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var heal = TestHelpers.CreateHeal(moveTargetCalculator: new OthersMoveTargetCalculator());
+            var heal = TestHelpers.CreateHeal(actionTargetCalculator: new OthersActionTargetCalculator());
 
             // Act
             var actionResults = heal.Use<string>(user, otherCharacters);
@@ -74,7 +74,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var heal = TestHelpers.CreateHeal(moveTargetCalculator: new OthersMoveTargetCalculator());
+            var heal = TestHelpers.CreateHeal(actionTargetCalculator: new OthersActionTargetCalculator());
 
             // Act
             var actionResults = heal.Use<string>(user, otherCharacters);

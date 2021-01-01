@@ -1,5 +1,5 @@
 ﻿using BattleSystem.Actions;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Actions
@@ -20,7 +20,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var change = TestHelpers.CreateProtectLimitChange(new OthersMoveTargetCalculator());
+            var change = TestHelpers.CreateProtectLimitChange(new OthersActionTargetCalculator());
 
             // Act
             _ = change.Use<string>(user, otherCharacters);
@@ -39,7 +39,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var change = TestHelpers.CreateProtectLimitChange(new OthersMoveTargetCalculator());
+            var change = TestHelpers.CreateProtectLimitChange(new OthersActionTargetCalculator());
 
             // Act
             var actionResults = change.Use<string>(user, otherCharacters);
@@ -59,7 +59,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var change = TestHelpers.CreateProtectLimitChange(new OthersMoveTargetCalculator());
+            var change = TestHelpers.CreateProtectLimitChange(new OthersActionTargetCalculator());
 
             // Act
             var actionResults = change.Use<string>(user, otherCharacters);

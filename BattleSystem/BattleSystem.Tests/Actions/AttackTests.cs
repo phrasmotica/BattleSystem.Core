@@ -1,7 +1,7 @@
 ﻿using BattleSystem.Characters;
 using BattleSystem.Damage;
 using BattleSystem.Actions;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 using Moq;
 using NUnit.Framework;
 using static BattleSystem.Actions.Attack;
@@ -35,7 +35,7 @@ namespace BattleSystem.Tests.Actions
                 )
                 .Returns(6);
 
-            var attack = TestHelpers.CreateAttack(damageCalculator.Object, new OthersMoveTargetCalculator());
+            var attack = TestHelpers.CreateAttack(damageCalculator.Object, new OthersActionTargetCalculator());
 
             // Act
             _ = attack.Use<string>(user, otherCharacters);
@@ -54,7 +54,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var attack = TestHelpers.CreateAttack(moveTargetCalculator: new OthersMoveTargetCalculator());
+            var attack = TestHelpers.CreateAttack(actionTargetCalculator: new OthersActionTargetCalculator());
 
             // Act
             var actionResults = attack.Use<string>(user, otherCharacters);
@@ -73,7 +73,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var attack = TestHelpers.CreateAttack(moveTargetCalculator: new OthersMoveTargetCalculator());
+            var attack = TestHelpers.CreateAttack(actionTargetCalculator: new OthersActionTargetCalculator());
 
             // Act
             var actionResults = attack.Use<string>(user, otherCharacters);

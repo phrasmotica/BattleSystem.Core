@@ -7,7 +7,7 @@ using BattleSystem.Healing;
 using BattleSystem.Items;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Success;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 using BattleSystem.Stats;
 using Moq;
 using static BattleSystem.Actions.Attack;
@@ -163,13 +163,13 @@ namespace BattleSystem.Tests
         /// </summary>
         public static Attack CreateAttack(
             IDamageCalculator damageCalculator = null,
-            IMoveTargetCalculator moveTargetCalculator = null,
+            IActionTargetCalculator actionTargetCalculator = null,
             int power = 2)
         {
             return new AttackBuilder()
                 .WithPower(power)
                 .WithDamageCalculator(damageCalculator ?? new Mock<IDamageCalculator>().Object)
-                .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object)
+                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
                 .Build();
         }
 
@@ -177,11 +177,11 @@ namespace BattleSystem.Tests
         /// Returns a buff action.
         /// </summary>
         public static Buff CreateBuff(
-            IMoveTargetCalculator moveTargetCalculator = null,
+            IActionTargetCalculator actionTargetCalculator = null,
             IDictionary<StatCategory, double> targetMultipliers = null)
         {
             var builder = new BuffBuilder()
-                            .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object);
+                            .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object);
 
             if (targetMultipliers is not null)
             {
@@ -199,13 +199,13 @@ namespace BattleSystem.Tests
         /// </summary>
         public static Heal CreateHeal(
             IHealingCalculator healingCalculator = null,
-            IMoveTargetCalculator moveTargetCalculator = null,
+            IActionTargetCalculator actionTargetCalculator = null,
             int amount = 5)
         {
             return new HealBuilder()
                 .WithAmount(amount)
                 .WithHealingCalculator(healingCalculator ?? new Mock<IHealingCalculator>().Object)
-                .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object)
+                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
                 .Build();
         }
 
@@ -213,10 +213,10 @@ namespace BattleSystem.Tests
         /// Returns a protect action.
         /// </summary>
         public static Protect CreateProtect(
-            IMoveTargetCalculator moveTargetCalculator = null)
+            IActionTargetCalculator actionTargetCalculator = null)
         {
             return new ProtectBuilder()
-                .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object)
+                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
                 .Build();
         }
 
@@ -224,11 +224,11 @@ namespace BattleSystem.Tests
         /// Returns a protect limit change action.
         /// </summary>
         public static ProtectLimitChange CreateProtectLimitChange(
-            IMoveTargetCalculator moveTargetCalculator = null,
+            IActionTargetCalculator actionTargetCalculator = null,
             int amount = 1)
         {
             return new ProtectLimitChangeBuilder()
-                .WithMoveTargetCalculator(moveTargetCalculator ?? new Mock<IMoveTargetCalculator>().Object)
+                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
                 .WithAmount(amount)
                 .Build();
         }

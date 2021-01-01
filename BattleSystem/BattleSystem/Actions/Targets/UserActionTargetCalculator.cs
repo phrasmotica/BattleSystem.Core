@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
 
-namespace BattleSystem.Moves.Targets
+namespace BattleSystem.Actions.Targets
 {
     /// <summary>
-    /// Calculates the move target as the user.
+    /// Calculates the action target as the user.
     /// </summary>
-    public class UserMoveTargetCalculator : IMoveTargetCalculator
+    public class UserActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
         public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)

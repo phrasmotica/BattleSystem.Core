@@ -1,5 +1,5 @@
 ﻿using System;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 
 namespace BattleSystem.Actions
 {
@@ -14,9 +14,9 @@ namespace BattleSystem.Actions
         private readonly ProtectLimitChange _protectLimitChange;
 
         /// <summary>
-        /// Whether the move target calculator of the protect limit change action has been set.
+        /// Whether the action target calculator of the protect limit change action has been set.
         /// </summary>
-        private bool _isMoveTargetCalculatorSet;
+        private bool _isactionTargetCalculatorSet;
 
         /// <summary>
         /// Whether the amount of the protect limit change action has been set.
@@ -32,18 +32,18 @@ namespace BattleSystem.Actions
         }
 
         /// <summary>
-        /// Sets the built protect limit change action's move target calculator.
+        /// Sets the built protect limit change action's action target calculator.
         /// </summary>
-        /// <param name="name">The built protect limit change action's move target calculator.</param>
-        public ProtectLimitChangeBuilder WithMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
+        /// <param name="name">The built protect limit change action's action target calculator.</param>
+        public ProtectLimitChangeBuilder WithActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
         {
-            if (moveTargetCalculator is null)
+            if (actionTargetCalculator is null)
             {
-                throw new ArgumentNullException(nameof(moveTargetCalculator));
+                throw new ArgumentNullException(nameof(actionTargetCalculator));
             }
 
-            _protectLimitChange.SetMoveTargetCalculator(moveTargetCalculator);
-            _isMoveTargetCalculatorSet = true;
+            _protectLimitChange.SetActionTargetCalculator(actionTargetCalculator);
+            _isactionTargetCalculatorSet = true;
             return this;
         }
 
@@ -63,7 +63,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public ProtectLimitChangeBuilder TargetsAll()
         {
-            return WithMoveTargetCalculator(new AllMoveTargetCalculator());
+            return WithActionTargetCalculator(new AllActionTargetCalculator());
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public ProtectLimitChangeBuilder TargetsOthers()
         {
-            return WithMoveTargetCalculator(new OthersMoveTargetCalculator());
+            return WithActionTargetCalculator(new OthersActionTargetCalculator());
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public ProtectLimitChangeBuilder TargetsEnemies()
         {
-            return WithMoveTargetCalculator(new EnemiesMoveTargetCalculator());
+            return WithActionTargetCalculator(new EnemiesActionTargetCalculator());
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public ProtectLimitChangeBuilder TargetsTeam()
         {
-            return WithMoveTargetCalculator(new TeamMoveTargetCalculator());
+            return WithActionTargetCalculator(new TeamActionTargetCalculator());
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public ProtectLimitChangeBuilder TargetsAllies()
         {
-            return WithMoveTargetCalculator(new AlliesMoveTargetCalculator());
+            return WithActionTargetCalculator(new AlliesActionTargetCalculator());
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public ProtectLimitChangeBuilder TargetsUser()
         {
-            return WithMoveTargetCalculator(new UserMoveTargetCalculator());
+            return WithActionTargetCalculator(new UserActionTargetCalculator());
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public ProtectLimitChangeBuilder TargetsFirstEnemy()
         {
-            return WithMoveTargetCalculator(new FirstEnemyMoveTargetCalculator());
+            return WithActionTargetCalculator(new FirstEnemyActionTargetCalculator());
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public ProtectLimitChangeBuilder TargetsFirstAlly()
         {
-            return WithMoveTargetCalculator(new FirstAllyMoveTargetCalculator());
+            return WithActionTargetCalculator(new FirstAllyActionTargetCalculator());
         }
 
         /// <summary>
@@ -127,9 +127,9 @@ namespace BattleSystem.Actions
         /// </summary>
         public ProtectLimitChange Build()
         {
-            if (!_isMoveTargetCalculatorSet)
+            if (!_isactionTargetCalculatorSet)
             {
-                throw new InvalidOperationException("Cannot build a protect limit change action with no move target calculator!");
+                throw new InvalidOperationException("Cannot build a protect limit change action with no action target calculator!");
             }
 
             if (!_isAmountSet)

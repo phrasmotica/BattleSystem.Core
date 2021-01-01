@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
 
-namespace BattleSystem.Moves.Targets
+namespace BattleSystem.Actions.Targets
 {
     /// <summary>
-    /// Interface for calculating the target(s) of a move.
+    /// Interface for calculating the targets of an action.
     /// </summary>
-    public interface IMoveTargetCalculator
+    public interface IActionTargetCalculator
     {
         /// <summary>
-        /// Returns the character(s) that should be targeted from the given characters.
+        /// Returns the characters that should be targeted from the given characters.
         /// </summary>
         /// <param name="user">The user of the move.</param>
         /// <param name="otherCharacters">The other characters.</param>

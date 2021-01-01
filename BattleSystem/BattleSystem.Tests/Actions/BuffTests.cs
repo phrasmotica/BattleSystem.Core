@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 using BattleSystem.Stats;
 using NUnit.Framework;
 
@@ -22,7 +22,7 @@ namespace BattleSystem.Tests.Actions
             };
 
             var buff = TestHelpers.CreateBuff(
-                new OthersMoveTargetCalculator(),
+                new OthersActionTargetCalculator(),
                 new Dictionary<StatCategory, double>
                 {
                     [StatCategory.Attack] = 0.2
@@ -45,7 +45,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var buff = TestHelpers.CreateBuff(new OthersMoveTargetCalculator());
+            var buff = TestHelpers.CreateBuff(new OthersActionTargetCalculator());
 
             // Act
             var actionResults = buff.Use<string>(user, otherCharacters);
@@ -64,7 +64,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var buff = TestHelpers.CreateBuff(new OthersMoveTargetCalculator());
+            var buff = TestHelpers.CreateBuff(new OthersActionTargetCalculator());
 
             // Act
             var actionResults = buff.Use<string>(user, otherCharacters);

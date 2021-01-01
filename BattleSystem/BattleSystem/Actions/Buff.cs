@@ -2,7 +2,7 @@
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 using BattleSystem.Stats;
 
 namespace BattleSystem.Actions
@@ -13,9 +13,9 @@ namespace BattleSystem.Actions
     public class Buff : IAction
     {
         /// <summary>
-        /// The move target calculator.
+        /// The action target calculator.
         /// </summary>
-        private IMoveTargetCalculator _moveTargetCalculator;
+        private IActionTargetCalculator _actionTargetCalculator;
 
         /// <summary>
         /// Gets or sets the buff's stat multipliers for the target.
@@ -31,18 +31,18 @@ namespace BattleSystem.Actions
         }
 
         /// <summary>
-        /// Sets the move target calculator for this buff.
+        /// Sets the action target calculator for this buff.
         /// </summary>
-        /// <param name="moveTargetCalculator">The move target calculator.</param>
-        public void SetMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
+        /// <param name="actionTargetCalculator">The action target calculator.</param>
+        public void SetActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
         {
-            _moveTargetCalculator = moveTargetCalculator;
+            _actionTargetCalculator = actionTargetCalculator;
         }
 
         /// <inheritdoc />
         public virtual IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
-            var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
+            var targets = _actionTargetCalculator.Calculate(user, otherCharacters);
 
             var results = new List<IActionResult<TSource>>();
 

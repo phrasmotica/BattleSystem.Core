@@ -2,8 +2,7 @@
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
-using BattleSystem.Moves.Targets;
-using BattleSystem.Items;
+using BattleSystem.Actions.Targets;
 
 namespace BattleSystem.Actions
 {
@@ -13,9 +12,9 @@ namespace BattleSystem.Actions
     public class ProtectLimitChange : IAction
     {
         /// <summary>
-        /// The move target calculator.
+        /// The action target calculator.
         /// </summary>
-        private IMoveTargetCalculator _moveTargetCalculator;
+        private IActionTargetCalculator _actionTargetCalculator;
 
         /// <summary>
         /// Gets or sets the amount to change the target's protect limit by.
@@ -23,18 +22,18 @@ namespace BattleSystem.Actions
         public int Amount { get; set; }
 
         /// <summary>
-        /// Sets the move target calculator for this protect limit change.
+        /// Sets the action target calculator for this protect limit change.
         /// </summary>
-        /// <param name="moveTargetCalculator">The move target calculator.</param>
-        public void SetMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
+        /// <param name="actionTargetCalculator">The action target calculator.</param>
+        public void SetActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
         {
-            _moveTargetCalculator = moveTargetCalculator;
+            _actionTargetCalculator = actionTargetCalculator;
         }
 
         /// <inheritdoc />
         public IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
-            var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
+            var targets = _actionTargetCalculator.Calculate(user, otherCharacters);
 
             var results = new List<IActionResult<TSource>>();
 
