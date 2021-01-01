@@ -162,7 +162,7 @@ namespace BattleSystem.Moves
                     // ensure targets can't be affected by subsequent actions
                     // if they weren't affected by the previous one
                     var affectedCharacters = actionResults.Where(ar => ar.Applied)
-                                                          .Select(ar => ar.TargetId);
+                                                          .Select(ar => ar.Target.Id);
                     targets = targets.Where(t => affectedCharacters.Contains(t.Id)).ToArray();
 
                     (action as ITransformable)?.ClearTransforms();

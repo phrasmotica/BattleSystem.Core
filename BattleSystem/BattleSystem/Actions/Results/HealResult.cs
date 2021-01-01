@@ -24,9 +24,9 @@ namespace BattleSystem.Actions.Results
         public TSource Source { get; set; }
 
         /// <summary>
-        /// Gets or sets the ID of the character who was the target of the heal.
+        /// Gets or sets the character who was the target of the heal.
         /// </summary>
-        public string TargetId { get; set; }
+        public Character Target { get; set; }
 
         /// <summary>
         /// Gets or sets whether the character was protected from the heal.

@@ -24,9 +24,9 @@ namespace BattleSystem.Actions.Results
         TSource Source { get; set; }
 
         /// <summary>
-        /// Gets or sets the ID of the character who was the target of the action.
+        /// Gets or sets the character who was the target of the action.
         /// </summary>
-        string TargetId { get; set; }
+        Character Target { get; set; }
 
         /// <summary>
         /// Gets or sets whether the character was protected from the action.

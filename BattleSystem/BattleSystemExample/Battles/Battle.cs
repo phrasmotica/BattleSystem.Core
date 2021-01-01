@@ -172,13 +172,13 @@ namespace BattleSystemExample.Battles
         {
             var user = characters.Single(c => c.Id == result.ProtectUserId);
 
-            if (result.TargetId == user.Id)
+            if (result.Target.Id == user.Id)
             {
                 _gameOutput.WriteLine($"{user.Name} protected itself!");
             }
             else
             {
-                var target = characters.Single(c => c.Id == result.TargetId);
+                var target = characters.Single(c => c.Id == result.Target.Id);
                 _gameOutput.WriteLine($"{user.Name} protected {target.Name}!");
             }
         }
@@ -192,7 +192,7 @@ namespace BattleSystemExample.Battles
             IEnumerable<Character> characters,
             AttackResult<TSource> attack)
         {
-            var target = characters.Single(c => c.Id == attack.TargetId);
+            var target = characters.Single(c => c.Id == attack.Target.Id);
             var amount = attack.Damage;
 
             if (attack.TargetDied)
@@ -206,7 +206,7 @@ namespace BattleSystemExample.Battles
         }
 
         /// <summary>
-        /// Outputs the given stat changes that occurred to the given characters from the given move use.
+        /// Outputs info about the given buff result.
         /// </summary>
         /// <param name="characters">The characters.</param>
         /// <param name="buff">The buff result.</param>
@@ -214,7 +214,7 @@ namespace BattleSystemExample.Battles
             IEnumerable<Character> characters,
             BuffResult<TSource> buff)
         {
-            var target = characters.Single(c => c.Id == buff.TargetId);
+            var target = characters.Single(c => c.Id == buff.Target.Id);
             if (!target.IsDead)
             {
                 var statMultiplierChanges = buff.StatMultiplierChanges;
@@ -222,7 +222,7 @@ namespace BattleSystemExample.Battles
                 foreach (var change in statMultiplierChanges)
                 {
                     var stat = change.Key;
-                    var percentage = (int)(change.Value * 100);
+                    var percentage = (int) (change.Value * 100);
 
                     if (percentage > 0)
                     {
@@ -246,13 +246,13 @@ namespace BattleSystemExample.Battles
             IEnumerable<Character> characters,
             HealResult<TSource> heal)
         {
-            var target = characters.Single(c => c.Id == heal.TargetId);
+            var target = characters.Single(c => c.Id == heal.Target.Id);
 
             _gameOutput.WriteLine($"{target.Name} recovered {heal.Amount} health!");
         }
 
         /// <summary>
-        /// Outputs info about a protect limit change result.
+        /// Outputs info about the given protect limit change result.
         /// </summary>
         /// <param name="characters">The characters.</param>
         /// <param name="result">The protect limit change result.</param>
@@ -260,7 +260,7 @@ namespace BattleSystemExample.Battles
             IEnumerable<Character> characters,
             ProtectLimitChangeResult<TSource> result)
         {
-            var target = characters.Single(c => c.Id == result.TargetId);
+            var target = characters.Single(c => c.Id == result.Target.Id);
 
             if (!target.IsDead)
             {
@@ -276,15 +276,15 @@ namespace BattleSystemExample.Battles
         }
 
         /// <summary>
-        /// Outputs info about a protect limit change result.
+        /// Outputs info about the given protect result.
         /// </summary>
         /// <param name="characters">The characters.</param>
-        /// <param name="protect">The protect limit change result.</param>
+        /// <param name="protect">The protect result.</param>
         private void ShowProtectResult<TSource>(
             IEnumerable<Character> characters,
             ProtectResult<TSource> protect)
         {
-            var target = characters.Single(c => c.Id == protect.TargetId);
+            var target = characters.Single(c => c.Id == protect.Target.Id);
             if (!target.IsDead)
             {
                 _gameOutput.WriteLine($"{target.Name} became protected!");

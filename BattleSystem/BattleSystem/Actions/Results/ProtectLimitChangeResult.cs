@@ -24,9 +24,9 @@ namespace BattleSystem.Actions.Results
         public TSource Source { get; set; }
 
         /// <summary>
-        /// Gets or sets the ID of the character whose protect limit was changed.
+        /// Gets or sets the character whose protect limit was changed.
         /// </summary>
-        public string TargetId { get; set; }
+        public Character Target { get; set; }
 
         /// <summary>
         /// Gets or sets whether the character was protected from the protect limit change.

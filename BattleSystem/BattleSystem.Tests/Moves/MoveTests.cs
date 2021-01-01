@@ -114,11 +114,11 @@ namespace BattleSystem.Tests.Moves
                 TestHelpers.CreateBasicCharacter(),
             };
 
-            static IActionResult<Move> MockActionResult(bool applied, string targetId)
+            static IActionResult<Move> MockActionResult(bool applied, Character target)
             {
                 var result = new Mock<IActionResult<Move>>();
                 result.SetupGet(m => m.Applied).Returns(applied);
-                result.SetupGet(m => m.TargetId).Returns(targetId);
+                result.SetupGet(m => m.Target).Returns(target);
                 return result.Object;
             }
 
@@ -134,7 +134,7 @@ namespace BattleSystem.Tests.Moves
                     )
                     .Returns((Character _, IEnumerable<Character> otherCharacters) =>
                     {
-                        return otherCharacters.Select(c => MockActionResult(applied, c.Id));
+                        return otherCharacters.Select(c => MockActionResult(applied, c));
                     });
 
                 return action.Object;

@@ -192,7 +192,7 @@ namespace BattleSystem.Characters
                 {
                     Applied = false,
                     User = user,
-                    TargetId = Id,
+                    Target = this,
                     TargetProtected = true,
                     ProtectUserId = protectUserId,
                 };
@@ -206,7 +206,7 @@ namespace BattleSystem.Characters
             {
                 Applied = true,
                 User = user,
-                TargetId = Id,
+                Target = this,
                 TargetProtected = false,
                 StartingHealth = startingHealth,
                 EndingHealth = endingHealth,
@@ -231,7 +231,7 @@ namespace BattleSystem.Characters
                 {
                     Applied = false,
                     User = user,
-                    TargetId = Id,
+                    Target = this,
                     TargetProtected = true,
                     ProtectUserId = protectUserId,
                 };
@@ -268,7 +268,7 @@ namespace BattleSystem.Characters
             {
                 Applied = true,
                 User = user,
-                TargetId = Id,
+                Target = this,
                 TargetProtected = false,
                 StartingStatMultipliers = startingMultipliers,
                 EndingStatMultipliers = endingMultipliers,
@@ -293,7 +293,7 @@ namespace BattleSystem.Characters
                 {
                     Applied = false,
                     User = user,
-                    TargetId = Id,
+                    Target = this,
                     TargetProtected = true,
                     ProtectUserId = protectUserId,
                 };
@@ -307,7 +307,7 @@ namespace BattleSystem.Characters
             {
                 Applied = true,
                 User = user,
-                TargetId = Id,
+                Target = this,
                 TargetProtected = false,
                 StartingHealth = startingHealth,
                 EndingHealth = endingHealth,
@@ -329,7 +329,7 @@ namespace BattleSystem.Characters
                 {
                     Applied = false,
                     User = user,
-                    TargetId = Id,
+                    Target = this,
                     TargetProtected = true,
                     ProtectUserId = protectUserId,
                 };
@@ -341,7 +341,7 @@ namespace BattleSystem.Characters
                 {
                     Applied = false,
                     User = user,
-                    TargetId = Id,
+                    Target = this,
                 };
             }
 
@@ -351,7 +351,7 @@ namespace BattleSystem.Characters
             {
                 Applied = true,
                 User = user,
-                TargetId = Id,
+                Target = this,
                 TargetProtected = false,
             };
         }
@@ -374,7 +374,7 @@ namespace BattleSystem.Characters
                 {
                     Applied = false,
                     User = user,
-                    TargetId = Id,
+                    Target = this,
                     TargetProtected = true,
                     ProtectUserId = protectUserId,
                 };
@@ -386,7 +386,7 @@ namespace BattleSystem.Characters
             {
                 Applied = true,
                 User = user,
-                TargetId = Id,
+                Target = this,
                 TargetProtected = false,
                 Amount = amount,
             };
