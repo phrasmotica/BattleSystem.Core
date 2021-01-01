@@ -32,6 +32,11 @@ namespace BattleSystem.Actions.Results
         public Character Target { get; set; }
 
         /// <summary>
+        /// Gets whether the buff was self-inflicted.
+        /// </summary>
+        public bool IsSelfInflicted => User is not null && Target is not null && User.Id == Target.Id;
+
+        /// <summary>
         /// Gets or sets whether the character was protected from the buff.
         /// </summary>
         public bool TargetProtected { get; set; }

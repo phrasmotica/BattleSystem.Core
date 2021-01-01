@@ -29,6 +29,11 @@ namespace BattleSystem.Actions.Results
         public Character Target { get; set; }
 
         /// <summary>
+        /// Gets whether the attack was self-inflicted.
+        /// </summary>
+        public bool IsSelfInflicted => User is not null && Target is not null && User.Id == Target.Id;
+
+        /// <summary>
         /// Gets or sets the target's health before the attack.
         /// </summary>
         public int StartingHealth { get; set; }

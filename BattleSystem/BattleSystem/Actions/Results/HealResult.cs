@@ -29,6 +29,11 @@ namespace BattleSystem.Actions.Results
         public Character Target { get; set; }
 
         /// <summary>
+        /// Gets whether the heal was self-inflicted.
+        /// </summary>
+        public bool IsSelfInflicted => User is not null && Target is not null && User.Id == Target.Id;
+
+        /// <summary>
         /// Gets or sets whether the character was protected from the heal.
         /// </summary>
         public bool TargetProtected { get; set; }
