@@ -18,6 +18,11 @@ namespace BattleSystem.Actions
         private IActionTargetCalculator _actionTargetCalculator;
 
         /// <summary>
+        /// The targets for the buff.
+        /// </summary>
+        private IEnumerable<Character> _targets;
+
+        /// <summary>
         /// Gets or sets the buff's stat multipliers for the target.
         /// </summary>
         public IDictionary<StatCategory, double> TargetMultipliers { get; private set; }
@@ -40,13 +45,17 @@ namespace BattleSystem.Actions
         }
 
         /// <inheritdoc />
+        public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
+        {
+            _targets = _actionTargetCalculator.Calculate(user, otherCharacters);
+        }
+
+        /// <inheritdoc />
         public virtual IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
-            var targets = _actionTargetCalculator.Calculate(user, otherCharacters);
-
             var results = new List<IActionResult<TSource>>();
 
-            foreach (var target in targets.Where(c => !c.IsDead).ToArray())
+            foreach (var target in _targets.Where(c => !c.IsDead).ToArray())
             {
                 var result = target.ReceiveBuff<TSource>(TargetMultipliers, user);
                 results.Add(result);

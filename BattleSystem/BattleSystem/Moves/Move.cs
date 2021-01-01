@@ -130,6 +130,19 @@ namespace BattleSystem.Moves
         }
 
         /// <summary>
+        /// Ensures each move action has its targets set.
+        /// </summary>
+        /// <param name="user">The user of the move.</param>
+        /// <param name="otherCharacters">The other characters.</param>
+        public void SetTargets(Character user, IEnumerable<Character> otherCharacters)
+        {
+            foreach (var action in _moveActions)
+            {
+                action.SetTargets(user, otherCharacters);
+            }
+        }
+
+        /// <summary>
         /// Applies the effects of the move, if it lands.
         /// </summary>
         /// <param name="user">The user of the move.</param>

@@ -38,6 +38,8 @@ namespace BattleSystem.Tests.Actions
 
             _ = otherCharacters[0].ReceiveDamage<string>(2, user);
 
+            heal.SetTargets(user, otherCharacters);
+
             // Act
             heal.Use<string>(user, otherCharacters);
 
@@ -56,6 +58,8 @@ namespace BattleSystem.Tests.Actions
             };
 
             var heal = TestHelpers.CreateHeal(actionTargetCalculator: new OthersActionTargetCalculator());
+
+            heal.SetTargets(user, otherCharacters);
 
             // Act
             var actionResults = heal.Use<string>(user, otherCharacters);
@@ -76,6 +80,8 @@ namespace BattleSystem.Tests.Actions
 
             var heal = TestHelpers.CreateHeal(actionTargetCalculator: new OthersActionTargetCalculator());
 
+            heal.SetTargets(user, otherCharacters);
+
             // Act
             var actionResults = heal.Use<string>(user, otherCharacters);
 
@@ -94,6 +100,8 @@ namespace BattleSystem.Tests.Actions
             };
 
             var heal = TestHelpers.CreateHeal();
+
+            heal.SetTargets(user, otherCharacters);
 
             // Act
             var actionResults = heal.Use<string>(user, otherCharacters);

@@ -37,6 +37,8 @@ namespace BattleSystem.Tests.Actions
 
             var attack = TestHelpers.CreateAttack(damageCalculator.Object, new OthersActionTargetCalculator());
 
+            attack.SetTargets(user, otherCharacters);
+
             // Act
             _ = attack.Use<string>(user, otherCharacters);
 
@@ -55,6 +57,8 @@ namespace BattleSystem.Tests.Actions
             };
 
             var attack = TestHelpers.CreateAttack(actionTargetCalculator: new OthersActionTargetCalculator());
+
+            attack.SetTargets(user, otherCharacters);
 
             // Act
             var actionResults = attack.Use<string>(user, otherCharacters);
@@ -75,6 +79,8 @@ namespace BattleSystem.Tests.Actions
 
             var attack = TestHelpers.CreateAttack(actionTargetCalculator: new OthersActionTargetCalculator());
 
+            attack.SetTargets(user, otherCharacters);
+
             // Act
             var actionResults = attack.Use<string>(user, otherCharacters);
 
@@ -93,6 +99,8 @@ namespace BattleSystem.Tests.Actions
             };
 
             var attack = TestHelpers.CreateAttack();
+
+            attack.SetTargets(user, otherCharacters);
 
             // Act
             var actionResults = attack.Use<string>(user, otherCharacters);

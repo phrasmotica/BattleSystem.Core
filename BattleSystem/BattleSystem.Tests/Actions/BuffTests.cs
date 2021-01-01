@@ -28,6 +28,8 @@ namespace BattleSystem.Tests.Actions
                     [StatCategory.Attack] = 0.2
                 });
 
+            buff.SetTargets(user, otherCharacters);
+
             // Act
             _ = buff.Use<string>(user, otherCharacters);
 
@@ -46,6 +48,8 @@ namespace BattleSystem.Tests.Actions
             };
 
             var buff = TestHelpers.CreateBuff(new OthersActionTargetCalculator());
+
+            buff.SetTargets(user, otherCharacters);
 
             // Act
             var actionResults = buff.Use<string>(user, otherCharacters);
@@ -66,6 +70,8 @@ namespace BattleSystem.Tests.Actions
 
             var buff = TestHelpers.CreateBuff(new OthersActionTargetCalculator());
 
+            buff.SetTargets(user, otherCharacters);
+
             // Act
             var actionResults = buff.Use<string>(user, otherCharacters);
 
@@ -84,6 +90,8 @@ namespace BattleSystem.Tests.Actions
             };
 
             var buff = TestHelpers.CreateBuff();
+
+            buff.SetTargets(user, otherCharacters);
 
             // Act
             var actionResults = buff.Use<string>(user, otherCharacters);

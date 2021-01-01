@@ -17,6 +17,11 @@ namespace BattleSystem.Actions
         private IActionTargetCalculator _actionTargetCalculator;
 
         /// <summary>
+        /// The targets for the protect action.
+        /// </summary>
+        private IEnumerable<Character> _targets;
+
+        /// <summary>
         /// Sets the action target calculator for this protect action.
         /// </summary>
         /// <param name="actionTargetCalculator">The action target calculator.</param>
@@ -26,13 +31,17 @@ namespace BattleSystem.Actions
         }
 
         /// <inheritdoc />
+        public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
+        {
+            _targets = _actionTargetCalculator.Calculate(user, otherCharacters);
+        }
+
+        /// <inheritdoc />
         public virtual IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
-            var targets = _actionTargetCalculator.Calculate(user, otherCharacters);
-
             var results = new List<IActionResult<TSource>>();
 
-            foreach (var target in targets.Where(c => !c.IsDead))
+            foreach (var target in _targets.Where(c => !c.IsDead))
             {
                 var result = target.AddProtect<TSource>(user);
                 results.Add(result);

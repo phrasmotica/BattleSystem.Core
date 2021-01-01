@@ -26,6 +26,8 @@ namespace BattleSystem.Tests.Moves
                 }
             };
 
+            moveUse.SetTargets();
+
             // Act
             moveUse.Apply();
 

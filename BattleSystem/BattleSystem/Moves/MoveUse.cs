@@ -33,6 +33,14 @@ namespace BattleSystem.Moves
         public IEnumerable<IEnumerable<IActionResult<Move>>> ActionsResults { get; private set; }
 
         /// <summary>
+        /// Sets the targets.
+        /// </summary>
+        public void SetTargets()
+        {
+            Move.SetTargets(User, OtherCharacters);
+        }
+
+        /// <summary>
         /// Applies the move.
         /// </summary>
         public void Apply()

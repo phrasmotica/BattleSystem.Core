@@ -22,6 +22,8 @@ namespace BattleSystem.Tests.Actions
 
             var protect = TestHelpers.CreateProtect(new OthersActionTargetCalculator());
 
+            protect.SetTargets(user, otherCharacters);
+
             // Act
             _ = protect.Use<string>(user, otherCharacters);
 
@@ -40,6 +42,8 @@ namespace BattleSystem.Tests.Actions
             };
 
             var protect = TestHelpers.CreateProtect(new OthersActionTargetCalculator());
+
+            protect.SetTargets(user, otherCharacters);
 
             // Act
             var actionResults = protect.Use<string>(user, otherCharacters);
@@ -61,6 +65,8 @@ namespace BattleSystem.Tests.Actions
 
             var protect = TestHelpers.CreateProtect(new OthersActionTargetCalculator());
 
+            protect.SetTargets(user, otherCharacters);
+
             // Act
             var actionResults = protect.Use<string>(user, otherCharacters);
 
@@ -79,6 +85,8 @@ namespace BattleSystem.Tests.Actions
             };
 
             var protect = TestHelpers.CreateProtect();
+
+            protect.SetTargets(user, otherCharacters);
 
             // Act
             var actionResults = protect.Use<string>(user, otherCharacters);

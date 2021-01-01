@@ -82,13 +82,13 @@ namespace BattleSystemExample.Battles
                 {
                     var otherCharacters = characterOrder.Where(c => c.Id != character.Id);
                     var moveUse = character.ChooseMove(otherCharacters);
+                    moveUse.SetTargets();
                     _moveProcessor.Push(moveUse);
                 }
 
-                var moveUses = _moveProcessor.Apply();
-
-                foreach (var moveUse in moveUses)
+                while (!_moveProcessor.MoveUseQueueIsEmpty)
                 {
+                    var moveUse = _moveProcessor.ApplyNext();
                     ShowMoveUse(moveUse);
                 }
 

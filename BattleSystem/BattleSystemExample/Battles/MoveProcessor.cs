@@ -43,30 +43,22 @@ namespace BattleSystemExample.Battles
         }
 
         /// <summary>
-        /// Processes move uses in the appropriate order and returns info about the move uses.
+        /// Processes the next move use and returns info about it.
         /// </summary>
-        public IEnumerable<MoveUse> Apply()
+        public MoveUse ApplyNext()
         {
             SortMoveUseQueue();
 
-            var moveUseInfo = new List<MoveUse>();
+            var moveUse = Queue[0];
 
-            var numberOfMoves = Queue.Count;
-
-            for (var i = 0; i < numberOfMoves; i++)
+            if (!moveUse.User.IsDead)
             {
-                var moveUse = Queue[0];
-
-                if (!moveUse.User.IsDead)
-                {
-                    moveUse.Apply();
-                    moveUseInfo.Add(moveUse);
-                }
-
-                Queue.RemoveAt(0);
+                moveUse.Apply();
             }
 
-            return moveUseInfo;
+            Queue.RemoveAt(0);
+
+            return moveUse;
         }
 
         /// <summary>

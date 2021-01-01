@@ -30,6 +30,11 @@ namespace BattleSystem.Actions
         private IActionTargetCalculator _actionTargetCalculator;
 
         /// <summary>
+        /// The targets for the attack.
+        /// </summary>
+        private IEnumerable<Character> _targets;
+
+        /// <summary>
         /// Gets or sets the attack's power.
         /// </summary>
         public int Power
@@ -71,13 +76,17 @@ namespace BattleSystem.Actions
         }
 
         /// <inheritdoc />
+        public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
+        {
+            _targets = _actionTargetCalculator.Calculate(user, otherCharacters);
+        }
+
+        /// <inheritdoc />
         public virtual IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
-            var targets = _actionTargetCalculator.Calculate(user, otherCharacters);
-
             var results = new List<IActionResult<TSource>>();
 
-            foreach (var target in targets.Where(c => !c.IsDead).ToArray())
+            foreach (var target in _targets.Where(c => !c.IsDead).ToArray())
             {
                 var damage = _damageCalculator.Calculate(user, this, target);
                 var result = target.ReceiveDamage<TSource>(damage, user);

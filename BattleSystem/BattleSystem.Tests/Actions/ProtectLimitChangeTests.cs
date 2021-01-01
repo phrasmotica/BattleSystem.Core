@@ -22,6 +22,8 @@ namespace BattleSystem.Tests.Actions
 
             var change = TestHelpers.CreateProtectLimitChange(new OthersActionTargetCalculator());
 
+            change.SetTargets(user, otherCharacters);
+
             // Act
             _ = change.Use<string>(user, otherCharacters);
 
@@ -40,6 +42,8 @@ namespace BattleSystem.Tests.Actions
             };
 
             var change = TestHelpers.CreateProtectLimitChange(new OthersActionTargetCalculator());
+
+            change.SetTargets(user, otherCharacters);
 
             // Act
             var actionResults = change.Use<string>(user, otherCharacters);
@@ -61,6 +65,8 @@ namespace BattleSystem.Tests.Actions
 
             var change = TestHelpers.CreateProtectLimitChange(new OthersActionTargetCalculator());
 
+            change.SetTargets(user, otherCharacters);
+
             // Act
             var actionResults = change.Use<string>(user, otherCharacters);
 
@@ -79,6 +85,8 @@ namespace BattleSystem.Tests.Actions
             };
 
             var change = TestHelpers.CreateProtectLimitChange();
+
+            change.SetTargets(user, otherCharacters);
 
             // Act
             var actionResults = change.Use<string>(user, otherCharacters);

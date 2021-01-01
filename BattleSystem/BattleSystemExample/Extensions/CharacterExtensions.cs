@@ -34,6 +34,8 @@ namespace BattleSystemExample.Extensions
                 var effects = character.Item.GetCharacterEffects(EffectTags.EndTurn);
                 foreach (var e in effects)
                 {
+                    e.Action.SetTargets(character, otherCharacters);
+
                     var actionResults = e.Action.Use<Item>(character, otherCharacters);
                     foreach (var r in actionResults)
                     {

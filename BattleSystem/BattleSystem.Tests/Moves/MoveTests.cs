@@ -97,6 +97,8 @@ namespace BattleSystem.Tests.Moves
                 TestHelpers.CreateBasicCharacter()
             };
 
+            move.SetTargets(user, otherCharacters);
+
             // Act
             _ = move.Use(user, otherCharacters);
 
@@ -124,6 +126,15 @@ namespace BattleSystem.Tests.Moves
             }
 
             var firstAction = new Mock<IAction>();
+
+            firstAction
+                .Setup(
+                    m => m.SetTargets(
+                        It.IsAny<Character>(),
+                        It.IsAny<IEnumerable<Character>>()
+                    )
+                );
+
             firstAction
                 .Setup(
                     m => m.Use<Move>(
@@ -137,6 +148,15 @@ namespace BattleSystem.Tests.Moves
                 });
 
             var secondAction = new Mock<IAction>();
+
+            secondAction
+                .Setup(
+                    m => m.SetTargets(
+                        It.IsAny<Character>(),
+                        It.IsAny<IEnumerable<Character>>()
+                    )
+                );
+
             secondAction
                 .Setup(
                     m => m.Use<Move>(
@@ -153,6 +173,8 @@ namespace BattleSystem.Tests.Moves
             // should not be executed at all
             var move = TestHelpers.CreateMove(
                 moveActions: new[] { firstAction.Object, secondAction.Object });
+
+            move.SetTargets(user, otherCharacters);
 
             // Act
             var (_, actionsResults) = move.Use(user, otherCharacters);
@@ -194,6 +216,15 @@ namespace BattleSystem.Tests.Moves
             static IAction MockAction(bool applied = true)
             {
                 var action = new Mock<IAction>();
+
+                action
+                    .Setup(
+                        m => m.SetTargets(
+                            It.IsAny<Character>(),
+                            It.IsAny<IEnumerable<Character>>()
+                        )
+                    );
+
                 action
                     .Setup(
                         m => m.Use<Move>(
@@ -213,6 +244,8 @@ namespace BattleSystem.Tests.Moves
             // should not be executed at all
             var move = TestHelpers.CreateMove(
                 moveActions: new[] { MockAction(), MockAction(false), MockAction(), MockAction() });
+
+            move.SetTargets(user, otherCharacters);
 
             // Act
             var (_, actionsResults) = move.Use(user, otherCharacters);
