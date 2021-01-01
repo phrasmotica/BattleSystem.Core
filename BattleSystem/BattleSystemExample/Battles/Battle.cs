@@ -115,10 +115,10 @@ namespace BattleSystemExample.Battles
         private void ShowMoveUse(MoveUse moveUse)
         {
             // don't show use if move was successful but all targets were dead
-            var moveCancelled = moveUse.Result == MoveUseResult.Success
-                             && moveUse.ActionsResults.All(ars => !ars.Any());
+            var targetsAllDead = moveUse.Result == MoveUseResult.Success
+                              && moveUse.ActionsResults.All(ars => !ars.Any());
 
-            if (!moveCancelled)
+            if (moveUse.HasResult && !targetsAllDead)
             {
                 switch (moveUse.Result)
                 {

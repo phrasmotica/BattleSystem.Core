@@ -25,7 +25,12 @@ namespace BattleSystem.Moves
         /// <summary>
         /// Gets or sets the result of the move use.
         /// </summary>
-        public MoveUseResult Result { get; private set; }
+        public MoveUseResult? Result { get; private set; }
+
+        /// <summary>
+        /// Gets whether the move use has a result.
+        /// </summary>
+        public bool HasResult => Result.HasValue;
 
         /// <summary>
         /// Gets or sets the results of each action in the move use.
