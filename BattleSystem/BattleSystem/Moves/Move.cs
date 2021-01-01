@@ -159,11 +159,9 @@ namespace BattleSystem.Moves
 
                     actionsResults.Add(actionResults);
 
-                    // ensure targets can't be affected by subsequent actions
-                    // if they weren't affected by the previous one
-                    var affectedCharacters = actionResults.Where(ar => ar.Applied)
-                                                          .Select(ar => ar.Target.Id);
-                    targets = targets.Where(t => affectedCharacters.Contains(t.Id)).ToArray();
+                    // only certain characters should be considered as targets
+                    // for subsequent actions
+                    targets = GetTargetsToConsider(targets, actionResults).ToArray();
 
                     (action as ITransformable)?.ClearTransforms();
                 }
@@ -172,6 +170,29 @@ namespace BattleSystem.Moves
             RemainingUses--;
 
             return (result, actionsResults);
+        }
+
+        /// <summary>
+        /// Returns the characters that should be considered for subsequent actions
+        /// based on the results of the action.
+        /// </summary>
+        /// <param name="targets">The targets of the action.</param>
+        /// <param name="actionResults">The results of the action.</param>
+        private static IEnumerable<Character> GetTargetsToConsider(
+            IEnumerable<Character> targets,
+            IEnumerable<IActionResult<Move>> actionResults)
+        {
+            var targetedCharacters = actionResults.Select(ar => ar.Target);
+
+            var untargetedCharacters = targets.Except(targetedCharacters);
+
+            var affectedCharacters = actionResults.Where(ar => ar.Applied)
+                                                  .Select(ar => ar.Target);
+
+            // characters who have a) not yet been targeted or b) were affected
+            // by the previous action should be considered as targets for
+            // subsequent actions
+            return untargetedCharacters.Union(affectedCharacters);
         }
     }
 }
