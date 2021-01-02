@@ -81,6 +81,18 @@ namespace BattleSystemExample.Battles
                 foreach (var character in characterOrder)
                 {
                     var otherCharacters = characterOrder.Where(c => c.Id != character.Id);
+                    var startTurnResult = character.OnStartTurn(otherCharacters);
+                    ShowBattlePhaseResult(startTurnResult);
+                }
+
+                if (IsOver)
+                {
+                    break;
+                }
+
+                foreach (var character in characterOrder)
+                {
+                    var otherCharacters = characterOrder.Where(c => c.Id != character.Id);
                     var moveUse = character.ChooseMove(otherCharacters);
                     moveUse.SetTargets();
                     _moveProcessor.Push(moveUse);

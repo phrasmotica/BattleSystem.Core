@@ -21,6 +21,20 @@ namespace BattleSystemExample.Extensions
         }
 
         /// <summary>
+        /// Starts this character's turn.
+        /// </summary>
+        /// <param name="character">The character.</param>
+        /// <param name="otherCharacters">The other characters.</param>
+        public static BattlePhaseResult OnStartTurn(this Character character, IEnumerable<Character> otherCharacters)
+        {
+            var result = new BattlePhaseResult();
+
+            character.ProcessCharacterTaggedActions(otherCharacters, ActionTags.StartTurn, result);
+
+            return result;
+        }
+
+        /// <summary>
         /// Ends this character's turn.
         /// </summary>
         /// <param name="character">The character.</param>
@@ -29,9 +43,28 @@ namespace BattleSystemExample.Extensions
         {
             var result = new BattlePhaseResult();
 
+            character.ProcessCharacterTaggedActions(otherCharacters, ActionTags.EndTurn, result);
+            character.ClearProtectQueue();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Processes the character actions with the given tag for the given character.
+        /// </summary>
+        /// <param name="character">The character whose actions should be processed.</param>
+        /// <param name="otherCharacters">The other characters.</param>
+        /// <param name="tag">The tag.</param>
+        /// <param name="result">The encapsulating result.</param>
+        private static void ProcessCharacterTaggedActions(
+            this Character character,
+            IEnumerable<Character> otherCharacters,
+            string tag,
+            BattlePhaseResult result)
+        {
             if (character.HasItem)
             {
-                var taggedActions = character.Item.GetCharacterTaggedActions(ActionTags.EndTurn);
+                var taggedActions = character.Item.GetCharacterTaggedActions(tag);
                 foreach (var a in taggedActions)
                 {
                     a.Action.SetTargets(character, otherCharacters);
@@ -45,10 +78,6 @@ namespace BattleSystemExample.Extensions
                     result.ItemActionsResults.Add(actionResults);
                 }
             }
-
-            character.ClearProtectQueue();
-
-            return result;
         }
     }
 }

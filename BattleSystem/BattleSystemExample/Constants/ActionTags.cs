@@ -5,6 +5,7 @@
     /// </summary>
     public static class ActionTags
     {
+        public const string StartTurn = "StartTurn";
         public const string EndTurn = "EndTurn";
     }
 }

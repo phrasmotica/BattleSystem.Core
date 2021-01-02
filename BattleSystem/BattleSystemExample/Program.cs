@@ -263,6 +263,21 @@ namespace BattleSystemExample
 
             var mage = new BasicCharacter("Mage", "b", 100, mageStats, mageMoves);
 
+            mage.EquipItem(
+                new ItemBuilder()
+                    .Name("Rolling Wave")
+                    .Describe("Deals 3 damage to all enemies at the start of the holder's turn.")
+                    .WithStartTurnAction(
+                        new AttackBuilder()
+                            .WithPower(3)
+                            .AbsoluteDamage()
+                            .TargetsEnemies()
+                            .Build()
+                    )
+                    .Build()
+                    
+            );
+
             var rogueStats = new StatSet
             {
                 Attack = new Stat(3),

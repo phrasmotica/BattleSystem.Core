@@ -10,6 +10,15 @@ namespace BattleSystemExample.Extensions
     public static class ItemBuilderExtensions
     {
         /// <summary>
+        /// Adds an start-of-turn action to the built item.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        public static ItemBuilder WithStartTurnAction(this ItemBuilder builder, IAction action)
+        {
+            return builder.WithTaggedAction(action, ActionTags.StartTurn);
+        }
+
+        /// <summary>
         /// Adds an end-of-turn action to the built item.
         /// </summary>
         /// <param name="action">The action.</param>
