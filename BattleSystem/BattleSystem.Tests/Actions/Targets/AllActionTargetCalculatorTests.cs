@@ -1,20 +1,20 @@
 ﻿using System.Linq;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Moves.Targets
+namespace BattleSystem.Tests.Actions.Targets
 {
     /// <summary>
-    /// Unit tests for <see cref="AllMoveTargetCalculator"/>
+    /// Unit tests for <see cref="AllActionTargetCalculator"/>
     /// </summary>
     [TestFixture]
-    public class AllMoveTargetCalculatorTests
+    public class AllActionTargetCalculatorTests
     {
         [Test]
         public void Calculate_ReturnsAll()
         {
             // Arrange
-            var calculator = new AllMoveTargetCalculator();
+            var calculator = new AllActionTargetCalculator();
 
             var user = TestHelpers.CreateBasicCharacter(name: "wire");
             var characters = new[]

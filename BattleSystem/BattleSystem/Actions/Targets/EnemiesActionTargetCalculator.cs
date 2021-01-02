@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
 
-namespace BattleSystem.Moves.Targets
+namespace BattleSystem.Actions.Targets
 {
     /// <summary>
-    /// Calculates the move targets as the user's enemies.
+    /// Calculates the action targets as the user's enemies.
     /// </summary>
-    public class EnemiesMoveTargetCalculator : IMoveTargetCalculator
+    public class EnemiesActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
         public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)

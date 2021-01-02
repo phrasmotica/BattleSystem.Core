@@ -103,7 +103,7 @@ namespace BattleSystem.Tests.Characters
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(target.ItemSlot.Current, Is.EqualTo(item));
+                Assert.That(target.Item, Is.EqualTo(item));
                 Assert.That(result.Success, Is.True);
                 Assert.That(result.HadPreviousItem, Is.False);
                 Assert.That(result.PreviousItem, Is.Null);
@@ -127,7 +127,7 @@ namespace BattleSystem.Tests.Characters
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(target.ItemSlot.Current, Is.EqualTo(item2));
+                Assert.That(target.Item, Is.EqualTo(item2));
                 Assert.That(result.Success, Is.True);
                 Assert.That(result.HadPreviousItem, Is.True);
                 Assert.That(result.PreviousItem, Is.EqualTo(item1));
@@ -148,7 +148,7 @@ namespace BattleSystem.Tests.Characters
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(target.ItemSlot.HasItem, Is.False);
+                Assert.That(target.HasItem, Is.False);
                 Assert.That(result.Success, Is.True);
                 Assert.That(result.Item, Is.EqualTo(item));
             });
@@ -175,10 +175,11 @@ namespace BattleSystem.Tests.Characters
         public void ReceiveDamage_TakesDamage()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
 
             // Act
-            _ = target.ReceiveDamage(2, "omd");
+            _ = target.ReceiveDamage<string>(2, user);
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(3));
@@ -188,11 +189,12 @@ namespace BattleSystem.Tests.Characters
         public void ReceiveDamage_WithProtectCounter_TakesNoDamage()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
-            target.AddProtect("userId");
+            target.AddProtect<string>(user);
 
             // Act
-            _ = target.ReceiveDamage(2, "omd");
+            _ = target.ReceiveDamage<string>(2, user);
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(5));
@@ -202,10 +204,11 @@ namespace BattleSystem.Tests.Characters
         public void ReceiveDamage_IsDeadIfNoHealthLeft()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
 
             // Act
-            _ = target.ReceiveDamage(6, "omd");
+            _ = target.ReceiveDamage<string>(6, user);
 
             // Assert
             Assert.That(target.IsDead, Is.True);
@@ -215,15 +218,16 @@ namespace BattleSystem.Tests.Characters
         public void ReceiveBuff_ChangesStatMultipliers()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter(attack: 10, defence: 10, speed: 10);
 
             // Act
-            target.ReceiveBuff(new Dictionary<StatCategory, double>
+            target.ReceiveBuff<string>(new Dictionary<StatCategory, double>
             {
                 [StatCategory.Attack] = 0.2,
                 [StatCategory.Defence] = -0.3,
                 [StatCategory.Speed] = -0.1,
-            }, "omd");
+            }, user);
 
             // Assert
             Assert.That(target.Stats.Attack.CurrentValue, Is.EqualTo(12));
@@ -235,11 +239,12 @@ namespace BattleSystem.Tests.Characters
         public void Heal_AddsHealth()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter(maxHealth: 5);
-            _ = target.ReceiveDamage(2, "omd");
+            _ = target.ReceiveDamage<string>(2, user);
 
             // Act
-            target.Heal(2, "omd");
+            target.Heal<string>(2, user);
 
             // Assert
             Assert.That(target.CurrentHealth, Is.EqualTo(5));
@@ -249,10 +254,11 @@ namespace BattleSystem.Tests.Characters
         public void AddProtect_AddsProtectActionToQueue()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter();
 
             // Act
-            _ = target.AddProtect("DJ rozwell");
+            _ = target.AddProtect<string>(user);
 
             // Assert
             Assert.That(target.ProtectCount, Is.EqualTo(1));
@@ -262,11 +268,12 @@ namespace BattleSystem.Tests.Characters
         public void AddProtect_LimitReached_ProtectActionNotAddedToQueue()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter();
-            _ = target.AddProtect("DJ rozwell");
+            _ = target.AddProtect<string>(user);
 
             // Act
-            _ = target.AddProtect(target.Id);
+            _ = target.AddProtect<string>(target);
 
             // Assert
             Assert.That(target.ProtectCount, Is.EqualTo(1));
@@ -276,32 +283,34 @@ namespace BattleSystem.Tests.Characters
         public void ChangeProtectLimit_ChangesProtectLimit()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter();
-            _ = target.AddProtect("DJ rozwell");
-            _ = target.ChangeProtectLimit(1, target.Id); // ensures this isn't protected against
+            _ = target.AddProtect<string>(user);
+            _ = target.ChangeProtectLimit<string>(1, target); // ensures this isn't protected against
 
             // Act
-            _ = target.AddProtect(target.Id); // ensures this isn't protected against
+            _ = target.AddProtect<string>(target); // ensures this isn't protected against
 
             // Assert
             Assert.That(target.ProtectCount, Is.EqualTo(2));
         }
 
         [Test]
-        public void ConsumeProtect_ReturnsIdOfProtectUser()
+        public void ConsumeProtect_ReturnsProtectUser()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter();
-            _ = target.AddProtect("DJ rozwell");
+            _ = target.AddProtect<string>(user);
 
             // Act
-            var userId = target.ConsumeProtect();
+            var protectingUser = target.ConsumeProtect();
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.That(target.ProtectCount, Is.Zero);
-                Assert.That(userId, Is.EqualTo("DJ rozwell"));
+                Assert.That(protectingUser, Is.EqualTo(user));
             });
         }
 
@@ -319,9 +328,10 @@ namespace BattleSystem.Tests.Characters
         public void ClearProtectQueue_EmptiesProtectQueue()
         {
             // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
             var target = TestHelpers.CreateBasicCharacter();
-            _ = target.AddProtect("DJ rozwell");
-            _ = target.AddProtect("DJ rozwell");
+            _ = target.AddProtect<string>(user);
+            _ = target.AddProtect<string>(user);
 
             // Act
             target.ClearProtectQueue();

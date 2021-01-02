@@ -1,10 +1,13 @@
 ﻿using BattleSystem.Characters;
 using BattleSystem.Damage;
 using BattleSystem.Actions;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 using Moq;
 using NUnit.Framework;
 using static BattleSystem.Actions.Attack;
+using System;
+using System.Collections.Generic;
+using BattleSystem.Actions.Results;
 
 namespace BattleSystem.Tests.Actions
 {
@@ -35,10 +38,12 @@ namespace BattleSystem.Tests.Actions
                 )
                 .Returns(6);
 
-            var attack = TestHelpers.CreateAttack(damageCalculator.Object, new OthersMoveTargetCalculator());
+            var attack = TestHelpers.CreateAttack(damageCalculator.Object, new OthersActionTargetCalculator());
+
+            attack.SetTargets(user, otherCharacters);
 
             // Act
-            _ = attack.Use(user, otherCharacters);
+            _ = attack.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(otherCharacters[0].CurrentHealth, Is.EqualTo(2));
@@ -54,10 +59,12 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var attack = TestHelpers.CreateAttack(moveTargetCalculator: new OthersMoveTargetCalculator());
+            var attack = TestHelpers.CreateAttack(actionTargetCalculator: new OthersActionTargetCalculator());
+
+            attack.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = attack.Use(user, otherCharacters);
+            var actionResults = attack.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Not.Empty);
@@ -73,10 +80,12 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var attack = TestHelpers.CreateAttack(moveTargetCalculator: new OthersMoveTargetCalculator());
+            var attack = TestHelpers.CreateAttack(actionTargetCalculator: new OthersActionTargetCalculator());
+
+            attack.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = attack.Use(user, otherCharacters);
+            var actionResults = attack.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
@@ -94,11 +103,29 @@ namespace BattleSystem.Tests.Actions
 
             var attack = TestHelpers.CreateAttack();
 
+            attack.SetTargets(user, otherCharacters);
+
             // Act
-            var actionResults = attack.Use(user, otherCharacters);
+            var actionResults = attack.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
+        }
+
+        [Test]
+        public void Use_NoTargetsSet_Throws()
+        {
+            // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter(),
+            };
+
+            var attack = TestHelpers.CreateAttack();
+
+            // Act and Assert
+            Assert.Throws<InvalidOperationException>(() => _ = attack.Use<string>(user, otherCharacters));
         }
 
         [Test]

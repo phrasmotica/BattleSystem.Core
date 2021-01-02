@@ -1,6 +1,6 @@
 ﻿using System;
 using BattleSystem.Damage;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 
 namespace BattleSystem.Actions
 {
@@ -25,9 +25,9 @@ namespace BattleSystem.Actions
         private bool _isDamageCalculatorSet;
 
         /// <summary>
-        /// Whether the move target calculator of the attack has been set.
+        /// Whether the action target calculator of the attack has been set.
         /// </summary>
-        private bool _isMoveTargetCalculatorSet;
+        private bool _isactionTargetCalculatorSet;
 
         /// <summary>
         /// Creates a new <see cref="AttackBuilder"/> instance.
@@ -89,18 +89,18 @@ namespace BattleSystem.Actions
         }
 
         /// <summary>
-        /// Sets the built attack's move target calculator.
+        /// Sets the built attack's action target calculator.
         /// </summary>
-        /// <param name="name">The built attack's move target calculator.</param>
-        public AttackBuilder WithMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
+        /// <param name="name">The built attack's action target calculator.</param>
+        public AttackBuilder WithActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
         {
-            if (moveTargetCalculator is null)
+            if (actionTargetCalculator is null)
             {
-                throw new ArgumentNullException(nameof(moveTargetCalculator));
+                throw new ArgumentNullException(nameof(actionTargetCalculator));
             }
 
-            _attack.SetMoveTargetCalculator(moveTargetCalculator);
-            _isMoveTargetCalculatorSet = true;
+            _attack.SetActionTargetCalculator(actionTargetCalculator);
+            _isactionTargetCalculatorSet = true;
             return this;
         }
 
@@ -109,7 +109,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public AttackBuilder TargetsAll()
         {
-            return WithMoveTargetCalculator(new AllMoveTargetCalculator());
+            return WithActionTargetCalculator(new AllActionTargetCalculator());
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public AttackBuilder TargetsOthers()
         {
-            return WithMoveTargetCalculator(new OthersMoveTargetCalculator());
+            return WithActionTargetCalculator(new OthersActionTargetCalculator());
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public AttackBuilder TargetsEnemies()
         {
-            return WithMoveTargetCalculator(new EnemiesMoveTargetCalculator());
+            return WithActionTargetCalculator(new EnemiesActionTargetCalculator());
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public AttackBuilder TargetsTeam()
         {
-            return WithMoveTargetCalculator(new TeamMoveTargetCalculator());
+            return WithActionTargetCalculator(new TeamActionTargetCalculator());
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public AttackBuilder TargetsAllies()
         {
-            return WithMoveTargetCalculator(new AlliesMoveTargetCalculator());
+            return WithActionTargetCalculator(new AlliesActionTargetCalculator());
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public AttackBuilder TargetsUser()
         {
-            return WithMoveTargetCalculator(new UserMoveTargetCalculator());
+            return WithActionTargetCalculator(new UserActionTargetCalculator());
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public AttackBuilder TargetsFirstEnemy()
         {
-            return WithMoveTargetCalculator(new FirstEnemyMoveTargetCalculator());
+            return WithActionTargetCalculator(new FirstEnemyActionTargetCalculator());
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public AttackBuilder TargetsFirstAlly()
         {
-            return WithMoveTargetCalculator(new FirstAllyMoveTargetCalculator());
+            return WithActionTargetCalculator(new FirstAllyActionTargetCalculator());
         }
 
         /// <summary>
@@ -183,9 +183,9 @@ namespace BattleSystem.Actions
                 throw new InvalidOperationException("Cannot build an attack with no damage calculator!");
             }
 
-            if (!_isMoveTargetCalculatorSet)
+            if (!_isactionTargetCalculatorSet)
             {
-                throw new InvalidOperationException("Cannot build an attack with no move target calculator!");
+                throw new InvalidOperationException("Cannot build an attack with no action target calculator!");
             }
 
             return _attack;

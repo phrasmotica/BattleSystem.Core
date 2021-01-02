@@ -18,7 +18,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="gameOutput">The game output.</param>
         public static AttackBuilder UserSelectsSingleTarget(this AttackBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
-            return builder.WithMoveTargetCalculator(new SingleMoveTargetCalculator(userInput, gameOutput));
+            return builder.WithActionTargetCalculator(new SingleActionTargetCalculator(userInput, gameOutput));
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="gameOutput">The game output.</param>
         public static AttackBuilder UserSelectsSingleOtherTarget(this AttackBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
-            return builder.WithMoveTargetCalculator(new SingleOtherMoveTargetCalculator(userInput, gameOutput));
+            return builder.WithActionTargetCalculator(new SingleOtherActionTargetCalculator(userInput, gameOutput));
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="gameOutput">The game output.</param>
         public static AttackBuilder UserSelectsSingleAlly(this AttackBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
-            return builder.WithMoveTargetCalculator(new SingleAllyMoveTargetCalculator(userInput, gameOutput));
+            return builder.WithActionTargetCalculator(new SingleAllyActionTargetCalculator(userInput, gameOutput));
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="gameOutput">The game output.</param>
         public static AttackBuilder UserSelectsSingleEnemy(this AttackBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
-            return builder.WithMoveTargetCalculator(new SingleEnemyMoveTargetCalculator(userInput, gameOutput));
+            return builder.WithActionTargetCalculator(new SingleEnemyActionTargetCalculator(userInput, gameOutput));
         }
     }
 }

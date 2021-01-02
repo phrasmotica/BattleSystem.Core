@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BattleSystem.Characters;
 using BattleSystem.Extensions;
 using BattleSystem.Stats;
 
@@ -7,7 +8,8 @@ namespace BattleSystem.Actions.Results
     /// <summary>
     /// Class for the result of a buff being applied to a character.
     /// </summary>
-    public class BuffResult : IActionResult
+    /// <typeparam name="TSource">The type of the source of the buff.</typeparam>
+    public class BuffResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
         /// Gets or sets whether the buff was applied to the character.
@@ -15,9 +17,24 @@ namespace BattleSystem.Actions.Results
         public bool Applied { get; set; }
 
         /// <summary>
-        /// Gets or sets the ID of the character who was the target of the buff.
+        /// Gets or sets the character who caused the buff.
         /// </summary>
-        public string TargetId { get; set; }
+        public Character User { get; set; }
+
+        /// <summary>
+        /// Gets or sets the source of the buff - for example, the user's item.
+        /// </summary>
+        public TSource Source { get; set; }
+
+        /// <summary>
+        /// Gets or sets the character who was the target of the buff.
+        /// </summary>
+        public Character Target { get; set; }
+
+        /// <summary>
+        /// Gets whether the buff was self-inflicted.
+        /// </summary>
+        public bool IsSelfInflicted => User is not null && Target is not null && User.Id == Target.Id;
 
         /// <summary>
         /// Gets or sets whether the character was protected from the buff.
@@ -25,9 +42,9 @@ namespace BattleSystem.Actions.Results
         public bool TargetProtected { get; set; }
 
         /// <summary>
-        /// Gets or sets the ID of the character who protected the target from the buff, if applicable.
+        /// Gets or sets the character who protected the target from the buff, if applicable.
         /// </summary>
-        public string ProtectUserId { get; set; }
+        public Character ProtectUser { get; set; }
 
         /// <summary>
         /// Gets or sets the changes in stat multipliers resulting from this buff.

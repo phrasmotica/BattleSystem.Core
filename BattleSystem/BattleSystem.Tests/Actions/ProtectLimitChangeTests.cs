@@ -1,5 +1,6 @@
-﻿using BattleSystem.Actions;
-using BattleSystem.Moves.Targets;
+﻿using System;
+using BattleSystem.Actions;
+using BattleSystem.Actions.Targets;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Actions
@@ -20,10 +21,12 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var change = TestHelpers.CreateProtectLimitChange(new OthersMoveTargetCalculator());
+            var change = TestHelpers.CreateProtectLimitChange(new OthersActionTargetCalculator());
+
+            change.SetTargets(user, otherCharacters);
 
             // Act
-            _ = change.Use(user, otherCharacters);
+            _ = change.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(otherCharacters[0].ProtectLimit, Is.EqualTo(2));
@@ -39,10 +42,12 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var change = TestHelpers.CreateProtectLimitChange(new OthersMoveTargetCalculator());
+            var change = TestHelpers.CreateProtectLimitChange(new OthersActionTargetCalculator());
+
+            change.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = change.Use(user, otherCharacters);
+            var actionResults = change.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Not.Empty);
@@ -59,10 +64,12 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var change = TestHelpers.CreateProtectLimitChange(new OthersMoveTargetCalculator());
+            var change = TestHelpers.CreateProtectLimitChange(new OthersActionTargetCalculator());
+
+            change.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = change.Use(user, otherCharacters);
+            var actionResults = change.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
@@ -80,11 +87,29 @@ namespace BattleSystem.Tests.Actions
 
             var change = TestHelpers.CreateProtectLimitChange();
 
+            change.SetTargets(user, otherCharacters);
+
             // Act
-            var actionResults = change.Use(user, otherCharacters);
+            var actionResults = change.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
+        }
+
+        [Test]
+        public void Use_NoTargetsSet_Throws()
+        {
+            // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter(),
+            };
+
+            var change = TestHelpers.CreateProtect();
+
+            // Act and Assert
+            Assert.Throws<InvalidOperationException>(() => _ = change.Use<string>(user, otherCharacters));
         }
     }
 }

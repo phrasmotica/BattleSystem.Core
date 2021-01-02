@@ -1,5 +1,5 @@
 ﻿using System;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 using BattleSystem.Stats;
 
 namespace BattleSystem.Actions
@@ -15,9 +15,9 @@ namespace BattleSystem.Actions
         private readonly Buff _buff;
 
         /// <summary>
-        /// Whether the move target calculator of the buff has been set.
+        /// Whether the action target calculator of the buff has been set.
         /// </summary>
-        private bool _isMoveTargetCalculatorSet;
+        private bool _isactionTargetCalculatorSet;
 
         /// <summary>
         /// Creates a new <see cref="BuffBuilder"/> instance.
@@ -28,18 +28,18 @@ namespace BattleSystem.Actions
         }
 
         /// <summary>
-        /// Sets the built buff's move target calculator.
+        /// Sets the built buff's action target calculator.
         /// </summary>
-        /// <param name="moveTargetCalculator">The built buff's move target calculator.</param>
-        public BuffBuilder WithMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
+        /// <param name="actionTargetCalculator">The built buff's action target calculator.</param>
+        public BuffBuilder WithActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
         {
-            if (moveTargetCalculator is null)
+            if (actionTargetCalculator is null)
             {
-                throw new ArgumentNullException(nameof(moveTargetCalculator));
+                throw new ArgumentNullException(nameof(actionTargetCalculator));
             }
 
-            _buff.SetMoveTargetCalculator(moveTargetCalculator);
-            _isMoveTargetCalculatorSet = true;
+            _buff.SetActionTargetCalculator(actionTargetCalculator);
+            _isactionTargetCalculatorSet = true;
             return this;
         }
 
@@ -48,7 +48,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public BuffBuilder TargetsAll()
         {
-            return WithMoveTargetCalculator(new AllMoveTargetCalculator());
+            return WithActionTargetCalculator(new AllActionTargetCalculator());
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public BuffBuilder TargetsOthers()
         {
-            return WithMoveTargetCalculator(new OthersMoveTargetCalculator());
+            return WithActionTargetCalculator(new OthersActionTargetCalculator());
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public BuffBuilder TargetsEnemies()
         {
-            return WithMoveTargetCalculator(new EnemiesMoveTargetCalculator());
+            return WithActionTargetCalculator(new EnemiesActionTargetCalculator());
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public BuffBuilder TargetsTeam()
         {
-            return WithMoveTargetCalculator(new TeamMoveTargetCalculator());
+            return WithActionTargetCalculator(new TeamActionTargetCalculator());
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public BuffBuilder TargetsAllies()
         {
-            return WithMoveTargetCalculator(new AlliesMoveTargetCalculator());
+            return WithActionTargetCalculator(new AlliesActionTargetCalculator());
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public BuffBuilder TargetsUser()
         {
-            return WithMoveTargetCalculator(new UserMoveTargetCalculator());
+            return WithActionTargetCalculator(new UserActionTargetCalculator());
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public BuffBuilder TargetsFirstEnemy()
         {
-            return WithMoveTargetCalculator(new FirstEnemyMoveTargetCalculator());
+            return WithActionTargetCalculator(new FirstEnemyActionTargetCalculator());
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public BuffBuilder TargetsFirstAlly()
         {
-            return WithMoveTargetCalculator(new FirstAllyMoveTargetCalculator());
+            return WithActionTargetCalculator(new FirstAllyActionTargetCalculator());
         }
 
         /// <summary>
@@ -150,9 +150,9 @@ namespace BattleSystem.Actions
         /// </summary>
         public Buff Build()
         {
-            if (!_isMoveTargetCalculatorSet)
+            if (!_isactionTargetCalculatorSet)
             {
-                throw new InvalidOperationException("Cannot build a buff with no move target calculator!");
+                throw new InvalidOperationException("Cannot build a buff with no action target calculator!");
             }
 
             return _buff;

@@ -6,6 +6,7 @@ using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Success;
 using BattleSystemExample.Output;
 using BattleSystemExample.Extensions;
+using BattleSystemExample.Extensions.ActionResults;
 
 namespace BattleSystemExample.Battles
 {
@@ -35,6 +36,12 @@ namespace BattleSystemExample.Battles
         private IEnumerable<IGrouping<string, Character>> Teams => _characters.GroupBy(c => c.Team);
 
         /// <summary>
+        /// Gets whether the battle is over, i.e. whether there is some team
+        /// whose characters are all dead.
+        /// </summary>
+        private bool IsOver => Teams.Any(t => t.All(c => c.IsDead));
+
+        /// <summary>
         /// Creates a new <see cref="Battle"/> instance.
         /// </summary>
         /// <param name="moveProcessor">The move processor.</param>
@@ -55,11 +62,9 @@ namespace BattleSystemExample.Battles
         /// </summary>
         public void Start()
         {
-            var teams = Teams.ToArray();
-
-            while (teams.All(t => t.Any(c => !c.IsDead)))
+            while (!IsOver)
             {
-                foreach (var team in teams)
+                foreach (var team in Teams)
                 {
                     _gameOutput.WriteLine();
 
@@ -76,25 +81,39 @@ namespace BattleSystemExample.Battles
                 foreach (var character in characterOrder)
                 {
                     var otherCharacters = characterOrder.Where(c => c.Id != character.Id);
-                    var moveUse = character.ChooseMove(otherCharacters);
-                    _moveProcessor.Push(moveUse);
+                    var startTurnResult = character.OnStartTurn(otherCharacters);
+                    ShowBattlePhaseResult(startTurnResult);
                 }
 
-                var moveUses = _moveProcessor.Apply();
-
-                foreach (var moveUse in moveUses)
+                if (IsOver)
                 {
-                    // move might be cancelled due to the user dying or all targets dying
-                    var moveCancelled = !moveUse.ActionsResults.Any();
-                    if (!moveCancelled)
-                    {
-                        ShowMoveUse(characterOrder, moveUse);
-                    }
+                    break;
                 }
 
                 foreach (var character in characterOrder)
                 {
-                    character.ClearProtectQueue();
+                    var otherCharacters = characterOrder.Where(c => c.Id != character.Id);
+                    var moveUse = character.ChooseMove(otherCharacters);
+                    moveUse.SetTargets();
+                    _moveProcessor.Push(moveUse);
+                }
+
+                while (!_moveProcessor.MoveUseQueueIsEmpty)
+                {
+                    var moveUse = _moveProcessor.ApplyNext();
+                    ShowMoveUse(moveUse);
+                }
+
+                if (IsOver)
+                {
+                    break;
+                }
+
+                foreach (var character in characterOrder)
+                {
+                    var otherCharacters = characterOrder.Where(c => c.Id != character.Id);
+                    var endTurnResult = character.OnEndTurn(otherCharacters);
+                    ShowBattlePhaseResult(endTurnResult);
                 }
             }
 
@@ -104,26 +123,32 @@ namespace BattleSystemExample.Battles
         /// <summary>
         /// Outputs a summary of the given move use.
         /// </summary>
-        /// <param name="characters">The characters.</param>
         /// <param name="moveUse">The move use.</param>
-        private void ShowMoveUse(IEnumerable<Character> characters, MoveUse moveUse)
+        private void ShowMoveUse(MoveUse moveUse)
         {
-            switch (moveUse.Result)
-            {
-                case MoveUseResult.Success:
-                    _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name}!");
-                    break;
+            // don't show use if move was successful but all targets were dead
+            var targetsAllDead = moveUse.Result == MoveUseResult.Success
+                              && moveUse.ActionsResults.All(ars => !ars.Any());
 
-                case MoveUseResult.Miss:
-                    _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name} but missed!");
-                    break;
-            }
-
-            foreach (var actionResults in moveUse.ActionsResults)
+            if (moveUse.HasResult && !targetsAllDead)
             {
-                foreach (var result in actionResults)
+                switch (moveUse.Result)
                 {
-                    ShowResult(characters, result);
+                    case MoveUseResult.Success:
+                        _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name}!");
+                        break;
+
+                    case MoveUseResult.Miss:
+                        _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name} but missed!");
+                        break;
+                }
+
+                foreach (var actionResults in moveUse.ActionsResults)
+                {
+                    foreach (var result in actionResults)
+                    {
+                        ShowResult(result);
+                    }
                 }
             }
         }
@@ -131,163 +156,65 @@ namespace BattleSystemExample.Battles
         /// <summary>
         /// Outputs the given action result.
         /// </summary>
-        /// <param name="characters">The characters.</param>
         /// <param name="result">The result.</param>
-        private void ShowResult(IEnumerable<Character> characters, IActionResult result)
+        private void ShowResult<TSource>(IActionResult<TSource> result)
         {
             if (result.TargetProtected)
             {
-                ShowProtectedResult(characters, result);
+                _gameOutput.WriteLine(result.DescribeProtected());
             }
             else switch (result)
             {
-                case AttackResult ar:
-                    ShowAttack(characters, ar);
-                    break;
-                case BuffResult br:
-                    ShowBuff(characters, br);
-                    break;
-                case HealResult hr:
-                    ShowHeal(characters, hr);
-                    break;
-                case ProtectLimitChangeResult plcr:
-                    ShowProtectLimitChangeResult(characters, plcr);
-                    break;
-                case ProtectResult pr:
-                    ShowProtectResult(characters, pr);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Outputs info about the given protected action result.
-        /// </summary>
-        /// <param name="characters">The characters.</param>
-        /// <param name="result">The action result.</param>
-        private void ShowProtectedResult(
-            IEnumerable<Character> characters,
-            IActionResult result)
-        {
-            var user = characters.Single(c => c.Id == result.ProtectUserId);
-
-            if (result.TargetId == user.Id)
-            {
-                _gameOutput.WriteLine($"{user.Name} protected itself!");
-            }
-            else
-            {
-                var target = characters.Single(c => c.Id == result.TargetId);
-                _gameOutput.WriteLine($"{user.Name} protected {target.Name}!");
-            }
-        }
-
-        /// <summary>
-        /// Outputs info about the given attack result.
-        /// </summary>
-        /// <param name="characters">The characters.</param>
-        /// <param name="attack">The attack result.</param>
-        private void ShowAttack(
-            IEnumerable<Character> characters,
-            AttackResult attack)
-        {
-            var target = characters.Single(c => c.Id == attack.TargetId);
-            var amount = attack.Damage;
-
-            if (attack.TargetDied)
-            {
-                _gameOutput.WriteLine($"{target.Name} took {amount} damage and died!");
-            }
-            else
-            {
-                _gameOutput.WriteLine($"{target.Name} took {amount} damage!");
-            }
-        }
-
-        /// <summary>
-        /// Outputs the given stat changes that occurred to the given characters from the given move use.
-        /// </summary>
-        /// <param name="characters">The characters.</param>
-        /// <param name="buff">The buff result.</param>
-        private void ShowBuff(
-            IEnumerable<Character> characters,
-            BuffResult buff)
-        {
-            var target = characters.Single(c => c.Id == buff.TargetId);
-            if (!target.IsDead)
-            {
-                var statMultiplierChanges = buff.StatMultiplierChanges;
-
-                foreach (var change in statMultiplierChanges)
-                {
-                    var stat = change.Key;
-                    var percentage = (int)(change.Value * 100);
-
-                    if (percentage > 0)
+                case AttackResult<TSource> ar:
+                    var attackDescription = ar.Describe();
+                    if (attackDescription is not null)
                     {
-                        // < 0 means the multiplier was lower before the move was used
-                        _gameOutput.WriteLine($"{target.Name}'s {stat} rose by {percentage}%!");
+                        _gameOutput.WriteLine(attackDescription);
                     }
-                    else if (percentage < 0)
+                    break;
+                case BuffResult<TSource> br:
+                    var buffDescription = br.Describe();
+                    if (buffDescription is not null)
                     {
-                        _gameOutput.WriteLine($"{target.Name}'s {stat} fell by {-percentage}%!");
+                        _gameOutput.WriteLine(buffDescription);
                     }
-                }
+                    break;
+                case HealResult<TSource> hr:
+                    var healDescription = hr.Describe();
+                    if (healDescription is not null)
+                    {
+                        _gameOutput.WriteLine(healDescription);
+                    }
+                    break;
+                case ProtectLimitChangeResult<TSource> plcr:
+                    var plcrDescription = plcr.Describe();
+                    if (plcrDescription is not null)
+                    {
+                        _gameOutput.WriteLine(plcrDescription);
+                    }
+                    break;
+                case ProtectResult<TSource> pr:
+                    var protectDescription = pr.Describe();
+                    if (protectDescription is not null)
+                    {
+                        _gameOutput.WriteLine(protectDescription);
+                    }
+                    break;
             }
         }
 
         /// <summary>
-        /// Outputs info about the given heal result.
+        /// Outputs the given battle phase result.
         /// </summary>
-        /// <param name="characters">The characters.</param>
-        /// <param name="heal">The heal result.</param>
-        private void ShowHeal(
-            IEnumerable<Character> characters,
-            HealResult heal)
+        /// <param name="battlePhaseResult">The battle phase result.</param>
+        private void ShowBattlePhaseResult(BattlePhaseResult battlePhaseResult)
         {
-            var target = characters.Single(c => c.Id == heal.TargetId);
-
-            _gameOutput.WriteLine($"{target.Name} recovered {heal.Amount} health!");
-        }
-
-        /// <summary>
-        /// Outputs info about a protect limit change result.
-        /// </summary>
-        /// <param name="characters">The characters.</param>
-        /// <param name="result">The protect limit change result.</param>
-        private void ShowProtectLimitChangeResult(
-            IEnumerable<Character> characters,
-            ProtectLimitChangeResult result)
-        {
-            var target = characters.Single(c => c.Id == result.TargetId);
-
-            if (!target.IsDead)
+            foreach (var actionResults in battlePhaseResult.ItemActionsResults)
             {
-                if (result.Amount > 0)
+                foreach (var result in actionResults)
                 {
-                    _gameOutput.WriteLine($"{target.Name} had its protection limit increased by {result.Amount}!");
+                    ShowResult(result);
                 }
-                else
-                {
-                    _gameOutput.WriteLine($"{target.Name} had its protection limit decreased by {-result.Amount}!");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Outputs info about a protect limit change result.
-        /// </summary>
-        /// <param name="characters">The characters.</param>
-        /// <param name="protect">The protect limit change result.</param>
-        private void ShowProtectResult(
-            IEnumerable<Character> characters,
-            ProtectResult protect)
-        {
-            var target = characters.Single(c => c.Id == protect.TargetId);
-            if (!target.IsDead)
-            {
-                _gameOutput.WriteLine($"{target.Name} became protected!");
             }
         }
 

@@ -3,8 +3,9 @@ using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Healing;
 using BattleSystem.Actions.Results;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 using BattleSystem.Items;
+using System;
 
 namespace BattleSystem.Actions
 {
@@ -19,9 +20,19 @@ namespace BattleSystem.Actions
         private IHealingCalculator _healingCalculator;
 
         /// <summary>
-        /// The move target calculator.
+        /// The action target calculator.
         /// </summary>
-        private IMoveTargetCalculator _moveTargetCalculator;
+        private IActionTargetCalculator _actionTargetCalculator;
+
+        /// <summary>
+        /// The targets for the next use of the heal.
+        /// </summary>
+        private IEnumerable<Character> _targets;
+
+        /// <summary>
+        /// Whether the targets for the next use of the heal have been set.
+        /// </summary>
+        private bool _targetsSet;
 
         /// <summary>
         /// Gets or sets the heal's healing amount.
@@ -43,39 +54,41 @@ namespace BattleSystem.Actions
         }
 
         /// <summary>
-        /// Sets the move target calculator for this heal.
+        /// Sets the action target calculator for this heal.
         /// </summary>
-        /// <param name="moveTargetCalculator">The move target calculator.</param>
-        public void SetMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
+        /// <param name="actionTargetCalculator">The action target calculator.</param>
+        public void SetActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
         {
-            _moveTargetCalculator = moveTargetCalculator;
+            _actionTargetCalculator = actionTargetCalculator;
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<IActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
+        public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
+            _targets = _actionTargetCalculator.Calculate(user, otherCharacters);
+            _targetsSet = true;
+        }
 
-            var results = new List<IActionResult>();
+        /// <inheritdoc />
+        public virtual IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
+        {
+            if (!_targetsSet)
+            {
+                throw new InvalidOperationException("Cannot use heal when no targets have been set!");
+            }
 
-            foreach (var target in targets.Where(c => !c.IsDead).ToArray())
+            var results = new List<IActionResult<TSource>>();
+
+            foreach (var target in _targets.Where(c => !c.IsDead).ToArray())
             {
                 var amount = _healingCalculator.Calculate(user, this, target);
-                var result = target.Heal(amount, user.Id);
+                var result = target.Heal<TSource>(amount, user);
                 results.Add(result);
             }
 
+            _targetsSet = false;
+
             return results;
-        }
-
-        /// <inheritdoc />
-        public void ReceiveTransforms(Item item)
-        {
-        }
-
-        /// <inheritdoc />
-        public void ClearTransforms()
-        {
         }
     }
 }

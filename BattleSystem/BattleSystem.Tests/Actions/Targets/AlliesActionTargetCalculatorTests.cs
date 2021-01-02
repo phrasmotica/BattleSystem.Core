@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Linq;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Moves.Targets
+namespace BattleSystem.Tests.Actions.Targets
 {
     /// <summary>
-    /// Unit tests for <see cref="AlliesMoveTargetCalculator"/>
+    /// Unit tests for <see cref="AlliesactionTargetCalculator"/>
     /// </summary>
     [TestFixture]
-    public class AlliesMoveTargetCalculatorTests
+    public class AlliesActionTargetCalculatorTests
     {
         [Test]
         public void Calculate_ReturnsAllies()
         {
             // Arrange
-            var calculator = new AlliesMoveTargetCalculator();
+            var calculator = new AlliesActionTargetCalculator();
 
             var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
             var otherCharacters = new[]
@@ -41,7 +41,7 @@ namespace BattleSystem.Tests.Moves.Targets
         public void Calculate_NoAllies_Throws()
         {
             // Arrange
-            var calculator = new AlliesMoveTargetCalculator();
+            var calculator = new AlliesActionTargetCalculator();
 
             var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
             var otherCharacters = new[]

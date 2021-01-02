@@ -1,4 +1,6 @@
 ﻿using System;
+using BattleSystem.Actions;
+using BattleSystem.Characters;
 using static BattleSystem.Actions.Attack;
 using static BattleSystem.Items.Item;
 
@@ -109,6 +111,17 @@ namespace BattleSystem.Items
         public ItemBuilder WithAttackPowerTransform(PowerTransform transform)
         {
             _item.AddAttackPowerTransform(transform);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a tagged action to the built item.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <param name="tags">The tags.</param>
+        public ItemBuilder WithTaggedAction(IAction action, params string[] tags)
+        {
+            _item.AddTaggedAction(action, tags);
             return this;
         }
 

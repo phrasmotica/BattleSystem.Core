@@ -1,5 +1,6 @@
-﻿using BattleSystem.Actions;
-using BattleSystem.Moves.Targets;
+﻿using System;
+using BattleSystem.Actions;
+using BattleSystem.Actions.Targets;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Actions
@@ -20,10 +21,12 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
+            var protect = TestHelpers.CreateProtect(new OthersActionTargetCalculator());
+
+            protect.SetTargets(user, otherCharacters);
 
             // Act
-            _ = protect.Use(user, otherCharacters);
+            _ = protect.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(otherCharacters[0].ProtectCount, Is.EqualTo(1));
@@ -39,10 +42,12 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
+            var protect = TestHelpers.CreateProtect(new OthersActionTargetCalculator());
+
+            protect.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = protect.Use(user, otherCharacters);
+            var actionResults = protect.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Not.Empty);
@@ -59,10 +64,12 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var protect = TestHelpers.CreateProtect(new OthersMoveTargetCalculator());
+            var protect = TestHelpers.CreateProtect(new OthersActionTargetCalculator());
+
+            protect.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = protect.Use(user, otherCharacters);
+            var actionResults = protect.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
@@ -80,11 +87,29 @@ namespace BattleSystem.Tests.Actions
 
             var protect = TestHelpers.CreateProtect();
 
+            protect.SetTargets(user, otherCharacters);
+
             // Act
-            var actionResults = protect.Use(user, otherCharacters);
+            var actionResults = protect.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.That(actionResults, Is.Empty);
+        }
+
+        [Test]
+        public void Use_NoTargetsSet_Throws()
+        {
+            // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter(),
+            };
+
+            var protect = TestHelpers.CreateProtect();
+
+            // Act and Assert
+            Assert.Throws<InvalidOperationException>(() => _ = protect.Use<string>(user, otherCharacters));
         }
     }
 }

@@ -6,6 +6,7 @@ using BattleSystem.Moves;
 using BattleSystem.Stats;
 using BattleSystemExample.Battles;
 using BattleSystemExample.Characters;
+using BattleSystemExample.Constants;
 using BattleSystemExample.Extensions;
 using BattleSystemExample.Input;
 using BattleSystemExample.Output;
@@ -144,8 +145,13 @@ namespace BattleSystemExample
             player.EquipItem(
                 new ItemBuilder()
                     .Name("Might Relic")
-                    .Describe("Increases the holder's base Attack stat by 2.")
-                    .WithAttackBaseValueTransform(v => v + 2)
+                    .Describe("Increases the holder's Attack by 5% at the end of each turn.")
+                    .WithEndTurnAction(
+                        new BuffBuilder()
+                            .TargetsUser()
+                            .WithRaiseAttack(0.05)
+                            .Build()
+                    )
                     .Build()
             );
 
@@ -256,6 +262,21 @@ namespace BattleSystemExample
                     .Build();
 
             var mage = new BasicCharacter("Mage", "b", 100, mageStats, mageMoves);
+
+            mage.EquipItem(
+                new ItemBuilder()
+                    .Name("Rolling Wave")
+                    .Describe("Deals 3 damage to all enemies at the start of the holder's turn.")
+                    .WithStartTurnAction(
+                        new AttackBuilder()
+                            .WithPower(3)
+                            .AbsoluteDamage()
+                            .TargetsEnemies()
+                            .Build()
+                    )
+                    .Build()
+                    
+            );
 
             var rogueStats = new StatSet
             {

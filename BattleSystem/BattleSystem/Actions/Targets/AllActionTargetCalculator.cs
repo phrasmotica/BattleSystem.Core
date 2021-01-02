@@ -2,12 +2,12 @@
 using System.Linq;
 using BattleSystem.Characters;
 
-namespace BattleSystem.Moves.Targets
+namespace BattleSystem.Actions.Targets
 {
     /// <summary>
-    /// Calculates the move targets as all of the characters, including the user.
+    /// Calculates the action targets as all of the characters, including the user.
     /// </summary>
-    public class AllMoveTargetCalculator : IMoveTargetCalculator
+    public class AllActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
         public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)

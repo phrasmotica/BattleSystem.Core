@@ -3,15 +3,16 @@ using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Damage;
 using BattleSystem.Actions.Results;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 using BattleSystem.Items;
+using System;
 
 namespace BattleSystem.Actions
 {
     /// <summary>
     /// Represents an attacking action.
     /// </summary>
-    public class Attack : IAction
+    public class Attack : IAction, ITransformable
     {
         /// <summary>
         /// Delegate for a function that transforms the given power.
@@ -25,9 +26,19 @@ namespace BattleSystem.Actions
         private IDamageCalculator _damageCalculator;
 
         /// <summary>
-        /// The move target calculator.
+        /// The action target calculator.
         /// </summary>
-        private IMoveTargetCalculator _moveTargetCalculator;
+        private IActionTargetCalculator _actionTargetCalculator;
+
+        /// <summary>
+        /// The targets for the next use of the attack.
+        /// </summary>
+        private IEnumerable<Character> _targets;
+
+        /// <summary>
+        /// Whether the targets for the next use of the attack have been set.
+        /// </summary>
+        private bool _targetsSet;
 
         /// <summary>
         /// Gets or sets the attack's power.
@@ -62,27 +73,39 @@ namespace BattleSystem.Actions
         }
 
         /// <summary>
-        /// Sets the move target calculator for this attack.
+        /// Sets the action target calculator for this attack.
         /// </summary>
-        /// <param name="moveTargetCalculator">The move target calculator.</param>
-        public void SetMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
+        /// <param name="actionTargetCalculator">The action target calculator.</param>
+        public void SetActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
         {
-            _moveTargetCalculator = moveTargetCalculator;
+            _actionTargetCalculator = actionTargetCalculator;
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<IActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
+        public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
+            _targets = _actionTargetCalculator.Calculate(user, otherCharacters);
+            _targetsSet = true;
+        }
 
-            var results = new List<IActionResult>();
+        /// <inheritdoc />
+        public virtual IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
+        {
+            if (!_targetsSet)
+            {
+                throw new InvalidOperationException("Cannot use attack when no targets have been set!");
+            }
 
-            foreach (var target in targets.Where(c => !c.IsDead).ToArray())
+            var results = new List<IActionResult<TSource>>();
+
+            foreach (var target in _targets.Where(c => !c.IsDead).ToArray())
             {
                 var damage = _damageCalculator.Calculate(user, this, target);
-                var result = target.ReceiveDamage(damage, user.Id);
+                var result = target.ReceiveDamage<TSource>(damage, user);
                 results.Add(result);
             }
+
+            _targetsSet = false;
 
             return results;
         }

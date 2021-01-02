@@ -5,6 +5,7 @@ using BattleSystem.Items.Results;
 using BattleSystem.Moves;
 using BattleSystem.Actions.Results;
 using BattleSystem.Stats;
+using System.Linq;
 
 namespace BattleSystem.Characters
 {
@@ -54,9 +55,19 @@ namespace BattleSystem.Characters
         public ItemSlot ItemSlot { get; protected set; }
 
         /// <summary>
+        /// Gets whether the character is holding an item.
+        /// </summary>
+        public bool HasItem => ItemSlot.HasItem;
+
+        /// <summary>
+        /// Gets the character's item.
+        /// </summary>
+        public Item Item => ItemSlot.Current;
+
+        /// <summary>
         /// Gets or sets the list of characters who are protecting this character.
         /// </summary>
-        protected List<string> ProtectQueue;
+        protected List<Character> ProtectQueue;
 
         /// <summary>
         /// Gets or sets the maximum allowed length of the protect queue.
@@ -100,7 +111,7 @@ namespace BattleSystem.Characters
 
             ItemSlot = new ItemSlot();
 
-            ProtectQueue = new List<string>();
+            ProtectQueue = new List<Character>();
             ProtectLimit = 1;
         }
 
@@ -116,12 +127,12 @@ namespace BattleSystem.Characters
         /// <param name="item">The item.</param>
         public virtual EquipItemResult EquipItem(Item item)
         {
-            var hadPreviousItem = ItemSlot.HasItem;
+            var hadPreviousItem = HasItem;
 
             Item previousItem = null;
             if (hadPreviousItem)
             {
-                previousItem = ItemSlot.Current;
+                previousItem = Item;
             }
 
             ItemSlot.Set(item);
@@ -145,7 +156,7 @@ namespace BattleSystem.Characters
         /// </summary>
         public virtual RemoveItemResult RemoveItem()
         {
-            if (!ItemSlot.HasItem)
+            if (!HasItem)
             {
                 return new RemoveItemResult
                 {
@@ -153,7 +164,7 @@ namespace BattleSystem.Characters
                 };
             }
 
-            var item = ItemSlot.Current;
+            var item = Item;
             ItemSlot.Remove();
 
             return new RemoveItemResult
@@ -167,19 +178,23 @@ namespace BattleSystem.Characters
         /// Takes the incoming damage and returns the result.
         /// </summary>
         /// <param name="damage">The incoming damage.</param>
-        /// <param name="userId">The ID of the character who inflicted the incoming damage.</param>
-        public virtual AttackResult ReceiveDamage(int damage, string userId)
+        /// <param name="user">The character who inflicted the incoming damage.</param>
+        /// <typeparam name="TSource">The type of the source of the incoming damage.</typeparam>
+        public virtual AttackResult<TSource> ReceiveDamage<TSource>(
+            int damage,
+            Character user)
         {
-            if (userId != Id && ProtectQueue.Count > 0)
+            if (user.Id != Id && ProtectQueue.Any())
             {
-                var protectUserId = ConsumeProtect();
+                var protectUser = ConsumeProtect();
 
-                return new AttackResult
+                return new AttackResult<TSource>
                 {
                     Applied = false,
-                    TargetId = Id,
+                    User = user,
+                    Target = this,
                     TargetProtected = true,
-                    ProtectUserId = protectUserId,
+                    ProtectUser = protectUser,
                 };
             }
 
@@ -187,10 +202,11 @@ namespace BattleSystem.Characters
             CurrentHealth -= damage;
             var endingHealth = CurrentHealth;
 
-            return new AttackResult
+            return new AttackResult<TSource>
             {
                 Applied = true,
-                TargetId = Id,
+                User = user,
+                Target = this,
                 TargetProtected = false,
                 StartingHealth = startingHealth,
                 EndingHealth = endingHealth,
@@ -201,21 +217,23 @@ namespace BattleSystem.Characters
         /// Receives effects from the given buff and returns the result.
         /// </summary>
         /// <param name="multipliers">The effects of incoming buff.</param>
-        /// <param name="userId">The ID of the character who used the incoming buff.</param>
-        public virtual BuffResult ReceiveBuff(
+        /// <param name="user">The character who used the incoming buff.</param>
+        /// <typeparam name="TSource">The type of the source of the incoming buff.</typeparam>
+        public virtual BuffResult<TSource> ReceiveBuff<TSource>(
             IDictionary<StatCategory, double> multipliers,
-            string userId)
+            Character user)
         {
-            if (userId != Id && ProtectQueue.Count > 0)
+            if (user.Id != Id && ProtectQueue.Any())
             {
-                var protectUserId = ConsumeProtect();
+                var protectUser = ConsumeProtect();
 
-                return new BuffResult
+                return new BuffResult<TSource>
                 {
                     Applied = false,
-                    TargetId = Id,
+                    User = user,
+                    Target = this,
                     TargetProtected = true,
-                    ProtectUserId = protectUserId,
+                    ProtectUser = protectUser,
                 };
             }
 
@@ -246,10 +264,11 @@ namespace BattleSystem.Characters
 
             var endingMultipliers = Stats.MultipliersAsDictionary();
 
-            return new BuffResult
+            return new BuffResult<TSource>
             {
                 Applied = true,
-                TargetId = Id,
+                User = user,
+                Target = this,
                 TargetProtected = false,
                 StartingStatMultipliers = startingMultipliers,
                 EndingStatMultipliers = endingMultipliers,
@@ -260,19 +279,23 @@ namespace BattleSystem.Characters
         /// Restores the given amount of health, capped by the character's max health, and returns the result.
         /// </summary>
         /// <param name="amount">The healing amount.</param>
-        /// <param name="userId">The ID of the character who used the incoming heal.</param>
-        public virtual HealResult Heal(int amount, string userId)
+        /// <param name="user">The character who used the incoming heal.</param>
+        /// <typeparam name="TSource">The type of the source of the incoming heal.</typeparam>
+        public virtual HealResult<TSource> Heal<TSource>(
+            int amount,
+            Character user)
         {
-            if (userId != Id && ProtectQueue.Count > 0)
+            if (user.Id != Id && ProtectQueue.Any())
             {
-                var protectUserId = ConsumeProtect();
+                var protectUser = ConsumeProtect();
 
-                return new HealResult
+                return new HealResult<TSource>
                 {
                     Applied = false,
-                    TargetId = Id,
+                    User = user,
+                    Target = this,
                     TargetProtected = true,
-                    ProtectUserId = protectUserId,
+                    ProtectUser = protectUser,
                 };
             }
 
@@ -280,10 +303,11 @@ namespace BattleSystem.Characters
             CurrentHealth += Math.Min(MaxHealth - CurrentHealth, amount);
             var endingHealth = CurrentHealth;
 
-            return new HealResult
+            return new HealResult<TSource>
             {
                 Applied = true,
-                TargetId = Id,
+                User = user,
+                Target = this,
                 TargetProtected = false,
                 StartingHealth = startingHealth,
                 EndingHealth = endingHealth,
@@ -293,37 +317,41 @@ namespace BattleSystem.Characters
         /// <summary>
         /// Adds an item to the protect queue, which protects the character from the next attack.
         /// </summary>
-        /// <param name="userId">The ID of the character who protected this character.</param>
-        public virtual ProtectResult AddProtect(string userId)
+        /// <param name="user">The character who protected this character.</param>
+        /// <typeparam name="TSource">The type of the source of the incoming protect action.</typeparam>
+        public virtual ProtectResult<TSource> AddProtect<TSource>(Character user)
         {
-            if (userId != Id && ProtectQueue.Count > 0)
+            if (user.Id != Id && ProtectQueue.Any())
             {
-                var protectUserId = ConsumeProtect();
+                var protectUser = ConsumeProtect();
 
-                return new ProtectResult
+                return new ProtectResult<TSource>
                 {
                     Applied = false,
-                    TargetId = Id,
+                    User = user,
+                    Target = this,
                     TargetProtected = true,
-                    ProtectUserId = protectUserId,
+                    ProtectUser = protectUser,
                 };
             }
 
             if (ProtectCount >= ProtectLimit)
             {
-                return new ProtectResult
+                return new ProtectResult<TSource>
                 {
                     Applied = false,
-                    TargetId = Id,
+                    User = user,
+                    Target = this,
                 };
             }
 
-            ProtectQueue.Add(userId);
+            ProtectQueue.Add(user);
 
-            return new ProtectResult
+            return new ProtectResult<TSource>
             {
                 Applied = true,
-                TargetId = Id,
+                User = user,
+                Target = this,
                 TargetProtected = false,
             };
         }
@@ -332,46 +360,51 @@ namespace BattleSystem.Characters
         /// Changes the protect limit by the given amount.
         /// </summary>
         /// <param name="amount">The amount.</param>
-        /// <param name="userId">The ID of the character who caused this protect limit change.</param>
-        public ProtectLimitChangeResult ChangeProtectLimit(int amount, string userId)
+        /// <param name="user">The character who caused this protect limit change.</param>
+        /// <typeparam name="TSource">The type of the source of the incoming protect limit change.</typeparam>
+        public ProtectLimitChangeResult<TSource> ChangeProtectLimit<TSource>(
+            int amount,
+            Character user)
         {
-            if (userId != Id && ProtectQueue.Count > 0)
+            if (user.Id != Id && ProtectQueue.Any())
             {
-                var protectUserId = ConsumeProtect();
+                var protectUser = ConsumeProtect();
 
-                return new ProtectLimitChangeResult
+                return new ProtectLimitChangeResult<TSource>
                 {
                     Applied = false,
-                    TargetId = Id,
+                    User = user,
+                    Target = this,
                     TargetProtected = true,
-                    ProtectUserId = protectUserId,
+                    ProtectUser = protectUser,
                 };
             }
 
             ProtectLimit += amount;
 
-            return new ProtectLimitChangeResult
+            return new ProtectLimitChangeResult<TSource>
             {
                 Applied = true,
-                TargetId = Id,
+                User = user,
+                Target = this,
                 TargetProtected = false,
                 Amount = amount,
             };
         }
 
         /// <summary>
-        /// Pops the next protect action from the queue and returns the ID of the protecting character.
+        /// Pops the next protect action from the queue and returns the protecting character.
         /// </summary>
-        public string ConsumeProtect()
+        public Character ConsumeProtect()
         {
             if (ProtectQueue.Count <= 0)
             {
                 throw new InvalidOperationException($"Cannot consume a protect action because there are none in the queue!");
             }
 
-            var protectorId = ProtectQueue[0];
+            var protectingCharacter = ProtectQueue[0];
             ProtectQueue.RemoveAt(0);
-            return protectorId;
+            return protectingCharacter;
         }
 
         /// <summary>

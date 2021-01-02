@@ -2,8 +2,8 @@
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
-using BattleSystem.Moves.Targets;
-using BattleSystem.Items;
+using BattleSystem.Actions.Targets;
+using System;
 
 namespace BattleSystem.Actions
 {
@@ -13,9 +13,19 @@ namespace BattleSystem.Actions
     public class ProtectLimitChange : IAction
     {
         /// <summary>
-        /// The move target calculator.
+        /// The action target calculator.
         /// </summary>
-        private IMoveTargetCalculator _moveTargetCalculator;
+        private IActionTargetCalculator _actionTargetCalculator;
+
+        /// <summary>
+        /// The targets for the protect limit change.
+        /// </summary>
+        private IEnumerable<Character> _targets;
+
+        /// <summary>
+        /// Whether the targets for the next use of the protect limit change have been set.
+        /// </summary>
+        private bool _targetsSet;
 
         /// <summary>
         /// Gets or sets the amount to change the target's protect limit by.
@@ -23,38 +33,40 @@ namespace BattleSystem.Actions
         public int Amount { get; set; }
 
         /// <summary>
-        /// Sets the move target calculator for this protect limit change.
+        /// Sets the action target calculator for this protect limit change.
         /// </summary>
-        /// <param name="moveTargetCalculator">The move target calculator.</param>
-        public void SetMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
+        /// <param name="actionTargetCalculator">The action target calculator.</param>
+        public void SetActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
         {
-            _moveTargetCalculator = moveTargetCalculator;
+            _actionTargetCalculator = actionTargetCalculator;
         }
 
         /// <inheritdoc />
-        public IEnumerable<IActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
+        public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
+            _targets = _actionTargetCalculator.Calculate(user, otherCharacters);
+            _targetsSet = true;
+        }
 
-            var results = new List<IActionResult>();
-
-            foreach (var target in targets.Where(c => !c.IsDead))
+        /// <inheritdoc />
+        public IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
+        {
+            if (!_targetsSet)
             {
-                var result = target.ChangeProtectLimit(Amount, user.Id);
+                throw new InvalidOperationException("Cannot use protect limit change when no targets have been set!");
+            }
+
+            var results = new List<IActionResult<TSource>>();
+
+            foreach (var target in _targets.Where(c => !c.IsDead))
+            {
+                var result = target.ChangeProtectLimit<TSource>(Amount, user);
                 results.Add(result);
             }
 
+            _targetsSet = false;
+
             return results;
-        }
-
-        /// <inheritdoc />
-        public void ReceiveTransforms(Item item)
-        {
-        }
-
-        /// <inheritdoc />
-        public void ClearTransforms()
-        {
         }
     }
 }

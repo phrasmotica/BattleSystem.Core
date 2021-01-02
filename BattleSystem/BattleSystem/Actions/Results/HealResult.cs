@@ -1,9 +1,12 @@
-﻿namespace BattleSystem.Actions.Results
+﻿using BattleSystem.Characters;
+
+namespace BattleSystem.Actions.Results
 {
     /// <summary>
     /// Class for the result of a heal being applied to a character.
     /// </summary>
-    public class HealResult : IActionResult
+    /// <typeparam name="TSource">The type of the source of the heal.</typeparam>
+    public class HealResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
         /// Gets or sets whether the heal was applied to the character.
@@ -11,9 +14,24 @@
         public bool Applied { get; set; }
 
         /// <summary>
-        /// Gets or sets the ID of the character who was the target of the heal.
+        /// Gets or sets the character who caused the heal.
         /// </summary>
-        public string TargetId { get; set; }
+        public Character User { get; set; }
+
+        /// <summary>
+        /// Gets or sets the source of the heal - for example, the user's item.
+        /// </summary>
+        public TSource Source { get; set; }
+
+        /// <summary>
+        /// Gets or sets the character who was the target of the heal.
+        /// </summary>
+        public Character Target { get; set; }
+
+        /// <summary>
+        /// Gets whether the heal was self-inflicted.
+        /// </summary>
+        public bool IsSelfInflicted => User is not null && Target is not null && User.Id == Target.Id;
 
         /// <summary>
         /// Gets or sets whether the character was protected from the heal.
@@ -21,9 +39,9 @@
         public bool TargetProtected { get; set; }
 
         /// <summary>
-        /// Gets or sets the ID of the character who protected the target from the heal, if applicable.
+        /// Gets or sets the character who protected the target from the heal, if applicable.
         /// </summary>
-        public string ProtectUserId { get; set; }
+        public Character ProtectUser { get; set; }
 
         /// <summary>
         /// Gets or sets the target's health before the heal.

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
-using BattleSystem.Items;
+using BattleSystem.Characters;
 
 namespace BattleSystem.Actions
 {
@@ -11,21 +10,18 @@ namespace BattleSystem.Actions
     public interface IAction
     {
         /// <summary>
-        /// Applies the effects of the action and returns the results of its application to its targets.
+        /// Sets the targets for the action's next use.
         /// </summary>
         /// <param name="user">The user of the action.</param>
         /// <param name="otherCharacters">The other characters.</param>
-        IEnumerable<IActionResult> Use(Character user, IEnumerable<Character> otherCharacters);
+        void SetTargets(Character user, IEnumerable<Character> otherCharacters);
 
         /// <summary>
-        /// Receives the relevant transforms from the given item.
+        /// Applies the action and returns the results of its application to its targets.
         /// </summary>
-        /// <param name="item">The item.</param>
-        void ReceiveTransforms(Item item);
-
-        /// <summary>
-        /// Clears any transforms this action may have received.
-        /// </summary>
-        void ClearTransforms();
+        /// <param name="user">The user of the action.</param>
+        /// <param name="otherCharacters">The other characters.</param>
+        /// <typeparam name="TSource">The type of the source of the action.</typeparam>
+        IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters);
     }
 }

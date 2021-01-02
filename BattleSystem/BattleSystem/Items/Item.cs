@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using BattleSystem.Actions;
 using BattleSystem.Stats;
 using static BattleSystem.Actions.Attack;
 
@@ -26,6 +28,11 @@ namespace BattleSystem.Items
         public string Description { get; private set; }
 
         /// <summary>
+        /// Gets or sets this item's tagged actions.
+        /// </summary>
+        public List<TaggedAction> TaggedActions { get; private set; }
+
+        /// <summary>
         /// Gets or sets the map of stat base value transform functions.
         /// </summary>
         public IDictionary<StatCategory, List<StatBaseValueTransform>> StatBaseValueTransforms { get; private set; }
@@ -40,6 +47,8 @@ namespace BattleSystem.Items
         /// </summary>
         public Item()
         {
+            TaggedActions = new List<TaggedAction>();
+
             StatBaseValueTransforms = new Dictionary<StatCategory, List<StatBaseValueTransform>>
             {
                 [StatCategory.Attack] = new List<StatBaseValueTransform>(),
@@ -66,6 +75,17 @@ namespace BattleSystem.Items
         public void SetDescription(string description)
         {
             Description = description;
+        }
+
+        /// <summary>
+        /// Adds a tagged action for this item.
+        /// </summary>
+        /// <param name="action">The underlying action to add.</param>
+        /// <param name="tags">The tags.</param>
+        public void AddTaggedAction(IAction action, params string[] tags)
+        {
+            var taggedAction = new TaggedAction(action, tags);
+            TaggedActions.Add(taggedAction);
         }
 
         /// <summary>
@@ -102,6 +122,15 @@ namespace BattleSystem.Items
         public void AddAttackPowerTransform(PowerTransform transform)
         {
             AttackPowerTransforms.Add(transform);
+        }
+
+        /// <summary>
+        /// Returns the tagged character actions with the given tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        public IEnumerable<TaggedAction> GetCharacterTaggedActions(string tag)
+        {
+            return TaggedActions.Where(a => a.HasTag(tag));
         }
     }
 }

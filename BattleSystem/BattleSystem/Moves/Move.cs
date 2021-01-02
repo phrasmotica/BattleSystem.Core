@@ -130,15 +130,28 @@ namespace BattleSystem.Moves
         }
 
         /// <summary>
-        /// Applies the effects of the move, if it lands.
+        /// Ensures each move action has its targets set.
         /// </summary>
         /// <param name="user">The user of the move.</param>
         /// <param name="otherCharacters">The other characters.</param>
-        public (MoveUseResult, IEnumerable<IEnumerable<IActionResult>>) Use(Character user, IEnumerable<Character> otherCharacters)
+        public void SetTargets(Character user, IEnumerable<Character> otherCharacters)
+        {
+            foreach (var action in _moveActions)
+            {
+                action.SetTargets(user, otherCharacters);
+            }
+        }
+
+        /// <summary>
+        /// Applies the actions of the move, if it succeeds.
+        /// </summary>
+        /// <param name="user">The user of the move.</param>
+        /// <param name="otherCharacters">The other characters.</param>
+        public (MoveUseResult, IEnumerable<IEnumerable<IActionResult<Move>>>) Use(Character user, IEnumerable<Character> otherCharacters)
         {
             var result = _successCalculator.Calculate(user, this, otherCharacters);
 
-            var actionsResults = new List<IEnumerable<IActionResult>>();
+            var actionsResults = new List<IEnumerable<IActionResult<Move>>>();
 
             var targets = otherCharacters.ToArray();
 
@@ -146,27 +159,53 @@ namespace BattleSystem.Moves
             {
                 foreach (var action in _moveActions)
                 {
-                    if (user.ItemSlot.HasItem)
+                    if (user.HasItem)
                     {
-                        action.ReceiveTransforms(user.ItemSlot.Current);
+                        (action as ITransformable)?.ReceiveTransforms(user.Item);
                     }
 
-                    var actionResults = action.Use(user, targets);
+                    var actionResults = action.Use<Move>(user, targets);
+                    foreach (var r in actionResults)
+                    {
+                        r.Source = this;
+                    }
+
                     actionsResults.Add(actionResults);
 
-                    // ensure targets can't be affected by subsequent actions
-                    // if they weren't affected by the previous one
-                    var affectedCharacters = actionResults.Where(ar => ar.Applied)
-                                                          .Select(ar => ar.TargetId);
-                    targets = targets.Where(t => affectedCharacters.Contains(t.Id)).ToArray();
+                    // only certain characters should be considered as targets
+                    // for subsequent actions
+                    targets = GetTargetsToConsider(targets, actionResults).ToArray();
 
-                    action.ClearTransforms();
+                    (action as ITransformable)?.ClearTransforms();
                 }
             }
 
             RemainingUses--;
 
             return (result, actionsResults);
+        }
+
+        /// <summary>
+        /// Returns the characters that should be considered for subsequent actions
+        /// based on the results of the action.
+        /// </summary>
+        /// <param name="targets">The targets of the action.</param>
+        /// <param name="actionResults">The results of the action.</param>
+        private static IEnumerable<Character> GetTargetsToConsider(
+            IEnumerable<Character> targets,
+            IEnumerable<IActionResult<Move>> actionResults)
+        {
+            var targetedCharacters = actionResults.Select(ar => ar.Target);
+
+            var untargetedCharacters = targets.Except(targetedCharacters);
+
+            var affectedCharacters = actionResults.Where(ar => ar.Applied)
+                                                  .Select(ar => ar.Target);
+
+            // characters who have a) not yet been targeted or b) were affected
+            // by the previous action should be considered as targets for
+            // subsequent actions
+            return untargetedCharacters.Union(affectedCharacters);
         }
     }
 }

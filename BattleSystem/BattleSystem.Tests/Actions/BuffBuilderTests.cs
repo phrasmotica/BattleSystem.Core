@@ -11,13 +11,13 @@ namespace BattleSystem.Tests.Actions
     public class BuffBuilderTests
     {
         [Test]
-        public void WithMoveTargetCalculator_NullArgument_Throws()
+        public void WithActionTargetCalculator_NullArgument_Throws()
         {
             // Arrange
             var builder = new BuffBuilder();
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>(() => _ = builder.WithMoveTargetCalculator(null));
+            Assert.Throws<ArgumentNullException>(() => _ = builder.WithActionTargetCalculator(null));
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace BattleSystem.Tests.Actions
         }
 
         [Test]
-        public void Build_MissingMoveTargetCalculator_Throws()
+        public void Build_MissingactionTargetCalculator_Throws()
         {
             // Arrange
             var builder = new BuffBuilder()

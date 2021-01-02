@@ -2,9 +2,9 @@
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
-using BattleSystem.Moves.Targets;
+using BattleSystem.Actions.Targets;
 using BattleSystem.Stats;
-using BattleSystem.Items;
+using System;
 
 namespace BattleSystem.Actions
 {
@@ -14,9 +14,19 @@ namespace BattleSystem.Actions
     public class Buff : IAction
     {
         /// <summary>
-        /// The move target calculator.
+        /// The action target calculator.
         /// </summary>
-        private IMoveTargetCalculator _moveTargetCalculator;
+        private IActionTargetCalculator _actionTargetCalculator;
+
+        /// <summary>
+        /// The targets for the next use of the buff.
+        /// </summary>
+        private IEnumerable<Character> _targets;
+
+        /// <summary>
+        /// Whether the targets for the next use of the buff have been set.
+        /// </summary>
+        private bool _targetsSet;
 
         /// <summary>
         /// Gets or sets the buff's stat multipliers for the target.
@@ -32,38 +42,40 @@ namespace BattleSystem.Actions
         }
 
         /// <summary>
-        /// Sets the move target calculator for this buff.
+        /// Sets the action target calculator for this buff.
         /// </summary>
-        /// <param name="moveTargetCalculator">The move target calculator.</param>
-        public void SetMoveTargetCalculator(IMoveTargetCalculator moveTargetCalculator)
+        /// <param name="actionTargetCalculator">The action target calculator.</param>
+        public void SetActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
         {
-            _moveTargetCalculator = moveTargetCalculator;
+            _actionTargetCalculator = actionTargetCalculator;
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<IActionResult> Use(Character user, IEnumerable<Character> otherCharacters)
+        public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            var targets = _moveTargetCalculator.Calculate(user, otherCharacters);
+            _targets = _actionTargetCalculator.Calculate(user, otherCharacters);
+            _targetsSet = true;
+        }
 
-            var results = new List<IActionResult>();
-
-            foreach (var target in targets.Where(c => !c.IsDead).ToArray())
+        /// <inheritdoc />
+        public virtual IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
+        {
+            if (!_targetsSet)
             {
-                var result = target.ReceiveBuff(TargetMultipliers, user.Id);
+                throw new InvalidOperationException("Cannot use buff when no targets have been set!");
+            }
+
+            var results = new List<IActionResult<TSource>>();
+
+            foreach (var target in _targets.Where(c => !c.IsDead).ToArray())
+            {
+                var result = target.ReceiveBuff<TSource>(TargetMultipliers, user);
                 results.Add(result);
             }
 
+            _targetsSet = false;
+
             return results;
-        }
-
-        /// <inheritdoc />
-        public void ReceiveTransforms(Item item)
-        {
-        }
-
-        /// <inheritdoc />
-        public void ClearTransforms()
-        {
         }
     }
 }

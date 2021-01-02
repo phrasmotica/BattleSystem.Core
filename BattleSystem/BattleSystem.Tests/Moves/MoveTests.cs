@@ -97,11 +97,102 @@ namespace BattleSystem.Tests.Moves
                 TestHelpers.CreateBasicCharacter()
             };
 
+            move.SetTargets(user, otherCharacters);
+
             // Act
             _ = move.Use(user, otherCharacters);
 
             // Assert
             Assert.That(move.RemainingUses, Is.EqualTo(4));
+        }
+
+        [Test]
+        public void Use_WhenActionDidNotTargetCharacter_CharacterStillConsideredForSubsequentActions()
+        {
+            // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter(),
+                TestHelpers.CreateBasicCharacter(),
+            };
+
+            static IActionResult<Move> MockActionResult(Character target)
+            {
+                var result = new Mock<IActionResult<Move>>();
+                result.SetupGet(m => m.Applied).Returns(true);
+                result.SetupGet(m => m.Target).Returns(target);
+                return result.Object;
+            }
+
+            var firstAction = new Mock<IAction>();
+
+            firstAction
+                .Setup(
+                    m => m.SetTargets(
+                        It.IsAny<Character>(),
+                        It.IsAny<IEnumerable<Character>>()
+                    )
+                );
+
+            firstAction
+                .Setup(
+                    m => m.Use<Move>(
+                        It.IsAny<Character>(),
+                        It.IsAny<IEnumerable<Character>>()
+                    )
+                )
+                .Returns((Character _, IEnumerable<Character> otherCharacters) =>
+                {
+                    return new[] { MockActionResult(otherCharacters.First()) };
+                });
+
+            var secondAction = new Mock<IAction>();
+
+            secondAction
+                .Setup(
+                    m => m.SetTargets(
+                        It.IsAny<Character>(),
+                        It.IsAny<IEnumerable<Character>>()
+                    )
+                );
+
+            secondAction
+                .Setup(
+                    m => m.Use<Move>(
+                        It.IsAny<Character>(),
+                        It.IsAny<IEnumerable<Character>>()
+                    )
+                )
+                .Returns((Character _, IEnumerable<Character> otherCharacters) =>
+                {
+                    return otherCharacters.Select(MockActionResult);
+                });
+
+            // second action not applying to other characters means third and fourth
+            // should not be executed at all
+            var move = TestHelpers.CreateMove(
+                moveActions: new[] { firstAction.Object, secondAction.Object });
+
+            move.SetTargets(user, otherCharacters);
+
+            // Act
+            var (_, actionsResults) = move.Use(user, otherCharacters);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                // first action should be applied to first other character
+                var firstActionResults = actionsResults.ToArray()[0].ToArray();
+                Assert.That(firstActionResults.Length, Is.EqualTo(1));
+                Assert.That(firstActionResults[0].Applied, Is.True);
+
+                // second action should be applied to both other characters
+                var secondActionResults = actionsResults.ToArray()[1].ToArray();
+                Assert.That(secondActionResults.Length, Is.EqualTo(2));
+                Assert.That(secondActionResults[0].Applied, Is.True);
+                Assert.That(secondActionResults[1].Applied, Is.True);
+            });
         }
 
         [Test]
@@ -114,36 +205,47 @@ namespace BattleSystem.Tests.Moves
                 TestHelpers.CreateBasicCharacter(),
             };
 
-            static IActionResult MockActionResult(bool applied, string targetId)
+            static IActionResult<Move> MockActionResult(bool applied, Character target)
             {
-                var result = new Mock<IActionResult>();
+                var result = new Mock<IActionResult<Move>>();
                 result.SetupGet(m => m.Applied).Returns(applied);
-                result.SetupGet(m => m.TargetId).Returns(targetId);
+                result.SetupGet(m => m.Target).Returns(target);
                 return result.Object;
             }
 
             static IAction MockAction(bool applied = true)
             {
                 var action = new Mock<IAction>();
+
                 action
                     .Setup(
-                        m => m.Use(
+                        m => m.SetTargets(
+                            It.IsAny<Character>(),
+                            It.IsAny<IEnumerable<Character>>()
+                        )
+                    );
+
+                action
+                    .Setup(
+                        m => m.Use<Move>(
                             It.IsAny<Character>(),
                             It.IsAny<IEnumerable<Character>>()
                         )
                     )
                     .Returns((Character _, IEnumerable<Character> otherCharacters) =>
                     {
-                        return otherCharacters.Select(c => MockActionResult(applied, c.Id));
+                        return otherCharacters.Select(c => MockActionResult(applied, c));
                     });
 
                 return action.Object;
             }
 
             // second action not applying to other characters means third and fourth
-            // should not be applied either
+            // should not be executed at all
             var move = TestHelpers.CreateMove(
                 moveActions: new[] { MockAction(), MockAction(false), MockAction(), MockAction() });
+
+            move.SetTargets(user, otherCharacters);
 
             // Act
             var (_, actionsResults) = move.Use(user, otherCharacters);
@@ -153,12 +255,12 @@ namespace BattleSystem.Tests.Moves
             {
                 // first action should be executed and applied to target
                 var firstActionResults = actionsResults.ToArray()[0].ToArray();
-                Assert.That(firstActionResults, Is.Not.Empty);
+                Assert.That(firstActionResults.Length, Is.EqualTo(1));
                 Assert.That(firstActionResults[0].Applied, Is.True);
 
                 // second action should be executed but not applied to target
                 var secondActionResults = actionsResults.ToArray()[1].ToArray();
-                Assert.That(secondActionResults, Is.Not.Empty);
+                Assert.That(secondActionResults.Length, Is.EqualTo(1));
                 Assert.That(secondActionResults[0].Applied, Is.False);
 
                 // third and fourth actions should not be executed at all
