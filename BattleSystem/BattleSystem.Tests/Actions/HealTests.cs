@@ -4,6 +4,7 @@ using BattleSystem.Actions;
 using BattleSystem.Actions.Targets;
 using Moq;
 using NUnit.Framework;
+using System;
 
 namespace BattleSystem.Tests.Actions
 {
@@ -108,6 +109,22 @@ namespace BattleSystem.Tests.Actions
 
             // Assert
             Assert.That(actionResults, Is.Empty);
+        }
+
+        [Test]
+        public void Use_NoTargetsSet_Throws()
+        {
+            // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter(),
+            };
+
+            var heal = TestHelpers.CreateHeal();
+
+            // Act and Assert
+            Assert.Throws<InvalidOperationException>(() => _ = heal.Use<string>(user, otherCharacters));
         }
     }
 }

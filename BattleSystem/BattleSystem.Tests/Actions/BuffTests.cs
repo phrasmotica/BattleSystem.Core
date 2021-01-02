@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Stats;
 using NUnit.Framework;
@@ -98,6 +99,22 @@ namespace BattleSystem.Tests.Actions
 
             // Assert
             Assert.That(actionResults, Is.Empty);
+        }
+
+        [Test]
+        public void Use_NoTargetsSet_Throws()
+        {
+            // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter(),
+            };
+
+            var buff = TestHelpers.CreateBuff();
+
+            // Act and Assert
+            Assert.Throws<InvalidOperationException>(() => _ = buff.Use<string>(user, otherCharacters));
         }
     }
 }

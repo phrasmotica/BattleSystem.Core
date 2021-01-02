@@ -3,6 +3,7 @@ using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
 using BattleSystem.Actions.Targets;
+using System;
 
 namespace BattleSystem.Actions
 {
@@ -22,6 +23,11 @@ namespace BattleSystem.Actions
         private IEnumerable<Character> _targets;
 
         /// <summary>
+        /// Whether the targets for the next use of the protect limit change have been set.
+        /// </summary>
+        private bool _targetsSet;
+
+        /// <summary>
         /// Gets or sets the amount to change the target's protect limit by.
         /// </summary>
         public int Amount { get; set; }
@@ -39,11 +45,17 @@ namespace BattleSystem.Actions
         public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
             _targets = _actionTargetCalculator.Calculate(user, otherCharacters);
+            _targetsSet = true;
         }
 
         /// <inheritdoc />
         public IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
+            if (!_targetsSet)
+            {
+                throw new InvalidOperationException("Cannot use protect limit change when no targets have been set!");
+            }
+
             var results = new List<IActionResult<TSource>>();
 
             foreach (var target in _targets.Where(c => !c.IsDead))
@@ -51,6 +63,8 @@ namespace BattleSystem.Actions
                 var result = target.ChangeProtectLimit<TSource>(Amount, user);
                 results.Add(result);
             }
+
+            _targetsSet = false;
 
             return results;
         }

@@ -5,6 +5,7 @@ using BattleSystem.Healing;
 using BattleSystem.Actions.Results;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Items;
+using System;
 
 namespace BattleSystem.Actions
 {
@@ -24,9 +25,14 @@ namespace BattleSystem.Actions
         private IActionTargetCalculator _actionTargetCalculator;
 
         /// <summary>
-        /// The targets for the heal.
+        /// The targets for the next use of the heal.
         /// </summary>
         private IEnumerable<Character> _targets;
+
+        /// <summary>
+        /// Whether the targets for the next use of the heal have been set.
+        /// </summary>
+        private bool _targetsSet;
 
         /// <summary>
         /// Gets or sets the heal's healing amount.
@@ -60,11 +66,17 @@ namespace BattleSystem.Actions
         public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
             _targets = _actionTargetCalculator.Calculate(user, otherCharacters);
+            _targetsSet = true;
         }
 
         /// <inheritdoc />
         public virtual IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
+            if (!_targetsSet)
+            {
+                throw new InvalidOperationException("Cannot use heal when no targets have been set!");
+            }
+
             var results = new List<IActionResult<TSource>>();
 
             foreach (var target in _targets.Where(c => !c.IsDead).ToArray())
@@ -73,6 +85,8 @@ namespace BattleSystem.Actions
                 var result = target.Heal<TSource>(amount, user);
                 results.Add(result);
             }
+
+            _targetsSet = false;
 
             return results;
         }

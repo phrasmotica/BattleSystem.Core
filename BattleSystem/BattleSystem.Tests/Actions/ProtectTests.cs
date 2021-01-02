@@ -1,4 +1,5 @@
-﻿using BattleSystem.Actions;
+﻿using System;
+using BattleSystem.Actions;
 using BattleSystem.Actions.Targets;
 using NUnit.Framework;
 
@@ -93,6 +94,22 @@ namespace BattleSystem.Tests.Actions
 
             // Assert
             Assert.That(actionResults, Is.Empty);
+        }
+
+        [Test]
+        public void Use_NoTargetsSet_Throws()
+        {
+            // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter(),
+            };
+
+            var protect = TestHelpers.CreateProtect();
+
+            // Act and Assert
+            Assert.Throws<InvalidOperationException>(() => _ = protect.Use<string>(user, otherCharacters));
         }
     }
 }

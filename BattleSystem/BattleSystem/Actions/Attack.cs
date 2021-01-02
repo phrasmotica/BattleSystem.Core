@@ -5,6 +5,7 @@ using BattleSystem.Damage;
 using BattleSystem.Actions.Results;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Items;
+using System;
 
 namespace BattleSystem.Actions
 {
@@ -30,9 +31,14 @@ namespace BattleSystem.Actions
         private IActionTargetCalculator _actionTargetCalculator;
 
         /// <summary>
-        /// The targets for the attack.
+        /// The targets for the next use of the attack.
         /// </summary>
         private IEnumerable<Character> _targets;
+
+        /// <summary>
+        /// Whether the targets for the next use of the attack have been set.
+        /// </summary>
+        private bool _targetsSet;
 
         /// <summary>
         /// Gets or sets the attack's power.
@@ -79,11 +85,17 @@ namespace BattleSystem.Actions
         public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
             _targets = _actionTargetCalculator.Calculate(user, otherCharacters);
+            _targetsSet = true;
         }
 
         /// <inheritdoc />
         public virtual IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
+            if (!_targetsSet)
+            {
+                throw new InvalidOperationException("Cannot use attack when no targets have been set!");
+            }
+
             var results = new List<IActionResult<TSource>>();
 
             foreach (var target in _targets.Where(c => !c.IsDead).ToArray())
@@ -92,6 +104,8 @@ namespace BattleSystem.Actions
                 var result = target.ReceiveDamage<TSource>(damage, user);
                 results.Add(result);
             }
+
+            _targetsSet = false;
 
             return results;
         }

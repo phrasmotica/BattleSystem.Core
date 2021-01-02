@@ -10,7 +10,7 @@ namespace BattleSystem.Actions
     public interface IAction
     {
         /// <summary>
-        /// Sets the targets for the action.
+        /// Sets the targets for the action's next use.
         /// </summary>
         /// <param name="user">The user of the action.</param>
         /// <param name="otherCharacters">The other characters.</param>
