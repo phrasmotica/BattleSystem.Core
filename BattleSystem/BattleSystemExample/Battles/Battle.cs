@@ -165,11 +165,11 @@ namespace BattleSystemExample.Battles
             }
             else switch (result)
             {
-                case AttackResult<TSource> ar:
-                    var attackDescription = ar.Describe();
-                    if (attackDescription is not null)
+                case DamageResult<TSource> dr:
+                    var damageDescription = dr.Describe();
+                    if (damageDescription is not null)
                     {
-                        _gameOutput.WriteLine(attackDescription);
+                        _gameOutput.WriteLine(damageDescription);
                     }
                     break;
                 case BuffResult<TSource> br:

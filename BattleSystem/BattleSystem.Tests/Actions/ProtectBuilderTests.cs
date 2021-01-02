@@ -27,10 +27,10 @@ namespace BattleSystem.Tests.Actions
             var builder = new ProtectBuilder().TargetsAll();
 
             // Act
-            var attack = builder.Build();
+            var protect = builder.Build();
 
             // Assert
-            Assert.That(attack, Is.Not.Null);
+            Assert.That(protect, Is.Not.Null);
         }
 
         [Test]

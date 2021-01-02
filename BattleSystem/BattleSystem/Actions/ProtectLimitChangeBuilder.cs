@@ -16,7 +16,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Whether the action target calculator of the protect limit change action has been set.
         /// </summary>
-        private bool _isactionTargetCalculatorSet;
+        private bool _isActionTargetCalculatorSet;
 
         /// <summary>
         /// Whether the amount of the protect limit change action has been set.
@@ -43,7 +43,7 @@ namespace BattleSystem.Actions
             }
 
             _protectLimitChange.SetActionTargetCalculator(actionTargetCalculator);
-            _isactionTargetCalculatorSet = true;
+            _isActionTargetCalculatorSet = true;
             return this;
         }
 
@@ -127,7 +127,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public ProtectLimitChange Build()
         {
-            if (!_isactionTargetCalculatorSet)
+            if (!_isActionTargetCalculatorSet)
             {
                 throw new InvalidOperationException("Cannot build a protect limit change action with no action target calculator!");
             }

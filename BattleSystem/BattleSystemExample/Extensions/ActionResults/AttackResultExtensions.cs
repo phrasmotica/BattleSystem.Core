@@ -4,49 +4,49 @@ using BattleSystem.Items;
 namespace BattleSystemExample.Extensions.ActionResults
 {
     /// <summary>
-    /// Extension methods for <see cref="AttackResult{TSource}"/>.
+    /// Extension methods for <see cref="DamageResult{TSource}"/>.
     /// </summary>
-    public static class AttackResultExtensions
+    public static class DamageResultExtensions
     {
         /// <summary>
-        /// Returns a string describing this attack result.
+        /// Returns a string describing this damage result.
         /// </summary>
-        /// <param name="attack">The attack result.</param>
-        public static string Describe<TSource>(this AttackResult<TSource> attack)
+        /// <param name="damage">The damage result.</param>
+        public static string Describe<TSource>(this DamageResult<TSource> damage)
         {
-            var target = attack.Target;
-            var amount = attack.Damage;
+            var target = damage.Target;
+            var amount = damage.Amount;
 
-            if (attack.IsSelfInflicted)
+            if (damage.IsSelfInflicted)
             {
-                if (attack.TargetDied)
+                if (damage.TargetDied)
                 {
-                    return attack.Source switch
+                    return damage.Source switch
                     {
                         Item item => $"{target.Name} took {amount} damage from their {item.Name} and died!",
                         _ => $"{target.Name} took {amount} damage and died!",
                     };
                 }
 
-                return attack.Source switch
+                return damage.Source switch
                 {
                     Item item => $"{target.Name} took {amount} damage from their {item.Name}!",
                     _ => $"{target.Name} took {amount} damage!",
                 };
             }
 
-            var user = attack.User;
+            var user = damage.User;
 
-            if (attack.TargetDied)
+            if (damage.TargetDied)
             {
-                return attack.Source switch
+                return damage.Source switch
                 {
                     Item item => $"{target.Name} took {amount} damage from {user.Name}'s {item.Name} and died!",
                     _ => $"{target.Name} took {amount} damage and died!",
                 };
             }
 
-            return attack.Source switch
+            return damage.Source switch
             {
                 Item item => $"{target.Name} took {amount} damage from {user.Name}'s {item.Name}!",
                 _ => $"{target.Name} took {amount} damage!",

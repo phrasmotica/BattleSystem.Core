@@ -1,7 +1,7 @@
-﻿using BattleSystem.Damage;
+﻿using BattleSystem.Actions.Damage.Calulators;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Damage
+namespace BattleSystem.Tests.Actions.Damage.Calculators
 {
     /// <summary>
     /// Unit tests for <see cref="StatDifferenceDamageCalculator"/>.
@@ -13,20 +13,20 @@ namespace BattleSystem.Tests.Damage
         [TestCase(6, 10, 5, 10)]
         [TestCase(6, 10, 6, 1)]
         [TestCase(6, 10, 7, 1)]
-        public void Calculate_ReturnsDamage(int userAttack, int attackPower, int targetDefence, int expectedDamage)
+        public void Calculate_ReturnsDamage(int userAttack, int power, int targetDefence, int expectedAmount)
         {
             // Arrange
             var calculator = new StatDifferenceDamageCalculator();
 
             var user = TestHelpers.CreateBasicCharacter(attack: userAttack);
-            var attack = TestHelpers.CreateAttack(calculator, power: attackPower);
+            var damage = TestHelpers.CreateDamage(calculator, power: power);
             var target = TestHelpers.CreateBasicCharacter(defence: targetDefence);
 
             // Act
-            var damage = calculator.Calculate(user, attack, target);
+            var amount = calculator.Calculate(user, damage, target);
 
             // Assert
-            Assert.That(damage, Is.EqualTo(expectedDamage));
+            Assert.That(amount, Is.EqualTo(expectedAmount));
         }
     }
 }

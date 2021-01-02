@@ -180,7 +180,7 @@ namespace BattleSystem.Characters
         /// <param name="damage">The incoming damage.</param>
         /// <param name="user">The character who inflicted the incoming damage.</param>
         /// <typeparam name="TSource">The type of the source of the incoming damage.</typeparam>
-        public virtual AttackResult<TSource> ReceiveDamage<TSource>(
+        public virtual DamageResult<TSource> ReceiveDamage<TSource>(
             int damage,
             Character user)
         {
@@ -188,7 +188,7 @@ namespace BattleSystem.Characters
             {
                 var protectUser = ConsumeProtect();
 
-                return new AttackResult<TSource>
+                return new DamageResult<TSource>
                 {
                     Applied = false,
                     User = user,
@@ -202,7 +202,7 @@ namespace BattleSystem.Characters
             CurrentHealth -= damage;
             var endingHealth = CurrentHealth;
 
-            return new AttackResult<TSource>
+            return new DamageResult<TSource>
             {
                 Applied = true,
                 User = user,
@@ -315,7 +315,7 @@ namespace BattleSystem.Characters
         }
 
         /// <summary>
-        /// Adds an item to the protect queue, which protects the character from the next attack.
+        /// Adds an item to the protect queue, which protects the character from the next action.
         /// </summary>
         /// <param name="user">The character who protected this character.</param>
         /// <typeparam name="TSource">The type of the source of the incoming protect action.</typeparam>

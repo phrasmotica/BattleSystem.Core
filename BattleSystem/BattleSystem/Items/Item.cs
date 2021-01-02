@@ -2,7 +2,7 @@
 using System.Linq;
 using BattleSystem.Actions;
 using BattleSystem.Stats;
-using static BattleSystem.Actions.Attack;
+using static BattleSystem.Actions.Damage.Damage;
 
 namespace BattleSystem.Items
 {
@@ -38,9 +38,9 @@ namespace BattleSystem.Items
         public IDictionary<StatCategory, List<StatBaseValueTransform>> StatBaseValueTransforms { get; private set; }
 
         /// <summary>
-        /// Gets or sets the attack power transform functions.
+        /// Gets or sets the damage power transform functions.
         /// </summary>
-        public List<PowerTransform> AttackPowerTransforms { get; private set; }
+        public List<PowerTransform> DamagePowerTransforms { get; private set; }
 
         /// <summary>
         /// Creates a new <see cref="Item"/> instance.
@@ -56,7 +56,7 @@ namespace BattleSystem.Items
                 [StatCategory.Speed] = new List<StatBaseValueTransform>(),
             };
 
-            AttackPowerTransforms = new List<PowerTransform>();
+            DamagePowerTransforms = new List<PowerTransform>();
         }
 
         /// <summary>
@@ -119,9 +119,9 @@ namespace BattleSystem.Items
         /// Adds an attack power transform function for this item.
         /// </summary>
         /// <param name="transform">The attack power transform function to add.</param>
-        public void AddAttackPowerTransform(PowerTransform transform)
+        public void AddDamagePowerTransform(PowerTransform transform)
         {
-            AttackPowerTransforms.Add(transform);
+            DamagePowerTransforms.Add(transform);
         }
 
         /// <summary>

@@ -14,20 +14,20 @@ namespace BattleSystem.Tests.Healing
         [TestCase(20, 10, 2)]
         [TestCase(20, 50, 10)]
         [TestCase(20, 100, 20)]
-        public void Calculate_ReturnsDamage(int targetMaxHealth, int healAmount, int expectedDamage)
+        public void Calculate_ReturnsDamage(int targetMaxHealth, int healAmount, int expectedAmount)
         {
             // Arrange
             var calculator = new PercentageHealingCalculator();
 
             var user = TestHelpers.CreateBasicCharacter();
-            var attack = TestHelpers.CreateHeal(calculator, amount: healAmount);
+            var heal = TestHelpers.CreateHeal(calculator, amount: healAmount);
             var target = TestHelpers.CreateBasicCharacter(maxHealth: targetMaxHealth);
 
             // Act
-            var damage = calculator.Calculate(user, attack, target);
+            var amount = calculator.Calculate(user, heal, target);
 
             // Assert
-            Assert.That(damage, Is.EqualTo(expectedDamage));
+            Assert.That(amount, Is.EqualTo(expectedAmount));
         }
     }
 }

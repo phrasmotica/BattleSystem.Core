@@ -19,11 +19,11 @@ namespace BattleSystem.Tests.Healing
             var calculator = new AbsoluteHealingCalculator();
 
             var user = TestHelpers.CreateBasicCharacter();
-            var attack = TestHelpers.CreateHeal(calculator, amount: healAmount);
+            var heal = TestHelpers.CreateHeal(calculator, amount: healAmount);
             var target = TestHelpers.CreateBasicCharacter();
 
             // Act
-            var amount = calculator.Calculate(user, attack, target);
+            var amount = calculator.Calculate(user, heal, target);
 
             // Assert
             Assert.That(amount, Is.EqualTo(healAmount));

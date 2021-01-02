@@ -16,7 +16,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Whether the action target calculator of the protect action has been set.
         /// </summary>
-        private bool _isactionTargetCalculatorSet;
+        private bool _isActionTargetCalculatorSet;
 
         /// <summary>
         /// Creates a new <see cref="ProtectBuilder"/> instance.
@@ -38,7 +38,7 @@ namespace BattleSystem.Actions
             }
 
             _protect.SetActionTargetCalculator(actionTargetCalculator);
-            _isactionTargetCalculatorSet = true;
+            _isActionTargetCalculatorSet = true;
             return this;
         }
 
@@ -111,7 +111,7 @@ namespace BattleSystem.Actions
         /// </summary>
         public Protect Build()
         {
-            if (!_isactionTargetCalculatorSet)
+            if (!_isActionTargetCalculatorSet)
             {
                 throw new InvalidOperationException("Cannot build a protect action with no action target calculator!");
             }

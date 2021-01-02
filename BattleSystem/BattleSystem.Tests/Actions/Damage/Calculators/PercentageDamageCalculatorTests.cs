@@ -1,7 +1,7 @@
-﻿using BattleSystem.Damage;
+﻿using BattleSystem.Actions.Damage.Calulators;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Damage
+namespace BattleSystem.Tests.Actions.Damage.Calculators
 {
     /// <summary>
     /// Unit tests for <see cref="PercentageDamageCalculator"/>.
@@ -14,20 +14,20 @@ namespace BattleSystem.Tests.Damage
         [TestCase(20, 10, 2)]
         [TestCase(20, 50, 10)]
         [TestCase(20, 100, 20)]
-        public void Calculate_ReturnsDamage(int targetMaxHealth, int attackPower, int expectedDamage)
+        public void Calculate_ReturnsDamage(int targetMaxHealth, int power, int expectedAmount)
         {
             // Arrange
             var calculator = new PercentageDamageCalculator();
 
             var user = TestHelpers.CreateBasicCharacter();
-            var attack = TestHelpers.CreateAttack(calculator, power: attackPower);
+            var damage = TestHelpers.CreateDamage(calculator, power: power);
             var target = TestHelpers.CreateBasicCharacter(maxHealth: targetMaxHealth);
 
             // Act
-            var damage = calculator.Calculate(user, attack, target);
+            var amount = calculator.Calculate(user, damage, target);
 
             // Assert
-            Assert.That(damage, Is.EqualTo(expectedDamage));
+            Assert.That(amount, Is.EqualTo(expectedAmount));
         }
     }
 }

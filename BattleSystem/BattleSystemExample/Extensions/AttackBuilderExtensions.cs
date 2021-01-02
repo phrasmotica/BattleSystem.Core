@@ -1,4 +1,4 @@
-﻿using BattleSystem.Actions;
+﻿using BattleSystem.Actions.Damage;
 using BattleSystemExample.Input;
 using BattleSystemExample.Moves.Targets;
 using BattleSystemExample.Output;
@@ -6,9 +6,9 @@ using BattleSystemExample.Output;
 namespace BattleSystemExample.Extensions
 {
     /// <summary>
-    /// Extension methods for <see cref="AttackBuilder"/>.
+    /// Extension methods for <see cref="DamageBuilder"/>.
     /// </summary>
-    public static class AttackBuilderExtensions
+    public static class DamageBuilderExtensions
     {
         /// <summary>
         /// Sets the built attack to target a single character chosen by the user.
@@ -16,7 +16,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="builder">The attack builder.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public static AttackBuilder UserSelectsSingleTarget(this AttackBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        public static DamageBuilder UserSelectsSingleTarget(this DamageBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
             return builder.WithActionTargetCalculator(new SingleActionTargetCalculator(userInput, gameOutput));
         }
@@ -27,7 +27,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="builder">The attack builder.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public static AttackBuilder UserSelectsSingleOtherTarget(this AttackBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        public static DamageBuilder UserSelectsSingleOtherTarget(this DamageBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
             return builder.WithActionTargetCalculator(new SingleOtherActionTargetCalculator(userInput, gameOutput));
         }
@@ -38,7 +38,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="builder">The attack builder.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public static AttackBuilder UserSelectsSingleAlly(this AttackBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        public static DamageBuilder UserSelectsSingleAlly(this DamageBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
             return builder.WithActionTargetCalculator(new SingleAllyActionTargetCalculator(userInput, gameOutput));
         }
@@ -49,7 +49,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="builder">The attack builder.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public static AttackBuilder UserSelectsSingleEnemy(this AttackBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        public static DamageBuilder UserSelectsSingleEnemy(this DamageBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
             return builder.WithActionTargetCalculator(new SingleEnemyActionTargetCalculator(userInput, gameOutput));
         }

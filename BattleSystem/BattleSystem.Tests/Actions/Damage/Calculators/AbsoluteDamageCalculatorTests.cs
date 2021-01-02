@@ -1,7 +1,7 @@
-﻿using BattleSystem.Damage;
+﻿using BattleSystem.Actions.Damage.Calulators;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Damage
+namespace BattleSystem.Tests.Actions.Damage.Calculators
 {
     /// <summary>
     /// Unit tests for <see cref="AbsoluteDamageCalculator"/>.
@@ -13,20 +13,20 @@ namespace BattleSystem.Tests.Damage
         [TestCase(10)]
         [TestCase(50)]
         [TestCase(100)]
-        public void Calculate_ReturnsDamage(int attackPower)
+        public void Calculate_ReturnsDamage(int power)
         {
             // Arrange
             var calculator = new AbsoluteDamageCalculator();
 
             var user = TestHelpers.CreateBasicCharacter();
-            var attack = TestHelpers.CreateAttack(calculator, power: attackPower);
+            var damage = TestHelpers.CreateDamage(calculator, power: power);
             var target = TestHelpers.CreateBasicCharacter();
 
             // Act
-            var damage = calculator.Calculate(user, attack, target);
+            var amount = calculator.Calculate(user, damage, target);
 
             // Assert
-            Assert.That(damage, Is.EqualTo(attackPower));
+            Assert.That(amount, Is.EqualTo(power));
         }
     }
 }

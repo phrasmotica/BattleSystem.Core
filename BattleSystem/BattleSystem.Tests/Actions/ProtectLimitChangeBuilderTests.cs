@@ -29,10 +29,10 @@ namespace BattleSystem.Tests.Actions
                             .TargetsAll();
 
             // Act
-            var attack = builder.Build();
+            var change = builder.Build();
 
             // Assert
-            Assert.That(attack, Is.Not.Null);
+            Assert.That(change, Is.Not.Null);
         }
 
         [Test]

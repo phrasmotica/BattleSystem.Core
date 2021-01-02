@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BattleSystem.Actions;
 using BattleSystem.Characters;
-using BattleSystem.Damage;
 using BattleSystem.Healing;
 using BattleSystem.Items;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Success;
+using BattleSystem.Actions.Damage;
+using BattleSystem.Actions.Damage.Calulators;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Stats;
 using Moq;
-using static BattleSystem.Actions.Attack;
+using static BattleSystem.Actions.Damage.Damage;
 using static BattleSystem.Items.Item;
 
 namespace BattleSystem.Tests
@@ -93,7 +93,7 @@ namespace BattleSystem.Tests
             StatBaseValueTransform[] attackBaseValueTransforms = null,
             StatBaseValueTransform[] defenceBaseValueTransforms = null,
             StatBaseValueTransform[] speedBaseValueTransforms = null,
-            PowerTransform[] attackPowerTransforms = null)
+            PowerTransform[] damagePowerTransforms = null)
         {
             var builder = new ItemBuilder()
                             .Name(name)
@@ -123,11 +123,11 @@ namespace BattleSystem.Tests
                 }
             }
 
-            if (attackPowerTransforms is not null)
+            if (damagePowerTransforms is not null)
             {
-                foreach (var t in attackPowerTransforms)
+                foreach (var t in damagePowerTransforms)
                 {
-                    builder = builder.WithAttackPowerTransform(t);
+                    builder = builder.WithDamagePowerTransform(t);
                 }
             }
 
@@ -161,12 +161,12 @@ namespace BattleSystem.Tests
         /// <summary>
         /// Returns an attack action.
         /// </summary>
-        public static Attack CreateAttack(
+        public static Damage CreateDamage(
             IDamageCalculator damageCalculator = null,
             IActionTargetCalculator actionTargetCalculator = null,
             int power = 2)
         {
-            return new AttackBuilder()
+            return new DamageBuilder()
                 .WithPower(power)
                 .WithDamageCalculator(damageCalculator ?? new Mock<IDamageCalculator>().Object)
                 .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)

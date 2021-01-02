@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
-using BattleSystem.Damage;
 using BattleSystem.Actions.Results;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Items;
 using System;
+using BattleSystem.Actions.Damage.Calulators;
 
-namespace BattleSystem.Actions
+namespace BattleSystem.Actions.Damage
 {
     /// <summary>
-    /// Represents an attacking action.
+    /// Represents an action that deals damage to the target.
     /// </summary>
-    public class Attack : IAction, ITransformable
+    public class Damage : IAction, ITransformable
     {
         /// <summary>
         /// Delegate for a function that transforms the given power.
@@ -31,17 +31,17 @@ namespace BattleSystem.Actions
         private IActionTargetCalculator _actionTargetCalculator;
 
         /// <summary>
-        /// The targets for the next use of the attack.
+        /// The targets for the next use of the damage action.
         /// </summary>
         private IEnumerable<Character> _targets;
 
         /// <summary>
-        /// Whether the targets for the next use of the attack have been set.
+        /// Whether the targets for the next use of the damage action have been set.
         /// </summary>
         private bool _targetsSet;
 
         /// <summary>
-        /// Gets or sets the attack's power.
+        /// Gets or sets the damage action's power.
         /// </summary>
         public int Power
         {
@@ -56,15 +56,15 @@ namespace BattleSystem.Actions
         public List<PowerTransform> PowerTransforms { get; private set; }
 
         /// <summary>
-        /// Creates a new <see cref="Attack"/>.
+        /// Creates a new <see cref="Damage"/>.
         /// </summary>
-        public Attack()
+        public Damage()
         {
             PowerTransforms = new List<PowerTransform>();
         }
 
         /// <summary>
-        /// Sets the damage calculator for this attack.
+        /// Sets the damage calculator for this damage action.
         /// </summary>
         /// <param name="damageCalculator">The damage calculator.</param>
         public void SetDamageCalculator(IDamageCalculator damageCalculator)
@@ -73,7 +73,7 @@ namespace BattleSystem.Actions
         }
 
         /// <summary>
-        /// Sets the action target calculator for this attack.
+        /// Sets the action target calculator for this damage action.
         /// </summary>
         /// <param name="actionTargetCalculator">The action target calculator.</param>
         public void SetActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
@@ -93,7 +93,7 @@ namespace BattleSystem.Actions
         {
             if (!_targetsSet)
             {
-                throw new InvalidOperationException("Cannot use attack when no targets have been set!");
+                throw new InvalidOperationException("Cannot use damage action when no targets have been set!");
             }
 
             var results = new List<IActionResult<TSource>>();
@@ -113,7 +113,7 @@ namespace BattleSystem.Actions
         /// <inheritdoc />
         public void ReceiveTransforms(Item item)
         {
-            PowerTransforms.AddRange(item.AttackPowerTransforms);
+            PowerTransforms.AddRange(item.DamagePowerTransforms);
         }
 
         /// <inheritdoc />

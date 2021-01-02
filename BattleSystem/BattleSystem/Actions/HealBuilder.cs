@@ -27,7 +27,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Whether the action target calculator of the heal has been set.
         /// </summary>
-        private bool _isactionTargetCalculatorSet;
+        private bool _isActionTargetCalculatorSet;
 
         /// <summary>
         /// Creates a new <see cref="HealBuilder"/> instance.
@@ -92,7 +92,7 @@ namespace BattleSystem.Actions
             }
 
             _heal.SetActionTargetCalculator(actionTargetCalculator);
-            _isactionTargetCalculatorSet = true;
+            _isActionTargetCalculatorSet = true;
             return this;
         }
 
@@ -175,7 +175,7 @@ namespace BattleSystem.Actions
                 throw new InvalidOperationException("Cannot build a heal with no healing calculator!");
             }
 
-            if (!_isactionTargetCalculatorSet)
+            if (!_isActionTargetCalculatorSet)
             {
                 throw new InvalidOperationException("Cannot build a heal with no action target calculator!");
             }

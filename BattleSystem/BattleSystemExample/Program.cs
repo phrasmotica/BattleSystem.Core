@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Actions;
+using BattleSystem.Actions.Damage;
 using BattleSystem.Characters;
 using BattleSystem.Items;
 using BattleSystem.Moves;
 using BattleSystem.Stats;
 using BattleSystemExample.Battles;
 using BattleSystemExample.Characters;
-using BattleSystemExample.Constants;
 using BattleSystemExample.Extensions;
 using BattleSystemExample.Input;
 using BattleSystemExample.Output;
@@ -61,7 +61,7 @@ namespace BattleSystemExample
                             .WithPriority(1)
                             .WithAccuracy(100)
                             .WithAction(
-                                new AttackBuilder()
+                                new DamageBuilder()
                                     .WithPower(20)
                                     .StatDifferenceDamage()
                                     .UserSelectsSingleEnemy(userInput, gameOutput)
@@ -76,7 +76,7 @@ namespace BattleSystemExample
                             .WithMaxUses(5)
                             .WithAccuracy(50)
                             .WithAction(
-                                new AttackBuilder()
+                                new DamageBuilder()
                                     .WithPower(40)
                                     .PercentageDamage()
                                     .UserSelectsSingleEnemy(userInput, gameOutput)
@@ -171,7 +171,7 @@ namespace BattleSystemExample
                             .WithMaxUses(25)
                             .WithAccuracy(100)
                             .WithAction(
-                                new AttackBuilder()
+                                new DamageBuilder()
                                     .WithPower(5)
                                     .AbsoluteDamage()
                                     .TargetsEnemies()
@@ -187,7 +187,7 @@ namespace BattleSystemExample
                 new ItemBuilder()
                     .Name("Capo")
                     .Describe("Makes the holder's music better, increasing the power of their attacks by 1.")
-                    .WithAttackPowerTransform(p => p + 1)
+                    .WithDamagePowerTransform(p => p + 1)
                     .Build()
             );
 
@@ -207,7 +207,7 @@ namespace BattleSystemExample
                             .WithMaxUses(15)
                             .WithAccuracy(100)
                             .WithAction(
-                                new AttackBuilder()
+                                new DamageBuilder()
                                     .WithPower(20)
                                     .AbsoluteDamage()
                                     .TargetsFirstEnemy()
@@ -222,7 +222,7 @@ namespace BattleSystemExample
                             .WithMaxUses(5)
                             .WithAccuracy(70)
                             .WithAction(
-                                new AttackBuilder()
+                                new DamageBuilder()
                                     .WithPower(30)
                                     .PercentageDamage()
                                     .TargetsFirstEnemy()
@@ -268,7 +268,7 @@ namespace BattleSystemExample
                     .Name("Rolling Wave")
                     .Describe("Deals 3 damage to all enemies at the start of the holder's turn.")
                     .WithStartTurnAction(
-                        new AttackBuilder()
+                        new DamageBuilder()
                             .WithPower(3)
                             .AbsoluteDamage()
                             .TargetsEnemies()
@@ -290,7 +290,7 @@ namespace BattleSystemExample
                     .WithMove(
                         new MoveBuilder()
                             .Name("Protect")
-                            .Describe("The user protects themself from the next attack.")
+                            .Describe("The user protects themself from the next move.")
                             .WithMaxUses(5)
                             .WithPriority(2)
                             .AlwaysSucceeds()

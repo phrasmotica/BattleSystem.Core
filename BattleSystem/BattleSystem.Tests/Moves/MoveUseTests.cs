@@ -14,7 +14,7 @@ namespace BattleSystem.Tests.Moves
         public void Apply_ReturnsResult()
         {
             // Arrange
-            var move = TestHelpers.CreateMove(moveActions: TestHelpers.CreateAttack());
+            var move = TestHelpers.CreateMove(moveActions: TestHelpers.CreateDamage());
 
             var moveUse = new MoveUse
             {
