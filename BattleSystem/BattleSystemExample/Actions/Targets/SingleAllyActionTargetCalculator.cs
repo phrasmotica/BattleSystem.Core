@@ -35,6 +35,9 @@ namespace BattleSystemExample.Moves.Targets
         }
 
         /// <inheritdoc />
+        public bool IsReactive => false;
+
+        /// <inheritdoc />
         public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
             if (otherCharacters is null || !otherCharacters.Any())

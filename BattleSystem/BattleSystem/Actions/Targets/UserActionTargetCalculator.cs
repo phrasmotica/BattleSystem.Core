@@ -9,6 +9,9 @@ namespace BattleSystem.Actions.Targets
     public class UserActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
+        public bool IsReactive => false;
+
+        /// <inheritdoc />
         public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
             return (true, new[] { user });

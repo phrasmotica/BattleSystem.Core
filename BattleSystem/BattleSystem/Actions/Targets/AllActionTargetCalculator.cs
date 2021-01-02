@@ -10,6 +10,9 @@ namespace BattleSystem.Actions.Targets
     public class AllActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
+        public bool IsReactive => false;
+
+        /// <inheritdoc />
         public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
             return (true, otherCharacters.Prepend(user));

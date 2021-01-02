@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
 
@@ -10,6 +9,9 @@ namespace BattleSystem.Actions.Targets
     /// </summary>
     public class FirstEnemyActionTargetCalculator : IActionTargetCalculator
     {
+        /// <inheritdoc />
+        public bool IsReactive => false;
+
         /// <inheritdoc />
         public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {

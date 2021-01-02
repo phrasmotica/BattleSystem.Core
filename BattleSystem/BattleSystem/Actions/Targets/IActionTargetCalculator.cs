@@ -9,6 +9,13 @@ namespace BattleSystem.Actions.Targets
     public interface IActionTargetCalculator
     {
         /// <summary>
+        /// Gets whether the action target calculator is reactive, i.e. whether
+        /// the targets must be computed just before the action is used rather
+        /// than them being determined ahead of time.
+        /// </summary>
+        bool IsReactive { get; }
+
+        /// <summary>
         /// Returns the characters that should be targeted from the given
         /// characters, along with a flag indicating whether the target
         /// calculation was successful.

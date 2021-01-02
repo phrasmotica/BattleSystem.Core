@@ -10,6 +10,9 @@ namespace BattleSystem.Actions.Targets
     public class FirstAllyActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
+        public bool IsReactive => false;
+
+        /// <inheritdoc />
         public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
             var allies = otherCharacters.Where(c => c.Team == user.Team);
