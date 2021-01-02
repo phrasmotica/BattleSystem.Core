@@ -84,7 +84,8 @@ namespace BattleSystem.Actions.Damage
         /// <inheritdoc />
         public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            _targets = _actionTargetCalculator.Calculate(user, otherCharacters);
+            var (_, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
+            _targets = targets;
             _targetsSet = true;
         }
 

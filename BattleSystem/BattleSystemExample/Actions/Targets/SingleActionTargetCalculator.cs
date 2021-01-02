@@ -35,14 +35,14 @@ namespace BattleSystemExample.Moves.Targets
         }
 
         /// <inheritdoc />
-        public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)
+        public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
             var targets = otherCharacters.Append(user);
 
             _gameOutput.WriteLine($"Select a target for the move:");
             _gameOutput.WriteLine(GetChoices(targets));
 
-            return new[] { SelectTarget(targets) };
+            return (true, new[] { SelectTarget(targets) });
         }
 
         /// <summary>

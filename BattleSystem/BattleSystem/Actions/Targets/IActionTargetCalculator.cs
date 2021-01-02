@@ -9,10 +9,12 @@ namespace BattleSystem.Actions.Targets
     public interface IActionTargetCalculator
     {
         /// <summary>
-        /// Returns the characters that should be targeted from the given characters.
+        /// Returns the characters that should be targeted from the given
+        /// characters, along with a flag indicating whether the target
+        /// calculation was successful.
         /// </summary>
         /// <param name="user">The user of the move.</param>
         /// <param name="otherCharacters">The other characters.</param>
-        IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters);
+        (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters);
     }
 }

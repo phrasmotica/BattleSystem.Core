@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Stats;
-using System;
 
 namespace BattleSystem.Actions
 {
@@ -53,7 +53,8 @@ namespace BattleSystem.Actions
         /// <inheritdoc />
         public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            _targets = _actionTargetCalculator.Calculate(user, otherCharacters);
+            var (_, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
+            _targets = targets;
             _targetsSet = true;
         }
 

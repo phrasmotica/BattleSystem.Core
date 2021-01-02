@@ -25,11 +25,13 @@ namespace BattleSystem.Tests.Actions.Targets
             };
 
             // Act
-            var targets = calculator.Calculate(user, otherCharacters).ToArray();
+            var result = calculator.Calculate(user, otherCharacters);
+            var targets = result.targets.ToArray();
 
             // Assert
             Assert.Multiple(() =>
             {
+                Assert.That(result.success, Is.True);
                 Assert.That(targets.Length, Is.EqualTo(3));
                 Assert.That(targets[0].Name, Is.EqualTo("wire"));
                 Assert.That(targets[1].Name, Is.EqualTo("the"));
