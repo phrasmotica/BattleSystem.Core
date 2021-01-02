@@ -5,7 +5,6 @@ using BattleSystem.Items.Results;
 using BattleSystem.Moves;
 using BattleSystem.Actions.Results;
 using BattleSystem.Stats;
-using System.Linq;
 
 namespace BattleSystem.Characters
 {
@@ -90,6 +89,11 @@ namespace BattleSystem.Characters
         public bool IsDead => CurrentHealth <= 0;
 
         /// <summary>
+        /// Gets or sets the history of actions that were applied to the character.
+        /// </summary>
+        public ActionHistory ActionHistory { get; protected set; }
+
+        /// <summary>
         /// Creates a new character with the given name, max health, stats and moves.
         /// </summary>
         public Character(
@@ -113,6 +117,8 @@ namespace BattleSystem.Characters
 
             ProtectQueue = new List<Character>();
             ProtectLimit = 1;
+
+            ActionHistory = new ActionHistory();
         }
 
         /// <summary>
@@ -184,11 +190,13 @@ namespace BattleSystem.Characters
             int damage,
             Character user)
         {
-            if (user.Id != Id && ProtectQueue.Any())
+            DamageResult<TSource> result;
+
+            if (CanProtectFrom(user))
             {
                 var protectUser = ConsumeProtect();
 
-                return new DamageResult<TSource>
+                result =  new DamageResult<TSource>
                 {
                     Applied = false,
                     User = user,
@@ -197,20 +205,25 @@ namespace BattleSystem.Characters
                     ProtectUser = protectUser,
                 };
             }
-
-            var startingHealth = CurrentHealth;
-            CurrentHealth -= damage;
-            var endingHealth = CurrentHealth;
-
-            return new DamageResult<TSource>
+            else
             {
-                Applied = true,
-                User = user,
-                Target = this,
-                TargetProtected = false,
-                StartingHealth = startingHealth,
-                EndingHealth = endingHealth,
-            };
+                var startingHealth = CurrentHealth;
+                CurrentHealth -= damage;
+                var endingHealth = CurrentHealth;
+
+                result = new DamageResult<TSource>
+                {
+                    Applied = true,
+                    User = user,
+                    Target = this,
+                    TargetProtected = false,
+                    StartingHealth = startingHealth,
+                    EndingHealth = endingHealth,
+                };
+            }
+
+            ActionHistory.AddAction(result);
+            return result;
         }
 
         /// <summary>
@@ -223,11 +236,13 @@ namespace BattleSystem.Characters
             IDictionary<StatCategory, double> multipliers,
             Character user)
         {
-            if (user.Id != Id && ProtectQueue.Any())
+            BuffResult<TSource> result;
+
+            if (CanProtectFrom(user))
             {
                 var protectUser = ConsumeProtect();
 
-                return new BuffResult<TSource>
+                result = new BuffResult<TSource>
                 {
                     Applied = false,
                     User = user,
@@ -236,43 +251,48 @@ namespace BattleSystem.Characters
                     ProtectUser = protectUser,
                 };
             }
-
-            var startingMultipliers = Stats.MultipliersAsDictionary();
-
-            foreach (var mult in multipliers)
+            else
             {
-                var statCategory = mult.Key;
+                var startingMultipliers = Stats.MultipliersAsDictionary();
 
-                switch (statCategory)
+                foreach (var mult in multipliers)
                 {
-                    case StatCategory.Attack:
-                        Stats.Attack.Multiplier += mult.Value;
-                        break;
+                    var statCategory = mult.Key;
 
-                    case StatCategory.Defence:
-                        Stats.Defence.Multiplier += mult.Value;
-                        break;
+                    switch (statCategory)
+                    {
+                        case StatCategory.Attack:
+                            Stats.Attack.Multiplier += mult.Value;
+                            break;
 
-                    case StatCategory.Speed:
-                        Stats.Speed.Multiplier += mult.Value;
-                        break;
+                        case StatCategory.Defence:
+                            Stats.Defence.Multiplier += mult.Value;
+                            break;
 
-                    default:
-                        throw new ArgumentException($"Unrecognised stat category {statCategory}!");
+                        case StatCategory.Speed:
+                            Stats.Speed.Multiplier += mult.Value;
+                            break;
+
+                        default:
+                            throw new ArgumentException($"Unrecognised stat category {statCategory}!");
+                    }
                 }
+
+                var endingMultipliers = Stats.MultipliersAsDictionary();
+
+                result = new BuffResult<TSource>
+                {
+                    Applied = true,
+                    User = user,
+                    Target = this,
+                    TargetProtected = false,
+                    StartingStatMultipliers = startingMultipliers,
+                    EndingStatMultipliers = endingMultipliers,
+                };
             }
 
-            var endingMultipliers = Stats.MultipliersAsDictionary();
-
-            return new BuffResult<TSource>
-            {
-                Applied = true,
-                User = user,
-                Target = this,
-                TargetProtected = false,
-                StartingStatMultipliers = startingMultipliers,
-                EndingStatMultipliers = endingMultipliers,
-            };
+            ActionHistory.AddAction(result);
+            return result;
         }
 
         /// <summary>
@@ -285,11 +305,13 @@ namespace BattleSystem.Characters
             int amount,
             Character user)
         {
-            if (user.Id != Id && ProtectQueue.Any())
+            HealResult<TSource> result;
+
+            if (CanProtectFrom(user))
             {
                 var protectUser = ConsumeProtect();
 
-                return new HealResult<TSource>
+                result = new HealResult<TSource>
                 {
                     Applied = false,
                     User = user,
@@ -298,20 +320,25 @@ namespace BattleSystem.Characters
                     ProtectUser = protectUser,
                 };
             }
-
-            var startingHealth = CurrentHealth;
-            CurrentHealth += Math.Min(MaxHealth - CurrentHealth, amount);
-            var endingHealth = CurrentHealth;
-
-            return new HealResult<TSource>
+            else
             {
-                Applied = true,
-                User = user,
-                Target = this,
-                TargetProtected = false,
-                StartingHealth = startingHealth,
-                EndingHealth = endingHealth,
-            };
+                var startingHealth = CurrentHealth;
+                CurrentHealth += Math.Min(MaxHealth - CurrentHealth, amount);
+                var endingHealth = CurrentHealth;
+
+                result = new HealResult<TSource>
+                {
+                    Applied = true,
+                    User = user,
+                    Target = this,
+                    TargetProtected = false,
+                    StartingHealth = startingHealth,
+                    EndingHealth = endingHealth,
+                };
+            }
+
+            ActionHistory.AddAction(result);
+            return result;
         }
 
         /// <summary>
@@ -321,11 +348,13 @@ namespace BattleSystem.Characters
         /// <typeparam name="TSource">The type of the source of the incoming protect action.</typeparam>
         public virtual ProtectResult<TSource> AddProtect<TSource>(Character user)
         {
-            if (user.Id != Id && ProtectQueue.Any())
+            ProtectResult<TSource> result;
+
+            if (CanProtectFrom(user))
             {
                 var protectUser = ConsumeProtect();
 
-                return new ProtectResult<TSource>
+                result = new ProtectResult<TSource>
                 {
                     Applied = false,
                     User = user,
@@ -334,26 +363,30 @@ namespace BattleSystem.Characters
                     ProtectUser = protectUser,
                 };
             }
-
-            if (ProtectCount >= ProtectLimit)
+            else if (ProtectCount >= ProtectLimit)
             {
-                return new ProtectResult<TSource>
+                result = new ProtectResult<TSource>
                 {
                     Applied = false,
                     User = user,
                     Target = this,
                 };
             }
-
-            ProtectQueue.Add(user);
-
-            return new ProtectResult<TSource>
+            else
             {
-                Applied = true,
-                User = user,
-                Target = this,
-                TargetProtected = false,
-            };
+                ProtectQueue.Add(user);
+
+                result = new ProtectResult<TSource>
+                {
+                    Applied = true,
+                    User = user,
+                    Target = this,
+                    TargetProtected = false,
+                };
+            }
+
+            ActionHistory.AddAction(result);
+            return result;
         }
 
         /// <summary>
@@ -366,11 +399,13 @@ namespace BattleSystem.Characters
             int amount,
             Character user)
         {
-            if (user.Id != Id && ProtectQueue.Any())
+            ProtectLimitChangeResult<TSource> result;
+
+            if (CanProtectFrom(user))
             {
                 var protectUser = ConsumeProtect();
 
-                return new ProtectLimitChangeResult<TSource>
+                result = new ProtectLimitChangeResult<TSource>
                 {
                     Applied = false,
                     User = user,
@@ -379,17 +414,31 @@ namespace BattleSystem.Characters
                     ProtectUser = protectUser,
                 };
             }
-
-            ProtectLimit += amount;
-
-            return new ProtectLimitChangeResult<TSource>
+            else
             {
-                Applied = true,
-                User = user,
-                Target = this,
-                TargetProtected = false,
-                Amount = amount,
-            };
+                ProtectLimit += amount;
+
+                result = new ProtectLimitChangeResult<TSource>
+                {
+                    Applied = true,
+                    User = user,
+                    Target = this,
+                    TargetProtected = false,
+                    Amount = amount,
+                };
+            }
+
+            ActionHistory.AddAction(result);
+            return result;
+        }
+
+        /// <summary>
+        /// Returns whether the character can block an action from the given user.
+        /// </summary>
+        /// <param name="user">The character using the incoming action.</param>
+        private bool CanProtectFrom(Character user)
+        {
+            return user.Id != Id && ProtectCount > 0;
         }
 
         /// <summary>
@@ -397,7 +446,7 @@ namespace BattleSystem.Characters
         /// </summary>
         public Character ConsumeProtect()
         {
-            if (ProtectQueue.Count <= 0)
+            if (ProtectCount <= 0)
             {
                 throw new InvalidOperationException($"Cannot consume a protect action because there are none in the queue!");
             }
