@@ -1,5 +1,5 @@
 ﻿using System;
-using BattleSystem.Actions.Damage.Calulators;
+using BattleSystem.Actions.Damage.Calculators;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Characters;
 using Moq;

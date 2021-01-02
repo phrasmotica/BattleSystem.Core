@@ -1,4 +1,4 @@
-﻿using BattleSystem.Actions.Damage.Calulators;
+﻿using BattleSystem.Actions.Damage.Calculators;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Actions.Damage.Calculators

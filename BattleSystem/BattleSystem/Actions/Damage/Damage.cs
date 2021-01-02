@@ -5,7 +5,7 @@ using BattleSystem.Actions.Results;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Items;
 using System;
-using BattleSystem.Actions.Damage.Calulators;
+using BattleSystem.Actions.Damage.Calculators;
 
 namespace BattleSystem.Actions.Damage
 {

@@ -6,7 +6,7 @@ using BattleSystem.Items;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Success;
 using BattleSystem.Actions.Damage;
-using BattleSystem.Actions.Damage.Calulators;
+using BattleSystem.Actions.Damage.Calculators;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Stats;
 using Moq;
@@ -161,7 +161,7 @@ namespace BattleSystem.Tests
         /// <summary>
         /// Returns an attack action.
         /// </summary>
-        public static Damage CreateDamage(
+        public static BattleSystem.Actions.Damage.Damage CreateDamage(
             IDamageCalculator damageCalculator = null,
             IActionTargetCalculator actionTargetCalculator = null,
             int power = 2)

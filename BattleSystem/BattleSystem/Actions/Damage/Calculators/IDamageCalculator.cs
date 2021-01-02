@@ -1,6 +1,6 @@
 ﻿using BattleSystem.Characters;
 
-namespace BattleSystem.Actions.Damage.Calulators
+namespace BattleSystem.Actions.Damage.Calculators
 {
     /// <summary>
     /// Interface for calculating damage dealt by a character using a damage action on a target character.

@@ -1,7 +1,7 @@
 ﻿using System;
 using BattleSystem.Characters;
 
-namespace BattleSystem.Actions.Damage.Calulators
+namespace BattleSystem.Actions.Damage.Calculators
 {
     /// <summary>
     /// Calculates damage equal to a percentage of the target's max health.

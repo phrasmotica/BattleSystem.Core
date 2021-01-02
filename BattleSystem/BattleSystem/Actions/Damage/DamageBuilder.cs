@@ -1,5 +1,5 @@
 ﻿using System;
-using BattleSystem.Actions.Damage.Calulators;
+using BattleSystem.Actions.Damage.Calculators;
 using BattleSystem.Actions.Targets;
 
 namespace BattleSystem.Actions.Damage

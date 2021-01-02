@@ -1,7 +1,7 @@
 ﻿using System;
 using BattleSystem.Characters;
 
-namespace BattleSystem.Actions.Damage.Calulators
+namespace BattleSystem.Actions.Damage.Calculators
 {
     /// <summary>
     /// Calculates damage based on the difference between the user's attack stat and the target's
