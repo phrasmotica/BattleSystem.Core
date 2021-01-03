@@ -8,7 +8,7 @@ namespace BattleSystem.Tests.Actions.Targets
     /// Unit tests for <see cref="TeamActionTargetCalculator"/>
     /// </summary>
     [TestFixture]
-    public class TeamactionTargetCalculatorTests
+    public class TeamActionTargetCalculatorTests
     {
         [Test]
         public void Calculate_ReturnsTeam()

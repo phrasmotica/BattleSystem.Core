@@ -47,7 +47,7 @@ namespace BattleSystem.Tests.Actions
         }
 
         [Test]
-        public void Build_MissingactionTargetCalculator_Throws()
+        public void Build_MissingActionTargetCalculator_Throws()
         {
             // Arrange
             var builder = new ProtectLimitChangeBuilder()

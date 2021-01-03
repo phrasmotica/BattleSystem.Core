@@ -71,7 +71,7 @@ namespace BattleSystem.Tests.Actions.Damage
         }
 
         [Test]
-        public void Build_MissingactionTargetCalculator_Throws()
+        public void Build_MissingActionTargetCalculator_Throws()
         {
             // Arrange
             var builder = new DamageBuilder()
