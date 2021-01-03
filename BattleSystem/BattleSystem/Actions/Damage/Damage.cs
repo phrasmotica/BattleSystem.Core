@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
@@ -81,12 +81,18 @@ namespace BattleSystem.Actions.Damage
             _actionTargetCalculator = actionTargetCalculator;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// If the action target calculator is not reactive, set the targets for
+        /// the damage action's next use.
+        /// </summary>
+        /// <param name="user">The user of the damage action.</param>
+        /// <param name="otherCharacters">The other characters.</param>
         public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            var (_, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
-            _targets = targets;
-            _targetsSet = true;
+            if (!_actionTargetCalculator.IsReactive)
+            {
+                EstablishTargets(user, otherCharacters);
+            }
         }
 
         /// <inheritdoc />
@@ -160,7 +166,7 @@ namespace BattleSystem.Actions.Damage
         protected void EstablishTargets(Character user, IEnumerable<Character> otherCharacters)
         {
             var (success, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
-                _targets = targets;
+            _targets = targets;
             _targetsSet = success;
         }
     }

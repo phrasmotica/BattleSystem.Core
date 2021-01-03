@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
@@ -36,12 +36,18 @@ namespace BattleSystem.Actions
             _actionTargetCalculator = actionTargetCalculator;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// If the action target calculator is not reactive, set the targets
+        /// for the protect action's next use.
+        /// </summary>
+        /// <param name="user">The user of the protect action.</param>
+        /// <param name="otherCharacters">The other characters.</param>
         public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            var (_, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
-            _targets = targets;
-            _targetsSet = true;
+            if (!_actionTargetCalculator.IsReactive)
+            {
+                EstablishTargets(user, otherCharacters);
+            }
         }
 
         /// <inheritdoc />
@@ -86,7 +92,7 @@ namespace BattleSystem.Actions
         protected void EstablishTargets(Character user, IEnumerable<Character> otherCharacters)
         {
             var (success, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
-                _targets = targets;
+            _targets = targets;
             _targetsSet = success;
         }
     }
