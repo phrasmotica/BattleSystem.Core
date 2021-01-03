@@ -48,7 +48,7 @@ namespace BattleSystem.Moves
             {
                 return Result == MoveUseResult.Success
                     && ActionsResults is not null
-                    && ActionsResults.All(ars => !ars.Results.Any());
+                    && ActionsResults.All(ars => ars.Success && !ars.Results.Any());
             }
         }
 
