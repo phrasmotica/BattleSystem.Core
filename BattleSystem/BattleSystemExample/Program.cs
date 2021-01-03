@@ -5,6 +5,7 @@ using BattleSystem.Characters;
 using BattleSystem.Items;
 using BattleSystem.Moves;
 using BattleSystem.Stats;
+using BattleSystemExample.Actions;
 using BattleSystemExample.Battles;
 using BattleSystemExample.Characters;
 using BattleSystemExample.Extensions;
@@ -19,6 +20,7 @@ namespace BattleSystemExample
         {
             var playerInput = new ConsoleInput();
             var gameOutput = new ConsoleOutput();
+            var actionHistory = new ActionHistory();
 
             gameOutput.WriteLine("Welcome to the Console Battle System!");
 
@@ -27,8 +29,10 @@ namespace BattleSystemExample
             {
                 new Battle(
                     new MoveProcessor(),
+                    actionHistory,
                     gameOutput,
-                    CreateCharacters(playerInput, gameOutput)).Start();
+                    CreateCharacters(actionHistory, playerInput, gameOutput)
+                ).Start();
 
                 var playAgainChoice = playerInput.SelectChoice("Play again? [y/n]", "y", "n");
                 playAgain = playAgainChoice == "y";
@@ -40,9 +44,13 @@ namespace BattleSystemExample
         /// <summary>
         /// Creates characters for the game.
         /// </summary>
+        /// <param name="actionHistory">The action history.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output</param>
-        private static IEnumerable<Character> CreateCharacters(IUserInput userInput, IGameOutput gameOutput)
+        private static IEnumerable<Character> CreateCharacters(
+            ActionHistory actionHistory,
+            IUserInput userInput,
+            IGameOutput gameOutput)
         {
             var playerStats = new StatSet
             {
@@ -99,8 +107,8 @@ namespace BattleSystemExample
                             .WithAction(
                                 new DamageBuilder()
                                     .WithPower(150)
-                                    .PercentageOfLastReceivedMoveDamage(0)
-                                    .Retaliates()
+                                    .PercentageOfLastReceivedMoveDamage(0, actionHistory)
+                                    .Retaliates(actionHistory)
                                     .Build()
                             )
                             .Build()

@@ -81,15 +81,6 @@ namespace BattleSystem.Actions.Damage
         }
 
         /// <summary>
-        /// Sets the built damage action to use percentage-of-last-received-move damage.
-        /// </summary>
-        /// <param name="defaultAmount">The default amount of damage to deal.</param>
-        public DamageBuilder PercentageOfLastReceivedMoveDamage(int defaultAmount)
-        {
-            return WithDamageCalculator(new PercentageOfLastReceivedMoveDamageCalculator(defaultAmount));
-        }
-
-        /// <summary>
         /// Sets the built damage action to use damage based on the user and target's stat difference.
         /// </summary>
         public DamageBuilder StatDifferenceDamage()

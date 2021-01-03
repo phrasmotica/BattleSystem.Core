@@ -89,11 +89,6 @@ namespace BattleSystem.Characters
         public bool IsDead => CurrentHealth <= 0;
 
         /// <summary>
-        /// Gets or sets the history of actions that were applied to the character.
-        /// </summary>
-        public ActionHistory ActionHistory { get; protected set; }
-
-        /// <summary>
         /// Creates a new character with the given name, max health, stats and moves.
         /// </summary>
         public Character(
@@ -117,8 +112,6 @@ namespace BattleSystem.Characters
 
             ProtectQueue = new List<Character>();
             ProtectLimit = 1;
-
-            ActionHistory = new ActionHistory();
         }
 
         /// <summary>
@@ -224,7 +217,6 @@ namespace BattleSystem.Characters
                 };
             }
 
-            ActionHistory.AddAction(result);
             return result;
         }
 
@@ -295,7 +287,6 @@ namespace BattleSystem.Characters
                 };
             }
 
-            ActionHistory.AddAction(result);
             return result;
         }
 
@@ -343,7 +334,6 @@ namespace BattleSystem.Characters
                 };
             }
 
-            ActionHistory.AddAction(result);
             return result;
         }
 
@@ -394,7 +384,6 @@ namespace BattleSystem.Characters
                 };
             }
 
-            ActionHistory.AddAction(result);
             return result;
         }
 
@@ -439,7 +428,6 @@ namespace BattleSystem.Characters
                 };
             }
 
-            ActionHistory.AddAction(result);
             return result;
         }
 

@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BattleSystem.Actions.Results;
 using BattleSystem.Characters;
 using BattleSystem.Moves;
-using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Success;
-using BattleSystemExample.Output;
+using BattleSystemExample.Actions;
 using BattleSystemExample.Extensions;
 using BattleSystemExample.Extensions.ActionResults;
+using BattleSystemExample.Output;
 
 namespace BattleSystemExample.Battles
 {
@@ -36,6 +37,11 @@ namespace BattleSystemExample.Battles
         private IEnumerable<IGrouping<string, Character>> Teams => _characters.GroupBy(c => c.Team);
 
         /// <summary>
+        /// The action history for the battle.
+        /// </summary>
+        private readonly ActionHistory _actionHistory;
+
+        /// <summary>
         /// Gets whether the battle is over, i.e. whether there is some team
         /// whose characters are all dead.
         /// </summary>
@@ -45,14 +51,17 @@ namespace BattleSystemExample.Battles
         /// Creates a new <see cref="Battle"/> instance.
         /// </summary>
         /// <param name="moveProcessor">The move processor.</param>
+        /// <param name="actionHistory">The action history.</param>
         /// <param name="gameOutput">The game output.</param>
         /// <param name="characters">The characters in the battle.</param>
         public Battle(
             MoveProcessor moveProcessor,
+            ActionHistory actionHistory,
             IGameOutput gameOutput,
             IEnumerable<Character> characters)
         {
             _moveProcessor = moveProcessor;
+            _actionHistory = actionHistory;
             _gameOutput = gameOutput;
             _characters = characters;
         }
@@ -101,6 +110,7 @@ namespace BattleSystemExample.Battles
                 while (!_moveProcessor.MoveUseQueueIsEmpty)
                 {
                     var moveUse = _moveProcessor.ApplyNext();
+                    AddToActionHistory(moveUse);
                     ShowMoveUse(moveUse);
                 }
 
@@ -118,6 +128,19 @@ namespace BattleSystemExample.Battles
             }
 
             ShowEndMessage();
+        }
+
+        /// <summary>
+        /// Adds the given move use to the action history.
+        /// </summary>
+        /// <param name="moveUse"></param>
+        private void AddToActionHistory(MoveUse moveUse)
+        {
+            var results = moveUse.ActionsResults.SelectMany(ars => ars.Results);
+            foreach (var result in results)
+            {
+                _actionHistory.AddAction(result);
+            }
         }
 
         /// <summary>

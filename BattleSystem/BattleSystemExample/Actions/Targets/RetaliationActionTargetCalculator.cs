@@ -11,13 +11,28 @@ namespace BattleSystemExample.Actions.Targets
     /// </summary>
     public class RetaliationActionTargetCalculator : IActionTargetCalculator
     {
+        /// <summary>
+        /// The action history.
+        /// </summary>
+        private readonly ActionHistory _actionHistory;
+
+        /// <summary>
+        /// Creates a new <see cref="RetaliationActionTargetCalculator"/> instance.
+        /// </summary>
+        /// <param name="actionHistory">The action history.</param>
+        public RetaliationActionTargetCalculator(ActionHistory actionHistory)
+        {
+            _actionHistory = actionHistory;
+        }
+
         /// <inheritdoc />
         public bool IsReactive => true;
 
         /// <inheritdoc />
         public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
-            var result = user.ActionHistory.LastMoveDamageResult;
+            var result = _actionHistory.LastMoveDamageResultAgainst(user);
+
             if (result is null)
             {
                 return (false, Enumerable.Empty<Character>());
