@@ -3,14 +3,13 @@ using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
 using BattleSystem.Actions.Targets;
-using System;
 
-namespace BattleSystem.Actions
+namespace BattleSystem.Actions.ProtectLimitChange
 {
     /// <summary>
     /// Represents an action that changes the protect limit of the target character.
     /// </summary>
-    public class ProtectLimitChange : IAction
+    public class ProtectLimitChangeAction : IAction
     {
         /// <summary>
         /// The action target calculator.
@@ -38,9 +37,9 @@ namespace BattleSystem.Actions
         public HashSet<string> Tags { get; set; }
 
         /// <summary>
-        /// Creates a new <see cref="ProtectLimitChange"/> instance.
+        /// Creates a new <see cref="ProtectLimitChangeAction"/> instance.
         /// </summary>
-        public ProtectLimitChange()
+        public ProtectLimitChangeAction()
         {
             Tags = new HashSet<string>();
         }

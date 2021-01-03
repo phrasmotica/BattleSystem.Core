@@ -6,6 +6,7 @@ using BattleSystem.Actions.Damage.Calculators;
 using BattleSystem.Actions.Heal;
 using BattleSystem.Actions.Heal.Calculators;
 using BattleSystem.Actions.Protect;
+using BattleSystem.Actions.ProtectLimitChange;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Characters;
 using BattleSystem.Items;
@@ -226,11 +227,11 @@ namespace BattleSystem.Tests
         /// <summary>
         /// Returns a protect limit change action.
         /// </summary>
-        public static ProtectLimitChange CreateProtectLimitChange(
+        public static ProtectLimitChangeAction CreateProtectLimitChange(
             IActionTargetCalculator actionTargetCalculator = null,
             int amount = 1)
         {
-            return new ProtectLimitChangeBuilder()
+            return new ProtectLimitChangeActionBuilder()
                 .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
                 .WithAmount(amount)
                 .Build();

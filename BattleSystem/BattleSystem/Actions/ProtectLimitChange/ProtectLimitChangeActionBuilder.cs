@@ -1,17 +1,17 @@
 ﻿using System;
 using BattleSystem.Actions.Targets;
 
-namespace BattleSystem.Actions
+namespace BattleSystem.Actions.ProtectLimitChange
 {
     /// <summary>
     /// Builder class for protect limit change actions.
     /// </summary>
-    public class ProtectLimitChangeBuilder
+    public class ProtectLimitChangeActionBuilder
     {
         /// <summary>
         /// The protect limit change action to build.
         /// </summary>
-        private readonly ProtectLimitChange _protectLimitChange;
+        private readonly ProtectLimitChangeAction _protectLimitChange;
 
         /// <summary>
         /// Whether the action target calculator of the protect limit change action has been set.
@@ -24,18 +24,18 @@ namespace BattleSystem.Actions
         private bool _isAmountSet;
 
         /// <summary>
-        /// Creates a new <see cref="ProtectLimitChangeBuilder"/> instance.
+        /// Creates a new <see cref="ProtectLimitChangeActionBuilder"/> instance.
         /// </summary>
-        public ProtectLimitChangeBuilder()
+        public ProtectLimitChangeActionBuilder()
         {
-            _protectLimitChange = new ProtectLimitChange();
+            _protectLimitChange = new ProtectLimitChangeAction();
         }
 
         /// <summary>
         /// Sets the built protect limit change action's action target calculator.
         /// </summary>
         /// <param name="name">The built protect limit change action's action target calculator.</param>
-        public ProtectLimitChangeBuilder WithActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
+        public ProtectLimitChangeActionBuilder WithActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
         {
             if (actionTargetCalculator is null)
             {
@@ -51,7 +51,7 @@ namespace BattleSystem.Actions
         /// Sets the built protect limit change action's amount.
         /// </summary>
         /// <param name="amount">The built protect limit change action's amount.</param>
-        public ProtectLimitChangeBuilder WithAmount(int amount)
+        public ProtectLimitChangeActionBuilder WithAmount(int amount)
         {
             _protectLimitChange.Amount = amount;
             _isAmountSet = true;
@@ -61,7 +61,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect limit change action to target all characters including the user.
         /// </summary>
-        public ProtectLimitChangeBuilder TargetsAll()
+        public ProtectLimitChangeActionBuilder TargetsAll()
         {
             return WithActionTargetCalculator(new AllActionTargetCalculator());
         }
@@ -69,7 +69,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect limit change action to target all other characters.
         /// </summary>
-        public ProtectLimitChangeBuilder TargetsOthers()
+        public ProtectLimitChangeActionBuilder TargetsOthers()
         {
             return WithActionTargetCalculator(new OthersActionTargetCalculator());
         }
@@ -77,7 +77,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect limit change action to target all enemies.
         /// </summary>
-        public ProtectLimitChangeBuilder TargetsEnemies()
+        public ProtectLimitChangeActionBuilder TargetsEnemies()
         {
             return WithActionTargetCalculator(new EnemiesActionTargetCalculator());
         }
@@ -85,7 +85,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect limit change action to target all characters on the user's team.
         /// </summary>
-        public ProtectLimitChangeBuilder TargetsTeam()
+        public ProtectLimitChangeActionBuilder TargetsTeam()
         {
             return WithActionTargetCalculator(new TeamActionTargetCalculator());
         }
@@ -93,7 +93,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect limit change action to target all other characters on the user's team.
         /// </summary>
-        public ProtectLimitChangeBuilder TargetsAllies()
+        public ProtectLimitChangeActionBuilder TargetsAllies()
         {
             return WithActionTargetCalculator(new AlliesActionTargetCalculator());
         }
@@ -101,7 +101,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect limit change action to target the user.
         /// </summary>
-        public ProtectLimitChangeBuilder TargetsUser()
+        public ProtectLimitChangeActionBuilder TargetsUser()
         {
             return WithActionTargetCalculator(new UserActionTargetCalculator());
         }
@@ -109,7 +109,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect limit change action to target the first enemy.
         /// </summary>
-        public ProtectLimitChangeBuilder TargetsFirstEnemy()
+        public ProtectLimitChangeActionBuilder TargetsFirstEnemy()
         {
             return WithActionTargetCalculator(new FirstEnemyActionTargetCalculator());
         }
@@ -117,7 +117,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect limit change action to target the first ally.
         /// </summary>
-        public ProtectLimitChangeBuilder TargetsFirstAlly()
+        public ProtectLimitChangeActionBuilder TargetsFirstAlly()
         {
             return WithActionTargetCalculator(new FirstAllyActionTargetCalculator());
         }
@@ -125,7 +125,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Returns the built protect limit change action.
         /// </summary>
-        public ProtectLimitChange Build()
+        public ProtectLimitChangeAction Build()
         {
             if (!_isActionTargetCalculatorSet)
             {

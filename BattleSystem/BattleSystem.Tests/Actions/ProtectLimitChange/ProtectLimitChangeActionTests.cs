@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Actions;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Characters;
 using Moq;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Actions
+namespace BattleSystem.Tests.Actions.ProtectLimitChange
 {
     /// <summary>
-    /// Unit tests for <see cref="ProtectLimitChange"/>.
+    /// Unit tests for <see cref="ProtectLimitChangeAction"/>.
     /// </summary>
     [TestFixture]
-    public class ProtectLimitChangeTests
+    public class ProtectLimitChangeActionTests
     {
         [Test]
         public void Use_CalculationSuccessfulWithTargets_ChangesTargetsProtectLimit()

@@ -1,20 +1,20 @@
 ﻿using System;
-using BattleSystem.Actions;
+using BattleSystem.Actions.ProtectLimitChange;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Actions
+namespace BattleSystem.Tests.Actions.ProtectLimitChange
 {
     /// <summary>
-    /// Unit tests for <see cref="ProtectLimitChangeBuilder"/>.
+    /// Unit tests for <see cref="ProtectLimitChangeActionBuilder"/>.
     /// </summary>
     [TestFixture]
-    public class ProtectLimitChangeBuilderTests
+    public class ProtectLimitChangeActionBuilderTests
     {
         [Test]
         public void WithActionTargetCalculator_NullArgument_Throws()
         {
             // Arrange
-            var builder = new ProtectLimitChangeBuilder();
+            var builder = new ProtectLimitChangeActionBuilder();
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => _ = builder.WithActionTargetCalculator(null));
@@ -24,7 +24,7 @@ namespace BattleSystem.Tests.Actions
         public void Build_CallsPresent_Succeeds()
         {
             // Arrange
-            var builder = new ProtectLimitChangeBuilder()
+            var builder = new ProtectLimitChangeActionBuilder()
                             .WithAmount(1)
                             .TargetsAll();
 
@@ -39,7 +39,7 @@ namespace BattleSystem.Tests.Actions
         public void Build_MissingAmount_Throws()
         {
             // Arrange
-            var builder = new ProtectLimitChangeBuilder()
+            var builder = new ProtectLimitChangeActionBuilder()
                             .TargetsUser();
 
             // Act and Assert
@@ -50,7 +50,7 @@ namespace BattleSystem.Tests.Actions
         public void Build_MissingActionTargetCalculator_Throws()
         {
             // Arrange
-            var builder = new ProtectLimitChangeBuilder()
+            var builder = new ProtectLimitChangeActionBuilder()
                             .WithAmount(1);
 
             // Act and Assert

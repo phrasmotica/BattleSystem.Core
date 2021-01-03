@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Actions;
 using BattleSystem.Actions.Buff;
 using BattleSystem.Actions.Damage;
 using BattleSystem.Actions.Heal;
 using BattleSystem.Actions.Protect;
+using BattleSystem.Actions.ProtectLimitChange;
 using BattleSystem.Characters;
 using BattleSystem.Items;
 using BattleSystem.Moves;
@@ -130,7 +130,7 @@ namespace BattleSystemExample
                                     .Build()
                             )
                             .WithAction(
-                                new ProtectLimitChangeBuilder()
+                                new ProtectLimitChangeActionBuilder()
                                     .WithAmount(1)
                                     .TargetsUser()
                                     .Build()
