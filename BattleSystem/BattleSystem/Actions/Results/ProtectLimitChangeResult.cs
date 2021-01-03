@@ -1,4 +1,5 @@
-﻿using BattleSystem.Characters;
+﻿using System.Collections.Generic;
+using BattleSystem.Characters;
 
 namespace BattleSystem.Actions.Results
 {
@@ -42,6 +43,11 @@ namespace BattleSystem.Actions.Results
         /// Gets or sets the character who protected the target from the protect limit change, if applicable.
         /// </summary>
         public Character ProtectUser { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tags associated with this protect limit change.
+        /// </summary>
+        public HashSet<string> Tags { get; set; }
 
         /// <summary>
         /// Gets or sets the amount that the character's protect limit changed by.

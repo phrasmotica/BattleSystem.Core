@@ -47,6 +47,11 @@ namespace BattleSystem.Actions.Results
         public Character ProtectUser { get; set; }
 
         /// <summary>
+        /// Gets or sets the tags associated with this buff.
+        /// </summary>
+        public HashSet<string> Tags { get; set; }
+
+        /// <summary>
         /// Gets or sets the changes in stat multipliers resulting from this buff.
         /// </summary>
         public IDictionary<StatCategory, double> StartingStatMultipliers { get; set; } = new Dictionary<StatCategory, double>();

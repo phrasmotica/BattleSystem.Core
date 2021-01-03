@@ -1,4 +1,5 @@
-﻿using BattleSystem.Characters;
+﻿using System.Collections.Generic;
+using BattleSystem.Characters;
 
 namespace BattleSystem.Actions.Results
 {
@@ -37,5 +38,10 @@ namespace BattleSystem.Actions.Results
         /// Gets or sets the character who protected the target from the action, if applicable.
         /// </summary>
         Character ProtectUser { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tags associated with this action result.
+        /// </summary>
+        HashSet<string> Tags { get; set; }
     }
 }
