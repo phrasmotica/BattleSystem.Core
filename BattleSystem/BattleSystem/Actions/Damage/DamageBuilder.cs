@@ -154,16 +154,6 @@ namespace BattleSystem.Actions.Damage
         }
 
         /// <summary>
-        /// Sets the built damage action to target the user of the move
-        /// containing the action that last affected the user.
-        /// </summary>
-        public DamageBuilder Retaliates()
-        {
-            _damage.IsRetaliation = true;
-            return WithActionTargetCalculator(new RetaliateActionTargetCalculator());
-        }
-
-        /// <summary>
         /// Sets the built damage action to target the user.
         /// </summary>
         public DamageBuilder TargetsUser()

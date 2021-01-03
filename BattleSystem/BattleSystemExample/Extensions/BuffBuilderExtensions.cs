@@ -1,6 +1,6 @@
 ﻿using BattleSystem.Actions;
 using BattleSystemExample.Input;
-using BattleSystemExample.Moves.Targets;
+using BattleSystemExample.Actions.Targets;
 using BattleSystemExample.Output;
 
 namespace BattleSystemExample.Extensions

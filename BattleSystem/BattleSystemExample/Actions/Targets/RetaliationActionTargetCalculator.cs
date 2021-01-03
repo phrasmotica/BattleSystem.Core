@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BattleSystem.Actions.Targets;
 using BattleSystem.Characters;
 
-namespace BattleSystem.Actions.Targets
+namespace BattleSystemExample.Actions.Targets
 {
     /// <summary>
     /// Calculates the action target as the user of the move containing the
     /// action that last affected the user of this action.
     /// </summary>
-    public class RetaliateActionTargetCalculator : IActionTargetCalculator
+    public class RetaliationActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
         public bool IsReactive => true;

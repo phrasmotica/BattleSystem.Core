@@ -6,7 +6,7 @@ using BattleSystem.Actions.Targets;
 using BattleSystemExample.Input;
 using BattleSystemExample.Output;
 
-namespace BattleSystemExample.Moves.Targets
+namespace BattleSystemExample.Actions.Targets
 {
     /// <summary>
     /// Lets the user choose a single action target.

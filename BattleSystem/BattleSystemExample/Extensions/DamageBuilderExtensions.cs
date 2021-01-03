@@ -1,6 +1,6 @@
 ﻿using BattleSystem.Actions.Damage;
 using BattleSystemExample.Input;
-using BattleSystemExample.Moves.Targets;
+using BattleSystemExample.Actions.Targets;
 using BattleSystemExample.Output;
 
 namespace BattleSystemExample.Extensions
@@ -52,6 +52,15 @@ namespace BattleSystemExample.Extensions
         public static DamageBuilder UserSelectsSingleEnemy(this DamageBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
             return builder.WithActionTargetCalculator(new SingleEnemyActionTargetCalculator(userInput, gameOutput));
+        }
+
+        /// <summary>
+        /// Sets the built damage action to target the user of the move
+        /// containing the action that last affected the user.
+        /// </summary>
+        public static DamageBuilder Retaliates(this DamageBuilder builder)
+        {
+            return builder.WithActionTargetCalculator(new RetaliationActionTargetCalculator());
         }
     }
 }
