@@ -110,8 +110,11 @@ namespace BattleSystemExample.Battles
                 while (!_moveProcessor.MoveUseQueueIsEmpty)
                 {
                     var moveUse = _moveProcessor.ApplyNext();
-                    AddToActionHistory(moveUse);
-                    ShowMoveUse(moveUse);
+                    if (moveUse.HasResult)
+                    {
+                        AddToActionHistory(moveUse);
+                        ShowMoveUse(moveUse);
+                    }
                 }
 
                 if (IsOver)
