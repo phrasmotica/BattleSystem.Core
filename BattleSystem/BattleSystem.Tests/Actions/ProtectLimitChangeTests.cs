@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using BattleSystem.Actions;
 using BattleSystem.Actions.Targets;
+using BattleSystem.Characters;
+using Moq;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Actions
@@ -12,7 +16,7 @@ namespace BattleSystem.Tests.Actions
     public class ProtectLimitChangeTests
     {
         [Test]
-        public void Use_WithTargets_BumpsTargetProtectLimitChange()
+        public void Use_CalculationSuccessfulWithTargets_ChangesTargetsProtectLimit()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -33,7 +37,7 @@ namespace BattleSystem.Tests.Actions
         }
 
         [Test]
-        public void Use_WithTargets_AppliesActions()
+        public void Use_CalculationSuccessfulWithTargets_SucceedsAndAppliesActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -47,14 +51,18 @@ namespace BattleSystem.Tests.Actions
             change.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = change.Use<string>(user, otherCharacters);
+            var (success, results) = change.Use<string>(user, otherCharacters);
 
             // Assert
-            Assert.That(actionResults, Is.Not.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.True);
+                Assert.That(results, Is.Not.Empty);
+            });
         }
 
         [Test]
-        public void Use_WithDeadTargets_AppliesNoActions()
+        public void Use_CalculationSuccessfulAllTargetsDead_SucceedsAndAppliesNoActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -69,14 +77,18 @@ namespace BattleSystem.Tests.Actions
             change.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = change.Use<string>(user, otherCharacters);
+            var (success, results) = change.Use<string>(user, otherCharacters);
 
             // Assert
-            Assert.That(actionResults, Is.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.True);
+                Assert.That(results, Is.Empty);
+            });
         }
 
         [Test]
-        public void Use_WithoutTargets_AppliesNoActions()
+        public void Use_CalculationSuccessfulNoTargets_SucceedsAndAppliesNoActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -85,19 +97,34 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var change = TestHelpers.CreateProtectLimitChange();
+            var actionTargetCalculator = new Mock<IActionTargetCalculator>();
+            actionTargetCalculator
+                .Setup(
+                    m => m.Calculate(
+                        It.IsAny<Character>(),
+                        It.IsAny<IEnumerable<Character>>()
+                    )
+                )
+                .Returns((true, Enumerable.Empty<Character>()));
+
+            var change = TestHelpers.CreateProtectLimitChange(
+                actionTargetCalculator: actionTargetCalculator.Object);
 
             change.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = change.Use<string>(user, otherCharacters);
+            var (success, results) = change.Use<string>(user, otherCharacters);
 
             // Assert
-            Assert.That(actionResults, Is.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.True);
+                Assert.That(results, Is.Empty);
+            });
         }
 
         [Test]
-        public void Use_NoTargetsSet_Throws()
+        public void Use_NoTargetsSet_FailsAndAppliesNoActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -108,8 +135,15 @@ namespace BattleSystem.Tests.Actions
 
             var change = TestHelpers.CreateProtect();
 
-            // Act and Assert
-            Assert.Throws<InvalidOperationException>(() => _ = change.Use<string>(user, otherCharacters));
+            // Act
+            var (success, results) = change.Use<string>(user, otherCharacters);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.False);
+                Assert.That(results, Is.Empty);
+            });
         }
     }
 }

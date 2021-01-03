@@ -5,6 +5,8 @@ using BattleSystem.Actions.Targets;
 using Moq;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BattleSystem.Tests.Actions
 {
@@ -15,7 +17,7 @@ namespace BattleSystem.Tests.Actions
     public class HealTests
     {
         [Test]
-        public void Use_HealsTarget()
+        public void Use_CalculationSuccessfulWithTargets_HealsTargets()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -49,7 +51,7 @@ namespace BattleSystem.Tests.Actions
         }
 
         [Test]
-        public void Use_WithTargets_AppliesActions()
+        public void Use_CalculationSuccessfulWithTargets_SucceedsAndAppliesActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -63,14 +65,18 @@ namespace BattleSystem.Tests.Actions
             heal.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = heal.Use<string>(user, otherCharacters);
+            var (success, results) = heal.Use<string>(user, otherCharacters);
 
             // Assert
-            Assert.That(actionResults, Is.Not.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.True);
+                Assert.That(results, Is.Not.Empty);
+            });
         }
 
         [Test]
-        public void Use_WithDeadTargets_AppliesNoActions()
+        public void Use_CalculationSuccessfulAllTargetsDead_SucceedsAndAppliesNoActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -79,19 +85,24 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var heal = TestHelpers.CreateHeal(actionTargetCalculator: new OthersActionTargetCalculator());
+            var heal = TestHelpers.CreateHeal(
+                actionTargetCalculator: new OthersActionTargetCalculator());
 
             heal.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = heal.Use<string>(user, otherCharacters);
+            var (success, results) = heal.Use<string>(user, otherCharacters);
 
             // Assert
-            Assert.That(actionResults, Is.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.True);
+                Assert.That(results, Is.Empty);
+            });
         }
 
         [Test]
-        public void Use_WithoutTargets_AppliesNoActions()
+        public void Use_CalculationSuccessfulNoTargets_SucceedsAndAppliesNoActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -100,19 +111,34 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var heal = TestHelpers.CreateHeal();
+            var actionTargetCalculator = new Mock<IActionTargetCalculator>();
+            actionTargetCalculator
+                .Setup(
+                    m => m.Calculate(
+                        It.IsAny<Character>(),
+                        It.IsAny<IEnumerable<Character>>()
+                    )
+                )
+                .Returns((true, Enumerable.Empty<Character>()));
+
+            var heal = TestHelpers.CreateHeal(
+                actionTargetCalculator: actionTargetCalculator.Object);
 
             heal.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = heal.Use<string>(user, otherCharacters);
+            var (success, results) = heal.Use<string>(user, otherCharacters);
 
             // Assert
-            Assert.That(actionResults, Is.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.True);
+                Assert.That(results, Is.Empty);
+            });
         }
 
         [Test]
-        public void Use_NoTargetsSet_Throws()
+        public void Use_NoTargetsSet_FailsAndAppliesNoActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -123,8 +149,15 @@ namespace BattleSystem.Tests.Actions
 
             var heal = TestHelpers.CreateHeal();
 
-            // Act and Assert
-            Assert.Throws<InvalidOperationException>(() => _ = heal.Use<string>(user, otherCharacters));
+            // Act
+            var (success, results) = heal.Use<string>(user, otherCharacters);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.False);
+                Assert.That(results, Is.Empty);
+            });
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Items;
-using System;
 using BattleSystem.Actions.Damage.Calculators;
 
 namespace BattleSystem.Actions.Damage
@@ -90,11 +90,16 @@ namespace BattleSystem.Actions.Damage
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
+        public virtual (bool success, IEnumerable<IActionResult<TSource>> results) Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
+            if (_actionTargetCalculator.IsReactive)
+            {
+                EstablishTargets(user, otherCharacters);
+            }
+
             if (!_targetsSet)
             {
-                throw new InvalidOperationException("Cannot use damage action when no targets have been set!");
+                return (false, Enumerable.Empty<IActionResult<TSource>>());
             }
 
             var results = new List<IActionResult<TSource>>();
@@ -108,7 +113,7 @@ namespace BattleSystem.Actions.Damage
 
             _targetsSet = false;
 
-            return results;
+            return (true, results);
         }
 
         /// <inheritdoc />
@@ -137,6 +142,18 @@ namespace BattleSystem.Actions.Damage
             }
 
             return transformedPower;
+        }
+
+        /// <summary>
+        /// Sets the targets for the damage action's next use.
+        /// </summary>
+        /// <param name="user">The user of the damage action.</param>
+        /// <param name="otherCharacters">The other characters.</param>
+        protected void EstablishTargets(Character user, IEnumerable<Character> otherCharacters)
+        {
+            var (success, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
+                _targets = targets;
+            _targetsSet = success;
         }
     }
 }

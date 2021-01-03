@@ -17,11 +17,13 @@ namespace BattleSystem.Actions
         void SetTargets(Character user, IEnumerable<Character> otherCharacters);
 
         /// <summary>
-        /// Applies the action and returns the results of its application to its targets.
+        /// Applies the action and returns the results of its application to its
+        /// targets, along with a flag indicating whether the use was
+        /// successful.
         /// </summary>
         /// <param name="user">The user of the action.</param>
         /// <param name="otherCharacters">The other characters.</param>
         /// <typeparam name="TSource">The type of the source of the action.</typeparam>
-        IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters);
+        (bool success, IEnumerable<IActionResult<TSource>> results) Use<TSource>(Character user, IEnumerable<Character> otherCharacters);
     }
 }

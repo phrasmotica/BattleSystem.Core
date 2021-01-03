@@ -69,7 +69,7 @@ namespace BattleSystemExample.Extensions
                 {
                     a.Action.SetTargets(character, otherCharacters);
 
-                    var actionResults = a.Action.Use<Item>(character, otherCharacters);
+                    var (_, actionResults) = a.Action.Use<Item>(character, otherCharacters);
                     foreach (var r in actionResults)
                     {
                         r.Source = character.Item;

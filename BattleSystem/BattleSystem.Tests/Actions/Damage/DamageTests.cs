@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
 using BattleSystem.Actions.Damage.Calculators;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Characters;
@@ -9,13 +10,13 @@ using static BattleSystem.Actions.Damage.Damage;
 namespace BattleSystem.Tests.Actions.Damage
 {
     /// <summary>
-    /// Unit tests for <see cref="Damage"/>.
+    /// Unit tests for <see cref="BattleSystem.Actions.Damage.Damage"/>.
     /// </summary>
     [TestFixture]
     public class DamageTests
     {
         [Test]
-        public void Use_WithTargets_DamagesTargets()
+        public void Use_CalculationSuccessfulWithTargets_DamagesTargets()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -35,7 +36,9 @@ namespace BattleSystem.Tests.Actions.Damage
                 )
                 .Returns(6);
 
-            var damage = TestHelpers.CreateDamage(damageCalculator.Object, new OthersActionTargetCalculator());
+            var damage = TestHelpers.CreateDamage(
+                damageCalculator.Object,
+                new OthersActionTargetCalculator());
 
             damage.SetTargets(user, otherCharacters);
 
@@ -47,7 +50,7 @@ namespace BattleSystem.Tests.Actions.Damage
         }
 
         [Test]
-        public void Use_WithTargets_AppliesActions()
+        public void Use_CalculationSuccessfulWithTargets_SucceedsAndAppliesActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -56,19 +59,24 @@ namespace BattleSystem.Tests.Actions.Damage
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var damage = TestHelpers.CreateDamage(actionTargetCalculator: new OthersActionTargetCalculator());
+            var damage = TestHelpers.CreateDamage(
+                actionTargetCalculator: new OthersActionTargetCalculator());
 
             damage.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = damage.Use<string>(user, otherCharacters);
+            var (success, results) = damage.Use<string>(user, otherCharacters);
 
             // Assert
-            Assert.That(actionResults, Is.Not.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.True);
+                Assert.That(results, Is.Not.Empty);
+            });
         }
 
         [Test]
-        public void Use_WithDeadTargets_AppliesNoActions()
+        public void Use_CalculationSuccessfulAllTargetsDead_SucceedsAndAppliesNoActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -77,19 +85,24 @@ namespace BattleSystem.Tests.Actions.Damage
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var damage = TestHelpers.CreateDamage(actionTargetCalculator: new OthersActionTargetCalculator());
+            var damage = TestHelpers.CreateDamage(
+                actionTargetCalculator: new OthersActionTargetCalculator());
 
             damage.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = damage.Use<string>(user, otherCharacters);
+            var (success, results) = damage.Use<string>(user, otherCharacters);
 
             // Assert
-            Assert.That(actionResults, Is.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.True);
+                Assert.That(results, Is.Empty);
+            });
         }
 
         [Test]
-        public void Use_WithoutTargets_AppliesNoActions()
+        public void Use_CalculationSuccessfulNoTargets_SucceedsAndAppliesNoActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -98,19 +111,34 @@ namespace BattleSystem.Tests.Actions.Damage
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var damage = TestHelpers.CreateDamage();
+            var actionTargetCalculator = new Mock<IActionTargetCalculator>();
+            actionTargetCalculator
+                .Setup(
+                    m => m.Calculate(
+                        It.IsAny<Character>(),
+                        It.IsAny<IEnumerable<Character>>()
+                    )
+                )
+                .Returns((true, Enumerable.Empty<Character>()));
+
+            var damage = TestHelpers.CreateDamage(
+                actionTargetCalculator: actionTargetCalculator.Object);
 
             damage.SetTargets(user, otherCharacters);
 
             // Act
-            var actionResults = damage.Use<string>(user, otherCharacters);
+            var (success, results) = damage.Use<string>(user, otherCharacters);
 
             // Assert
-            Assert.That(actionResults, Is.Empty);
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.True);
+                Assert.That(results, Is.Empty);
+            });
         }
 
         [Test]
-        public void Use_NoTargetsSet_Throws()
+        public void Use_NoTargetsSet_FailsAndAppliesNoActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -122,7 +150,14 @@ namespace BattleSystem.Tests.Actions.Damage
             var damage = TestHelpers.CreateDamage();
 
             // Act and Assert
-            Assert.Throws<InvalidOperationException>(() => _ = damage.Use<string>(user, otherCharacters));
+            var (success, results) = damage.Use<string>(user, otherCharacters);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.False);
+                Assert.That(results, Is.Empty);
+            });
         }
 
         [Test]

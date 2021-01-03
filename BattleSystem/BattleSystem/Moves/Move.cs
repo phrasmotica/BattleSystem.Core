@@ -164,7 +164,7 @@ namespace BattleSystem.Moves
                         (action as ITransformable)?.ReceiveTransforms(user.Item);
                     }
 
-                    var actionResults = action.Use<Move>(user, targets);
+                    var (_, actionResults) = action.Use<Move>(user, targets);
                     foreach (var r in actionResults)
                     {
                         r.Source = this;

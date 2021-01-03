@@ -144,7 +144,7 @@ namespace BattleSystem.Tests.Moves
                 )
                 .Returns((Character _, IEnumerable<Character> otherCharacters) =>
                 {
-                    return new[] { MockActionResult(otherCharacters.First()) };
+                    return (true, new[] { MockActionResult(otherCharacters.First()) });
                 });
 
             var secondAction = new Mock<IAction>();
@@ -166,7 +166,7 @@ namespace BattleSystem.Tests.Moves
                 )
                 .Returns((Character _, IEnumerable<Character> otherCharacters) =>
                 {
-                    return otherCharacters.Select(MockActionResult);
+                    return (true, otherCharacters.Select(MockActionResult));
                 });
 
             // second action not applying to other characters means third and fourth
@@ -234,7 +234,7 @@ namespace BattleSystem.Tests.Moves
                     )
                     .Returns((Character _, IEnumerable<Character> otherCharacters) =>
                     {
-                        return otherCharacters.Select(c => MockActionResult(applied, c));
+                        return (true, otherCharacters.Select(c => MockActionResult(applied, c)));
                     });
 
                 return action.Object;
