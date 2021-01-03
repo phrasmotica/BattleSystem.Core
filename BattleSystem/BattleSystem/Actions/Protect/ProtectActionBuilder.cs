@@ -1,17 +1,17 @@
 ﻿using System;
 using BattleSystem.Actions.Targets;
 
-namespace BattleSystem.Actions
+namespace BattleSystem.Actions.Protect
 {
     /// <summary>
     /// Builder class for protect actions.
     /// </summary>
-    public class ProtectBuilder
+    public class ProtectActionBuilder
     {
         /// <summary>
         /// The protect action to build.
         /// </summary>
-        private readonly Protect _protect;
+        private readonly ProtectAction _protect;
 
         /// <summary>
         /// Whether the action target calculator of the protect action has been set.
@@ -19,18 +19,18 @@ namespace BattleSystem.Actions
         private bool _isActionTargetCalculatorSet;
 
         /// <summary>
-        /// Creates a new <see cref="ProtectBuilder"/> instance.
+        /// Creates a new <see cref="ProtectActionBuilder"/> instance.
         /// </summary>
-        public ProtectBuilder()
+        public ProtectActionBuilder()
         {
-            _protect = new Protect();
+            _protect = new ProtectAction();
         }
 
         /// <summary>
         /// Sets the built protect action's action target calculator.
         /// </summary>
         /// <param name="name">The built protect action's action target calculator.</param>
-        public ProtectBuilder WithActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
+        public ProtectActionBuilder WithActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
         {
             if (actionTargetCalculator is null)
             {
@@ -45,7 +45,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect action to target all characters including the user.
         /// </summary>
-        public ProtectBuilder TargetsAll()
+        public ProtectActionBuilder TargetsAll()
         {
             return WithActionTargetCalculator(new AllActionTargetCalculator());
         }
@@ -53,7 +53,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect action to target all other characters.
         /// </summary>
-        public ProtectBuilder TargetsOthers()
+        public ProtectActionBuilder TargetsOthers()
         {
             return WithActionTargetCalculator(new OthersActionTargetCalculator());
         }
@@ -61,7 +61,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect action to target all enemies.
         /// </summary>
-        public ProtectBuilder TargetsEnemies()
+        public ProtectActionBuilder TargetsEnemies()
         {
             return WithActionTargetCalculator(new EnemiesActionTargetCalculator());
         }
@@ -69,7 +69,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect action to target all characters on the user's team.
         /// </summary>
-        public ProtectBuilder TargetsTeam()
+        public ProtectActionBuilder TargetsTeam()
         {
             return WithActionTargetCalculator(new TeamActionTargetCalculator());
         }
@@ -77,7 +77,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect action to target all other characters on the user's team.
         /// </summary>
-        public ProtectBuilder TargetsAllies()
+        public ProtectActionBuilder TargetsAllies()
         {
             return WithActionTargetCalculator(new AlliesActionTargetCalculator());
         }
@@ -85,7 +85,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect action to target the user.
         /// </summary>
-        public ProtectBuilder TargetsUser()
+        public ProtectActionBuilder TargetsUser()
         {
             return WithActionTargetCalculator(new UserActionTargetCalculator());
         }
@@ -93,7 +93,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect action to target the first enemy.
         /// </summary>
-        public ProtectBuilder TargetsFirstEnemy()
+        public ProtectActionBuilder TargetsFirstEnemy()
         {
             return WithActionTargetCalculator(new FirstEnemyActionTargetCalculator());
         }
@@ -101,7 +101,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built protect action to target the first ally.
         /// </summary>
-        public ProtectBuilder TargetsFirstAlly()
+        public ProtectActionBuilder TargetsFirstAlly()
         {
             return WithActionTargetCalculator(new FirstAllyActionTargetCalculator());
         }
@@ -109,7 +109,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Returns the built protect action.
         /// </summary>
-        public Protect Build()
+        public ProtectAction Build()
         {
             if (!_isActionTargetCalculatorSet)
             {

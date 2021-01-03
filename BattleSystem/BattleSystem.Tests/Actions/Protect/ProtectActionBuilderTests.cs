@@ -1,20 +1,20 @@
 ﻿using System;
-using BattleSystem.Actions;
+using BattleSystem.Actions.Protect;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Actions
+namespace BattleSystem.Tests.Actions.Protect
 {
     /// <summary>
-    /// Unit tests for <see cref="ProtectBuilder"/>.
+    /// Unit tests for <see cref="ProtectActionBuilder"/>.
     /// </summary>
     [TestFixture]
-    public class ProtectBuilderTests
+    public class ProtectActionBuilderTests
     {
         [Test]
         public void WithActionTargetCalculator_NullArgument_Throws()
         {
             // Arrange
-            var builder = new ProtectBuilder();
+            var builder = new ProtectActionBuilder();
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => _ = builder.WithActionTargetCalculator(null));
@@ -24,7 +24,7 @@ namespace BattleSystem.Tests.Actions
         public void Build_CallsPresent_Succeeds()
         {
             // Arrange
-            var builder = new ProtectBuilder().TargetsAll();
+            var builder = new ProtectActionBuilder().TargetsAll();
 
             // Act
             var protect = builder.Build();
@@ -37,7 +37,7 @@ namespace BattleSystem.Tests.Actions
         public void Build_MissingActionTargetCalculator_Throws()
         {
             // Arrange
-            var builder = new ProtectBuilder();
+            var builder = new ProtectActionBuilder();
 
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() => _ = builder.Build());

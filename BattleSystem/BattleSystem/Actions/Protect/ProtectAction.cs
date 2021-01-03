@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
 using BattleSystem.Actions.Targets;
-using System;
+using BattleSystem.Characters;
 
-namespace BattleSystem.Actions
+namespace BattleSystem.Actions.Protect
 {
     /// <summary>
     /// Represents a protecting action.
     /// </summary>
-    public class Protect : IAction
+    public class ProtectAction : IAction
     {
         /// <summary>
         /// The action target calculator.
@@ -33,9 +32,9 @@ namespace BattleSystem.Actions
         public HashSet<string> Tags { get; set; }
 
         /// <summary>
-        /// Creates a new <see cref="Protect"/> instance.
+        /// Creates a new <see cref="ProtectAction"/> instance.
         /// </summary>
-        public Protect()
+        public ProtectAction()
         {
             Tags = new HashSet<string>();
         }

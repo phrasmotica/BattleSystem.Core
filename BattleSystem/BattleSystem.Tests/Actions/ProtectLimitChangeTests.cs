@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Actions;
 using BattleSystem.Actions.Targets;
@@ -133,7 +132,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(),
             };
 
-            var change = TestHelpers.CreateProtect();
+            var change = TestHelpers.CreateProtectLimitChange();
 
             // Act
             var result = change.Use<string>(user, otherCharacters);

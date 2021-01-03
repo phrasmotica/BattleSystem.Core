@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Actions;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Characters;
 using Moq;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Actions
+namespace BattleSystem.Tests.Actions.Protect
 {
     /// <summary>
-    /// Unit tests for <see cref="Protect"/>.
+    /// Unit tests for <see cref="ProtectAction"/>.
     /// </summary>
     [TestFixture]
-    public class ProtectTests
+    public class ProtectActionTests
     {
         [Test]
         public void Use_CalculationSuccessfulWithTargets_BumpsTargetsProtectCounter()
@@ -25,7 +23,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var protect = TestHelpers.CreateProtect(new OthersActionTargetCalculator());
+            var protect = TestHelpers.CreateProtectAction(new OthersActionTargetCalculator());
 
             protect.SetTargets(user, otherCharacters);
 
@@ -46,7 +44,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var protect = TestHelpers.CreateProtect(new OthersActionTargetCalculator());
+            var protect = TestHelpers.CreateProtectAction(new OthersActionTargetCalculator());
 
             protect.SetTargets(user, otherCharacters);
 
@@ -72,7 +70,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var protect = TestHelpers.CreateProtect(new OthersActionTargetCalculator());
+            var protect = TestHelpers.CreateProtectAction(new OthersActionTargetCalculator());
 
             protect.SetTargets(user, otherCharacters);
 
@@ -107,7 +105,7 @@ namespace BattleSystem.Tests.Actions
                 )
                 .Returns((true, Enumerable.Empty<Character>()));
 
-            var protect = TestHelpers.CreateProtect(
+            var protect = TestHelpers.CreateProtectAction(
                 actionTargetCalculator: actionTargetCalculator.Object);
 
             protect.SetTargets(user, otherCharacters);
@@ -133,7 +131,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(),
             };
 
-            var protect = TestHelpers.CreateProtect();
+            var protect = TestHelpers.CreateProtectAction();
 
             // Act
             var result = protect.Use<string>(user, otherCharacters);

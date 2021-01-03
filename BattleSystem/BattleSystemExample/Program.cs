@@ -3,6 +3,7 @@ using BattleSystem.Actions;
 using BattleSystem.Actions.Buff;
 using BattleSystem.Actions.Damage;
 using BattleSystem.Actions.Heal;
+using BattleSystem.Actions.Protect;
 using BattleSystem.Characters;
 using BattleSystem.Items;
 using BattleSystem.Moves;
@@ -300,7 +301,7 @@ namespace BattleSystemExample
                             .WithPriority(2)
                             .AlwaysSucceeds()
                             .WithAction(
-                                new ProtectBuilder()
+                                new ProtectActionBuilder()
                                     .TargetsFirstAlly()
                                     .Build()
                             )

@@ -5,6 +5,7 @@ using BattleSystem.Actions.Damage;
 using BattleSystem.Actions.Damage.Calculators;
 using BattleSystem.Actions.Heal;
 using BattleSystem.Actions.Heal.Calculators;
+using BattleSystem.Actions.Protect;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Characters;
 using BattleSystem.Items;
@@ -214,10 +215,10 @@ namespace BattleSystem.Tests
         /// <summary>
         /// Returns a protect action.
         /// </summary>
-        public static Protect CreateProtect(
+        public static ProtectAction CreateProtectAction(
             IActionTargetCalculator actionTargetCalculator = null)
         {
-            return new ProtectBuilder()
+            return new ProtectActionBuilder()
                 .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
                 .Build();
         }
