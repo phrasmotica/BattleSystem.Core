@@ -159,6 +159,7 @@ namespace BattleSystem.Actions.Damage
         /// </summary>
         public DamageBuilder Retaliates()
         {
+            _damage.IsRetaliation = true;
             return WithActionTargetCalculator(new RetaliateActionTargetCalculator());
         }
 

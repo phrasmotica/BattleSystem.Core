@@ -39,10 +39,28 @@ namespace BattleSystemExample.Extensions.ActionResults
 
             if (damage.TargetDied)
             {
+                if (damage.IsRetaliation)
+                {
+                    return damage.Source switch
+                    {
+                        Item item => $"{target.Name} took {amount} damage from {user.Name}'s {item.Name} and died!",
+                        _ => $"{user.Name} retaliated to deal {amount} damage and kill {target.Name}!",
+                    };
+                }
+
                 return damage.Source switch
                 {
                     Item item => $"{target.Name} took {amount} damage from {user.Name}'s {item.Name} and died!",
                     _ => $"{target.Name} took {amount} damage and died!",
+                };
+            }
+
+            if (damage.IsRetaliation)
+            {
+                return damage.Source switch
+                {
+                    Item item => $"{target.Name} took {amount} damage from {user.Name}'s {item.Name}!",
+                    _ => $"{user.Name} retaliated to deal {amount} damage to {target.Name}!",
                 };
             }
 

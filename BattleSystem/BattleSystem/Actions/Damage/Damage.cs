@@ -56,6 +56,12 @@ namespace BattleSystem.Actions.Damage
         public List<PowerTransform> PowerTransforms { get; private set; }
 
         /// <summary>
+        /// Gets or sets whether the damage is in retaliation to some
+        /// previously-received damage.
+        /// </summary>
+        public bool IsRetaliation { get; set; }
+
+        /// <summary>
         /// Creates a new <see cref="Damage"/>.
         /// </summary>
         public Damage()
@@ -116,8 +122,9 @@ namespace BattleSystem.Actions.Damage
 
             foreach (var target in _targets.Where(c => !c.IsDead).ToArray())
             {
-                var damage = _damageCalculator.Calculate(user, this, target);
-                var result = target.ReceiveDamage<TSource>(damage, user);
+                var amount = _damageCalculator.Calculate(user, this, target);
+                var result = target.ReceiveDamage<TSource>(amount, user);
+                result.IsRetaliation = IsRetaliation;
                 results.Add(result);
             }
 
