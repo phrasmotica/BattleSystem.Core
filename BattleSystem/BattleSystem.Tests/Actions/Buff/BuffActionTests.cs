@@ -1,22 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Actions;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Characters;
 using BattleSystem.Stats;
 using Moq;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Actions
+namespace BattleSystem.Tests.Actions.Buff
 {
     /// <summary>
-    /// Unit tests for <see cref="Buff"/>.
+    /// Unit tests for <see cref="BuffAction"/>.
     /// </summary>
     [TestFixture]
-    public class BuffTests
+    public class BuffActionTests
     {
         [Test]
-        public void Use_CalculationSuccessfulWithTargets_BuffsTargetStat()
+        public void Use_CalculationSuccessfulWithTargets_BuffActionsTargetStat()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -25,7 +24,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(attack: 10)
             };
 
-            var buff = TestHelpers.CreateBuff(
+            var buff = TestHelpers.CreateBuffAction(
                 new OthersActionTargetCalculator(),
                 new Dictionary<StatCategory, double>
                 {
@@ -51,7 +50,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var buff = TestHelpers.CreateBuff(new OthersActionTargetCalculator());
+            var buff = TestHelpers.CreateBuffAction(new OthersActionTargetCalculator());
 
             buff.SetTargets(user, otherCharacters);
 
@@ -76,7 +75,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var buff = TestHelpers.CreateBuff(new OthersActionTargetCalculator());
+            var buff = TestHelpers.CreateBuffAction(new OthersActionTargetCalculator());
 
             buff.SetTargets(user, otherCharacters);
 
@@ -111,7 +110,7 @@ namespace BattleSystem.Tests.Actions
                 )
                 .Returns((true, Enumerable.Empty<Character>()));
 
-            var buff = TestHelpers.CreateBuff(
+            var buff = TestHelpers.CreateBuffAction(
                 actionTargetCalculator: actionTargetCalculator.Object);
 
             buff.SetTargets(user, otherCharacters);
@@ -137,7 +136,7 @@ namespace BattleSystem.Tests.Actions
                 TestHelpers.CreateBasicCharacter(),
             };
 
-            var buff = TestHelpers.CreateBuff();
+            var buff = TestHelpers.CreateBuffAction();
 
             // Act
             var result = buff.Use<string>(user, otherCharacters);

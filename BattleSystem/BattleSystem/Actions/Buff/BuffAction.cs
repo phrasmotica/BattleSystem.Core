@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Stats;
 
-namespace BattleSystem.Actions
+namespace BattleSystem.Actions.Buff
 {
     /// <summary>
     /// Represents a buffing action.
     /// </summary>
-    public class Buff : IAction
+    public class BuffAction : IAction
     {
         /// <summary>
         /// The action target calculator.
@@ -39,9 +38,9 @@ namespace BattleSystem.Actions
         public HashSet<string> Tags { get; set; }
 
         /// <summary>
-        /// Creates a new <see cref="Buff"/>.
+        /// Creates a new <see cref="BuffAction"/>.
         /// </summary>
-        public Buff()
+        public BuffAction()
         {
             TargetMultipliers = new Dictionary<StatCategory, double>();
             Tags = new HashSet<string>();

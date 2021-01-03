@@ -1,20 +1,20 @@
 ﻿using System;
-using BattleSystem.Actions;
+using BattleSystem.Actions.Buff;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Actions
+namespace BattleSystem.Tests.Actions.Buff
 {
     /// <summary>
-    /// Unit tests for <see cref="BuffBuilder"/>.
+    /// Unit tests for <see cref="BuffActionBuilder"/>.
     /// </summary>
     [TestFixture]
-    public class BuffBuilderTests
+    public class BuffActionBuilderTests
     {
         [Test]
         public void WithActionTargetCalculator_NullArgument_Throws()
         {
             // Arrange
-            var builder = new BuffBuilder();
+            var builder = new BuffActionBuilder();
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => _ = builder.WithActionTargetCalculator(null));
@@ -24,7 +24,7 @@ namespace BattleSystem.Tests.Actions
         public void Build_CallsPresent_Succeeds()
         {
             // Arrange
-            var builder = new BuffBuilder()
+            var builder = new BuffActionBuilder()
                                 .TargetsUser()
                                 .WithRaiseAttack(0.1);
 
@@ -39,7 +39,7 @@ namespace BattleSystem.Tests.Actions
         public void Build_MissingActionTargetCalculator_Throws()
         {
             // Arrange
-            var builder = new BuffBuilder()
+            var builder = new BuffActionBuilder()
                                 .WithRaiseDefence(0.1);
 
             // Act and Assert

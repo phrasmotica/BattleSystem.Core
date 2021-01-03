@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Actions;
+using BattleSystem.Actions.Buff;
 using BattleSystem.Actions.Damage;
 using BattleSystem.Characters;
 using BattleSystem.Items;
@@ -91,7 +92,7 @@ namespace BattleSystemExample
                                     .Build()
                             )
                             .WithAction(
-                                new BuffBuilder()
+                                new BuffActionBuilder()
                                     .TargetsUser()
                                     .WithRaiseAttack(0.1)
                                     .Build()
@@ -150,7 +151,7 @@ namespace BattleSystemExample
                     .Name("Might Relic")
                     .Describe("Increases the holder's Attack by 5% at the end of each turn.")
                     .WithEndTurnAction(
-                        new BuffBuilder()
+                        new BuffActionBuilder()
                             .TargetsUser()
                             .WithRaiseAttack(0.05)
                             .Build()
@@ -240,7 +241,7 @@ namespace BattleSystemExample
                             .WithMaxUses(10)
                             .AlwaysSucceeds()
                             .WithAction(
-                                new BuffBuilder()
+                                new BuffActionBuilder()
                                     .TargetsTeam()
                                     .WithRaiseDefence(0.1)
                                     .Build()

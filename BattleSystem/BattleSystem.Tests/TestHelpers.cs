@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Actions;
+using BattleSystem.Actions.Buff;
+using BattleSystem.Actions.Damage;
+using BattleSystem.Actions.Damage.Calculators;
+using BattleSystem.Actions.Targets;
 using BattleSystem.Characters;
 using BattleSystem.Healing;
 using BattleSystem.Items;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Success;
-using BattleSystem.Actions.Damage;
-using BattleSystem.Actions.Damage.Calculators;
-using BattleSystem.Actions.Targets;
 using BattleSystem.Stats;
 using Moq;
 using static BattleSystem.Actions.Damage.DamageAction;
@@ -176,11 +177,11 @@ namespace BattleSystem.Tests
         /// <summary>
         /// Returns a buff action.
         /// </summary>
-        public static Buff CreateBuff(
+        public static BuffAction CreateBuffAction(
             IActionTargetCalculator actionTargetCalculator = null,
             IDictionary<StatCategory, double> targetMultipliers = null)
         {
-            var builder = new BuffBuilder()
+            var builder = new BuffActionBuilder()
                             .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object);
 
             if (targetMultipliers is not null)

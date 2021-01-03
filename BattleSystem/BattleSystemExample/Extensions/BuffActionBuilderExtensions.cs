@@ -1,4 +1,4 @@
-﻿using BattleSystem.Actions;
+﻿using BattleSystem.Actions.Buff;
 using BattleSystemExample.Input;
 using BattleSystemExample.Actions.Targets;
 using BattleSystemExample.Output;
@@ -6,9 +6,9 @@ using BattleSystemExample.Output;
 namespace BattleSystemExample.Extensions
 {
     /// <summary>
-    /// Extension methods for <see cref="BuffBuilder"/>.
+    /// Extension methods for <see cref="BuffActionBuilder"/>.
     /// </summary>
-    public static class BuffBuilderExtensions
+    public static class BuffActionBuilderExtensions
     {
         /// <summary>
         /// Sets the built buff to target a single character chosen by the user.
@@ -16,7 +16,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="builder">The buff builder.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public static BuffBuilder UserSelectsSingleTarget(this BuffBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        public static BuffActionBuilder UserSelectsSingleTarget(this BuffActionBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
             return builder.WithActionTargetCalculator(new SingleActionTargetCalculator(userInput, gameOutput));
         }
@@ -27,7 +27,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="builder">The buff builder.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public static BuffBuilder UserSelectsSingleOtherTarget(this BuffBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        public static BuffActionBuilder UserSelectsSingleOtherTarget(this BuffActionBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
             return builder.WithActionTargetCalculator(new SingleOtherActionTargetCalculator(userInput, gameOutput));
         }
@@ -38,7 +38,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="builder">The buff builder.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public static BuffBuilder UserSelectsSingleAlly(this BuffBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        public static BuffActionBuilder UserSelectsSingleAlly(this BuffActionBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
             return builder.WithActionTargetCalculator(new SingleAllyActionTargetCalculator(userInput, gameOutput));
         }
@@ -49,7 +49,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="builder">The buff builder.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public static BuffBuilder UserSelectsSingleEnemy(this BuffBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        public static BuffActionBuilder UserSelectsSingleEnemy(this BuffActionBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
             return builder.WithActionTargetCalculator(new SingleEnemyActionTargetCalculator(userInput, gameOutput));
         }
