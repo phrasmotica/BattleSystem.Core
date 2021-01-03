@@ -171,9 +171,16 @@ namespace BattleSystemExample.Battles
 
                 foreach (var actionResult in moveUse.ActionsResults)
                 {
-                    foreach (var result in actionResult.Results)
+                    if (actionResult.Success)
                     {
-                        ShowResult(result);
+                        foreach (var result in actionResult.Results)
+                        {
+                            ShowResult(result);
+                        }
+                    }
+                    else
+                    {
+                        _gameOutput.WriteLine("But it failed!");
                     }
                 }
             }
