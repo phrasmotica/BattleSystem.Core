@@ -6,7 +6,7 @@ using BattleSystem.Actions.Targets;
 using BattleSystemExample.Input;
 using BattleSystemExample.Output;
 
-namespace BattleSystemExample.Moves.Targets
+namespace BattleSystemExample.Actions.Targets
 {
     /// <summary>
     /// Lets the user choose a single ally as the action target.
@@ -35,23 +35,26 @@ namespace BattleSystemExample.Moves.Targets
         }
 
         /// <inheritdoc />
-        public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)
+        public bool IsReactive => false;
+
+        /// <inheritdoc />
+        public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
             if (otherCharacters is null || !otherCharacters.Any())
             {
-                throw new ArgumentException("Cannot select a action target when there are none to choose from!", nameof(otherCharacters));
+                return (false, Enumerable.Empty<Character>());
             }
 
             var targets = otherCharacters.Where(c => c.Team == user.Team).ToArray();
             if (targets.Length == 1)
             {
-                return new[] { targets[0] };
+                return (true, new[] { targets[0] });
             }
 
             _gameOutput.WriteLine($"Select a target for the move:");
             _gameOutput.WriteLine(GetChoices(targets));
 
-            return new[] { SelectTarget(targets) };
+            return (true, new[] { SelectTarget(targets) });
         }
 
         /// <summary>

@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Actions;
+using BattleSystem.Actions.Buff;
+using BattleSystem.Actions.Damage;
+using BattleSystem.Actions.Heal;
+using BattleSystem.Actions.Protect;
+using BattleSystem.Actions.ProtectLimitChange;
 using BattleSystem.Characters;
 using BattleSystem.Items;
 using BattleSystem.Moves;
 using BattleSystem.Stats;
+using BattleSystemExample.Actions;
 using BattleSystemExample.Battles;
 using BattleSystemExample.Characters;
-using BattleSystemExample.Constants;
 using BattleSystemExample.Extensions;
 using BattleSystemExample.Input;
 using BattleSystemExample.Output;
@@ -19,6 +23,7 @@ namespace BattleSystemExample
         {
             var playerInput = new ConsoleInput();
             var gameOutput = new ConsoleOutput();
+            var actionHistory = new ActionHistory();
 
             gameOutput.WriteLine("Welcome to the Console Battle System!");
 
@@ -27,8 +32,10 @@ namespace BattleSystemExample
             {
                 new Battle(
                     new MoveProcessor(),
+                    actionHistory,
                     gameOutput,
-                    CreateCharacters(playerInput, gameOutput)).Start();
+                    CreateCharacters(actionHistory, playerInput, gameOutput)
+                ).Start();
 
                 var playAgainChoice = playerInput.SelectChoice("Play again? [y/n]", "y", "n");
                 playAgain = playAgainChoice == "y";
@@ -40,9 +47,13 @@ namespace BattleSystemExample
         /// <summary>
         /// Creates characters for the game.
         /// </summary>
+        /// <param name="actionHistory">The action history.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output</param>
-        private static IEnumerable<Character> CreateCharacters(IUserInput userInput, IGameOutput gameOutput)
+        private static IEnumerable<Character> CreateCharacters(
+            ActionHistory actionHistory,
+            IUserInput userInput,
+            IGameOutput gameOutput)
         {
             var playerStats = new StatSet
             {
@@ -61,7 +72,7 @@ namespace BattleSystemExample
                             .WithPriority(1)
                             .WithAccuracy(100)
                             .WithAction(
-                                new AttackBuilder()
+                                new DamageActionBuilder()
                                     .WithPower(20)
                                     .StatDifferenceDamage()
                                     .UserSelectsSingleEnemy(userInput, gameOutput)
@@ -76,14 +87,14 @@ namespace BattleSystemExample
                             .WithMaxUses(5)
                             .WithAccuracy(50)
                             .WithAction(
-                                new AttackBuilder()
+                                new DamageActionBuilder()
                                     .WithPower(40)
                                     .PercentageDamage()
                                     .UserSelectsSingleEnemy(userInput, gameOutput)
                                     .Build()
                             )
                             .WithAction(
-                                new BuffBuilder()
+                                new BuffActionBuilder()
                                     .TargetsUser()
                                     .WithRaiseAttack(0.1)
                                     .Build()
@@ -92,20 +103,15 @@ namespace BattleSystemExample
                     )
                     .WithMove(
                         new MoveBuilder()
-                            .Name("Threaten")
-                            .Describe("The user raises the Attack stat of its ally characters and lowers the Defence stat of a single enemy.")
+                            .Name("Retaliate")
+                            .Describe("The user deals 1.5x the damage of the last attack it received.")
                             .WithMaxUses(5)
                             .AlwaysSucceeds()
                             .WithAction(
-                                new BuffBuilder()
-                                    .TargetsAllies()
-                                    .WithRaiseAttack(0.1)
-                                    .Build()
-                            )
-                            .WithAction(
-                                new BuffBuilder()
-                                    .UserSelectsSingleEnemy(userInput, gameOutput)
-                                    .WithLowerDefence(0.1)
+                                new DamageActionBuilder()
+                                    .WithPower(150)
+                                    .PercentageOfLastReceivedMoveDamage(0, actionHistory)
+                                    .Retaliates(actionHistory)
                                     .Build()
                             )
                             .Build()
@@ -117,14 +123,14 @@ namespace BattleSystemExample
                             .WithMaxUses(10)
                             .AlwaysSucceeds()
                             .WithAction(
-                                new HealBuilder()
+                                new HealActionBuilder()
                                     .WithAmount(20)
                                     .AbsoluteHealing()
                                     .TargetsUser()
                                     .Build()
                             )
                             .WithAction(
-                                new ProtectLimitChangeBuilder()
+                                new ProtectLimitChangeActionBuilder()
                                     .WithAmount(1)
                                     .TargetsUser()
                                     .Build()
@@ -147,7 +153,7 @@ namespace BattleSystemExample
                     .Name("Might Relic")
                     .Describe("Increases the holder's Attack by 5% at the end of each turn.")
                     .WithEndTurnAction(
-                        new BuffBuilder()
+                        new BuffActionBuilder()
                             .TargetsUser()
                             .WithRaiseAttack(0.05)
                             .Build()
@@ -171,7 +177,7 @@ namespace BattleSystemExample
                             .WithMaxUses(25)
                             .WithAccuracy(100)
                             .WithAction(
-                                new AttackBuilder()
+                                new DamageActionBuilder()
                                     .WithPower(5)
                                     .AbsoluteDamage()
                                     .TargetsEnemies()
@@ -187,7 +193,7 @@ namespace BattleSystemExample
                 new ItemBuilder()
                     .Name("Capo")
                     .Describe("Makes the holder's music better, increasing the power of their attacks by 1.")
-                    .WithAttackPowerTransform(p => p + 1)
+                    .WithDamagePowerTransform(p => p + 1)
                     .Build()
             );
 
@@ -207,7 +213,7 @@ namespace BattleSystemExample
                             .WithMaxUses(15)
                             .WithAccuracy(100)
                             .WithAction(
-                                new AttackBuilder()
+                                new DamageActionBuilder()
                                     .WithPower(20)
                                     .AbsoluteDamage()
                                     .TargetsFirstEnemy()
@@ -222,7 +228,7 @@ namespace BattleSystemExample
                             .WithMaxUses(5)
                             .WithAccuracy(70)
                             .WithAction(
-                                new AttackBuilder()
+                                new DamageActionBuilder()
                                     .WithPower(30)
                                     .PercentageDamage()
                                     .TargetsFirstEnemy()
@@ -237,7 +243,7 @@ namespace BattleSystemExample
                             .WithMaxUses(10)
                             .AlwaysSucceeds()
                             .WithAction(
-                                new BuffBuilder()
+                                new BuffActionBuilder()
                                     .TargetsTeam()
                                     .WithRaiseDefence(0.1)
                                     .Build()
@@ -251,7 +257,7 @@ namespace BattleSystemExample
                             .WithMaxUses(10)
                             .AlwaysSucceeds()
                             .WithAction(
-                                new HealBuilder()
+                                new HealActionBuilder()
                                     .WithAmount(30)
                                     .PercentageHealing()
                                     .TargetsUser()
@@ -268,7 +274,7 @@ namespace BattleSystemExample
                     .Name("Rolling Wave")
                     .Describe("Deals 3 damage to all enemies at the start of the holder's turn.")
                     .WithStartTurnAction(
-                        new AttackBuilder()
+                        new DamageActionBuilder()
                             .WithPower(3)
                             .AbsoluteDamage()
                             .TargetsEnemies()
@@ -290,12 +296,12 @@ namespace BattleSystemExample
                     .WithMove(
                         new MoveBuilder()
                             .Name("Protect")
-                            .Describe("The user protects themself from the next attack.")
+                            .Describe("The user protects themself from the next move.")
                             .WithMaxUses(5)
                             .WithPriority(2)
                             .AlwaysSucceeds()
                             .WithAction(
-                                new ProtectBuilder()
+                                new ProtectActionBuilder()
                                     .TargetsFirstAlly()
                                     .Build()
                             )

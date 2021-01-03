@@ -1,12 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BattleSystem.Actions;
+using BattleSystem.Actions.Buff;
+using BattleSystem.Actions.Damage;
+using BattleSystem.Actions.Heal;
+using BattleSystem.Actions.Protect;
+using BattleSystem.Actions.ProtectLimitChange;
 using BattleSystem.Characters;
 using BattleSystem.Moves;
-using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Success;
-using BattleSystemExample.Output;
+using BattleSystemExample.Actions;
 using BattleSystemExample.Extensions;
 using BattleSystemExample.Extensions.ActionResults;
+using BattleSystemExample.Output;
 
 namespace BattleSystemExample.Battles
 {
@@ -36,6 +42,11 @@ namespace BattleSystemExample.Battles
         private IEnumerable<IGrouping<string, Character>> Teams => _characters.GroupBy(c => c.Team);
 
         /// <summary>
+        /// The action history for the battle.
+        /// </summary>
+        private readonly ActionHistory _actionHistory;
+
+        /// <summary>
         /// Gets whether the battle is over, i.e. whether there is some team
         /// whose characters are all dead.
         /// </summary>
@@ -45,14 +56,17 @@ namespace BattleSystemExample.Battles
         /// Creates a new <see cref="Battle"/> instance.
         /// </summary>
         /// <param name="moveProcessor">The move processor.</param>
+        /// <param name="actionHistory">The action history.</param>
         /// <param name="gameOutput">The game output.</param>
         /// <param name="characters">The characters in the battle.</param>
         public Battle(
             MoveProcessor moveProcessor,
+            ActionHistory actionHistory,
             IGameOutput gameOutput,
             IEnumerable<Character> characters)
         {
             _moveProcessor = moveProcessor;
+            _actionHistory = actionHistory;
             _gameOutput = gameOutput;
             _characters = characters;
         }
@@ -64,6 +78,10 @@ namespace BattleSystemExample.Battles
         {
             while (!IsOver)
             {
+                _actionHistory.StartTurn();
+                _gameOutput.WriteLine();
+                _gameOutput.WriteLine($"TURN {_actionHistory.TurnCounter}");
+
                 foreach (var team in Teams)
                 {
                     _gameOutput.WriteLine();
@@ -101,7 +119,11 @@ namespace BattleSystemExample.Battles
                 while (!_moveProcessor.MoveUseQueueIsEmpty)
                 {
                     var moveUse = _moveProcessor.ApplyNext();
-                    ShowMoveUse(moveUse);
+                    if (moveUse.HasResult)
+                    {
+                        AddToActionHistory(moveUse);
+                        ShowMoveUse(moveUse);
+                    }
                 }
 
                 if (IsOver)
@@ -121,16 +143,25 @@ namespace BattleSystemExample.Battles
         }
 
         /// <summary>
+        /// Adds the given move use to the action history.
+        /// </summary>
+        /// <param name="moveUse"></param>
+        private void AddToActionHistory(MoveUse moveUse)
+        {
+            var results = moveUse.ActionsResults.SelectMany(ars => ars.Results);
+            foreach (var result in results)
+            {
+                _actionHistory.AddAction(result);
+            }
+        }
+
+        /// <summary>
         /// Outputs a summary of the given move use.
         /// </summary>
         /// <param name="moveUse">The move use.</param>
         private void ShowMoveUse(MoveUse moveUse)
         {
-            // don't show use if move was successful but all targets were dead
-            var targetsAllDead = moveUse.Result == MoveUseResult.Success
-                              && moveUse.ActionsResults.All(ars => !ars.Any());
-
-            if (moveUse.HasResult && !targetsAllDead)
+            if (moveUse.HasResult && !moveUse.TargetsAllDead)
             {
                 switch (moveUse.Result)
                 {
@@ -143,11 +174,18 @@ namespace BattleSystemExample.Battles
                         break;
                 }
 
-                foreach (var actionResults in moveUse.ActionsResults)
+                foreach (var actionResult in moveUse.ActionsResults)
                 {
-                    foreach (var result in actionResults)
+                    if (actionResult.Success)
                     {
-                        ShowResult(result);
+                        foreach (var result in actionResult.Results)
+                        {
+                            ShowResult(result);
+                        }
+                    }
+                    else
+                    {
+                        _gameOutput.WriteLine("But it failed!");
                     }
                 }
             }
@@ -165,35 +203,35 @@ namespace BattleSystemExample.Battles
             }
             else switch (result)
             {
-                case AttackResult<TSource> ar:
-                    var attackDescription = ar.Describe();
-                    if (attackDescription is not null)
+                case DamageActionResult<TSource> dr:
+                    var damageDescription = dr.Describe();
+                    if (damageDescription is not null)
                     {
-                        _gameOutput.WriteLine(attackDescription);
+                        _gameOutput.WriteLine(damageDescription);
                     }
                     break;
-                case BuffResult<TSource> br:
+                case BuffActionResult<TSource> br:
                     var buffDescription = br.Describe();
                     if (buffDescription is not null)
                     {
                         _gameOutput.WriteLine(buffDescription);
                     }
                     break;
-                case HealResult<TSource> hr:
+                case HealActionResult<TSource> hr:
                     var healDescription = hr.Describe();
                     if (healDescription is not null)
                     {
                         _gameOutput.WriteLine(healDescription);
                     }
                     break;
-                case ProtectLimitChangeResult<TSource> plcr:
+                case ProtectLimitChangeActionResult<TSource> plcr:
                     var plcrDescription = plcr.Describe();
                     if (plcrDescription is not null)
                     {
                         _gameOutput.WriteLine(plcrDescription);
                     }
                     break;
-                case ProtectResult<TSource> pr:
+                case ProtectActionResult<TSource> pr:
                     var protectDescription = pr.Describe();
                     if (protectDescription is not null)
                     {
@@ -209,9 +247,9 @@ namespace BattleSystemExample.Battles
         /// <param name="battlePhaseResult">The battle phase result.</param>
         private void ShowBattlePhaseResult(BattlePhaseResult battlePhaseResult)
         {
-            foreach (var actionResults in battlePhaseResult.ItemActionsResults)
+            foreach (var actionUseResult in battlePhaseResult.ItemActionsResults)
             {
-                foreach (var result in actionResults)
+                foreach (var result in actionUseResult.Results)
                 {
                     ShowResult(result);
                 }

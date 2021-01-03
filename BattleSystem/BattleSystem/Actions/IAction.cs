@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Actions.Results;
 using BattleSystem.Characters;
 
 namespace BattleSystem.Actions
@@ -10,6 +9,11 @@ namespace BattleSystem.Actions
     public interface IAction
     {
         /// <summary>
+        /// Gets or sets the tags for the action.
+        /// </summary>
+        HashSet<string> Tags { get; set; }
+
+        /// <summary>
         /// Sets the targets for the action's next use.
         /// </summary>
         /// <param name="user">The user of the action.</param>
@@ -17,11 +21,12 @@ namespace BattleSystem.Actions
         void SetTargets(Character user, IEnumerable<Character> otherCharacters);
 
         /// <summary>
-        /// Applies the action and returns the results of its application to its targets.
+        /// Applies the action and returns the results of its application to its
+        /// targets.
         /// </summary>
         /// <param name="user">The user of the action.</param>
         /// <param name="otherCharacters">The other characters.</param>
         /// <typeparam name="TSource">The type of the source of the action.</typeparam>
-        IEnumerable<IActionResult<TSource>> Use<TSource>(Character user, IEnumerable<Character> otherCharacters);
+        ActionUseResult<TSource> Use<TSource>(Character user, IEnumerable<Character> otherCharacters);
     }
 }

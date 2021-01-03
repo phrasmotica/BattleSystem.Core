@@ -10,9 +10,12 @@ namespace BattleSystem.Actions.Targets
     public class TeamActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
-        public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)
+        public bool IsReactive => false;
+
+        /// <inheritdoc />
+        public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
-            return otherCharacters.Where(c => c.Team == user.Team).Prepend(user);
+            return (true, otherCharacters.Where(c => c.Team == user.Team).Prepend(user));
         }
     }
 }

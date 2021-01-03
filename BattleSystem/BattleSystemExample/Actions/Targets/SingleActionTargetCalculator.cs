@@ -6,7 +6,7 @@ using BattleSystem.Actions.Targets;
 using BattleSystemExample.Input;
 using BattleSystemExample.Output;
 
-namespace BattleSystemExample.Moves.Targets
+namespace BattleSystemExample.Actions.Targets
 {
     /// <summary>
     /// Lets the user choose a single action target.
@@ -35,14 +35,17 @@ namespace BattleSystemExample.Moves.Targets
         }
 
         /// <inheritdoc />
-        public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)
+        public bool IsReactive => false;
+
+        /// <inheritdoc />
+        public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
             var targets = otherCharacters.Append(user);
 
             _gameOutput.WriteLine($"Select a target for the move:");
             _gameOutput.WriteLine(GetChoices(targets));
 
-            return new[] { SelectTarget(targets) };
+            return (true, new[] { SelectTarget(targets) });
         }
 
         /// <summary>

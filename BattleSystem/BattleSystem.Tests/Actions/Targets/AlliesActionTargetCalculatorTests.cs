@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using BattleSystem.Actions.Targets;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Actions.Targets
 {
     /// <summary>
-    /// Unit tests for <see cref="AlliesactionTargetCalculator"/>
+    /// Unit tests for <see cref="AlliesActionTargetCalculator"/>.
     /// </summary>
     [TestFixture]
     public class AlliesActionTargetCalculatorTests
@@ -26,11 +25,13 @@ namespace BattleSystem.Tests.Actions.Targets
             };
 
             // Act
-            var targets = calculator.Calculate(user, otherCharacters).ToArray();
+            var result = calculator.Calculate(user, otherCharacters);
+            var targets = result.targets.ToArray();
 
             // Assert
             Assert.Multiple(() =>
             {
+                Assert.That(result.success, Is.True);
                 Assert.That(targets.Length, Is.EqualTo(2));
                 Assert.That(targets[0].Name, Is.EqualTo("the"));
                 Assert.That(targets[1].Name, Is.EqualTo("154"));
@@ -38,7 +39,7 @@ namespace BattleSystem.Tests.Actions.Targets
         }
 
         [Test]
-        public void Calculate_NoAllies_Throws()
+        public void Calculate_NoAllies_ReturnsUnsuccessful()
         {
             // Arrange
             var calculator = new AlliesActionTargetCalculator();
@@ -50,13 +51,15 @@ namespace BattleSystem.Tests.Actions.Targets
                 TestHelpers.CreateBasicCharacter(name: "15th", team: "b"),
             };
 
-            // Act and Assert
-            Assert.Throws<ArgumentException>(
-                () => _ = calculator.Calculate(
-                    user,
-                    otherCharacters
-                )
-            );
+            // Act
+            var (success, targets) = calculator.Calculate(user, otherCharacters);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.False);
+                Assert.That(targets, Is.Empty);
+            });
         }
     }
 }

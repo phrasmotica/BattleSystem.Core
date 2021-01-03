@@ -2,7 +2,6 @@
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Actions;
-using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Success;
 
 namespace BattleSystem.Moves
@@ -147,15 +146,15 @@ namespace BattleSystem.Moves
         /// </summary>
         /// <param name="user">The user of the move.</param>
         /// <param name="otherCharacters">The other characters.</param>
-        public (MoveUseResult, IEnumerable<IEnumerable<IActionResult<Move>>>) Use(Character user, IEnumerable<Character> otherCharacters)
+        public (MoveUseResult, IEnumerable<ActionUseResult<Move>>) Use(Character user, IEnumerable<Character> otherCharacters)
         {
-            var result = _successCalculator.Calculate(user, this, otherCharacters);
+            var moveUseResult = _successCalculator.Calculate(user, this, otherCharacters);
 
-            var actionsResults = new List<IEnumerable<IActionResult<Move>>>();
+            var actionsResults = new List<ActionUseResult<Move>>();
 
             var targets = otherCharacters.ToArray();
 
-            if (result == MoveUseResult.Success)
+            if (moveUseResult == MoveUseResult.Success)
             {
                 foreach (var action in _moveActions)
                 {
@@ -164,17 +163,17 @@ namespace BattleSystem.Moves
                         (action as ITransformable)?.ReceiveTransforms(user.Item);
                     }
 
-                    var actionResults = action.Use<Move>(user, targets);
-                    foreach (var r in actionResults)
+                    var result = action.Use<Move>(user, targets);
+                    foreach (var r in result.Results)
                     {
                         r.Source = this;
                     }
 
-                    actionsResults.Add(actionResults);
+                    actionsResults.Add(result);
 
                     // only certain characters should be considered as targets
                     // for subsequent actions
-                    targets = GetTargetsToConsider(targets, actionResults).ToArray();
+                    targets = GetTargetsToConsider(targets, result).ToArray();
 
                     (action as ITransformable)?.ClearTransforms();
                 }
@@ -182,25 +181,25 @@ namespace BattleSystem.Moves
 
             RemainingUses--;
 
-            return (result, actionsResults);
+            return (moveUseResult, actionsResults);
         }
 
         /// <summary>
         /// Returns the characters that should be considered for subsequent actions
-        /// based on the results of the action.
+        /// based on the results of the action use.
         /// </summary>
-        /// <param name="targets">The targets of the action.</param>
-        /// <param name="actionResults">The results of the action.</param>
+        /// <param name="targets">The targets of the action use.</param>
+        /// <param name="actionUseResult">The result of the action use.</param>
         private static IEnumerable<Character> GetTargetsToConsider(
             IEnumerable<Character> targets,
-            IEnumerable<IActionResult<Move>> actionResults)
+            ActionUseResult<Move> actionUseResult)
         {
-            var targetedCharacters = actionResults.Select(ar => ar.Target);
+            var targetedCharacters = actionUseResult.Results.Select(ar => ar.Target);
 
             var untargetedCharacters = targets.Except(targetedCharacters);
 
-            var affectedCharacters = actionResults.Where(ar => ar.Applied)
-                                                  .Select(ar => ar.Target);
+            var affectedCharacters = actionUseResult.Results.Where(ar => ar.Applied)
+                                                            .Select(ar => ar.Target);
 
             // characters who have a) not yet been targeted or b) were affected
             // by the previous action should be considered as targets for

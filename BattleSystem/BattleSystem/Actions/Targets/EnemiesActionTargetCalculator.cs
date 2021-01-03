@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
 
@@ -11,15 +10,18 @@ namespace BattleSystem.Actions.Targets
     public class EnemiesActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
-        public IEnumerable<Character> Calculate(Character user, IEnumerable<Character> otherCharacters)
+        public bool IsReactive => false;
+
+        /// <inheritdoc />
+        public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
             var enemies = otherCharacters.Where(c => c.Team != user.Team);
             if (!enemies.Any())
             {
-                throw new ArgumentException("No enemies to choose as targets!", nameof(otherCharacters));
+                return (false, Enumerable.Empty<Character>());
             }
 
-            return enemies;
+            return (true, enemies);
         }
     }
 }

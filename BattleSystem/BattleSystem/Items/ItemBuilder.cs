@@ -1,7 +1,6 @@
 ﻿using System;
 using BattleSystem.Actions;
-using BattleSystem.Characters;
-using static BattleSystem.Actions.Attack;
+using static BattleSystem.Actions.Damage.DamageAction;
 using static BattleSystem.Items.Item;
 
 namespace BattleSystem.Items
@@ -105,12 +104,12 @@ namespace BattleSystem.Items
         }
 
         /// <summary>
-        /// Adds the given attack power transform to the built item.
+        /// Adds the given damage power transform to the built item.
         /// </summary>
-        /// <param name="transform">The attack power transform for the built item.</param>
-        public ItemBuilder WithAttackPowerTransform(PowerTransform transform)
+        /// <param name="transform">The damage power transform for the built item.</param>
+        public ItemBuilder WithDamagePowerTransform(PowerTransform transform)
         {
-            _item.AddAttackPowerTransform(transform);
+            _item.AddDamagePowerTransform(transform);
             return this;
         }
 
