@@ -2,6 +2,7 @@
 using BattleSystem.Actions;
 using BattleSystem.Actions.Buff;
 using BattleSystem.Actions.Damage;
+using BattleSystem.Actions.Heal;
 using BattleSystem.Characters;
 using BattleSystem.Items;
 using BattleSystem.Moves;
@@ -121,7 +122,7 @@ namespace BattleSystemExample
                             .WithMaxUses(10)
                             .AlwaysSucceeds()
                             .WithAction(
-                                new HealBuilder()
+                                new HealActionBuilder()
                                     .WithAmount(20)
                                     .AbsoluteHealing()
                                     .TargetsUser()
@@ -255,7 +256,7 @@ namespace BattleSystemExample
                             .WithMaxUses(10)
                             .AlwaysSucceeds()
                             .WithAction(
-                                new HealBuilder()
+                                new HealActionBuilder()
                                     .WithAmount(30)
                                     .PercentageHealing()
                                     .TargetsUser()

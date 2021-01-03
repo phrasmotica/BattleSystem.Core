@@ -1,7 +1,6 @@
 ﻿using BattleSystem.Characters;
-using BattleSystem.Actions;
 
-namespace BattleSystem.Healing
+namespace BattleSystem.Actions.Heal.Calculators
 {
     /// <summary>
     /// Interface for calculating the health healed by the target when a healing move is used on it.
@@ -14,6 +13,6 @@ namespace BattleSystem.Healing
         /// <param name="user">The user of the heal.</param>
         /// <param name="heal">The heal.</param>
         /// <param name="target">The target of the heal.</param>
-        int Calculate(Character user, Heal heal, Character target);
+        int Calculate(Character user, HealAction heal, Character target);
     }
 }

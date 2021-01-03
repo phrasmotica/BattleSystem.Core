@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
-using BattleSystem.Healing;
 using BattleSystem.Actions.Results;
 using BattleSystem.Actions.Targets;
-using System;
+using BattleSystem.Actions.Heal.Calculators;
 
-namespace BattleSystem.Actions
+namespace BattleSystem.Actions.Heal
 {
     /// <summary>
     /// Represents a healing action.
     /// </summary>
-    public class Heal : IAction
+    public class HealAction : IAction
     {
         /// <summary>
         /// The healing calculator.
@@ -44,9 +43,9 @@ namespace BattleSystem.Actions
         public HashSet<string> Tags { get; set; }
 
         /// <summary>
-        /// Creates a new <see cref="Heal"/>.
+        /// Creates a new <see cref="HealAction"/>.
         /// </summary>
-        public Heal()
+        public HealAction()
         {
             Tags = new HashSet<string>();
         }

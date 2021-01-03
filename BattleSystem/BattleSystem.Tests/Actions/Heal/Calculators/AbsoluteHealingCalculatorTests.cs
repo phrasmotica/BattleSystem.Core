@@ -1,7 +1,7 @@
-﻿using BattleSystem.Healing;
+﻿using BattleSystem.Actions.Heal.Calculators;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Healing
+namespace BattleSystem.Tests.Actions.Heal.Calculators
 {
     /// <summary>
     /// Unit tests for <see cref="AbsoluteHealingCalculator"/>.

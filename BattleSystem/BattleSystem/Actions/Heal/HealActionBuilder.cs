@@ -1,18 +1,18 @@
 ﻿using System;
-using BattleSystem.Healing;
 using BattleSystem.Actions.Targets;
+using BattleSystem.Actions.Heal.Calculators;
 
-namespace BattleSystem.Actions
+namespace BattleSystem.Actions.Heal
 {
     /// <summary>
     /// Builder class for heals.
     /// </summary>
-    public class HealBuilder
+    public class HealActionBuilder
     {
         /// <summary>
         /// The heal to build.
         /// </summary>
-        private readonly Heal _heal;
+        private readonly HealAction _heal;
 
         /// <summary>
         /// Whether the amount of the buff has been set.
@@ -30,18 +30,18 @@ namespace BattleSystem.Actions
         private bool _isActionTargetCalculatorSet;
 
         /// <summary>
-        /// Creates a new <see cref="HealBuilder"/> instance.
+        /// Creates a new <see cref="HealActionBuilder"/> instance.
         /// </summary>
-        public HealBuilder()
+        public HealActionBuilder()
         {
-            _heal = new Heal();
+            _heal = new HealAction();
         }
 
         /// <summary>
         /// Sets the built heal's amount.
         /// </summary>
         /// <param name="amount">The amount.</param>
-        public HealBuilder WithAmount(int amount)
+        public HealActionBuilder WithAmount(int amount)
         {
             _heal.Amount = amount;
             _isAmountSet = true;
@@ -52,7 +52,7 @@ namespace BattleSystem.Actions
         /// Sets the built heal's healing calculator.
         /// </summary>
         /// <param name="healingCalculator">The built heal's healing calculator.</param>
-        public HealBuilder WithHealingCalculator(IHealingCalculator actionTargetCalculator)
+        public HealActionBuilder WithHealingCalculator(IHealingCalculator actionTargetCalculator)
         {
             if (actionTargetCalculator is null)
             {
@@ -67,7 +67,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built heal to use absolute healing.
         /// </summary>
-        public HealBuilder AbsoluteHealing()
+        public HealActionBuilder AbsoluteHealing()
         {
             return WithHealingCalculator(new AbsoluteHealingCalculator());
         }
@@ -75,7 +75,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built heal to use percentage healing.
         /// </summary>
-        public HealBuilder PercentageHealing()
+        public HealActionBuilder PercentageHealing()
         {
             return WithHealingCalculator(new PercentageHealingCalculator());
         }
@@ -84,7 +84,7 @@ namespace BattleSystem.Actions
         /// Sets the built heal's action target calculator.
         /// </summary>
         /// <param name="name">The built heal's action target calculator.</param>
-        public HealBuilder WithActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
+        public HealActionBuilder WithActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
         {
             if (actionTargetCalculator is null)
             {
@@ -99,7 +99,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built buff to target all characters including the user.
         /// </summary>
-        public HealBuilder TargetsAll()
+        public HealActionBuilder TargetsAll()
         {
             return WithActionTargetCalculator(new AllActionTargetCalculator());
         }
@@ -107,7 +107,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built heal to target all other characters.
         /// </summary>
-        public HealBuilder TargetsOthers()
+        public HealActionBuilder TargetsOthers()
         {
             return WithActionTargetCalculator(new OthersActionTargetCalculator());
         }
@@ -115,7 +115,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built heal to target all enemies.
         /// </summary>
-        public HealBuilder TargetsEnemies()
+        public HealActionBuilder TargetsEnemies()
         {
             return WithActionTargetCalculator(new EnemiesActionTargetCalculator());
         }
@@ -123,7 +123,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built heal to target all characters on the user's team.
         /// </summary>
-        public HealBuilder TargetsTeam()
+        public HealActionBuilder TargetsTeam()
         {
             return WithActionTargetCalculator(new TeamActionTargetCalculator());
         }
@@ -131,7 +131,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built heal to target all other characters on the user's team.
         /// </summary>
-        public HealBuilder TargetsAllies()
+        public HealActionBuilder TargetsAllies()
         {
             return WithActionTargetCalculator(new AlliesActionTargetCalculator());
         }
@@ -139,7 +139,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built heal to target the user.
         /// </summary>
-        public HealBuilder TargetsUser()
+        public HealActionBuilder TargetsUser()
         {
             return WithActionTargetCalculator(new UserActionTargetCalculator());
         }
@@ -147,7 +147,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built heal to target the first enemy.
         /// </summary>
-        public HealBuilder TargetsFirstEnemy()
+        public HealActionBuilder TargetsFirstEnemy()
         {
             return WithActionTargetCalculator(new FirstAllyActionTargetCalculator());
         }
@@ -155,7 +155,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Sets the built heal to target the first ally.
         /// </summary>
-        public HealBuilder TargetsFirstAlly()
+        public HealActionBuilder TargetsFirstAlly()
         {
             return WithActionTargetCalculator(new FirstAllyActionTargetCalculator());
         }
@@ -163,7 +163,7 @@ namespace BattleSystem.Actions
         /// <summary>
         /// Returns the built heal.
         /// </summary>
-        public Heal Build()
+        public HealAction Build()
         {
             if (!_isAmountSet)
             {

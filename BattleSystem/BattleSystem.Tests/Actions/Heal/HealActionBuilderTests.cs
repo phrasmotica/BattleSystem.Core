@@ -1,20 +1,20 @@
 ﻿using System;
-using BattleSystem.Actions;
+using BattleSystem.Actions.Heal;
 using NUnit.Framework;
 
-namespace BattleSystem.Tests.Actions
+namespace BattleSystem.Tests.Actions.Heal
 {
     /// <summary>
-    /// Unit tests for <see cref="HealBuilder"/>.
+    /// Unit tests for <see cref="HealActionBuilder"/>.
     /// </summary>
     [TestFixture]
-    public class HealBuilderTests
+    public class HealActionBuilderTests
     {
         [Test]
         public void WithHealingCalculator_NullArgument_Throws()
         {
             // Arrange
-            var builder = new HealBuilder();
+            var builder = new HealActionBuilder();
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => _ = builder.WithHealingCalculator(null));
@@ -24,7 +24,7 @@ namespace BattleSystem.Tests.Actions
         public void WithActionTargetCalculator_NullArgument_Throws()
         {
             // Arrange
-            var builder = new HealBuilder();
+            var builder = new HealActionBuilder();
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => _ = builder.WithActionTargetCalculator(null));
@@ -34,7 +34,7 @@ namespace BattleSystem.Tests.Actions
         public void Build_CallsPresent_Succeeds()
         {
             // Arrange
-            var builder = new HealBuilder()
+            var builder = new HealActionBuilder()
                                 .WithAmount(20)
                                 .AbsoluteHealing()
                                 .TargetsUser();
@@ -50,7 +50,7 @@ namespace BattleSystem.Tests.Actions
         public void Build_MissingHealingCalculator_Throws()
         {
             // Arrange
-            var builder = new HealBuilder()
+            var builder = new HealActionBuilder()
                                 .WithAmount(20)
                                 .TargetsAll();
 
@@ -62,7 +62,7 @@ namespace BattleSystem.Tests.Actions
         public void Build_MissingActionTargetCalculator_Throws()
         {
             // Arrange
-            var builder = new HealBuilder()
+            var builder = new HealActionBuilder()
                                 .WithAmount(20)
                                 .PercentageHealing();
 

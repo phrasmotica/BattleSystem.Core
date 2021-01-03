@@ -3,9 +3,10 @@ using BattleSystem.Actions;
 using BattleSystem.Actions.Buff;
 using BattleSystem.Actions.Damage;
 using BattleSystem.Actions.Damage.Calculators;
+using BattleSystem.Actions.Heal;
+using BattleSystem.Actions.Heal.Calculators;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Characters;
-using BattleSystem.Healing;
 using BattleSystem.Items;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Success;
@@ -198,12 +199,12 @@ namespace BattleSystem.Tests
         /// <summary>
         /// Returns a heal action.
         /// </summary>
-        public static Heal CreateHeal(
+        public static HealAction CreateHeal(
             IHealingCalculator healingCalculator = null,
             IActionTargetCalculator actionTargetCalculator = null,
             int amount = 5)
         {
-            return new HealBuilder()
+            return new HealActionBuilder()
                 .WithAmount(amount)
                 .WithHealingCalculator(healingCalculator ?? new Mock<IHealingCalculator>().Object)
                 .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)

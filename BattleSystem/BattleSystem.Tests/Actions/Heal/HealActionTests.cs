@@ -1,20 +1,19 @@
-﻿using BattleSystem.Characters;
-using BattleSystem.Healing;
-using BattleSystem.Actions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BattleSystem.Actions.Heal;
+using BattleSystem.Actions.Heal.Calculators;
 using BattleSystem.Actions.Targets;
+using BattleSystem.Characters;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace BattleSystem.Tests.Actions
+namespace BattleSystem.Tests.Actions.Heal
 {
     /// <summary>
-    /// Unit tests for <see cref="Heal"/>.
+    /// Unit tests for <see cref="HealAction"/>.
     /// </summary>
     [TestFixture]
-    public class HealTests
+    public class HealActionTests
     {
         [Test]
         public void Use_CalculationSuccessfulWithTargets_HealsTargets()
@@ -31,7 +30,7 @@ namespace BattleSystem.Tests.Actions
                 .Setup(
                     m => m.Calculate(
                         It.IsAny<Character>(),
-                        It.IsAny<Heal>(),
+                        It.IsAny<HealAction>(),
                         It.IsAny<Character>()
                     )
                 )
