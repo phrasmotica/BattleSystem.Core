@@ -3,13 +3,13 @@ using BattleSystem.Characters;
 using BattleSystem.Extensions;
 using BattleSystem.Stats;
 
-namespace BattleSystem.Actions.Results
+namespace BattleSystem.Actions.Buff
 {
     /// <summary>
     /// Class for the result of a buff being applied to a character.
     /// </summary>
     /// <typeparam name="TSource">The type of the source of the buff.</typeparam>
-    public class BuffResult<TSource> : IActionResult<TSource>
+    public class BuffActionResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
         /// Gets or sets whether the buff was applied to the character.

@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Actions.Results;
+using BattleSystem.Actions.Buff;
 using BattleSystem.Items;
 using BattleSystem.Stats;
 
 namespace BattleSystemExample.Extensions.ActionResults
 {
     /// <summary>
-    /// Extension methods for <see cref="BuffResult{TSource}"/>.
+    /// Extension methods for <see cref="BuffActionResult{TSource}"/>.
     /// </summary>
-    public static class BuffResultExtensions
+    public static class BuffActionResultExtensions
     {
         /// <summary>
         /// Returns a string describing this buff result.
         /// </summary>
         /// <param name="buff">The buff result.</param>
-        public static string Describe<TSource>(this BuffResult<TSource> buff)
+        public static string Describe<TSource>(this BuffActionResult<TSource> buff)
         {
             var target = buff.Target;
             if (target.IsDead)
@@ -42,7 +42,7 @@ namespace BattleSystemExample.Extensions.ActionResults
         /// <param name="buff">The buff result.</param>
         /// <param name="statChange">The stat change.</param>
         private static string DescribeStatChange<TSource>(
-            BuffResult<TSource> buff,
+            BuffActionResult<TSource> buff,
             KeyValuePair<StatCategory, double> statChange)
         {
             var percentage = (int) (statChange.Value * 100);

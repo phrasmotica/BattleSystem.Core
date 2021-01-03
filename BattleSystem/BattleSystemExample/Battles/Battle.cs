@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Actions.Results;
+using BattleSystem.Actions;
+using BattleSystem.Actions.Buff;
+using BattleSystem.Actions.Damage;
+using BattleSystem.Actions.Heal;
+using BattleSystem.Actions.Protect;
+using BattleSystem.Actions.ProtectLimitChange;
 using BattleSystem.Characters;
 using BattleSystem.Moves;
 using BattleSystem.Moves.Success;
@@ -198,35 +203,35 @@ namespace BattleSystemExample.Battles
             }
             else switch (result)
             {
-                case DamageResult<TSource> dr:
+                case DamageActionResult<TSource> dr:
                     var damageDescription = dr.Describe();
                     if (damageDescription is not null)
                     {
                         _gameOutput.WriteLine(damageDescription);
                     }
                     break;
-                case BuffResult<TSource> br:
+                case BuffActionResult<TSource> br:
                     var buffDescription = br.Describe();
                     if (buffDescription is not null)
                     {
                         _gameOutput.WriteLine(buffDescription);
                     }
                     break;
-                case HealResult<TSource> hr:
+                case HealActionResult<TSource> hr:
                     var healDescription = hr.Describe();
                     if (healDescription is not null)
                     {
                         _gameOutput.WriteLine(healDescription);
                     }
                     break;
-                case ProtectLimitChangeResult<TSource> plcr:
+                case ProtectLimitChangeActionResult<TSource> plcr:
                     var plcrDescription = plcr.Describe();
                     if (plcrDescription is not null)
                     {
                         _gameOutput.WriteLine(plcrDescription);
                     }
                     break;
-                case ProtectResult<TSource> pr:
+                case ProtectActionResult<TSource> pr:
                     var protectDescription = pr.Describe();
                     if (protectDescription is not null)
                     {

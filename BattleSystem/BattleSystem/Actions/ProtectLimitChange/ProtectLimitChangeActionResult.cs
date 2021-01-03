@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
 
-namespace BattleSystem.Actions.Results
+namespace BattleSystem.Actions.ProtectLimitChange
 {
     /// <summary>
     /// Class for the result of a protect limit change action being applied to a character.
     /// </summary>
     /// <typeparam name="TSource">The type of the source of the protect limit change action.</typeparam>
-    public class ProtectLimitChangeResult<TSource> : IActionResult<TSource>
+    public class ProtectLimitChangeActionResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
         /// Gets or sets whether the protect limit change action was applied to the character.

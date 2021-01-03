@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
-using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Success;
 using System.Linq;
+using BattleSystem.Actions;
 
 namespace BattleSystem.Moves
 {

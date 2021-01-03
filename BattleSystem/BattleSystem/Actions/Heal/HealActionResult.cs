@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
 
-namespace BattleSystem.Actions.Results
+namespace BattleSystem.Actions.Heal
 {
     /// <summary>
     /// Class for the result of a heal being applied to a character.
     /// </summary>
     /// <typeparam name="TSource">The type of the source of the heal.</typeparam>
-    public class HealResult<TSource> : IActionResult<TSource>
+    public class HealActionResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
         /// Gets or sets whether the heal was applied to the character.

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using BattleSystem.Actions.Buff;
+using BattleSystem.Actions.Damage;
+using BattleSystem.Actions.Heal;
+using BattleSystem.Actions.Protect;
+using BattleSystem.Actions.ProtectLimitChange;
 using BattleSystem.Items;
 using BattleSystem.Items.Results;
 using BattleSystem.Moves;
-using BattleSystem.Actions.Results;
 using BattleSystem.Stats;
 
 namespace BattleSystem.Characters
@@ -179,17 +183,17 @@ namespace BattleSystem.Characters
         /// <param name="damage">The incoming damage.</param>
         /// <param name="user">The character who inflicted the incoming damage.</param>
         /// <typeparam name="TSource">The type of the source of the incoming damage.</typeparam>
-        public virtual DamageResult<TSource> ReceiveDamage<TSource>(
+        public virtual DamageActionResult<TSource> ReceiveDamage<TSource>(
             int damage,
             Character user)
         {
-            DamageResult<TSource> result;
+            DamageActionResult<TSource> result;
 
             if (CanProtectFrom(user))
             {
                 var protectUser = ConsumeProtect();
 
-                result =  new DamageResult<TSource>
+                result =  new DamageActionResult<TSource>
                 {
                     Applied = false,
                     User = user,
@@ -205,7 +209,7 @@ namespace BattleSystem.Characters
                 CurrentHealth -= damage;
                 var endingHealth = CurrentHealth;
 
-                result = new DamageResult<TSource>
+                result = new DamageActionResult<TSource>
                 {
                     Applied = true,
                     User = user,
@@ -226,17 +230,17 @@ namespace BattleSystem.Characters
         /// <param name="multipliers">The effects of incoming buff.</param>
         /// <param name="user">The character who used the incoming buff.</param>
         /// <typeparam name="TSource">The type of the source of the incoming buff.</typeparam>
-        public virtual BuffResult<TSource> ReceiveBuff<TSource>(
+        public virtual BuffActionResult<TSource> ReceiveBuff<TSource>(
             IDictionary<StatCategory, double> multipliers,
             Character user)
         {
-            BuffResult<TSource> result;
+            BuffActionResult<TSource> result;
 
             if (CanProtectFrom(user))
             {
                 var protectUser = ConsumeProtect();
 
-                result = new BuffResult<TSource>
+                result = new BuffActionResult<TSource>
                 {
                     Applied = false,
                     User = user,
@@ -275,7 +279,7 @@ namespace BattleSystem.Characters
 
                 var endingMultipliers = Stats.MultipliersAsDictionary();
 
-                result = new BuffResult<TSource>
+                result = new BuffActionResult<TSource>
                 {
                     Applied = true,
                     User = user,
@@ -296,17 +300,17 @@ namespace BattleSystem.Characters
         /// <param name="amount">The healing amount.</param>
         /// <param name="user">The character who used the incoming heal.</param>
         /// <typeparam name="TSource">The type of the source of the incoming heal.</typeparam>
-        public virtual HealResult<TSource> Heal<TSource>(
+        public virtual HealActionResult<TSource> Heal<TSource>(
             int amount,
             Character user)
         {
-            HealResult<TSource> result;
+            HealActionResult<TSource> result;
 
             if (CanProtectFrom(user))
             {
                 var protectUser = ConsumeProtect();
 
-                result = new HealResult<TSource>
+                result = new HealActionResult<TSource>
                 {
                     Applied = false,
                     User = user,
@@ -322,7 +326,7 @@ namespace BattleSystem.Characters
                 CurrentHealth += Math.Min(MaxHealth - CurrentHealth, amount);
                 var endingHealth = CurrentHealth;
 
-                result = new HealResult<TSource>
+                result = new HealActionResult<TSource>
                 {
                     Applied = true,
                     User = user,
@@ -342,15 +346,15 @@ namespace BattleSystem.Characters
         /// </summary>
         /// <param name="user">The character who protected this character.</param>
         /// <typeparam name="TSource">The type of the source of the incoming protect action.</typeparam>
-        public virtual ProtectResult<TSource> AddProtect<TSource>(Character user)
+        public virtual ProtectActionResult<TSource> AddProtect<TSource>(Character user)
         {
-            ProtectResult<TSource> result;
+            ProtectActionResult<TSource> result;
 
             if (CanProtectFrom(user))
             {
                 var protectUser = ConsumeProtect();
 
-                result = new ProtectResult<TSource>
+                result = new ProtectActionResult<TSource>
                 {
                     Applied = false,
                     User = user,
@@ -362,7 +366,7 @@ namespace BattleSystem.Characters
             }
             else if (ProtectCount >= ProtectLimit)
             {
-                result = new ProtectResult<TSource>
+                result = new ProtectActionResult<TSource>
                 {
                     Applied = false,
                     User = user,
@@ -374,7 +378,7 @@ namespace BattleSystem.Characters
             {
                 ProtectQueue.Add(user);
 
-                result = new ProtectResult<TSource>
+                result = new ProtectActionResult<TSource>
                 {
                     Applied = true,
                     User = user,
@@ -393,17 +397,17 @@ namespace BattleSystem.Characters
         /// <param name="amount">The amount.</param>
         /// <param name="user">The character who caused this protect limit change.</param>
         /// <typeparam name="TSource">The type of the source of the incoming protect limit change.</typeparam>
-        public ProtectLimitChangeResult<TSource> ChangeProtectLimit<TSource>(
+        public ProtectLimitChangeActionResult<TSource> ChangeProtectLimit<TSource>(
             int amount,
             Character user)
         {
-            ProtectLimitChangeResult<TSource> result;
+            ProtectLimitChangeActionResult<TSource> result;
 
             if (CanProtectFrom(user))
             {
                 var protectUser = ConsumeProtect();
 
-                result = new ProtectLimitChangeResult<TSource>
+                result = new ProtectLimitChangeActionResult<TSource>
                 {
                     Applied = false,
                     User = user,
@@ -417,7 +421,7 @@ namespace BattleSystem.Characters
             {
                 ProtectLimit += amount;
 
-                result = new ProtectLimitChangeResult<TSource>
+                result = new ProtectLimitChangeActionResult<TSource>
                 {
                     Applied = true,
                     User = user,

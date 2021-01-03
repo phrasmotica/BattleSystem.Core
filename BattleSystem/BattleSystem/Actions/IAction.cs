@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Actions.Results;
 using BattleSystem.Characters;
 
 namespace BattleSystem.Actions

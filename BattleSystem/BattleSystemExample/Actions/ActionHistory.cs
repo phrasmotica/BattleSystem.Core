@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Actions.Results;
+using BattleSystem.Actions;
+using BattleSystem.Actions.Damage;
 using BattleSystem.Characters;
 using BattleSystem.Items;
 using BattleSystem.Moves;
@@ -70,14 +71,14 @@ namespace BattleSystemExample.Actions
         /// </summary>
         /// <param name="character">The affected character.</param>
         /// <param name="turnNumber">The turn number.</param>
-        public DamageResult<Move> LastMoveDamageResultAgainst(Character character)
+        public DamageActionResult<Move> LastMoveDamageResultAgainst(Character character)
         {
             return MoveActions.Where(a => a.turnNumber == TurnCounter)
                               .Select(a => a.result)
                               .Where(a => a.Target == character)
                               .Where(a => a.Applied)
-                              .Where(a => a is DamageResult<Move>)
-                              .LastOrDefault() as DamageResult<Move>;
+                              .Where(a => a is DamageActionResult<Move>)
+                              .LastOrDefault() as DamageActionResult<Move>;
         }
     }
 }

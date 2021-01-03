@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
 
-namespace BattleSystem.Actions.Results
+namespace BattleSystem.Actions.Damage
 {
     /// <summary>
     /// Class for the result of damage being applied to a character.
     /// </summary>
     /// <typeparam name="TSource">The type of the source of the damage.</typeparam>
-    public class DamageResult<TSource> : IActionResult<TSource>
+    public class DamageActionResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
         /// Gets or sets whether the damage was applied to the character.

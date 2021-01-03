@@ -1,4 +1,4 @@
-﻿using BattleSystem.Actions.Results;
+﻿using BattleSystem.Actions;
 
 namespace BattleSystemExample.Extensions.ActionResults
 {

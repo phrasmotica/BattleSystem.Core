@@ -3,7 +3,6 @@ using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Moves;
 using BattleSystem.Actions;
-using BattleSystem.Actions.Results;
 using Moq;
 using NUnit.Framework;
 

@@ -1,18 +1,18 @@
-﻿using BattleSystem.Actions.Results;
+﻿using BattleSystem.Actions.Heal;
 using BattleSystem.Items;
 
 namespace BattleSystemExample.Extensions.ActionResults
 {
     /// <summary>
-    /// Extension methods for <see cref="HealResult{TSource}"/>.
+    /// Extension methods for <see cref="HealActionResult{TSource}"/>.
     /// </summary>
-    public static class HealResultExtensions
+    public static class HealActionResultExtensions
     {
         /// <summary>
         /// Returns a string describing this heal result.
         /// </summary>
         /// <param name="heal">The heal result.</param>
-        public static string Describe<TSource>(this HealResult<TSource> heal)
+        public static string Describe<TSource>(this HealActionResult<TSource> heal)
         {
             var target = heal.Target;
 

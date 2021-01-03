@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BattleSystem.Actions.Results
+namespace BattleSystem.Actions
 {
     /// <summary>
     /// Represents the result of an action being used.

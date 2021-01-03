@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Actions.Results;
+using BattleSystem.Actions;
 using BattleSystem.Items;
 
 namespace BattleSystemExample.Battles

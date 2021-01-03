@@ -1,19 +1,19 @@
-﻿using BattleSystem.Actions.Results;
+﻿using BattleSystem.Actions.Damage;
 using BattleSystem.Items;
 using BattleSystemExample.Actions.Tags;
 
 namespace BattleSystemExample.Extensions.ActionResults
 {
     /// <summary>
-    /// Extension methods for <see cref="DamageResult{TSource}"/>.
+    /// Extension methods for <see cref="DamageActionResult{TSource}"/>.
     /// </summary>
-    public static class DamageResultExtensions
+    public static class DamageActionResultExtensions
     {
         /// <summary>
         /// Returns a string describing this damage result.
         /// </summary>
         /// <param name="damage">The damage result.</param>
-        public static string Describe<TSource>(this DamageResult<TSource> damage)
+        public static string Describe<TSource>(this DamageActionResult<TSource> damage)
         {
             var target = damage.Target;
             var amount = damage.Amount;
@@ -76,7 +76,7 @@ namespace BattleSystemExample.Extensions.ActionResults
         /// Returns whether this damage result was a retaliation.
         /// </summary>
         /// <param name="damage">The damage result.</param>
-        public static bool IsRetaliation<TSource>(this DamageResult<TSource> damage)
+        public static bool IsRetaliation<TSource>(this DamageActionResult<TSource> damage)
         {
             return damage.Tags.Contains(DamageTags.Retaliation);
         }

@@ -1,18 +1,18 @@
-﻿using BattleSystem.Actions.Results;
+﻿using BattleSystem.Actions.ProtectLimitChange;
 using BattleSystem.Items;
 
 namespace BattleSystemExample.Extensions.ActionResults
 {
     /// <summary>
-    /// Extension methods for <see cref="ProtectLimitChangeResult{TSource}"/>.
+    /// Extension methods for <see cref="ProtectLimitChangeActionResult{TSource}"/>.
     /// </summary>
-    public static class ProtectLimitChangeResultExtensions
+    public static class ProtectLimitChangeActionResultExtensions
     {
         /// <summary>
         /// Returns a string describing this protect limit change result.
         /// </summary>
         /// <param name="result">The protect limit change result.</param>
-        public static string Describe<TSource>(this ProtectLimitChangeResult<TSource> result)
+        public static string Describe<TSource>(this ProtectLimitChangeActionResult<TSource> result)
         {
             var target = result.Target;
             if (target.IsDead)

@@ -1,18 +1,18 @@
-﻿using BattleSystem.Actions.Results;
+﻿using BattleSystem.Actions.Protect;
 using BattleSystem.Items;
 
 namespace BattleSystemExample.Extensions.ActionResults
 {
     /// <summary>
-    /// Extension methods for <see cref="ProtectResult{TSource}"/>.
+    /// Extension methods for <see cref="ProtectActionResult{TSource}"/>.
     /// </summary>
-    public static class ProtectResultExtensions
+    public static class ProtectActionResultExtensions
     {
         /// <summary>
         /// Returns a string describing this protect result.
         /// </summary>
         /// <param name="protect">The protect result.</param>
-        public static string Describe<TSource>(this ProtectResult<TSource> protect)
+        public static string Describe<TSource>(this ProtectActionResult<TSource> protect)
         {
             var target = protect.Target;
             if (target.IsDead)

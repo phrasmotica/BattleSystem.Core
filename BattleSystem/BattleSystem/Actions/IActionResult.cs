@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
 
-namespace BattleSystem.Actions.Results
+namespace BattleSystem.Actions
 {
     /// <summary>
     /// Interface for the result of a action being applied to a character.

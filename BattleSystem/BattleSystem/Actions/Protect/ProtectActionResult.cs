@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Characters;
 
-namespace BattleSystem.Actions.Results
+namespace BattleSystem.Actions.Protect
 {
     /// <summary>
     /// Class for the result of a protect action being applied to a character.
     /// </summary>
     /// <typeparam name="TSource">The type of the source of the protect action.</typeparam>
-    public class ProtectResult<TSource> : IActionResult<TSource>
+    public class ProtectActionResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
         /// Gets or sets whether the protect action was applied to the character.
