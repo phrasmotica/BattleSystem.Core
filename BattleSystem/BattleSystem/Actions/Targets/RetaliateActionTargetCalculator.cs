@@ -22,6 +22,12 @@ namespace BattleSystem.Actions.Targets
                 return (false, Enumerable.Empty<Character>());
             }
 
+            if (result.User == user)
+            {
+                // cannot retaliate against oneself
+                return (false, Enumerable.Empty<Character>());
+            }
+
             return (true, new[] { result.User });
         }
     }

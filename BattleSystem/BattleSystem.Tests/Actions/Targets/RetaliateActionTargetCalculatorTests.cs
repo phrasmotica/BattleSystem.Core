@@ -38,6 +38,32 @@ namespace BattleSystem.Tests.Actions.Targets
         }
 
         [Test]
+        public void Calculate_LastDamageFromSelf_ReturnsNoTarget()
+        {
+            // Arrange
+            var calculator = new RetaliateActionTargetCalculator();
+
+            var user = TestHelpers.CreateBasicCharacter(name: "wire");
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter(name: "the"),
+                TestHelpers.CreateBasicCharacter(name: "15th"),
+            };
+
+            user.ReceiveDamage<Move>(10, user);
+
+            // Act
+            var (success, targets) = calculator.Calculate(user, otherCharacters);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.False);
+                Assert.That(targets, Is.Empty);
+            });
+        }
+
+        [Test]
         public void Calculate_UserNotDamaged_ReturnsNoTarget()
         {
             // Arrange
