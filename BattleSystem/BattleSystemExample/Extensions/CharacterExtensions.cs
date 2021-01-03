@@ -69,13 +69,13 @@ namespace BattleSystemExample.Extensions
                 {
                     a.Action.SetTargets(character, otherCharacters);
 
-                    var (_, actionResults) = a.Action.Use<Item>(character, otherCharacters);
-                    foreach (var r in actionResults)
+                    var actionUseResult = a.Action.Use<Item>(character, otherCharacters);
+                    foreach (var r in actionUseResult.Results)
                     {
                         r.Source = character.Item;
                     }
 
-                    result.ItemActionsResults.Add(actionResults);
+                    result.ItemActionsResults.Add(actionUseResult);
                 }
             }
         }

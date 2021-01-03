@@ -90,7 +90,7 @@ namespace BattleSystem.Actions.Damage
         }
 
         /// <inheritdoc />
-        public virtual (bool success, IEnumerable<IActionResult<TSource>> results) Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
+        public virtual ActionUseResult<TSource> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
             if (_actionTargetCalculator.IsReactive)
             {
@@ -99,7 +99,11 @@ namespace BattleSystem.Actions.Damage
 
             if (!_targetsSet)
             {
-                return (false, Enumerable.Empty<IActionResult<TSource>>());
+                return new ActionUseResult<TSource>
+                {
+                    Success = false,
+                    Results = Enumerable.Empty<IActionResult<TSource>>(),
+                };
             }
 
             var results = new List<IActionResult<TSource>>();
@@ -113,7 +117,11 @@ namespace BattleSystem.Actions.Damage
 
             _targetsSet = false;
 
-            return (true, results);
+            return new ActionUseResult<TSource>
+            {
+                Success = true,
+                Results = results,
+            };
         }
 
         /// <inheritdoc />

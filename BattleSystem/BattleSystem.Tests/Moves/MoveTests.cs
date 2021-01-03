@@ -89,7 +89,7 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var move = TestHelpers.CreateMove(
                 maxUses: 5,
-                moveActions: new Mock<IAction>().Object);
+                moveActions: TestHelpers.CreateDamage());
 
             var user = TestHelpers.CreateBasicCharacter();
             var otherCharacters = new[]
@@ -144,7 +144,11 @@ namespace BattleSystem.Tests.Moves
                 )
                 .Returns((Character _, IEnumerable<Character> otherCharacters) =>
                 {
-                    return (true, new[] { MockActionResult(otherCharacters.First()) });
+                    return new ActionUseResult<Move>
+                    {
+                        Success = true,
+                        Results = new[] { MockActionResult(otherCharacters.First()) },
+                    };
                 });
 
             var secondAction = new Mock<IAction>();
@@ -166,7 +170,11 @@ namespace BattleSystem.Tests.Moves
                 )
                 .Returns((Character _, IEnumerable<Character> otherCharacters) =>
                 {
-                    return (true, otherCharacters.Select(MockActionResult));
+                    return new ActionUseResult<Move>
+                    {
+                        Success = true,
+                        Results = otherCharacters.Select(MockActionResult),
+                    };
                 });
 
             // second action not applying to other characters means third and fourth
@@ -183,12 +191,12 @@ namespace BattleSystem.Tests.Moves
             Assert.Multiple(() =>
             {
                 // first action should be applied to first other character
-                var firstActionResults = actionsResults.ToArray()[0].ToArray();
+                var firstActionResults = actionsResults.ToArray()[0].Results.ToArray();
                 Assert.That(firstActionResults.Length, Is.EqualTo(1));
                 Assert.That(firstActionResults[0].Applied, Is.True);
 
                 // second action should be applied to both other characters
-                var secondActionResults = actionsResults.ToArray()[1].ToArray();
+                var secondActionResults = actionsResults.ToArray()[1].Results.ToArray();
                 Assert.That(secondActionResults.Length, Is.EqualTo(2));
                 Assert.That(secondActionResults[0].Applied, Is.True);
                 Assert.That(secondActionResults[1].Applied, Is.True);
@@ -234,7 +242,11 @@ namespace BattleSystem.Tests.Moves
                     )
                     .Returns((Character _, IEnumerable<Character> otherCharacters) =>
                     {
-                        return (true, otherCharacters.Select(c => MockActionResult(applied, c)));
+                        return new ActionUseResult<Move>
+                        {
+                            Success = true,
+                            Results = otherCharacters.Select(c => MockActionResult(applied, c)),
+                        };
                     });
 
                 return action.Object;
@@ -254,18 +266,18 @@ namespace BattleSystem.Tests.Moves
             Assert.Multiple(() =>
             {
                 // first action should be executed and applied to target
-                var firstActionResults = actionsResults.ToArray()[0].ToArray();
+                var firstActionResults = actionsResults.ToArray()[0].Results.ToArray();
                 Assert.That(firstActionResults.Length, Is.EqualTo(1));
                 Assert.That(firstActionResults[0].Applied, Is.True);
 
                 // second action should be executed but not applied to target
-                var secondActionResults = actionsResults.ToArray()[1].ToArray();
+                var secondActionResults = actionsResults.ToArray()[1].Results.ToArray();
                 Assert.That(secondActionResults.Length, Is.EqualTo(1));
                 Assert.That(secondActionResults[0].Applied, Is.False);
 
                 // third and fourth actions should not be executed at all
-                Assert.That(actionsResults.ToArray()[2], Is.Empty);
-                Assert.That(actionsResults.ToArray()[3], Is.Empty);
+                Assert.That(actionsResults.ToArray()[2].Results, Is.Empty);
+                Assert.That(actionsResults.ToArray()[3].Results, Is.Empty);
             });
         }
     }

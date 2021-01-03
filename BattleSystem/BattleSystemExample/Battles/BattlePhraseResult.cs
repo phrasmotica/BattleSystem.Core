@@ -12,14 +12,14 @@ namespace BattleSystemExample.Battles
         /// <summary>
         /// Gets or sets the list of action results from items.
         /// </summary>
-        public List<IEnumerable<IActionResult<Item>>> ItemActionsResults { get; private set; }
+        public List<ActionUseResult<Item>> ItemActionsResults { get; private set; }
 
         /// <summary>
         /// Creates a new <see cref="BattlePhaseResult"/> instance.
         /// </summary>
         public BattlePhaseResult()
         {
-            ItemActionsResults = new List<IEnumerable<IActionResult<Item>>>();
+            ItemActionsResults = new List<ActionUseResult<Item>>();
         }
     }
 }

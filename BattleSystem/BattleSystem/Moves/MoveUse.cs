@@ -2,6 +2,7 @@
 using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
 using BattleSystem.Moves.Success;
+using System.Linq;
 
 namespace BattleSystem.Moves
 {
@@ -33,9 +34,23 @@ namespace BattleSystem.Moves
         public bool HasResult => Result.HasValue;
 
         /// <summary>
-        /// Gets or sets the results of each action in the move use.
+        /// Gets or sets the result of each action use in the move use.
         /// </summary>
-        public IEnumerable<IEnumerable<IActionResult<Move>>> ActionsResults { get; private set; }
+        public IEnumerable<ActionUseResult<Move>> ActionsResults { get; private set; }
+
+        /// <summary>
+        /// Gets whether all the targets of the actions in this move use were
+        /// dead before the move was used.
+        /// </summary>
+        public bool TargetsAllDead
+        {
+            get
+            {
+                return Result == MoveUseResult.Success
+                    && ActionsResults is not null
+                    && ActionsResults.All(ars => !ars.Results.Any());
+            }
+        }
 
         /// <summary>
         /// Sets the targets.

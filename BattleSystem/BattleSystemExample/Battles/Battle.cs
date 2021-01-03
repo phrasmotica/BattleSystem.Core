@@ -126,11 +126,7 @@ namespace BattleSystemExample.Battles
         /// <param name="moveUse">The move use.</param>
         private void ShowMoveUse(MoveUse moveUse)
         {
-            // don't show use if move was successful but all targets were dead
-            var targetsAllDead = moveUse.Result == MoveUseResult.Success
-                              && moveUse.ActionsResults.All(ars => !ars.Any());
-
-            if (moveUse.HasResult && !targetsAllDead)
+            if (moveUse.HasResult && !moveUse.TargetsAllDead)
             {
                 switch (moveUse.Result)
                 {
@@ -143,9 +139,9 @@ namespace BattleSystemExample.Battles
                         break;
                 }
 
-                foreach (var actionResults in moveUse.ActionsResults)
+                foreach (var actionResult in moveUse.ActionsResults)
                 {
-                    foreach (var result in actionResults)
+                    foreach (var result in actionResult.Results)
                     {
                         ShowResult(result);
                     }
@@ -209,9 +205,9 @@ namespace BattleSystemExample.Battles
         /// <param name="battlePhaseResult">The battle phase result.</param>
         private void ShowBattlePhaseResult(BattlePhaseResult battlePhaseResult)
         {
-            foreach (var actionResults in battlePhaseResult.ItemActionsResults)
+            foreach (var actionUseResult in battlePhaseResult.ItemActionsResults)
             {
-                foreach (var result in actionResults)
+                foreach (var result in actionUseResult.Results)
                 {
                     ShowResult(result);
                 }

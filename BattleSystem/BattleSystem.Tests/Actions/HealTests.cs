@@ -65,13 +65,13 @@ namespace BattleSystem.Tests.Actions
             heal.SetTargets(user, otherCharacters);
 
             // Act
-            var (success, results) = heal.Use<string>(user, otherCharacters);
+            var result = heal.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(success, Is.True);
-                Assert.That(results, Is.Not.Empty);
+                Assert.That(result.Success, Is.True);
+                Assert.That(result.Results, Is.Not.Empty);
             });
         }
 
@@ -91,13 +91,13 @@ namespace BattleSystem.Tests.Actions
             heal.SetTargets(user, otherCharacters);
 
             // Act
-            var (success, results) = heal.Use<string>(user, otherCharacters);
+            var result = heal.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(success, Is.True);
-                Assert.That(results, Is.Empty);
+                Assert.That(result.Success, Is.True);
+                Assert.That(result.Results, Is.Empty);
             });
         }
 
@@ -127,13 +127,13 @@ namespace BattleSystem.Tests.Actions
             heal.SetTargets(user, otherCharacters);
 
             // Act
-            var (success, results) = heal.Use<string>(user, otherCharacters);
+            var result = heal.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(success, Is.True);
-                Assert.That(results, Is.Empty);
+                Assert.That(result.Success, Is.True);
+                Assert.That(result.Results, Is.Empty);
             });
         }
 
@@ -150,13 +150,13 @@ namespace BattleSystem.Tests.Actions
             var heal = TestHelpers.CreateHeal();
 
             // Act
-            var (success, results) = heal.Use<string>(user, otherCharacters);
+            var result = heal.Use<string>(user, otherCharacters);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(success, Is.False);
-                Assert.That(results, Is.Empty);
+                Assert.That(result.Success, Is.False);
+                Assert.That(result.Results, Is.Empty);
             });
         }
     }
