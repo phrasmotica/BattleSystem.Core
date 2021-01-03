@@ -203,6 +203,7 @@ namespace BattleSystem.Characters
                     Target = this,
                     TargetProtected = true,
                     ProtectUser = protectUser,
+                    Tags = new HashSet<string>(),
                 };
             }
             else
@@ -219,6 +220,7 @@ namespace BattleSystem.Characters
                     TargetProtected = false,
                     StartingHealth = startingHealth,
                     EndingHealth = endingHealth,
+                    Tags = new HashSet<string>(),
                 };
             }
 
@@ -249,6 +251,7 @@ namespace BattleSystem.Characters
                     Target = this,
                     TargetProtected = true,
                     ProtectUser = protectUser,
+                    Tags = new HashSet<string>(),
                 };
             }
             else
@@ -288,6 +291,7 @@ namespace BattleSystem.Characters
                     TargetProtected = false,
                     StartingStatMultipliers = startingMultipliers,
                     EndingStatMultipliers = endingMultipliers,
+                    Tags = new HashSet<string>(),
                 };
             }
 
@@ -318,6 +322,7 @@ namespace BattleSystem.Characters
                     Target = this,
                     TargetProtected = true,
                     ProtectUser = protectUser,
+                    Tags = new HashSet<string>(),
                 };
             }
             else
@@ -334,6 +339,7 @@ namespace BattleSystem.Characters
                     TargetProtected = false,
                     StartingHealth = startingHealth,
                     EndingHealth = endingHealth,
+                    Tags = new HashSet<string>(),
                 };
             }
 
@@ -361,6 +367,7 @@ namespace BattleSystem.Characters
                     Target = this,
                     TargetProtected = true,
                     ProtectUser = protectUser,
+                    Tags = new HashSet<string>(),
                 };
             }
             else if (ProtectCount >= ProtectLimit)
@@ -370,6 +377,7 @@ namespace BattleSystem.Characters
                     Applied = false,
                     User = user,
                     Target = this,
+                    Tags = new HashSet<string>(),
                 };
             }
             else
@@ -382,6 +390,7 @@ namespace BattleSystem.Characters
                     User = user,
                     Target = this,
                     TargetProtected = false,
+                    Tags = new HashSet<string>(),
                 };
             }
 
@@ -412,6 +421,7 @@ namespace BattleSystem.Characters
                     Target = this,
                     TargetProtected = true,
                     ProtectUser = protectUser,
+                    Tags = new HashSet<string>(),
                 };
             }
             else
@@ -425,6 +435,7 @@ namespace BattleSystem.Characters
                     Target = this,
                     TargetProtected = false,
                     Amount = amount,
+                    Tags = new HashSet<string>(),
                 };
             }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Actions.Results;
@@ -56,10 +55,9 @@ namespace BattleSystem.Actions.Damage
         public List<PowerTransform> PowerTransforms { get; private set; }
 
         /// <summary>
-        /// Gets or sets whether the damage is in retaliation to some
-        /// previously-received damage.
+        /// Gets or sets the tags for the damage action.
         /// </summary>
-        public bool IsRetaliation { get; set; }
+        public HashSet<string> Tags { get; set; }
 
         /// <summary>
         /// Creates a new <see cref="Damage"/>.
@@ -67,6 +65,7 @@ namespace BattleSystem.Actions.Damage
         public Damage()
         {
             PowerTransforms = new List<PowerTransform>();
+            Tags = new HashSet<string>();
         }
 
         /// <summary>
@@ -124,7 +123,12 @@ namespace BattleSystem.Actions.Damage
             {
                 var amount = _damageCalculator.Calculate(user, this, target);
                 var result = target.ReceiveDamage<TSource>(amount, user);
-                result.IsRetaliation = IsRetaliation;
+
+                foreach (var tag in Tags)
+                {
+                    result.Tags.Add(tag);
+                }
+
                 results.Add(result);
             }
 

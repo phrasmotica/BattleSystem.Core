@@ -50,12 +50,6 @@ namespace BattleSystem.Actions.Results
         public int Amount => StartingHealth - EndingHealth;
 
         /// <summary>
-        /// Gets or sets whether the damage was in retaliation to some
-        /// previously-received damage.
-        /// </summary>
-        public bool IsRetaliation { get; set; }
-
-        /// <summary>
         /// Gets whether the target died from the damage.
         /// </summary>
         public bool TargetDied => EndingHealth <= 0;

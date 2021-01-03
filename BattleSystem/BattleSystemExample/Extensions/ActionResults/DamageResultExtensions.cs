@@ -1,5 +1,6 @@
 ﻿using BattleSystem.Actions.Results;
 using BattleSystem.Items;
+using BattleSystemExample.Actions.Tags;
 
 namespace BattleSystemExample.Extensions.ActionResults
 {
@@ -39,7 +40,7 @@ namespace BattleSystemExample.Extensions.ActionResults
 
             if (damage.TargetDied)
             {
-                if (damage.IsRetaliation)
+                if (damage.IsRetaliation())
                 {
                     return damage.Source switch
                     {
@@ -55,7 +56,7 @@ namespace BattleSystemExample.Extensions.ActionResults
                 };
             }
 
-            if (damage.IsRetaliation)
+            if (damage.IsRetaliation())
             {
                 return damage.Source switch
                 {
@@ -69,6 +70,15 @@ namespace BattleSystemExample.Extensions.ActionResults
                 Item item => $"{target.Name} took {amount} damage from {user.Name}'s {item.Name}!",
                 _ => $"{target.Name} took {amount} damage!",
             };
+        }
+
+        /// <summary>
+        /// Returns whether this damage result was a retaliation.
+        /// </summary>
+        /// <param name="damage">The damage result.</param>
+        public static bool IsRetaliation<TSource>(this DamageResult<TSource> damage)
+        {
+            return damage.Tags.Contains(DamageTags.Retaliation);
         }
     }
 }

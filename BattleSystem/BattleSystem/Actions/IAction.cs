@@ -10,6 +10,11 @@ namespace BattleSystem.Actions
     public interface IAction
     {
         /// <summary>
+        /// Gets or sets the tags for the action.
+        /// </summary>
+        HashSet<string> Tags { get; set; }
+
+        /// <summary>
         /// Sets the targets for the action's next use.
         /// </summary>
         /// <param name="user">The user of the action.</param>

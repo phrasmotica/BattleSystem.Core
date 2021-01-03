@@ -28,6 +28,19 @@ namespace BattleSystem.Actions
         private bool _targetsSet;
 
         /// <summary>
+        /// Gets or sets the tags for the protect action.
+        /// </summary>
+        public HashSet<string> Tags { get; set; }
+
+        /// <summary>
+        /// Creates a new <see cref="Protect"/> instance.
+        /// </summary>
+        public Protect()
+        {
+            Tags = new HashSet<string>();
+        }
+
+        /// <summary>
         /// Sets the action target calculator for this protect action.
         /// </summary>
         /// <param name="actionTargetCalculator">The action target calculator.</param>
@@ -72,6 +85,12 @@ namespace BattleSystem.Actions
             foreach (var target in _targets.Where(c => !c.IsDead))
             {
                 var result = target.AddProtect<TSource>(user);
+
+                foreach (var tag in Tags)
+                {
+                    result.Tags.Add(tag);
+                }
+
                 results.Add(result);
             }
 

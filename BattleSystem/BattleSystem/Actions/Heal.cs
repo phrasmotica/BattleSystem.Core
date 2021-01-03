@@ -39,9 +39,17 @@ namespace BattleSystem.Actions
         public int Amount { get; set; }
 
         /// <summary>
+        /// Gets or sets the tags for the buff.
+        /// </summary>
+        public HashSet<string> Tags { get; set; }
+
+        /// <summary>
         /// Creates a new <see cref="Heal"/>.
         /// </summary>
-        public Heal() { }
+        public Heal()
+        {
+            Tags = new HashSet<string>();
+        }
 
         /// <summary>
         /// Sets the healing calculator for this heal.
@@ -98,6 +106,12 @@ namespace BattleSystem.Actions
             {
                 var amount = _healingCalculator.Calculate(user, this, target);
                 var result = target.Heal<TSource>(amount, user);
+
+                foreach (var tag in Tags)
+                {
+                    result.Tags.Add(tag);
+                }
+
                 results.Add(result);
             }
 

@@ -33,6 +33,19 @@ namespace BattleSystem.Actions
         public int Amount { get; set; }
 
         /// <summary>
+        /// Gets or sets the tags for the protect limit change.
+        /// </summary>
+        public HashSet<string> Tags { get; set; }
+
+        /// <summary>
+        /// Creates a new <see cref="ProtectLimitChange"/> instance.
+        /// </summary>
+        public ProtectLimitChange()
+        {
+            Tags = new HashSet<string>();
+        }
+
+        /// <summary>
         /// Sets the action target calculator for this protect limit change.
         /// </summary>
         /// <param name="actionTargetCalculator">The action target calculator.</param>
@@ -77,6 +90,12 @@ namespace BattleSystem.Actions
             foreach (var target in _targets.Where(c => !c.IsDead))
             {
                 var result = target.ChangeProtectLimit<TSource>(Amount, user);
+
+                foreach (var tag in Tags)
+                {
+                    result.Tags.Add(tag);
+                }
+
                 results.Add(result);
             }
 

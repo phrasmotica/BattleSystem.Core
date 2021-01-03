@@ -34,11 +34,17 @@ namespace BattleSystem.Actions
         public IDictionary<StatCategory, double> TargetMultipliers { get; private set; }
 
         /// <summary>
+        /// Gets or sets the tags for the buff.
+        /// </summary>
+        public HashSet<string> Tags { get; set; }
+
+        /// <summary>
         /// Creates a new <see cref="Buff"/>.
         /// </summary>
         public Buff()
         {
             TargetMultipliers = new Dictionary<StatCategory, double>();
+            Tags = new HashSet<string>();
         }
 
         /// <summary>
@@ -86,6 +92,12 @@ namespace BattleSystem.Actions
             foreach (var target in _targets.Where(c => !c.IsDead).ToArray())
             {
                 var result = target.ReceiveBuff<TSource>(TargetMultipliers, user);
+
+                foreach (var tag in Tags)
+                {
+                    result.Tags.Add(tag);
+                }
+
                 results.Add(result);
             }
 

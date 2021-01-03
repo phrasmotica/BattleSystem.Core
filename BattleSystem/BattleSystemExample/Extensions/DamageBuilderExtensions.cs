@@ -1,6 +1,7 @@
 ﻿using BattleSystem.Actions.Damage;
-using BattleSystemExample.Input;
+using BattleSystemExample.Actions.Tags;
 using BattleSystemExample.Actions.Targets;
+using BattleSystemExample.Input;
 using BattleSystemExample.Output;
 
 namespace BattleSystemExample.Extensions
@@ -60,7 +61,8 @@ namespace BattleSystemExample.Extensions
         /// </summary>
         public static DamageBuilder Retaliates(this DamageBuilder builder)
         {
-            return builder.WithActionTargetCalculator(new RetaliationActionTargetCalculator());
+            return builder.WithActionTargetCalculator(new RetaliationActionTargetCalculator())
+                          .WithTag(DamageTags.Retaliation);
         }
     }
 }

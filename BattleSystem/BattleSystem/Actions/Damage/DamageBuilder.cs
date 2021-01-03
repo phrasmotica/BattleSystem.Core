@@ -178,6 +178,16 @@ namespace BattleSystem.Actions.Damage
         }
 
         /// <summary>
+        /// Adds the given tag to the damage action.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        public DamageBuilder WithTag(string tag)
+        {
+            _damage.Tags.Add(tag);
+            return this;
+        }
+
+        /// <summary>
         /// Returns the built damage action.
         /// </summary>
         public Damage Build()
