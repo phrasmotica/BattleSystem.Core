@@ -1,4 +1,5 @@
 ﻿using System;
+using BattleSystem.Actions.Damage;
 using BattleSystem.Actions.Damage.Calculators;
 using BattleSystem.Characters;
 
@@ -34,7 +35,7 @@ namespace BattleSystemExample.Actions.Damage.Calculators
         }
 
         /// <inheritdoc/>
-        public int Calculate(Character user, BattleSystem.Actions.Damage.Damage damage, Character target)
+        public int Calculate(Character user, DamageAction damage, Character target)
         {
             var result = _actionHistory.LastMoveDamageResultAgainst(user);
 

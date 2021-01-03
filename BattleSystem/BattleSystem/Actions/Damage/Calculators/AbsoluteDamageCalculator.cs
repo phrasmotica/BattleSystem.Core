@@ -8,7 +8,7 @@ namespace BattleSystem.Actions.Damage.Calculators
     public class AbsoluteDamageCalculator : IDamageCalculator
     {
         /// <inheritdoc/>
-        public int Calculate(Character user, Damage damage, Character target)
+        public int Calculate(Character user, DamageAction damage, Character target)
         {
             return damage.Power;
         }

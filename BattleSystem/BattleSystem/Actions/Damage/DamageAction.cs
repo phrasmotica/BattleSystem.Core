@@ -11,7 +11,7 @@ namespace BattleSystem.Actions.Damage
     /// <summary>
     /// Represents an action that deals damage to the target.
     /// </summary>
-    public class Damage : IAction, ITransformable
+    public class DamageAction : IAction, ITransformable
     {
         /// <summary>
         /// Delegate for a function that transforms the given power.
@@ -60,9 +60,9 @@ namespace BattleSystem.Actions.Damage
         public HashSet<string> Tags { get; set; }
 
         /// <summary>
-        /// Creates a new <see cref="Damage"/>.
+        /// Creates a new <see cref="DamageAction"/>.
         /// </summary>
-        public Damage()
+        public DamageAction()
         {
             PowerTransforms = new List<PowerTransform>();
             Tags = new HashSet<string>();

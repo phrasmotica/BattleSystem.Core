@@ -9,9 +9,9 @@ using BattleSystemExample.Output;
 namespace BattleSystemExample.Extensions
 {
     /// <summary>
-    /// Extension methods for <see cref="DamageBuilder"/>.
+    /// Extension methods for <see cref="DamageActionBuilder"/>.
     /// </summary>
-    public static class DamageBuilderExtensions
+    public static class DamageActionBuilderExtensions
     {
         /// <summary>
         /// Sets the built damage action to use percentage-of-last-received-move damage.
@@ -19,8 +19,8 @@ namespace BattleSystemExample.Extensions
         /// <param name="builder">The damage action builder.</param>
         /// <param name="defaultAmount">The default amount of damage to deal.</param>
         /// <param name="actionHistory">The action history.</param>
-        public static DamageBuilder PercentageOfLastReceivedMoveDamage(
-            this DamageBuilder builder,
+        public static DamageActionBuilder PercentageOfLastReceivedMoveDamage(
+            this DamageActionBuilder builder,
             int defaultAmount,
             ActionHistory actionHistory)
         {
@@ -33,7 +33,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="builder">The damage action builder.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public static DamageBuilder UserSelectsSingleTarget(this DamageBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        public static DamageActionBuilder UserSelectsSingleTarget(this DamageActionBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
             return builder.WithActionTargetCalculator(new SingleActionTargetCalculator(userInput, gameOutput));
         }
@@ -44,7 +44,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="builder">The damage action builder.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public static DamageBuilder UserSelectsSingleOtherTarget(this DamageBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        public static DamageActionBuilder UserSelectsSingleOtherTarget(this DamageActionBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
             return builder.WithActionTargetCalculator(new SingleOtherActionTargetCalculator(userInput, gameOutput));
         }
@@ -55,7 +55,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="builder">The damage action builder.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public static DamageBuilder UserSelectsSingleAlly(this DamageBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        public static DamageActionBuilder UserSelectsSingleAlly(this DamageActionBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
             return builder.WithActionTargetCalculator(new SingleAllyActionTargetCalculator(userInput, gameOutput));
         }
@@ -66,7 +66,7 @@ namespace BattleSystemExample.Extensions
         /// <param name="builder">The damage action builder.</param>
         /// <param name="userInput">The user input.</param>
         /// <param name="gameOutput">The game output.</param>
-        public static DamageBuilder UserSelectsSingleEnemy(this DamageBuilder builder, IUserInput userInput, IGameOutput gameOutput)
+        public static DamageActionBuilder UserSelectsSingleEnemy(this DamageActionBuilder builder, IUserInput userInput, IGameOutput gameOutput)
         {
             return builder.WithActionTargetCalculator(new SingleEnemyActionTargetCalculator(userInput, gameOutput));
         }
@@ -77,8 +77,8 @@ namespace BattleSystemExample.Extensions
         /// </summary>
         /// <param name="builder">The damage action builder.</param>
         /// <param name="actionHistory">The action history.</param>
-        public static DamageBuilder Retaliates(
-            this DamageBuilder builder,
+        public static DamageActionBuilder Retaliates(
+            this DamageActionBuilder builder,
             ActionHistory actionHistory)
         {
             return builder.WithActionTargetCalculator(new RetaliationActionTargetCalculator(actionHistory))

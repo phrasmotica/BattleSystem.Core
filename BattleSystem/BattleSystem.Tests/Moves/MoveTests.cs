@@ -89,7 +89,7 @@ namespace BattleSystem.Tests.Moves
             // Arrange
             var move = TestHelpers.CreateMove(
                 maxUses: 5,
-                moveActions: TestHelpers.CreateDamage());
+                moveActions: TestHelpers.CreateDamageAction());
 
             var user = TestHelpers.CreateBasicCharacter();
             var otherCharacters = new[]

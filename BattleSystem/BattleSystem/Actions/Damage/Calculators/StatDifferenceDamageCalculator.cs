@@ -10,7 +10,7 @@ namespace BattleSystem.Actions.Damage.Calculators
     public class StatDifferenceDamageCalculator : IDamageCalculator
     {
         /// <inheritdoc/>
-        public int Calculate(Character user, Damage damage, Character target)
+        public int Calculate(Character user, DamageAction damage, Character target)
         {
             var userAttack = user.Stats.Attack.CurrentValue;
             var targetDefence = target.Stats.Defence.CurrentValue;

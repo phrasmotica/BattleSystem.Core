@@ -69,7 +69,7 @@ namespace BattleSystemExample
                             .WithPriority(1)
                             .WithAccuracy(100)
                             .WithAction(
-                                new DamageBuilder()
+                                new DamageActionBuilder()
                                     .WithPower(20)
                                     .StatDifferenceDamage()
                                     .UserSelectsSingleEnemy(userInput, gameOutput)
@@ -84,7 +84,7 @@ namespace BattleSystemExample
                             .WithMaxUses(5)
                             .WithAccuracy(50)
                             .WithAction(
-                                new DamageBuilder()
+                                new DamageActionBuilder()
                                     .WithPower(40)
                                     .PercentageDamage()
                                     .UserSelectsSingleEnemy(userInput, gameOutput)
@@ -105,7 +105,7 @@ namespace BattleSystemExample
                             .WithMaxUses(5)
                             .AlwaysSucceeds()
                             .WithAction(
-                                new DamageBuilder()
+                                new DamageActionBuilder()
                                     .WithPower(150)
                                     .PercentageOfLastReceivedMoveDamage(0, actionHistory)
                                     .Retaliates(actionHistory)
@@ -174,7 +174,7 @@ namespace BattleSystemExample
                             .WithMaxUses(25)
                             .WithAccuracy(100)
                             .WithAction(
-                                new DamageBuilder()
+                                new DamageActionBuilder()
                                     .WithPower(5)
                                     .AbsoluteDamage()
                                     .TargetsEnemies()
@@ -210,7 +210,7 @@ namespace BattleSystemExample
                             .WithMaxUses(15)
                             .WithAccuracy(100)
                             .WithAction(
-                                new DamageBuilder()
+                                new DamageActionBuilder()
                                     .WithPower(20)
                                     .AbsoluteDamage()
                                     .TargetsFirstEnemy()
@@ -225,7 +225,7 @@ namespace BattleSystemExample
                             .WithMaxUses(5)
                             .WithAccuracy(70)
                             .WithAction(
-                                new DamageBuilder()
+                                new DamageActionBuilder()
                                     .WithPower(30)
                                     .PercentageDamage()
                                     .TargetsFirstEnemy()
@@ -271,7 +271,7 @@ namespace BattleSystemExample
                     .Name("Rolling Wave")
                     .Describe("Deals 3 damage to all enemies at the start of the holder's turn.")
                     .WithStartTurnAction(
-                        new DamageBuilder()
+                        new DamageActionBuilder()
                             .WithPower(3)
                             .AbsoluteDamage()
                             .TargetsEnemies()

@@ -5,16 +5,16 @@ using NUnit.Framework;
 namespace BattleSystem.Tests.Actions.Damage
 {
     /// <summary>
-    /// Unit tests for <see cref="DamageBuilder"/>.
+    /// Unit tests for <see cref="DamageActionBuilder"/>.
     /// </summary>
     [TestFixture]
-    public class DamageBuilderTests
+    public class DamageActionBuilderTests
     {
         [Test]
         public void WithDamageCalculator_NullArgument_Throws()
         {
             // Arrange
-            var builder = new DamageBuilder();
+            var builder = new DamageActionBuilder();
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => _ = builder.WithDamageCalculator(null));
@@ -24,7 +24,7 @@ namespace BattleSystem.Tests.Actions.Damage
         public void WithActionTargetCalculator_NullArgument_Throws()
         {
             // Arrange
-            var builder = new DamageBuilder();
+            var builder = new DamageActionBuilder();
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>(() => _ = builder.WithActionTargetCalculator(null));
@@ -34,7 +34,7 @@ namespace BattleSystem.Tests.Actions.Damage
         public void Build_CallsPresent_Succeeds()
         {
             // Arrange
-            var builder = new DamageBuilder()
+            var builder = new DamageActionBuilder()
                             .WithPower(20)
                             .AbsoluteDamage()
                             .TargetsAll();
@@ -50,7 +50,7 @@ namespace BattleSystem.Tests.Actions.Damage
         public void Build_MissingPower_Throws()
         {
             // Arrange
-            var builder = new DamageBuilder()
+            var builder = new DamageActionBuilder()
                             .PercentageDamage()
                             .TargetsFirstEnemy();
 
@@ -62,7 +62,7 @@ namespace BattleSystem.Tests.Actions.Damage
         public void Build_MissingDamageCalculator_Throws()
         {
             // Arrange
-            var builder = new DamageBuilder()
+            var builder = new DamageActionBuilder()
                             .WithPower(20)
                             .TargetsOthers();
 
@@ -74,7 +74,7 @@ namespace BattleSystem.Tests.Actions.Damage
         public void Build_MissingActionTargetCalculator_Throws()
         {
             // Arrange
-            var builder = new DamageBuilder()
+            var builder = new DamageActionBuilder()
                             .WithPower(20)
                             .StatDifferenceDamage();
 

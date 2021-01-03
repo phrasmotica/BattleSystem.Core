@@ -19,7 +19,7 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
             var calculator = new AbsoluteDamageCalculator();
 
             var user = TestHelpers.CreateBasicCharacter();
-            var damage = TestHelpers.CreateDamage(calculator, power: power);
+            var damage = TestHelpers.CreateDamageAction(calculator, power: power);
             var target = TestHelpers.CreateBasicCharacter();
 
             // Act

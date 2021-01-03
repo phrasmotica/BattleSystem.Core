@@ -9,7 +9,7 @@ namespace BattleSystem.Actions.Damage.Calculators
     public class PercentageDamageCalculator : IDamageCalculator
     {
         /// <inheritdoc/>
-        public int Calculate(Character user, Damage damage, Character target)
+        public int Calculate(Character user, DamageAction damage, Character target)
         {
             return Math.Max(1, target.MaxHealth * damage.Power / 100);
         }

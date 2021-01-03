@@ -7,12 +7,12 @@ namespace BattleSystem.Actions.Damage
     /// <summary>
     /// Builder class for damage actions.
     /// </summary>
-    public class DamageBuilder
+    public class DamageActionBuilder
     {
         /// <summary>
         /// The damage action to build.
         /// </summary>
-        private readonly Damage _damage;
+        private readonly DamageAction _damage;
 
         /// <summary>
         /// Whether the power of the damage action has been set.
@@ -30,18 +30,18 @@ namespace BattleSystem.Actions.Damage
         private bool _isActionTargetCalculatorSet;
 
         /// <summary>
-        /// Creates a new <see cref="DamageBuilder"/> instance.
+        /// Creates a new <see cref="DamageActionBuilder"/> instance.
         /// </summary>
-        public DamageBuilder()
+        public DamageActionBuilder()
         {
-            _damage = new Damage();
+            _damage = new DamageAction();
         }
 
         /// <summary>
         /// Sets the built damage action's power.
         /// </summary>
         /// <param name="power">The power.</param>
-        public DamageBuilder WithPower(int power)
+        public DamageActionBuilder WithPower(int power)
         {
             _damage.Power = power;
             _isPowerSet = true;
@@ -52,7 +52,7 @@ namespace BattleSystem.Actions.Damage
         /// Sets the built damage action's damage calculator.
         /// </summary>
         /// <param name="damageCalculator">The built damage action's damage calculator.</param>
-        public DamageBuilder WithDamageCalculator(IDamageCalculator damageCalculator)
+        public DamageActionBuilder WithDamageCalculator(IDamageCalculator damageCalculator)
         {
             if (damageCalculator is null)
             {
@@ -67,7 +67,7 @@ namespace BattleSystem.Actions.Damage
         /// <summary>
         /// Sets the built damage action to use absolute damage.
         /// </summary>
-        public DamageBuilder AbsoluteDamage()
+        public DamageActionBuilder AbsoluteDamage()
         {
             return WithDamageCalculator(new AbsoluteDamageCalculator());
         }
@@ -75,7 +75,7 @@ namespace BattleSystem.Actions.Damage
         /// <summary>
         /// Sets the built damage action to use percentage damage.
         /// </summary>
-        public DamageBuilder PercentageDamage()
+        public DamageActionBuilder PercentageDamage()
         {
             return WithDamageCalculator(new PercentageDamageCalculator());
         }
@@ -83,7 +83,7 @@ namespace BattleSystem.Actions.Damage
         /// <summary>
         /// Sets the built damage action to use damage based on the user and target's stat difference.
         /// </summary>
-        public DamageBuilder StatDifferenceDamage()
+        public DamageActionBuilder StatDifferenceDamage()
         {
             return WithDamageCalculator(new StatDifferenceDamageCalculator());
         }
@@ -92,7 +92,7 @@ namespace BattleSystem.Actions.Damage
         /// Sets the built damage action's action target calculator.
         /// </summary>
         /// <param name="name">The built damage action's action target calculator.</param>
-        public DamageBuilder WithActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
+        public DamageActionBuilder WithActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
         {
             if (actionTargetCalculator is null)
             {
@@ -107,7 +107,7 @@ namespace BattleSystem.Actions.Damage
         /// <summary>
         /// Sets the built damage action to target all characters including the user.
         /// </summary>
-        public DamageBuilder TargetsAll()
+        public DamageActionBuilder TargetsAll()
         {
             return WithActionTargetCalculator(new AllActionTargetCalculator());
         }
@@ -115,7 +115,7 @@ namespace BattleSystem.Actions.Damage
         /// <summary>
         /// Sets the built damage action to target all other characters.
         /// </summary>
-        public DamageBuilder TargetsOthers()
+        public DamageActionBuilder TargetsOthers()
         {
             return WithActionTargetCalculator(new OthersActionTargetCalculator());
         }
@@ -123,7 +123,7 @@ namespace BattleSystem.Actions.Damage
         /// <summary>
         /// Sets the built damage action to target all enemies.
         /// </summary>
-        public DamageBuilder TargetsEnemies()
+        public DamageActionBuilder TargetsEnemies()
         {
             return WithActionTargetCalculator(new EnemiesActionTargetCalculator());
         }
@@ -131,7 +131,7 @@ namespace BattleSystem.Actions.Damage
         /// <summary>
         /// Sets the built damage action to target all characters on the user's team.
         /// </summary>
-        public DamageBuilder TargetsTeam()
+        public DamageActionBuilder TargetsTeam()
         {
             return WithActionTargetCalculator(new TeamActionTargetCalculator());
         }
@@ -139,7 +139,7 @@ namespace BattleSystem.Actions.Damage
         /// <summary>
         /// Sets the built damage action to target all other characters on the user's team.
         /// </summary>
-        public DamageBuilder TargetsAllies()
+        public DamageActionBuilder TargetsAllies()
         {
             return WithActionTargetCalculator(new AlliesActionTargetCalculator());
         }
@@ -147,7 +147,7 @@ namespace BattleSystem.Actions.Damage
         /// <summary>
         /// Sets the built damage action to target the user.
         /// </summary>
-        public DamageBuilder TargetsUser()
+        public DamageActionBuilder TargetsUser()
         {
             return WithActionTargetCalculator(new UserActionTargetCalculator());
         }
@@ -155,7 +155,7 @@ namespace BattleSystem.Actions.Damage
         /// <summary>
         /// Sets the built damage action to target the first enemy.
         /// </summary>
-        public DamageBuilder TargetsFirstEnemy()
+        public DamageActionBuilder TargetsFirstEnemy()
         {
             return WithActionTargetCalculator(new FirstEnemyActionTargetCalculator());
         }
@@ -163,7 +163,7 @@ namespace BattleSystem.Actions.Damage
         /// <summary>
         /// Sets the built damage action to target the first ally.
         /// </summary>
-        public DamageBuilder TargetsFirstAlly()
+        public DamageActionBuilder TargetsFirstAlly()
         {
             return WithActionTargetCalculator(new FirstAllyActionTargetCalculator());
         }
@@ -172,7 +172,7 @@ namespace BattleSystem.Actions.Damage
         /// Adds the given tag to the damage action.
         /// </summary>
         /// <param name="tag">The tag.</param>
-        public DamageBuilder WithTag(string tag)
+        public DamageActionBuilder WithTag(string tag)
         {
             _damage.Tags.Add(tag);
             return this;
@@ -181,7 +181,7 @@ namespace BattleSystem.Actions.Damage
         /// <summary>
         /// Returns the built damage action.
         /// </summary>
-        public Damage Build()
+        public DamageAction Build()
         {
             if (!_isPowerSet)
             {

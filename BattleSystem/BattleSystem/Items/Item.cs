@@ -2,7 +2,7 @@
 using System.Linq;
 using BattleSystem.Actions;
 using BattleSystem.Stats;
-using static BattleSystem.Actions.Damage.Damage;
+using static BattleSystem.Actions.Damage.DamageAction;
 
 namespace BattleSystem.Items
 {

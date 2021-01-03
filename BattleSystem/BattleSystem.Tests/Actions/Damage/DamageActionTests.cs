@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BattleSystem.Actions.Damage;
 using BattleSystem.Actions.Damage.Calculators;
 using BattleSystem.Actions.Targets;
 using BattleSystem.Characters;
 using Moq;
 using NUnit.Framework;
-using static BattleSystem.Actions.Damage.Damage;
+using static BattleSystem.Actions.Damage.DamageAction;
 
 namespace BattleSystem.Tests.Actions.Damage
 {
     /// <summary>
-    /// Unit tests for <see cref="BattleSystem.Actions.Damage.Damage"/>.
+    /// Unit tests for <see cref="DamageAction"/>.
     /// </summary>
     [TestFixture]
-    public class DamageTests
+    public class DamageActionTests
     {
         [Test]
         public void Use_CalculationSuccessfulWithTargets_DamagesTargets()
@@ -30,13 +31,13 @@ namespace BattleSystem.Tests.Actions.Damage
                 .Setup(
                     m => m.Calculate(
                         It.IsAny<Character>(),
-                        It.IsAny<BattleSystem.Actions.Damage.Damage>(),
+                        It.IsAny<DamageAction>(),
                         It.IsAny<Character>()
                     )
                 )
                 .Returns(6);
 
-            var damage = TestHelpers.CreateDamage(
+            var damage = TestHelpers.CreateDamageAction(
                 damageCalculator.Object,
                 new OthersActionTargetCalculator());
 
@@ -59,7 +60,7 @@ namespace BattleSystem.Tests.Actions.Damage
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var damage = TestHelpers.CreateDamage(
+            var damage = TestHelpers.CreateDamageAction(
                 actionTargetCalculator: new OthersActionTargetCalculator());
 
             damage.SetTargets(user, otherCharacters);
@@ -85,7 +86,7 @@ namespace BattleSystem.Tests.Actions.Damage
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var damage = TestHelpers.CreateDamage(
+            var damage = TestHelpers.CreateDamageAction(
                 actionTargetCalculator: new OthersActionTargetCalculator());
 
             damage.SetTargets(user, otherCharacters);
@@ -121,7 +122,7 @@ namespace BattleSystem.Tests.Actions.Damage
                 )
                 .Returns((true, Enumerable.Empty<Character>()));
 
-            var damage = TestHelpers.CreateDamage(
+            var damage = TestHelpers.CreateDamageAction(
                 actionTargetCalculator: actionTargetCalculator.Object);
 
             damage.SetTargets(user, otherCharacters);
@@ -147,7 +148,7 @@ namespace BattleSystem.Tests.Actions.Damage
                 TestHelpers.CreateBasicCharacter(),
             };
 
-            var damage = TestHelpers.CreateDamage();
+            var damage = TestHelpers.CreateDamageAction();
 
             // Act and Assert
             var result = damage.Use<string>(user, otherCharacters);
@@ -164,7 +165,7 @@ namespace BattleSystem.Tests.Actions.Damage
         public void Power_Get_WithPowerTransforms_ReturnsTransformedPower()
         {
             // Arrange
-            var damage = TestHelpers.CreateDamage(power: 10);
+            var damage = TestHelpers.CreateDamageAction(power: 10);
 
             var transforms = new PowerTransform[]
             {
