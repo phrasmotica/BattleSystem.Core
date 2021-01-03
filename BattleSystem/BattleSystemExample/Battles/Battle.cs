@@ -73,6 +73,10 @@ namespace BattleSystemExample.Battles
         {
             while (!IsOver)
             {
+                _actionHistory.StartTurn();
+                _gameOutput.WriteLine();
+                _gameOutput.WriteLine($"TURN {_actionHistory.TurnCounter}");
+
                 foreach (var team in Teams)
                 {
                     _gameOutput.WriteLine();
