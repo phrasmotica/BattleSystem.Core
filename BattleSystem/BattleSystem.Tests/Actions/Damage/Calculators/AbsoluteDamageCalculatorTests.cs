@@ -13,20 +13,20 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
         [TestCase(10)]
         [TestCase(50)]
         [TestCase(100)]
-        public void Calculate_ReturnsDamage(int power)
+        public void Calculate_ReturnsDamage(int amount)
         {
             // Arrange
-            var calculator = new AbsoluteDamageCalculator();
+            var calculator = new AbsoluteDamageCalculator(amount);
 
             var user = TestHelpers.CreateBasicCharacter();
-            var damage = TestHelpers.CreateDamageAction(calculator, power: power);
+            var damage = TestHelpers.CreateDamageAction(calculator);
             var target = TestHelpers.CreateBasicCharacter();
 
             // Act
-            var amount = calculator.Calculate(user, damage, target);
+            var actualAmount = calculator.Calculate(user, damage, target);
 
             // Assert
-            Assert.That(amount, Is.EqualTo(power));
+            Assert.That(actualAmount, Is.EqualTo(amount));
         }
     }
 }

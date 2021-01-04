@@ -14,7 +14,7 @@ using BattleSystem.Moves;
 using BattleSystem.Moves.Success;
 using BattleSystem.Stats;
 using Moq;
-using static BattleSystem.Actions.Damage.DamageAction;
+using static BattleSystem.Actions.Damage.Calculators.BasePowerDamageCalculator;
 using static BattleSystem.Items.Item;
 
 namespace BattleSystem.Tests
@@ -163,15 +163,13 @@ namespace BattleSystem.Tests
         }
 
         /// <summary>
-        /// Returns an attack action.
+        /// Returns a damage action.
         /// </summary>
         public static DamageAction CreateDamageAction(
             IDamageCalculator damageCalculator = null,
-            IActionTargetCalculator actionTargetCalculator = null,
-            int power = 2)
+            IActionTargetCalculator actionTargetCalculator = null)
         {
             return new DamageActionBuilder()
-                .WithPower(power)
                 .WithDamageCalculator(damageCalculator ?? new Mock<IDamageCalculator>().Object)
                 .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
                 .Build();

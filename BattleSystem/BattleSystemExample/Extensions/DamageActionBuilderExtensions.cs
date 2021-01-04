@@ -17,14 +17,16 @@ namespace BattleSystemExample.Extensions
         /// Sets the built damage action to use percentage-of-last-received-move damage.
         /// </summary>
         /// <param name="builder">The damage action builder.</param>
+        /// <param name="percentage">The percentage of damage to deal.</param>
         /// <param name="defaultAmount">The default amount of damage to deal.</param>
         /// <param name="actionHistory">The action history.</param>
         public static DamageActionBuilder PercentageOfLastReceivedMoveDamage(
             this DamageActionBuilder builder,
+            int percentage,
             int defaultAmount,
             ActionHistory actionHistory)
         {
-            return builder.WithDamageCalculator(new PercentageOfLastReceivedMoveDamageCalculator(defaultAmount, actionHistory));
+            return builder.WithDamageCalculator(new PercentageOfLastReceivedMoveDamageCalculator(percentage, defaultAmount, actionHistory));
         }
 
         /// <summary>

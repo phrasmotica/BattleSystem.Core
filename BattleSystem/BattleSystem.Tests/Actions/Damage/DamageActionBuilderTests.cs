@@ -35,8 +35,7 @@ namespace BattleSystem.Tests.Actions.Damage
         {
             // Arrange
             var builder = new DamageActionBuilder()
-                            .WithPower(20)
-                            .AbsoluteDamage()
+                            .AbsoluteDamage(20)
                             .TargetsAll();
 
             // Act
@@ -47,23 +46,10 @@ namespace BattleSystem.Tests.Actions.Damage
         }
 
         [Test]
-        public void Build_MissingPower_Throws()
-        {
-            // Arrange
-            var builder = new DamageActionBuilder()
-                            .PercentageDamage()
-                            .TargetsFirstEnemy();
-
-            // Act and Assert
-            Assert.Throws<InvalidOperationException>(() => _ = builder.Build());
-        }
-
-        [Test]
         public void Build_MissingDamageCalculator_Throws()
         {
             // Arrange
             var builder = new DamageActionBuilder()
-                            .WithPower(20)
                             .TargetsOthers();
 
             // Act and Assert
@@ -75,8 +61,7 @@ namespace BattleSystem.Tests.Actions.Damage
         {
             // Arrange
             var builder = new DamageActionBuilder()
-                            .WithPower(20)
-                            .StatDifferenceDamage();
+                            .WithBasePower(20);
 
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() => _ = builder.Build());

@@ -158,11 +158,6 @@ namespace BattleSystem.Moves
             {
                 foreach (var action in _moveActions)
                 {
-                    if (user.HasItem)
-                    {
-                        (action as ITransformable)?.ReceiveTransforms(user.Item);
-                    }
-
                     var result = action.Use<Move>(user, targets);
                     foreach (var r in result.Results)
                     {
@@ -174,8 +169,6 @@ namespace BattleSystem.Moves
                     // only certain characters should be considered as targets
                     // for subsequent actions
                     targets = GetTargetsToConsider(targets, result).ToArray();
-
-                    (action as ITransformable)?.ClearTransforms();
                 }
             }
 

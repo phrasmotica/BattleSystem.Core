@@ -1,6 +1,6 @@
 ﻿using System;
 using BattleSystem.Actions;
-using static BattleSystem.Actions.Damage.DamageAction;
+using static BattleSystem.Actions.Damage.Calculators.BasePowerDamageCalculator;
 using static BattleSystem.Items.Item;
 
 namespace BattleSystem.Items

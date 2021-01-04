@@ -92,6 +92,38 @@ namespace BattleSystem.Actions.Buff
         }
 
         /// <summary>
+        /// Sets the built buff to target a random enemy.
+        /// </summary>
+        public BuffActionBuilder TargetsRandomEnemy()
+        {
+            return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built buff to target a random ally.
+        /// </summary>
+        public BuffActionBuilder TargetsRandomAlly()
+        {
+            return WithActionTargetCalculator(new RandomAllyActionTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built buff to target a random character.
+        /// </summary>
+        public BuffActionBuilder TargetsRandomCharacter()
+        {
+            return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built buff to target a random other character.
+        /// </summary>
+        public BuffActionBuilder TargetsRandomOther()
+        {
+            return WithActionTargetCalculator(new RandomOtherActionTargetCalculator());
+        }
+
+        /// <summary>
         /// Sets the built buff to target the first enemy.
         /// </summary>
         public BuffActionBuilder TargetsFirstEnemy()

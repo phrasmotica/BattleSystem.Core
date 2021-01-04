@@ -14,13 +14,13 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
         [TestCase(20, 10, 2)]
         [TestCase(20, 50, 10)]
         [TestCase(20, 100, 20)]
-        public void Calculate_ReturnsDamage(int targetMaxHealth, int power, int expectedAmount)
+        public void Calculate_ReturnsDamage(int targetMaxHealth, int percentage, int expectedAmount)
         {
             // Arrange
-            var calculator = new PercentageDamageCalculator();
+            var calculator = new PercentageDamageCalculator(percentage);
 
             var user = TestHelpers.CreateBasicCharacter();
-            var damage = TestHelpers.CreateDamageAction(calculator, power: power);
+            var damage = TestHelpers.CreateDamageAction(calculator);
             var target = TestHelpers.CreateBasicCharacter(maxHealth: targetMaxHealth);
 
             // Act

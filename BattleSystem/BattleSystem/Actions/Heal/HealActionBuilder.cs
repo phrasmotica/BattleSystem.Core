@@ -145,6 +145,38 @@ namespace BattleSystem.Actions.Heal
         }
 
         /// <summary>
+        /// Sets the built heal to target a random enemy.
+        /// </summary>
+        public HealActionBuilder TargetsRandomEnemy()
+        {
+            return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built heal to target a random ally.
+        /// </summary>
+        public HealActionBuilder TargetsRandomAlly()
+        {
+            return WithActionTargetCalculator(new RandomAllyActionTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built heal to target a random character.
+        /// </summary>
+        public HealActionBuilder TargetsRandomCharacter()
+        {
+            return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built heal to target a random other character.
+        /// </summary>
+        public HealActionBuilder TargetsRandomOther()
+        {
+            return WithActionTargetCalculator(new RandomOtherActionTargetCalculator());
+        }
+
+        /// <summary>
         /// Sets the built heal to target the first enemy.
         /// </summary>
         public HealActionBuilder TargetsFirstEnemy()

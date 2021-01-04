@@ -91,6 +91,38 @@ namespace BattleSystem.Actions.Protect
         }
 
         /// <summary>
+        /// Sets the built protect action to target a random enemy.
+        /// </summary>
+        public ProtectActionBuilder TargetsRandomEnemy()
+        {
+            return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built protect action to target a random ally.
+        /// </summary>
+        public ProtectActionBuilder TargetsRandomAlly()
+        {
+            return WithActionTargetCalculator(new RandomAllyActionTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built protect action to target a random character.
+        /// </summary>
+        public ProtectActionBuilder TargetsRandomCharacter()
+        {
+            return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built protect action to target a random other character.
+        /// </summary>
+        public ProtectActionBuilder TargetsRandomOther()
+        {
+            return WithActionTargetCalculator(new RandomOtherActionTargetCalculator());
+        }
+
+        /// <summary>
         /// Sets the built protect action to target the first enemy.
         /// </summary>
         public ProtectActionBuilder TargetsFirstEnemy()
