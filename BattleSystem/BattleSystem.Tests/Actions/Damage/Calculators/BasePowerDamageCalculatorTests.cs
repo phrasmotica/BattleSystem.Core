@@ -10,11 +10,16 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
     [TestFixture]
     public class BasePowerDamageCalculatorTests
     {
-        [TestCase(6, 10, 4, 20)]
-        [TestCase(6, 10, 5, 10)]
-        [TestCase(6, 10, 6, 1)]
-        [TestCase(6, 10, 7, 1)]
-        public void Calculate_NoPowerTransforms_ReturnsDamage(int userAttack, int basePower, int targetDefence, int expectedAmount)
+        [TestCase(6, 10, 4, 16, 20)]
+        [TestCase(6, 10, 5, 8, 10)]
+        [TestCase(6, 10, 6, 1, 1)]
+        [TestCase(6, 10, 7, 1, 1)]
+        public void Calculate_NoPowerTransforms_ReturnsDamage(
+            int userAttack,
+            int basePower,
+            int targetDefence,
+            int expectedLowerBound,
+            int expectedUpperBound)
         {
             // Arrange
             var calculator = new BasePowerDamageCalculator(basePower);
@@ -27,7 +32,7 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
             var amount = calculator.Calculate(user, damage, target);
 
             // Assert
-            Assert.That(amount, Is.EqualTo(expectedAmount));
+            Assert.That(amount, Is.InRange(expectedLowerBound, expectedUpperBound));
         }
 
         [Test]
@@ -52,7 +57,7 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
             var amount = calculator.Calculate(user, damage, target);
 
             // Assert
-            Assert.That(amount, Is.EqualTo(40));
+            Assert.That(amount, Is.InRange(32, 40));
         }
     }
 }
