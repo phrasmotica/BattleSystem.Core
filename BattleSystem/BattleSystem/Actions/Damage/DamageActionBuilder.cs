@@ -140,6 +140,22 @@ namespace BattleSystem.Actions.Damage
         }
 
         /// <summary>
+        /// Sets the built damage action to target a random enemy.
+        /// </summary>
+        public DamageActionBuilder TargetsRandomEnemy()
+        {
+            return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built damage action to target a random ally.
+        /// </summary>
+        public DamageActionBuilder TargetsRandomAlly()
+        {
+            return WithActionTargetCalculator(new RandomAllyActionTargetCalculator());
+        }
+
+        /// <summary>
         /// Sets the built damage action to target the first enemy.
         /// </summary>
         public DamageActionBuilder TargetsFirstEnemy()

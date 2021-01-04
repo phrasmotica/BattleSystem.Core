@@ -107,6 +107,22 @@ namespace BattleSystem.Actions.ProtectLimitChange
         }
 
         /// <summary>
+        /// Sets the built protect limit change action to target a random enemy.
+        /// </summary>
+        public ProtectLimitChangeActionBuilder TargetsRandomEnemy()
+        {
+            return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built protect limit change action to target a random ally.
+        /// </summary>
+        public ProtectLimitChangeActionBuilder TargetsRandomAlly()
+        {
+            return WithActionTargetCalculator(new RandomAllyActionTargetCalculator());
+        }
+
+        /// <summary>
         /// Sets the built protect limit change action to target the first enemy.
         /// </summary>
         public ProtectLimitChangeActionBuilder TargetsFirstEnemy()
