@@ -73,7 +73,7 @@ namespace BattleSystemExample
                             .WithAccuracy(100)
                             .WithAction(
                                 new DamageActionBuilder()
-                                    .StatDifferenceDamage(20)
+                                    .WithBasePower(20)
                                     .UserSelectsSingleEnemy(userInput, gameOutput)
                                     .Build()
                             )

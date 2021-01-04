@@ -7,7 +7,7 @@ namespace BattleSystem.Actions.Damage.Calculators
     /// Calculates damage based on a base power value and the difference between the user's attack
     /// stat and the target's defence stat.
     /// </summary>
-    public class StatDifferenceDamageCalculator : IDamageCalculator
+    public class BasePowerDamageCalculator : IDamageCalculator
     {
         /// <summary>
         /// Delegate for a function that transforms the given power.
@@ -21,10 +21,10 @@ namespace BattleSystem.Actions.Damage.Calculators
         private readonly int _basePower;
 
         /// <summary>
-        /// Creates a new <see cref="StatDifferenceDamageCalculator"/> instance.
+        /// Creates a new <see cref="BasePowerDamageCalculator"/> instance.
         /// </summary>
         /// <param name="basePower">The base power.</param>
-        public StatDifferenceDamageCalculator(int basePower)
+        public BasePowerDamageCalculator(int basePower)
         {
             _basePower = basePower;
         }

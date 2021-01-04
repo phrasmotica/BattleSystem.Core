@@ -1,14 +1,14 @@
 ﻿using BattleSystem.Actions.Damage.Calculators;
 using NUnit.Framework;
-using static BattleSystem.Actions.Damage.Calculators.StatDifferenceDamageCalculator;
+using static BattleSystem.Actions.Damage.Calculators.BasePowerDamageCalculator;
 
 namespace BattleSystem.Tests.Actions.Damage.Calculators
 {
     /// <summary>
-    /// Unit tests for <see cref="StatDifferenceDamageCalculator"/>.
+    /// Unit tests for <see cref="BasePowerDamageCalculator"/>.
     /// </summary>
     [TestFixture]
-    public class StatDifferenceDamageCalculatorTests
+    public class BasePowerDamageCalculatorTests
     {
         [TestCase(6, 10, 4, 20)]
         [TestCase(6, 10, 5, 10)]
@@ -17,7 +17,7 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
         public void Calculate_NoPowerTransforms_ReturnsDamage(int userAttack, int basePower, int targetDefence, int expectedAmount)
         {
             // Arrange
-            var calculator = new StatDifferenceDamageCalculator(basePower);
+            var calculator = new BasePowerDamageCalculator(basePower);
 
             var user = TestHelpers.CreateBasicCharacter(attack: userAttack);
             var damage = TestHelpers.CreateDamageAction(calculator);
@@ -34,7 +34,7 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
         public void Calculate_WithPowerTransforms_ReturnsDamage()
         {
             // Arrange
-            var calculator = new StatDifferenceDamageCalculator(10);
+            var calculator = new BasePowerDamageCalculator(10);
 
             var user = TestHelpers.CreateBasicCharacter(attack: 6);
             var damage = TestHelpers.CreateDamageAction(calculator);

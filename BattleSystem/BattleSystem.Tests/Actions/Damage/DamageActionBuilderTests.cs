@@ -61,7 +61,7 @@ namespace BattleSystem.Tests.Actions.Damage
         {
             // Arrange
             var builder = new DamageActionBuilder()
-                            .StatDifferenceDamage(20);
+                            .WithBasePower(20);
 
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() => _ = builder.Build());

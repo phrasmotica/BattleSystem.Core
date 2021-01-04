@@ -2,7 +2,7 @@
 using System.Linq;
 using BattleSystem.Actions;
 using BattleSystem.Stats;
-using static BattleSystem.Actions.Damage.Calculators.StatDifferenceDamageCalculator;
+using static BattleSystem.Actions.Damage.Calculators.BasePowerDamageCalculator;
 
 namespace BattleSystem.Items
 {

@@ -14,8 +14,7 @@ using BattleSystem.Moves;
 using BattleSystem.Moves.Success;
 using BattleSystem.Stats;
 using Moq;
-using static BattleSystem.Actions.Damage.Calculators.StatDifferenceDamageCalculator;
-using static BattleSystem.Actions.Damage.DamageAction;
+using static BattleSystem.Actions.Damage.Calculators.BasePowerDamageCalculator;
 using static BattleSystem.Items.Item;
 
 namespace BattleSystem.Tests

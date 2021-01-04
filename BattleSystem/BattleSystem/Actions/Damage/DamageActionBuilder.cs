@@ -67,12 +67,12 @@ namespace BattleSystem.Actions.Damage
         }
 
         /// <summary>
-        /// Sets the built damage action to use a stat difference damage calculator.
+        /// Sets the built damage action to use a base power damage calculator.
         /// </summary>
         /// <param name="basePower">The base power.</param>
-        public DamageActionBuilder StatDifferenceDamage(int basePower)
+        public DamageActionBuilder WithBasePower(int basePower)
         {
-            return WithDamageCalculator(new StatDifferenceDamageCalculator(basePower));
+            return WithDamageCalculator(new BasePowerDamageCalculator(basePower));
         }
 
         /// <summary>
