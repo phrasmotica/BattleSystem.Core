@@ -266,11 +266,11 @@ namespace BattleSystemExample
             mage.EquipItem(
                 new ItemBuilder()
                     .Name("Rolling Wave")
-                    .Describe("Deals 3 damage to all enemies at the start of the holder's turn.")
+                    .Describe("Deals 6 damage to another random character at the start of the holder's turn.")
                     .WithStartTurnAction(
                         new DamageActionBuilder()
-                            .AbsoluteDamage(3)
-                            .TargetsEnemies()
+                            .AbsoluteDamage(6)
+                            .TargetsRandomOther()
                             .Build()
                     )
                     .Build()

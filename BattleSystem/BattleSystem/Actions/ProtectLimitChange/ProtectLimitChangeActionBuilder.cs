@@ -123,6 +123,22 @@ namespace BattleSystem.Actions.ProtectLimitChange
         }
 
         /// <summary>
+        /// Sets the built buff to target a random character.
+        /// </summary>
+        public ProtectLimitChangeActionBuilder TargetsRandomCharacter()
+        {
+            return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator());
+        }
+
+        /// <summary>
+        /// Sets the built buff to target a random other character.
+        /// </summary>
+        public ProtectLimitChangeActionBuilder TargetsRandomOther()
+        {
+            return WithActionTargetCalculator(new RandomOtherActionTargetCalculator());
+        }
+
+        /// <summary>
         /// Sets the built protect limit change action to target the first enemy.
         /// </summary>
         public ProtectLimitChangeActionBuilder TargetsFirstEnemy()

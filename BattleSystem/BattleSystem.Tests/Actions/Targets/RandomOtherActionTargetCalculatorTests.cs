@@ -1,20 +1,21 @@
 ﻿using System.Linq;
 using BattleSystem.Actions.Targets;
+using BattleSystem.Characters;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Actions.Targets
 {
     /// <summary>
-    /// Unit tests for <see cref="RandomCharacterActionTargetCalculator"/>.
+    /// Unit tests for <see cref="RandomOtherActionTargetCalculator"/>.
     /// </summary>
     [TestFixture]
-    public class RandomCharacterActionTargetCalculatorTests
+    public class RandomOtherActionTargetCalculatorTests
     {
         [Test]
-        public void Calculate_ReturnsCharacter()
+        public void Calculate_ReturnsOtherCharacter()
         {
             // Arrange
-            var calculator = new RandomCharacterActionTargetCalculator();
+            var calculator = new RandomOtherActionTargetCalculator();
 
             var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
             var otherCharacters = new[]
@@ -30,7 +31,27 @@ namespace BattleSystem.Tests.Actions.Targets
             Assert.Multiple(() =>
             {
                 Assert.That(success, Is.True);
-                Assert.That(targets.Single().Name, Is.AnyOf("wire", "the", "15th"));
+                Assert.That(targets.Single().Name, Is.AnyOf("the", "15th"));
+            });
+        }
+
+        [Test]
+        public void Calculate_NoOtherCharacters_ReturnsUnsuccessful()
+        {
+            // Arrange
+            var calculator = new RandomOtherActionTargetCalculator();
+
+            var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
+            var otherCharacters = Enumerable.Empty<Character>();
+
+            // Act
+            var (success, targets) = calculator.Calculate(user, otherCharacters);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(success, Is.False);
+                Assert.That(targets, Is.Empty);
             });
         }
     }

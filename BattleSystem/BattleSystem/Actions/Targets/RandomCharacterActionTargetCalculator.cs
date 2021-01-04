@@ -6,9 +6,9 @@ using BattleSystem.Characters;
 namespace BattleSystem.Actions.Targets
 {
     /// <summary>
-    /// Calculates the action target as one of the user's enemies at random.
+    /// Calculates the action target as one of the characters at random.
     /// </summary>
-    public class RandomEnemyActionTargetCalculator : IActionTargetCalculator
+    public class RandomCharacterActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
         public bool IsReactive => false;
@@ -16,14 +16,9 @@ namespace BattleSystem.Actions.Targets
         /// <inheritdoc />
         public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
-            var enemies = otherCharacters.Where(c => c.Team != user.Team).ToArray();
-            if (!enemies.Any())
-            {
-                return (false, Enumerable.Empty<Character>());
-            }
-
-            var r = new Random().Next(enemies.Length);
-            return (true, new[] { enemies[r] });
+            var targets = otherCharacters.Prepend(user).ToArray();
+            var r = new Random().Next(targets.Length);
+            return (true, new[] { targets[r] });
         }
     }
 }
