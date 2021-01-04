@@ -160,24 +160,5 @@ namespace BattleSystem.Tests.Actions.Damage
                 Assert.That(result.Results, Is.Empty);
             });
         }
-
-        [Test]
-        public void Power_Get_WithPowerTransforms_ReturnsTransformedPower()
-        {
-            // Arrange
-            var damage = TestHelpers.CreateDamageAction(power: 10);
-
-            var transforms = new PowerTransform[]
-            {
-                p => p + 10,
-                p => p * 2,
-            };
-            var item = TestHelpers.CreateItem(damagePowerTransforms: transforms);
-
-            damage.ReceiveTransforms(item);
-
-            // Act and Assert
-            Assert.That(damage.Power, Is.EqualTo(40));
-        }
     }
 }

@@ -2,7 +2,6 @@
 using System.Linq;
 using BattleSystem.Characters;
 using BattleSystem.Actions.Targets;
-using BattleSystem.Items;
 using BattleSystem.Actions.Damage.Calculators;
 
 namespace BattleSystem.Actions.Damage
@@ -10,14 +9,8 @@ namespace BattleSystem.Actions.Damage
     /// <summary>
     /// Represents an action that deals damage to the target.
     /// </summary>
-    public class DamageAction : IAction, ITransformable
+    public class DamageAction : IAction
     {
-        /// <summary>
-        /// Delegate for a function that transforms the given power.
-        /// </summary>
-        /// <param name="power">The power.</param>
-        public delegate int PowerTransform(int power);
-
         /// <summary>
         /// The damage calculator.
         /// </summary>
@@ -39,21 +32,6 @@ namespace BattleSystem.Actions.Damage
         private bool _targetsSet;
 
         /// <summary>
-        /// Gets or sets the damage action's power.
-        /// </summary>
-        public int Power
-        {
-            get => TransformPower(power);
-            set => power = value;
-        }
-        private int power;
-
-        /// <summary>
-        /// Gets or sets the list of power transforms.
-        /// </summary>
-        public List<PowerTransform> PowerTransforms { get; private set; }
-
-        /// <summary>
         /// Gets or sets the tags for the damage action.
         /// </summary>
         public HashSet<string> Tags { get; set; }
@@ -63,7 +41,6 @@ namespace BattleSystem.Actions.Damage
         /// </summary>
         public DamageAction()
         {
-            PowerTransforms = new List<PowerTransform>();
             Tags = new HashSet<string>();
         }
 
@@ -138,34 +115,6 @@ namespace BattleSystem.Actions.Damage
                 Success = true,
                 Results = results,
             };
-        }
-
-        /// <inheritdoc />
-        public void ReceiveTransforms(Item item)
-        {
-            PowerTransforms.AddRange(item.DamagePowerTransforms);
-        }
-
-        /// <inheritdoc />
-        public void ClearTransforms()
-        {
-            PowerTransforms.Clear();
-        }
-
-        /// <summary>
-        /// Transforms the given power based on the list of power transforms.
-        /// </summary>
-        /// <param name="power">The power.</param>
-        protected int TransformPower(int power)
-        {
-            var transformedPower = power;
-
-            foreach (var t in PowerTransforms)
-            {
-                transformedPower = t(transformedPower);
-            }
-
-            return transformedPower;
         }
 
         /// <summary>

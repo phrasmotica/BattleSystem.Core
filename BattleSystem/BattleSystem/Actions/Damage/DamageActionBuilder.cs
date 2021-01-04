@@ -15,11 +15,6 @@ namespace BattleSystem.Actions.Damage
         private readonly DamageAction _damage;
 
         /// <summary>
-        /// Whether the power of the damage action has been set.
-        /// </summary>
-        private bool _isPowerSet;
-
-        /// <summary>
         /// Whether the damage calculator of the damage action has been set.
         /// </summary>
         private bool _isDamageCalculatorSet;
@@ -35,17 +30,6 @@ namespace BattleSystem.Actions.Damage
         public DamageActionBuilder()
         {
             _damage = new DamageAction();
-        }
-
-        /// <summary>
-        /// Sets the built damage action's power.
-        /// </summary>
-        /// <param name="power">The power.</param>
-        public DamageActionBuilder WithPower(int power)
-        {
-            _damage.Power = power;
-            _isPowerSet = true;
-            return this;
         }
 
         /// <summary>
@@ -65,27 +49,30 @@ namespace BattleSystem.Actions.Damage
         }
 
         /// <summary>
-        /// Sets the built damage action to use absolute damage.
+        /// Sets the built damage action to use an absolute damage calculator.
         /// </summary>
-        public DamageActionBuilder AbsoluteDamage()
+        /// <param name="amount">The amount of damage.</param>
+        public DamageActionBuilder AbsoluteDamage(int amount)
         {
-            return WithDamageCalculator(new AbsoluteDamageCalculator());
+            return WithDamageCalculator(new AbsoluteDamageCalculator(amount));
         }
 
         /// <summary>
-        /// Sets the built damage action to use percentage damage.
+        /// Sets the built damage action to use a percentage damage calculator.
         /// </summary>
-        public DamageActionBuilder PercentageDamage()
+        /// <param name="percentage">The percentage of the target's max health to deal as damage.</param>
+        public DamageActionBuilder PercentageDamage(int percentage)
         {
-            return WithDamageCalculator(new PercentageDamageCalculator());
+            return WithDamageCalculator(new PercentageDamageCalculator(percentage));
         }
 
         /// <summary>
-        /// Sets the built damage action to use damage based on the user and target's stat difference.
+        /// Sets the built damage action to use a stat difference damage calculator.
         /// </summary>
-        public DamageActionBuilder StatDifferenceDamage()
+        /// <param name="basePower">The base power.</param>
+        public DamageActionBuilder StatDifferenceDamage(int basePower)
         {
-            return WithDamageCalculator(new StatDifferenceDamageCalculator());
+            return WithDamageCalculator(new StatDifferenceDamageCalculator(basePower));
         }
 
         /// <summary>
@@ -183,11 +170,6 @@ namespace BattleSystem.Actions.Damage
         /// </summary>
         public DamageAction Build()
         {
-            if (!_isPowerSet)
-            {
-                throw new InvalidOperationException("Cannot build a damage action with no power set!");
-            }
-
             if (!_isDamageCalculatorSet)
             {
                 throw new InvalidOperationException("Cannot build a damage action with no damage calculator!");
