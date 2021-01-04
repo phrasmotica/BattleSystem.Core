@@ -32,21 +32,26 @@ namespace BattleSystem.Actions.Damage.Calculators
         /// <inheritdoc/>
         public int Calculate(Character user, DamageAction damage, Character target)
         {
-            var transformedPower = _basePower;
+            var transformedBasePower = _basePower;
 
             if (user.HasItem)
             {
                 foreach (var t in user.Item.DamagePowerTransforms)
                 {
-                    transformedPower = t(transformedPower);
+                    transformedBasePower = t(transformedBasePower);
                 }
             }
 
             var userAttack = user.Stats.Attack.CurrentValue;
             var targetDefence = target.Stats.Defence.CurrentValue;
 
+            var normalisedPower = transformedBasePower * (userAttack - targetDefence);
+
+            // damage range with 80% as lower bound
+            var rangeFactor = new Random().Next(80, 101) / 100d;
+
             // damage is offset by defence to a minimum of 1
-            return Math.Max(1, transformedPower * (userAttack - targetDefence));
+            return Math.Max(1, (int) (normalisedPower * rangeFactor));
         }
     }
 }
