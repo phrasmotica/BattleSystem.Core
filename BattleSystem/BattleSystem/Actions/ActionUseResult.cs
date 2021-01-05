@@ -16,5 +16,10 @@ namespace BattleSystem.Actions
         /// Gets or sets the results of the action being used successfully.
         /// </summary>
         public IEnumerable<IActionResult<TSource>> Results { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tags for the actions result.
+        /// </summary>
+        public HashSet<string> Tags { get; set; }
     }
 }

@@ -90,6 +90,10 @@ namespace BattleSystem.Actions.Damage
                 {
                     Success = false,
                     Results = Enumerable.Empty<IActionResult<TSource>>(),
+                    Tags = new HashSet<string>
+                    {
+                        DamageActionResultTags.NoTargetsSet,
+                    },
                 };
             }
 
@@ -103,6 +107,10 @@ namespace BattleSystem.Actions.Damage
                 {
                     Success = false,
                     Results = Enumerable.Empty<IActionResult<TSource>>(),
+                    Tags = new HashSet<string>
+                    {
+                        DamageActionResultTags.DamageCalculationFailed,
+                    },
                 };
             }
 
