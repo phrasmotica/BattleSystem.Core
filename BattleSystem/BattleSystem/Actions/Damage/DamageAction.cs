@@ -97,11 +97,9 @@ namespace BattleSystem.Actions.Damage
                 };
             }
 
-            var results = new List<IActionResult<TSource>>();
-
             // action only succeeds if damage is calculated against all targets successfully
-            var damageCalculations = _targets.Zip(_targets.Select(c => _damageCalculator.Calculate(user, this, c))).ToArray();
-            if (damageCalculations.Any(d => !d.Second.success))
+            var damageCalculations = CalculateDamage(user, _targets);
+            if (damageCalculations.Any(d => !d.calculation.success))
             {
                 return new ActionUseResult<TSource>
                 {
@@ -113,6 +111,8 @@ namespace BattleSystem.Actions.Damage
                     },
                 };
             }
+
+            var results = new List<IActionResult<TSource>>();
 
             foreach (var (target, calculation) in damageCalculations)
             {
@@ -145,6 +145,21 @@ namespace BattleSystem.Actions.Damage
             var (success, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
             _targets = targets;
             _targetsSet = success;
+        }
+
+        /// <summary>
+        /// Calculates damage dealt by the user against the given targets and
+        /// returns a zipped list of the targets with their calculations.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="targets">The targets.</param>
+        protected IEnumerable<(Character target, (bool success, int amount) calculation)> CalculateDamage(
+            Character user,
+            IEnumerable<Character> targets)
+        {
+            var aliveTargets = targets.Where(c => !c.IsDead);
+            var calculations = aliveTargets.Select(c => _damageCalculator.Calculate(user, this, c));
+            return aliveTargets.Zip(calculations);
         }
     }
 }
