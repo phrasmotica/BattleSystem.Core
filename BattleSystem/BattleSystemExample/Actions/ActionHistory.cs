@@ -80,5 +80,21 @@ namespace BattleSystemExample.Actions
                               .Where(a => a is DamageActionResult<Move>)
                               .LastOrDefault() as DamageActionResult<Move>;
         }
+
+        /// <summary>
+        /// Gets the number of times the given damage action has been used
+        /// successfully by the given user since it last failed.
+        /// </summary>
+        /// <param name="damage">The damage action.</param>
+        /// <param name="user">The user.</param>
+        public int GetMoveDamageCount(DamageAction damage, Character user)
+        {
+            return MoveActions.Select(a => a.result)
+                              .Where(r => r.User == user)
+                              .Where(r => r.Action == damage)
+                              .Reverse()
+                              .TakeWhile(r => r.Applied)
+                              .Count();
+        }
     }
 }
