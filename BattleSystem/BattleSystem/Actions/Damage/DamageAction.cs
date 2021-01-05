@@ -99,7 +99,7 @@ namespace BattleSystem.Actions.Damage
 
             // action only succeeds if damage is calculated against all targets successfully
             var damageCalculations = CalculateDamage(user, _targets);
-            if (damageCalculations.Any(d => !d.calculation.success))
+            if (damageCalculations.Any(d => !d.calculation.Success))
             {
                 return new ActionUseResult<TSource>
                 {
@@ -116,7 +116,7 @@ namespace BattleSystem.Actions.Damage
 
             foreach (var (target, calculation) in damageCalculations)
             {
-                var result = target.ReceiveDamage<TSource>(calculation.amount, user);
+                var result = target.ReceiveDamage<TSource>(calculation.Amount, user);
 
                 foreach (var tag in Tags)
                 {
@@ -153,7 +153,7 @@ namespace BattleSystem.Actions.Damage
         /// </summary>
         /// <param name="user">The user.</param>
         /// <param name="targets">The targets.</param>
-        protected IEnumerable<(Character target, (bool success, int amount) calculation)> CalculateDamage(
+        protected IEnumerable<(Character target, DamageCalculation calculation)> CalculateDamage(
             Character user,
             IEnumerable<Character> targets)
         {

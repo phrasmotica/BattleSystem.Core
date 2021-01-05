@@ -25,19 +25,8 @@ namespace BattleSystem.Tests.Actions.Damage
                 TestHelpers.CreateBasicCharacter(maxHealth: 8)
             };
 
-            var damageCalculator = new Mock<IDamageCalculator>();
-            damageCalculator
-                .Setup(
-                    m => m.Calculate(
-                        It.IsAny<Character>(),
-                        It.IsAny<DamageAction>(),
-                        It.IsAny<Character>()
-                    )
-                )
-                .Returns((true, 6));
-
             var damage = TestHelpers.CreateDamageAction(
-                damageCalculator.Object,
+                new AbsoluteDamageCalculator(6),
                 new OthersActionTargetCalculator());
 
             damage.SetTargets(user, otherCharacters);

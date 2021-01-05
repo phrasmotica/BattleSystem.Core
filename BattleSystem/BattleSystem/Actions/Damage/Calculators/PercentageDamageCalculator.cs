@@ -23,9 +23,13 @@ namespace BattleSystem.Actions.Damage.Calculators
         }
 
         /// <inheritdoc/>
-        public (bool success, int amount) Calculate(Character user, DamageAction damage, Character target)
+        public DamageCalculation Calculate(Character user, DamageAction damage, Character target)
         {
-            return (true, Math.Max(1, target.MaxHealth * _percentage / 100));
+            return new DamageCalculation
+            {
+                Success = true,
+                Amount = Math.Max(1, target.MaxHealth * _percentage / 100),
+            };
         }
     }
 }

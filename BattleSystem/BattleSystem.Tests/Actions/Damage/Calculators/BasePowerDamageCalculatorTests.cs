@@ -29,13 +29,13 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
             var target = TestHelpers.CreateBasicCharacter(defence: targetDefence);
 
             // Act
-            var (success, amount) = calculator.Calculate(user, damage, target);
+            var calculation = calculator.Calculate(user, damage, target);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(success, Is.True);
-                Assert.That(amount, Is.InRange(expectedLowerBound, expectedUpperBound));
+                Assert.That(calculation.Success, Is.True);
+                Assert.That(calculation.Amount, Is.InRange(expectedLowerBound, expectedUpperBound));
             });
         }
 
@@ -58,13 +58,13 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
             _ = user.EquipItem(item);
 
             // Act
-            var (success, amount) = calculator.Calculate(user, damage, target);
+            var calculation = calculator.Calculate(user, damage, target);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(success, Is.True);
-                Assert.That(amount, Is.InRange(32, 40));
+                Assert.That(calculation.Success, Is.True);
+                Assert.That(calculation.Amount, Is.InRange(32, 40));
             });
         }
     }

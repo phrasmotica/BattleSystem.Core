@@ -35,16 +35,24 @@ namespace BattleSystemExample.Actions.Damage.Calculators
         }
 
         /// <inheritdoc/>
-        public (bool success, int amount) Calculate(Character user, DamageAction damage, Character target)
+        public DamageCalculation Calculate(Character user, DamageAction damage, Character target)
         {
             var result = _actionHistory.LastMoveDamageResultAgainst(user);
 
             if (result is null)
             {
-                return (false, default);
+                return new DamageCalculation
+                {
+                    Success = false,
+                    Amount = 0,
+                };
             }
 
-            return (true, Math.Max(1, result.Amount * _percentage / 100));
+            return new DamageCalculation
+            {
+                Success = true,
+                Amount = Math.Max(1, result.Amount * _percentage / 100),
+            };
         }
     }
 }
