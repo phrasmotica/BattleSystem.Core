@@ -9,7 +9,7 @@ using BattleSystem.Moves;
 namespace BattleSystemExample.Actions
 {
     /// <summary>
-    /// Records the results of actions that have been applied to some target.
+    /// Records the moves and actions that have been executed in a battle.
     /// </summary>
     public class ActionHistory
     {
@@ -19,12 +19,30 @@ namespace BattleSystemExample.Actions
         public int TurnCounter { get; private set; }
 
         /// <summary>
-        /// Gets or sets the results of actions applied to this target by moves.
+        /// Gets or sets the moves used.
         /// </summary>
-        public List<(int turnNumber, IActionResult<Move> result)> MoveActions { get; private set; }
+        public List<(int turnNumber, MoveUse moveUse)> MoveUses { get; private set; }
 
         /// <summary>
-        /// Gets or sets the results of actions applied to this target by items.
+        /// Gets or sets the actions used on the given turn from moves.
+        /// </summary>
+        public List<(int turnNumber, IEnumerable<IActionResult<Move>> results)> MoveActions
+        {
+            get
+            {
+                return MoveUses.Select(e =>
+                {
+                    var turnNumber = e.turnNumber;
+                    var results = e.moveUse.ActionsResults
+                                           .SelectMany(aur => aur.Results);
+
+                    return (turnNumber, results);
+                }).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the results of actions executed by items.
         /// </summary>
         public List<(int turnNumber, IActionResult<Item> result)> ItemActions { get; private set; }
 
@@ -33,7 +51,7 @@ namespace BattleSystemExample.Actions
         /// </summary>
         public ActionHistory()
         {
-            MoveActions = new List<(int, IActionResult<Move>)>();
+            MoveUses = new List<(int, MoveUse)>();
             ItemActions = new List<(int, IActionResult<Item>)>();
         }
 
@@ -46,19 +64,23 @@ namespace BattleSystemExample.Actions
         }
 
         /// <summary>
+        /// Adds the given move use to the move use history.
+        /// </summary>
+        /// <param name="moveUse">The move use.</param>
+        public void AddMoveUse(MoveUse moveUse)
+        {
+            MoveUses.Add((TurnCounter, moveUse));
+        }
+
+        /// <summary>
         /// Adds the given action to the move action history.
         /// </summary>
         /// <typeparam name="TSource">The type of the object that caused the action.</typeparam>
         /// <param name="result">The result of the action.</param>
-        /// <param name="turnNumber">The turn number of the action being used.</param>
         public void AddAction<TSource>(IActionResult<TSource> result)
         {
             switch (result)
             {
-                case IActionResult<Move> moveResult:
-                    MoveActions.Add((TurnCounter, moveResult));
-                    break;
-
                 case IActionResult<Item> itemResult:
                     ItemActions.Add((TurnCounter, itemResult));
                     break;
@@ -73,8 +95,7 @@ namespace BattleSystemExample.Actions
         /// <param name="turnNumber">The turn number.</param>
         public DamageActionResult<Move> LastMoveDamageResultAgainst(Character character)
         {
-            return MoveActions.Where(a => a.turnNumber == TurnCounter)
-                              .Select(a => a.result)
+            return MoveActions.Single(a => a.turnNumber == TurnCounter).results
                               .Where(a => a.Target == character)
                               .Where(a => a.Applied)
                               .Where(a => a is DamageActionResult<Move>)
@@ -82,19 +103,37 @@ namespace BattleSystemExample.Actions
         }
 
         /// <summary>
-        /// Gets the number of times the given damage action has been used
-        /// successfully by the given user since it last failed.
+        /// Gets the number of times the given action has been used successfully
+        /// by the given user since it last failed.
         /// </summary>
-        /// <param name="damage">The damage action.</param>
+        /// <param name="action">The action.</param>
         /// <param name="user">The user.</param>
-        public int GetMoveDamageCount(DamageAction damage, Character user)
+        public int GetMoveDamageConsecutiveSuccessCount(IAction action, Character user)
         {
-            return MoveActions.Select(a => a.result)
-                              .Where(r => r.User == user)
-                              .Where(r => r.Action == damage)
-                              .Reverse()
-                              .TakeWhile(r => r.Applied)
-                              .Count();
+            return MoveUses.Select(a => a.moveUse)
+                           .SelectMany(mu => mu.ActionsResults)
+                           .SelectMany(aur => aur.Results)
+                           .Where(ar => ar.Action == action)
+                           .Where(ar => ar.User == user)
+                           .Reverse()
+                           .TakeWhile(ar => ar.Applied)
+                           .Count();
+        }
+
+        /// <summary>
+        /// Gets the number of times the given move has been used successfully
+        /// by the given user since it last failed.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="user">The user.</param>
+        public int GetMoveConsecutiveSuccessCount(Move move, Character user)
+        {
+            return MoveUses.Select(a => a.moveUse)
+                           .Where(mu => mu.Move == move)
+                           .Where(mu => mu.User == user)
+                           .Reverse()
+                           .TakeWhile(mu => mu.Success)
+                           .Count();
         }
     }
 }

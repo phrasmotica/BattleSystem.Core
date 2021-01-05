@@ -34,6 +34,11 @@ namespace BattleSystem.Moves
         public bool HasResult => Result.HasValue;
 
         /// <summary>
+        /// Gets whether the move use was successful.
+        /// </summary>
+        public bool Success => Result == MoveUseResult.Success;
+
+        /// <summary>
         /// Gets or sets the result of each action use in the move use.
         /// </summary>
         public IEnumerable<ActionUseResult<Move>> ActionsResults { get; private set; }

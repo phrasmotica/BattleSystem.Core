@@ -121,7 +121,7 @@ namespace BattleSystemExample.Battles
                     var moveUse = _moveProcessor.ApplyNext();
                     if (moveUse.HasResult)
                     {
-                        AddToActionHistory(moveUse);
+                        _actionHistory.AddMoveUse(moveUse);
                         ShowMoveUse(moveUse);
                     }
                 }
@@ -143,19 +143,6 @@ namespace BattleSystemExample.Battles
         }
 
         /// <summary>
-        /// Adds the given move use to the action history.
-        /// </summary>
-        /// <param name="moveUse"></param>
-        private void AddToActionHistory(MoveUse moveUse)
-        {
-            var results = moveUse.ActionsResults.SelectMany(ars => ars.Results);
-            foreach (var result in results)
-            {
-                _actionHistory.AddAction(result);
-            }
-        }
-
-        /// <summary>
         /// Outputs a summary of the given move use.
         /// </summary>
         /// <param name="moveUse">The move use.</param>
@@ -171,6 +158,10 @@ namespace BattleSystemExample.Battles
 
                     case MoveUseResult.Miss:
                         _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name} but missed!");
+                        break;
+
+                    case MoveUseResult.Failure:
+                        _gameOutput.WriteLine($"{moveUse.User.Name} used {moveUse.Move.Name} but it failed!");
                         break;
                 }
 
@@ -203,18 +194,18 @@ namespace BattleSystemExample.Battles
             }
             else switch (result)
             {
-                case DamageActionResult<TSource> dr:
-                    var damageDescription = dr.Describe();
-                    if (damageDescription is not null)
-                    {
-                        _gameOutput.WriteLine(damageDescription);
-                    }
-                    break;
                 case BuffActionResult<TSource> br:
                     var buffDescription = br.Describe();
                     if (buffDescription is not null)
                     {
                         _gameOutput.WriteLine(buffDescription);
+                    }
+                    break;
+                case DamageActionResult<TSource> dr:
+                    var damageDescription = dr.Describe();
+                    if (damageDescription is not null)
+                    {
+                        _gameOutput.WriteLine(damageDescription);
                     }
                     break;
                 case HealActionResult<TSource> hr:

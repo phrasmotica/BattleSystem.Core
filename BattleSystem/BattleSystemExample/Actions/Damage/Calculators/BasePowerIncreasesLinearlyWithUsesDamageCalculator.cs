@@ -45,7 +45,7 @@ namespace BattleSystemExample.Actions.Damage.Calculators
         /// <inheritdoc/>
         public DamageCalculation Calculate(Character user, DamageAction damage, Character target)
         {
-            var count = _actionHistory.GetMoveDamageCount(damage, user);
+            var count = _actionHistory.GetMoveDamageConsecutiveSuccessCount(damage, user);
             var basePower = _startingBasePower + _linearFactor * count;
 
             return new BasePowerDamageCalculator(basePower).Calculate(user, damage, target);

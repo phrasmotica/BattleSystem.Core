@@ -7,6 +7,7 @@ using BattleSystem.Actions.ProtectLimitChange;
 using BattleSystem.Characters;
 using BattleSystem.Items;
 using BattleSystem.Moves;
+using BattleSystem.Moves.Success;
 using BattleSystem.Stats;
 using BattleSystemExample.Actions;
 using BattleSystemExample.Battles;
@@ -70,7 +71,7 @@ namespace BattleSystemExample
                             .Describe("The user swings their sword to inflict damage. This move has increased priority.")
                             .WithMaxUses(15)
                             .WithPriority(1)
-                            .WithAccuracy(100)
+                            .SuccessDecreasesLinearlyWithUses(100, 25, 10, MoveUseResult.Failure, actionHistory)
                             .WithAction(
                                 new DamageActionBuilder()
                                     .WithBasePower(20)
