@@ -166,6 +166,12 @@ namespace BattleSystem.Moves
 
                     actionsResults.Add(result);
 
+                    if (!result.Success)
+                    {
+                        // don't execute further actions if this one failed
+                        break;
+                    }
+
                     // only certain characters should be considered as targets
                     // for subsequent actions
                     targets = GetTargetsToConsider(targets, result).ToArray();
