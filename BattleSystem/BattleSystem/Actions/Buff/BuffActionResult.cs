@@ -12,6 +12,11 @@ namespace BattleSystem.Actions.Buff
     public class BuffActionResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
+        /// Gets or sets the buff that was executed.
+        /// </summary>
+        public IAction Action { get; set; }
+
+        /// <summary>
         /// Gets or sets whether the buff was applied to the character.
         /// </summary>
         public bool Applied { get; set; }

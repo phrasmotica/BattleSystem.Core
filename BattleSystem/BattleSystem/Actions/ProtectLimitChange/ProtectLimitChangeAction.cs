@@ -88,6 +88,7 @@ namespace BattleSystem.Actions.ProtectLimitChange
             foreach (var target in _targets.Where(c => !c.IsDead))
             {
                 var result = target.ChangeProtectLimit<TSource>(Amount, user);
+                result.Action = this;
 
                 foreach (var tag in Tags)
                 {

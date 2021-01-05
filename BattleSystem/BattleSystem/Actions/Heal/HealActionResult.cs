@@ -10,6 +10,11 @@ namespace BattleSystem.Actions.Heal
     public class HealActionResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
+        /// Gets or sets the heal that was executed.
+        /// </summary>
+        public IAction Action { get; set; }
+
+        /// <summary>
         /// Gets or sets whether the heal was applied to the character.
         /// </summary>
         public bool Applied { get; set; }

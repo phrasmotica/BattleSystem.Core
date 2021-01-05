@@ -10,6 +10,11 @@ namespace BattleSystem.Actions.ProtectLimitChange
     public class ProtectLimitChangeActionResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
+        /// Gets or sets the protect limit change action that was executed.
+        /// </summary>
+        public IAction Action { get; set; }
+
+        /// <summary>
         /// Gets or sets whether the protect limit change action was applied to the character.
         /// </summary>
         public bool Applied { get; set; }
