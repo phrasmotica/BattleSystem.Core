@@ -17,11 +17,6 @@ namespace BattleSystemExample.Actions.Damage.Calculators
         private readonly int _percentage;
 
         /// <summary>
-        /// The default amount of damage.
-        /// </summary>
-        private readonly int _defaultAmount;
-
-        /// <summary>
         /// The action history.
         /// </summary>
         private readonly ActionHistory _actionHistory;
@@ -30,29 +25,26 @@ namespace BattleSystemExample.Actions.Damage.Calculators
         /// Creates a new <see cref="PercentageOfLastReceivedMoveDamageCalculator"/> instance.
         /// </summary>
         /// <param name="percentage">The percentage of damage to deal.</param>
-        /// <param name="defaultAmount">The default amount of damage to deal.</param>
         /// <param name="actionHistory">The action history.</param>
         public PercentageOfLastReceivedMoveDamageCalculator(
             int percentage,
-            int defaultAmount,
             ActionHistory actionHistory)
         {
             _percentage = percentage;
-            _defaultAmount = defaultAmount;
             _actionHistory = actionHistory;
         }
 
         /// <inheritdoc/>
-        public int Calculate(Character user, DamageAction damage, Character target)
+        public (bool success, int amount) Calculate(Character user, DamageAction damage, Character target)
         {
             var result = _actionHistory.LastMoveDamageResultAgainst(user);
 
             if (result is null)
             {
-                return _defaultAmount;
+                return (false, default);
             }
 
-            return Math.Max(1, result.Amount * _percentage / 100);
+            return (true, Math.Max(1, result.Amount * _percentage / 100));
         }
     }
 }

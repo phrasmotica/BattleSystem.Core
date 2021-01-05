@@ -35,7 +35,7 @@ namespace BattleSystem.Tests.Actions.Damage
                         It.IsAny<Character>()
                     )
                 )
-                .Returns(6);
+                .Returns((true, 6));
 
             var damage = TestHelpers.CreateDamageAction(
                 damageCalculator.Object,

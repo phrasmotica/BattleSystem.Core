@@ -95,10 +95,20 @@ namespace BattleSystem.Actions.Damage
 
             var results = new List<IActionResult<TSource>>();
 
-            foreach (var target in _targets.Where(c => !c.IsDead).ToArray())
+            // action only succeeds if damage is calculated against all targets successfully
+            var damageCalculations = _targets.Zip(_targets.Select(c => _damageCalculator.Calculate(user, this, c))).ToArray();
+            if (damageCalculations.Any(d => !d.Second.success))
             {
-                var amount = _damageCalculator.Calculate(user, this, target);
-                var result = target.ReceiveDamage<TSource>(amount, user);
+                return new ActionUseResult<TSource>
+                {
+                    Success = false,
+                    Results = Enumerable.Empty<IActionResult<TSource>>(),
+                };
+            }
+
+            foreach (var (target, calculation) in damageCalculations)
+            {
+                var result = target.ReceiveDamage<TSource>(calculation.amount, user);
 
                 foreach (var tag in Tags)
                 {
