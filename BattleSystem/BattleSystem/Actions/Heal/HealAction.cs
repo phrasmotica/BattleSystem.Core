@@ -104,6 +104,7 @@ namespace BattleSystem.Actions.Heal
             {
                 var amount = _healingCalculator.Calculate(user, this, target);
                 var result = target.Heal<TSource>(amount, user);
+                result.Action = this;
 
                 foreach (var tag in Tags)
                 {

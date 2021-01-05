@@ -7,6 +7,7 @@ using BattleSystem.Actions.ProtectLimitChange;
 using BattleSystem.Characters;
 using BattleSystem.Items;
 using BattleSystem.Moves;
+using BattleSystem.Moves.Success;
 using BattleSystem.Stats;
 using BattleSystemExample.Actions;
 using BattleSystemExample.Battles;
@@ -70,7 +71,7 @@ namespace BattleSystemExample
                             .Describe("The user swings their sword to inflict damage. This move has increased priority.")
                             .WithMaxUses(15)
                             .WithPriority(1)
-                            .WithAccuracy(100)
+                            .SuccessDecreasesLinearlyWithUses(100, 25, 10, MoveUseResult.Failure, actionHistory)
                             .WithAction(
                                 new DamageActionBuilder()
                                     .WithBasePower(20)
@@ -81,20 +82,14 @@ namespace BattleSystemExample
                     )
                     .WithMove(
                         new MoveBuilder()
-                            .Name("Pierce")
-                            .Describe("The user drives their weapon through the target's abdomen, and then raises their Attack stat.")
-                            .WithMaxUses(5)
-                            .WithAccuracy(50)
+                            .Name("Insistent Jab")
+                            .Describe("This attack's base power increases with each consecutive successful use.")
+                            .WithMaxUses(15)
+                            .WithAccuracy(100)
                             .WithAction(
                                 new DamageActionBuilder()
-                                    .PercentageDamage(40)
+                                    .BasePowerIncreasesLinearlyWithUses(20, 5, actionHistory)
                                     .UserSelectsSingleEnemy(userInput, gameOutput)
-                                    .Build()
-                            )
-                            .WithAction(
-                                new BuffActionBuilder()
-                                    .TargetsUser()
-                                    .WithRaiseAttack(0.1)
                                     .Build()
                             )
                             .Build()

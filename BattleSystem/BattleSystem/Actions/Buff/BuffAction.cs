@@ -90,6 +90,7 @@ namespace BattleSystem.Actions.Buff
             foreach (var target in _targets.Where(c => !c.IsDead).ToArray())
             {
                 var result = target.ReceiveBuff<TSource>(TargetMultipliers, user);
+                result.Action = this;
 
                 foreach (var tag in Tags)
                 {

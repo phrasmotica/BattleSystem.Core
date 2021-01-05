@@ -11,8 +11,13 @@
         Success,
 
         /// <summary>
-        /// The move failed to land on the target.
+        /// The move was executed but missed the target.
         /// </summary>
         Miss,
+
+        /// <summary>
+        /// The move failed for some reason.
+        /// </summary>
+        Failure,
     }
 }

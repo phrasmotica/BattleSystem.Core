@@ -117,6 +117,7 @@ namespace BattleSystem.Actions.Damage
             foreach (var (target, calculation) in damageCalculations)
             {
                 var result = target.ReceiveDamage<TSource>(calculation.Amount, user);
+                result.Action = this;
 
                 foreach (var tag in Tags)
                 {

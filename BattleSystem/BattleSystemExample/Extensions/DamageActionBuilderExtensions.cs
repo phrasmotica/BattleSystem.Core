@@ -28,6 +28,22 @@ namespace BattleSystemExample.Extensions
         }
 
         /// <summary>
+        /// Sets the built damage action to use percentage-of-last-received-move damage.
+        /// </summary>
+        /// <param name="builder">The damage action builder.</param>
+        /// <param name="startingBasePower">The starting base power.</param>
+        /// <param name="linearFactor">The linear factor.</param>
+        /// <param name="actionHistory">The action history.</param>
+        public static DamageActionBuilder BasePowerIncreasesLinearlyWithUses(
+            this DamageActionBuilder builder,
+            int startingBasePower,
+            int linearFactor,
+            ActionHistory actionHistory)
+        {
+            return builder.WithDamageCalculator(new BasePowerIncreasesLinearlyWithUsesDamageCalculator(startingBasePower, linearFactor, actionHistory));
+        }
+
+        /// <summary>
         /// Sets the built damage action to target a single character chosen by the user.
         /// </summary>
         /// <param name="builder">The damage action builder.</param>

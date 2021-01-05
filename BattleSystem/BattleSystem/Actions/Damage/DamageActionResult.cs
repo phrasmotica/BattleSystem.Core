@@ -10,6 +10,11 @@ namespace BattleSystem.Actions.Damage
     public class DamageActionResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
+        /// Gets or sets the damage action that was executed.
+        /// </summary>
+        public IAction Action { get; set; }
+
+        /// <summary>
         /// Gets or sets whether the damage was applied to the character.
         /// </summary>
         public bool Applied { get; set; }

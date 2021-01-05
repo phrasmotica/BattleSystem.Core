@@ -83,6 +83,7 @@ namespace BattleSystem.Actions.Protect
             foreach (var target in _targets.Where(c => !c.IsDead))
             {
                 var result = target.AddProtect<TSource>(user);
+                result.Action = this;
 
                 foreach (var tag in Tags)
                 {

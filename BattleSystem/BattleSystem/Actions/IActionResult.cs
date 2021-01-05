@@ -10,6 +10,11 @@ namespace BattleSystem.Actions
     public interface IActionResult<TSource>
     {
         /// <summary>
+        /// Gets or sets the action that was executed.
+        /// </summary>
+        IAction Action { get; set; }
+
+        /// <summary>
         /// Gets or sets whether the action was applied to the character.
         /// </summary>
         bool Applied { get; set; }

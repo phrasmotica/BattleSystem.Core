@@ -10,6 +10,11 @@ namespace BattleSystem.Actions.Protect
     public class ProtectActionResult<TSource> : IActionResult<TSource>
     {
         /// <summary>
+        /// Gets or sets the protect action that was executed.
+        /// </summary>
+        public IAction Action { get; set; }
+
+        /// <summary>
         /// Gets or sets whether the protect action was applied to the character.
         /// </summary>
         public bool Applied { get; set; }
