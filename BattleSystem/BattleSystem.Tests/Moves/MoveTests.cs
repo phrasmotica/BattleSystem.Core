@@ -106,6 +106,30 @@ namespace BattleSystem.Tests.Moves
         }
 
         [Test]
+        public void Use_WhenActionFails_SubsequentActionsNotExecuted()
+        {
+            // Arrange
+            var move = TestHelpers.CreateMove(
+                moveActions: new[]
+                {
+                    TestHelpers.CreateDamageAction(),
+                    TestHelpers.CreateDamageAction(),
+                });
+
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter()
+            };
+
+            // Act
+            var (_, actionsResults) = move.Use(user, otherCharacters);
+
+            // Assert
+            Assert.That(actionsResults.ToArray(), Has.Length.EqualTo(1));
+        }
+
+        [Test]
         public void Use_WhenActionDidNotTargetCharacter_CharacterStillConsideredForSubsequentActions()
         {
             // Arrange
