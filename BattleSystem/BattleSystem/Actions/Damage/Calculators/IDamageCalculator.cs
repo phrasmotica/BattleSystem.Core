@@ -13,6 +13,6 @@ namespace BattleSystem.Actions.Damage.Calculators
         /// <param name="user">The user of the damage action.</param>
         /// <param name="damage">The damage action.</param>
         /// <param name="target">The target of the damage action.</param>
-        int Calculate(Character user, DamageAction damage, Character target);
+        DamageCalculation Calculate(Character user, DamageAction damage, Character target);
     }
 }

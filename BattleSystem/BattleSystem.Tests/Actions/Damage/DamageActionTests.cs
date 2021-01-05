@@ -6,7 +6,6 @@ using BattleSystem.Actions.Targets;
 using BattleSystem.Characters;
 using Moq;
 using NUnit.Framework;
-using static BattleSystem.Actions.Damage.DamageAction;
 
 namespace BattleSystem.Tests.Actions.Damage
 {
@@ -26,19 +25,8 @@ namespace BattleSystem.Tests.Actions.Damage
                 TestHelpers.CreateBasicCharacter(maxHealth: 8)
             };
 
-            var damageCalculator = new Mock<IDamageCalculator>();
-            damageCalculator
-                .Setup(
-                    m => m.Calculate(
-                        It.IsAny<Character>(),
-                        It.IsAny<DamageAction>(),
-                        It.IsAny<Character>()
-                    )
-                )
-                .Returns(6);
-
             var damage = TestHelpers.CreateDamageAction(
-                damageCalculator.Object,
+                new AbsoluteDamageCalculator(6),
                 new OthersActionTargetCalculator());
 
             damage.SetTargets(user, otherCharacters);
@@ -61,6 +49,7 @@ namespace BattleSystem.Tests.Actions.Damage
             };
 
             var damage = TestHelpers.CreateDamageAction(
+                damageCalculator: new AbsoluteDamageCalculator(5),
                 actionTargetCalculator: new OthersActionTargetCalculator());
 
             damage.SetTargets(user, otherCharacters);
@@ -134,6 +123,42 @@ namespace BattleSystem.Tests.Actions.Damage
             Assert.Multiple(() =>
             {
                 Assert.That(result.Success, Is.True);
+                Assert.That(result.Results, Is.Empty);
+            });
+        }
+
+        [Test]
+        public void Use_CalculationUnsuccessful_FailsAndAppliesNoActions()
+        {
+            // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter()
+            };
+
+            var actionTargetCalculator = new Mock<IActionTargetCalculator>();
+            actionTargetCalculator
+                .Setup(
+                    m => m.Calculate(
+                        It.IsAny<Character>(),
+                        It.IsAny<IEnumerable<Character>>()
+                    )
+                )
+                .Returns((false, Enumerable.Empty<Character>()));
+
+            var damage = TestHelpers.CreateDamageAction(
+                actionTargetCalculator: actionTargetCalculator.Object);
+
+            damage.SetTargets(user, otherCharacters);
+
+            // Act
+            var result = damage.Use<string>(user, otherCharacters);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Success, Is.False);
                 Assert.That(result.Results, Is.Empty);
             });
         }

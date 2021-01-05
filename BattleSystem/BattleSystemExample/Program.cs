@@ -107,7 +107,7 @@ namespace BattleSystemExample
                             .AlwaysSucceeds()
                             .WithAction(
                                 new DamageActionBuilder()
-                                    .PercentageOfLastReceivedMoveDamage(150, 0, actionHistory)
+                                    .PercentageOfLastReceivedMoveDamage(150, actionHistory)
                                     .Retaliates(actionHistory)
                                     .Build()
                             )

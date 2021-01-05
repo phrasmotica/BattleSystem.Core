@@ -90,15 +90,33 @@ namespace BattleSystem.Actions.Damage
                 {
                     Success = false,
                     Results = Enumerable.Empty<IActionResult<TSource>>(),
+                    Tags = new HashSet<string>
+                    {
+                        DamageActionResultTags.NoTargetsSet,
+                    },
+                };
+            }
+
+            // action only succeeds if damage is calculated against all targets successfully
+            var damageCalculations = CalculateDamage(user, _targets);
+            if (damageCalculations.Any(d => !d.calculation.Success))
+            {
+                return new ActionUseResult<TSource>
+                {
+                    Success = false,
+                    Results = Enumerable.Empty<IActionResult<TSource>>(),
+                    Tags = new HashSet<string>
+                    {
+                        DamageActionResultTags.DamageCalculationFailed,
+                    },
                 };
             }
 
             var results = new List<IActionResult<TSource>>();
 
-            foreach (var target in _targets.Where(c => !c.IsDead).ToArray())
+            foreach (var (target, calculation) in damageCalculations)
             {
-                var amount = _damageCalculator.Calculate(user, this, target);
-                var result = target.ReceiveDamage<TSource>(amount, user);
+                var result = target.ReceiveDamage<TSource>(calculation.Amount, user);
 
                 foreach (var tag in Tags)
                 {
@@ -127,6 +145,21 @@ namespace BattleSystem.Actions.Damage
             var (success, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
             _targets = targets;
             _targetsSet = success;
+        }
+
+        /// <summary>
+        /// Calculates damage dealt by the user against the given targets and
+        /// returns a zipped list of the targets with their calculations.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="targets">The targets.</param>
+        protected IEnumerable<(Character target, DamageCalculation calculation)> CalculateDamage(
+            Character user,
+            IEnumerable<Character> targets)
+        {
+            var aliveTargets = targets.Where(c => !c.IsDead);
+            var calculations = aliveTargets.Select(c => _damageCalculator.Calculate(user, this, c));
+            return aliveTargets.Zip(calculations);
         }
     }
 }

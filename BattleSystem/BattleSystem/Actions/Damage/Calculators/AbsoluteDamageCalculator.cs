@@ -22,9 +22,13 @@ namespace BattleSystem.Actions.Damage.Calculators
         }
 
         /// <inheritdoc/>
-        public int Calculate(Character user, DamageAction damage, Character target)
+        public DamageCalculation Calculate(Character user, DamageAction damage, Character target)
         {
-            return _amount;
+            return new DamageCalculation
+            {
+                Success = true,
+                Amount = _amount,
+            };
         }
     }
 }

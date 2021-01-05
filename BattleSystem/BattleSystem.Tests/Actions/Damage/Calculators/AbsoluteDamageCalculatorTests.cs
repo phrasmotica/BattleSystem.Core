@@ -23,10 +23,14 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
             var target = TestHelpers.CreateBasicCharacter();
 
             // Act
-            var actualAmount = calculator.Calculate(user, damage, target);
+            var calculation = calculator.Calculate(user, damage, target);
 
             // Assert
-            Assert.That(actualAmount, Is.EqualTo(amount));
+            Assert.Multiple(() =>
+            {
+                Assert.That(calculation.Success, Is.True);
+                Assert.That(calculation.Amount, Is.EqualTo(amount));
+            });
         }
     }
 }

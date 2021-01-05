@@ -30,7 +30,7 @@ namespace BattleSystem.Actions.Damage.Calculators
         }
 
         /// <inheritdoc/>
-        public int Calculate(Character user, DamageAction damage, Character target)
+        public DamageCalculation Calculate(Character user, DamageAction damage, Character target)
         {
             var transformedBasePower = _basePower;
 
@@ -51,7 +51,13 @@ namespace BattleSystem.Actions.Damage.Calculators
             var rangeFactor = new Random().Next(80, 101) / 100d;
 
             // damage is offset by defence to a minimum of 1
-            return Math.Max(1, (int) (normalisedPower * rangeFactor));
+            var finalAmount = Math.Max(1, (int) (normalisedPower * rangeFactor));
+
+            return new DamageCalculation
+            {
+                Success = true,
+                Amount = finalAmount,
+            };
         }
     }
 }
