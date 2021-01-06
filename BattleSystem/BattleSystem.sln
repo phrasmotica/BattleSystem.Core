@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleSystem.Tests", "Battl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleSystemExample", "BattleSystemExample\BattleSystemExample.csproj", "{FB8C1A4A-05B4-4665-A59E-D0ADEAF4EB7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleSystem.Battles", "BattleSystem.Battles\BattleSystem.Battles.csproj", "{81E8C1E4-2BC6-4C63-86F2-3B88781408E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FB8C1A4A-05B4-4665-A59E-D0ADEAF4EB7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB8C1A4A-05B4-4665-A59E-D0ADEAF4EB7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB8C1A4A-05B4-4665-A59E-D0ADEAF4EB7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81E8C1E4-2BC6-4C63-86F2-3B88781408E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81E8C1E4-2BC6-4C63-86F2-3B88781408E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81E8C1E4-2BC6-4C63-86F2-3B88781408E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81E8C1E4-2BC6-4C63-86F2-3B88781408E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
