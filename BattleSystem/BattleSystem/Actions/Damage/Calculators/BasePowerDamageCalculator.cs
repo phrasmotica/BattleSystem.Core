@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using BattleSystem.Characters;
 
 namespace BattleSystem.Actions.Damage.Calculators
@@ -30,7 +32,7 @@ namespace BattleSystem.Actions.Damage.Calculators
         }
 
         /// <inheritdoc/>
-        public DamageCalculation Calculate(Character user, DamageAction damage, Character target)
+        public IEnumerable<DamageCalculation> Calculate(Character user, DamageAction damage, IEnumerable<Character> targets)
         {
             var transformedBasePower = _basePower;
 
@@ -42,22 +44,34 @@ namespace BattleSystem.Actions.Damage.Calculators
                 }
             }
 
-            var userAttack = user.Stats.Attack.CurrentValue;
-            var targetDefence = target.Stats.Defence.CurrentValue;
+            var calculations = new List<DamageCalculation>();
 
-            var normalisedPower = transformedBasePower * (userAttack - targetDefence);
-
-            // damage range with 80% as lower bound
-            var rangeFactor = new Random().Next(80, 101) / 100d;
-
-            // damage is offset by defence to a minimum of 1
-            var finalAmount = Math.Max(1, (int) (normalisedPower * rangeFactor));
-
-            return new DamageCalculation
+            foreach (var target in targets)
             {
-                Success = true,
-                Amount = finalAmount,
-            };
+                var userAttack = user.Stats.Attack.CurrentValue;
+                var targetDefence = target.Stats.Defence.CurrentValue;
+
+                var normalisedAmount = transformedBasePower * (userAttack - targetDefence);
+
+                // damage range with 80% as lower bound
+                var varianceFactor = new Random().Next(80, 101) / 100d;
+                var amountWithVariance = (int) (normalisedAmount * varianceFactor);
+
+                // damage is restricted to 70% if the action is hitting more than one target
+                var spreadAmount = targets.Count() > 1 ? (int) (amountWithVariance * 0.7) : amountWithVariance;
+
+                // damage is offset by defence to a minimum of 1
+                var finalAmount = Math.Max(1, spreadAmount);
+
+                calculations.Add(new DamageCalculation
+                {
+                    Target = target,
+                    Success = true,
+                    Amount = finalAmount,
+                });
+            }
+
+            return calculations;
         }
     }
 }

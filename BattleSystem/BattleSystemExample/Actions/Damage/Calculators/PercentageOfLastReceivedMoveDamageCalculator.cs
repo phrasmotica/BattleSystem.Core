@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BattleSystem.Actions.Damage;
 using BattleSystem.Actions.Damage.Calculators;
 using BattleSystem.Characters;
@@ -35,24 +36,35 @@ namespace BattleSystemExample.Actions.Damage.Calculators
         }
 
         /// <inheritdoc/>
-        public DamageCalculation Calculate(Character user, DamageAction damage, Character target)
+        public IEnumerable<DamageCalculation> Calculate(Character user, DamageAction damage, IEnumerable<Character> targets)
         {
             var result = _actionHistory.LastMoveDamageResultAgainst(user);
 
-            if (result is null)
+            var calculations = new List<DamageCalculation>();
+
+            foreach (var target in targets)
             {
-                return new DamageCalculation
+                if (result is null)
                 {
-                    Success = false,
-                    Amount = 0,
-                };
+                    calculations.Add(new DamageCalculation
+                    {
+                        Target = target,
+                        Success = false,
+                        Amount = 0,
+                    });
+                }
+                else
+                {
+                    calculations.Add(new DamageCalculation
+                    {
+                        Target = target,
+                        Success = true,
+                        Amount = Math.Max(1, result.Amount * _percentage / 100),
+                    });
+                }
             }
 
-            return new DamageCalculation
-            {
-                Success = true,
-                Amount = Math.Max(1, result.Amount * _percentage / 100),
-            };
+            return calculations;
         }
     }
 }
