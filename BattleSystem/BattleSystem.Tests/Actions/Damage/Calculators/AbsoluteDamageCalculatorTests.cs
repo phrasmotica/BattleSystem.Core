@@ -1,4 +1,5 @@
-﻿using BattleSystem.Actions.Damage.Calculators;
+﻿using System.Linq;
+using BattleSystem.Actions.Damage.Calculators;
 using NUnit.Framework;
 
 namespace BattleSystem.Tests.Actions.Damage.Calculators
@@ -23,7 +24,7 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
             var target = TestHelpers.CreateBasicCharacter();
 
             // Act
-            var calculation = calculator.Calculate(user, damage, target);
+            var calculation = calculator.Calculate(user, damage, new[] { target }).Single();
 
             // Assert
             Assert.Multiple(() =>

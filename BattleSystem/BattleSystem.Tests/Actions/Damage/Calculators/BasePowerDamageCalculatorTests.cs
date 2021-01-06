@@ -1,4 +1,5 @@
-﻿using BattleSystem.Actions.Damage.Calculators;
+﻿using System.Linq;
+using BattleSystem.Actions.Damage.Calculators;
 using NUnit.Framework;
 using static BattleSystem.Actions.Damage.Calculators.BasePowerDamageCalculator;
 
@@ -29,13 +30,35 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
             var target = TestHelpers.CreateBasicCharacter(defence: targetDefence);
 
             // Act
-            var calculation = calculator.Calculate(user, damage, target);
+            var calculation = calculator.Calculate(user, damage, new[] { target }).Single();
 
             // Assert
             Assert.Multiple(() =>
             {
                 Assert.That(calculation.Success, Is.True);
                 Assert.That(calculation.Amount, Is.InRange(expectedLowerBound, expectedUpperBound));
+            });
+        }
+
+        [Test]
+        public void Calculate_NoPowerTransforms_MultipleTargets_ReturnsSpreadDamage()
+        {
+            // Arrange
+            var calculator = new BasePowerDamageCalculator(10);
+
+            var user = TestHelpers.CreateBasicCharacter(attack: 6);
+            var damage = TestHelpers.CreateDamageAction(calculator);
+            var target1 = TestHelpers.CreateBasicCharacter(defence: 5);
+            var target2 = TestHelpers.CreateBasicCharacter();
+
+            // Act
+            var calculation = calculator.Calculate(user, damage, new[] { target1, target2 }).First();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(calculation.Success, Is.True);
+                Assert.That(calculation.Amount, Is.InRange(5, 7));
             });
         }
 
@@ -58,7 +81,7 @@ namespace BattleSystem.Tests.Actions.Damage.Calculators
             _ = user.EquipItem(item);
 
             // Act
-            var calculation = calculator.Calculate(user, damage, target);
+            var calculation = calculator.Calculate(user, damage, new[] { target }).Single();
 
             // Assert
             Assert.Multiple(() =>

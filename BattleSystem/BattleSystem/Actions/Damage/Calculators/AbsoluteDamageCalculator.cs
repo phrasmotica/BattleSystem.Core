@@ -1,4 +1,6 @@
-﻿using BattleSystem.Characters;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BattleSystem.Characters;
 
 namespace BattleSystem.Actions.Damage.Calculators
 {
@@ -22,13 +24,14 @@ namespace BattleSystem.Actions.Damage.Calculators
         }
 
         /// <inheritdoc/>
-        public DamageCalculation Calculate(Character user, DamageAction damage, Character target)
+        public IEnumerable<DamageCalculation> Calculate(Character user, DamageAction damage, IEnumerable<Character> targets)
         {
-            return new DamageCalculation
+            return targets.Select(target => new DamageCalculation
             {
+                Target = target,
                 Success = true,
                 Amount = _amount,
-            };
+            });
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using BattleSystem.Actions.Damage;
+﻿using System.Collections.Generic;
+using BattleSystem.Actions.Damage;
 using BattleSystem.Actions.Damage.Calculators;
 using BattleSystem.Characters;
 
@@ -43,12 +44,12 @@ namespace BattleSystemExample.Actions.Damage.Calculators
         }
 
         /// <inheritdoc/>
-        public DamageCalculation Calculate(Character user, DamageAction damage, Character target)
+        public IEnumerable<DamageCalculation> Calculate(Character user, DamageAction damage, IEnumerable<Character> targets)
         {
             var count = _actionHistory.GetMoveDamageConsecutiveSuccessCount(damage, user);
             var basePower = _startingBasePower + _linearFactor * count;
 
-            return new BasePowerDamageCalculator(basePower).Calculate(user, damage, target);
+            return new BasePowerDamageCalculator(basePower).Calculate(user, damage, targets);
         }
     }
 }
