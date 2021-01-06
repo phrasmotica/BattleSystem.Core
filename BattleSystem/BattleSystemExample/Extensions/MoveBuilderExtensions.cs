@@ -1,5 +1,5 @@
-﻿using BattleSystem.Moves;
-using BattleSystem.Moves.Success;
+﻿using BattleSystem.Core.Moves;
+using BattleSystem.Core.Moves.Success;
 using BattleSystemExample.Actions;
 using BattleSystemExample.Moves.Success;
 

@@ -1,6 +1,6 @@
-﻿using BattleSystem.Actions.Buff;
-using BattleSystemExample.Input;
+﻿using BattleSystem.Core.Actions.Buff;
 using BattleSystemExample.Actions.Targets;
+using BattleSystemExample.Input;
 using BattleSystemExample.Output;
 
 namespace BattleSystemExample.Extensions

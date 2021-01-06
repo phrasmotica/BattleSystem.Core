@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Actions.Targets;
-using BattleSystem.Characters;
+using BattleSystem.Core.Actions.Targets;
+using BattleSystem.Core.Characters;
 
 namespace BattleSystemExample.Actions.Targets
 {

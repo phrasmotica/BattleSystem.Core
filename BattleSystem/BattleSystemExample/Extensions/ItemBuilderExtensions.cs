@@ -1,5 +1,5 @@
-﻿using BattleSystem.Actions;
-using BattleSystem.Items;
+﻿using BattleSystem.Core.Actions;
+using BattleSystem.Core.Items;
 using BattleSystemExample.Constants;
 
 namespace BattleSystemExample.Extensions

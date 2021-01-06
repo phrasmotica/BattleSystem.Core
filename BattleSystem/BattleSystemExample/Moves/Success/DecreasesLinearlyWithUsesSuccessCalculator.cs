@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using BattleSystem.Characters;
-using BattleSystem.Moves;
-using BattleSystem.Moves.Success;
+using BattleSystem.Core.Characters;
+using BattleSystem.Core.Moves;
+using BattleSystem.Core.Moves.Success;
 using BattleSystemExample.Actions;
 
 namespace BattleSystemExample.Moves.Success

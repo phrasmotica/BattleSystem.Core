@@ -1,5 +1,5 @@
-﻿using BattleSystem.Actions.ProtectLimitChange;
-using BattleSystem.Items;
+﻿using BattleSystem.Core.Actions.ProtectLimitChange;
+using BattleSystem.Core.Items;
 
 namespace BattleSystemExample.Extensions.ActionResults
 {

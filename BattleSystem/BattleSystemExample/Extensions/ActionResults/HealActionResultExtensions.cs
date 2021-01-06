@@ -1,5 +1,5 @@
-﻿using BattleSystem.Actions.Heal;
-using BattleSystem.Items;
+﻿using BattleSystem.Core.Actions.Heal;
+using BattleSystem.Core.Items;
 
 namespace BattleSystemExample.Extensions.ActionResults
 {

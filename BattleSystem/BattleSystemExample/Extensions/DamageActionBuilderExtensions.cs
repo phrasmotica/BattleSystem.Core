@@ -1,4 +1,4 @@
-﻿using BattleSystem.Actions.Damage;
+﻿using BattleSystem.Core.Actions.Damage;
 using BattleSystemExample.Actions;
 using BattleSystemExample.Actions.Damage.Calculators;
 using BattleSystemExample.Actions.Tags;

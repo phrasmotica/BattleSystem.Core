@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using BattleSystem.Actions.Damage;
-using BattleSystem.Actions.Damage.Calculators;
-using BattleSystem.Characters;
+using BattleSystem.Core.Actions.Damage;
+using BattleSystem.Core.Actions.Damage.Calculators;
+using BattleSystem.Core.Characters;
 
 namespace BattleSystemExample.Actions.Damage.Calculators
 {

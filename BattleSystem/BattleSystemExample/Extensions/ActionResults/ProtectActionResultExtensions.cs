@@ -1,5 +1,5 @@
-﻿using BattleSystem.Actions.Protect;
-using BattleSystem.Items;
+﻿using BattleSystem.Core.Actions.Protect;
+using BattleSystem.Core.Items;
 
 namespace BattleSystemExample.Extensions.ActionResults
 {

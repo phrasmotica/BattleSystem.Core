@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Characters;
-using BattleSystem.Items;
+using BattleSystem.Core.Characters;
+using BattleSystem.Core.Items;
 using BattleSystemExample.Battles;
 using BattleSystemExample.Constants;
 

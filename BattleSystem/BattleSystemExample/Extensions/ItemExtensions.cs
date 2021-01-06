@@ -1,4 +1,4 @@
-﻿using BattleSystem.Items;
+﻿using BattleSystem.Core.Items;
 
 namespace BattleSystemExample.Extensions
 {

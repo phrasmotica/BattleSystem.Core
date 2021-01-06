@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Characters;
-using BattleSystem.Moves;
-using BattleSystem.Stats;
+using BattleSystem.Core.Characters;
+using BattleSystem.Core.Moves;
+using BattleSystem.Core.Stats;
 using BattleSystemExample.Extensions;
 using BattleSystemExample.Input;
 using BattleSystemExample.Output;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Actions.Buff;
-using BattleSystem.Items;
-using BattleSystem.Stats;
+using BattleSystem.Core.Actions.Buff;
+using BattleSystem.Core.Items;
+using BattleSystem.Core.Stats;
 
 namespace BattleSystemExample.Extensions.ActionResults
 {

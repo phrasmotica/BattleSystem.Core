@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Actions;
-using BattleSystem.Actions.Damage;
-using BattleSystem.Characters;
-using BattleSystem.Items;
-using BattleSystem.Moves;
+using BattleSystem.Core.Actions;
+using BattleSystem.Core.Actions.Damage;
+using BattleSystem.Core.Characters;
+using BattleSystem.Core.Items;
+using BattleSystem.Core.Moves;
 
 namespace BattleSystemExample.Actions
 {

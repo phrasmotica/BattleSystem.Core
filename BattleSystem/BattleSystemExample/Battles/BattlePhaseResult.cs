@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Actions;
-using BattleSystem.Items;
+using BattleSystem.Core.Actions;
+using BattleSystem.Core.Items;
 
 namespace BattleSystemExample.Battles
 {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Characters;
-using BattleSystem.Actions.Targets;
+using BattleSystem.Core.Characters;
+using BattleSystem.Core.Actions.Targets;
 using BattleSystemExample.Input;
 using BattleSystemExample.Output;
 

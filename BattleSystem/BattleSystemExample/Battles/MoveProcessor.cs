@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Moves;
+using BattleSystem.Core.Moves;
 
 namespace BattleSystemExample.Battles
 {
