@@ -10,6 +10,7 @@ namespace BattleSystem.Battles.TurnBased
 {
     /// <summary>
     /// Records the moves and actions that have been executed in a battle.
+    /// TODO: create IActionHistory interface
     /// </summary>
     public class ActionHistory
     {
