@@ -31,18 +31,19 @@ namespace BattleSystem.Battles.TurnBased.Actions.Targets
         /// <inheritdoc />
         public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
-            if (otherCharacters is null || !otherCharacters.Any())
+            var enemies = otherCharacters.Where(c => c.Team != user.Team).ToArray();
+
+            if (!enemies.Any())
             {
                 return (false, Enumerable.Empty<Character>());
             }
 
-            var targets = otherCharacters.Where(c => c.Team != user.Team).ToArray();
-            if (targets.Length == 1)
+            if (enemies.Length == 1)
             {
-                return (true, new[] { targets[0] });
+                return (true, enemies);
             }
 
-            return (true, new[] { _userInput.SelectTarget(targets) });
+            return (true, new[] { _userInput.SelectTarget(enemies) });
         }
     }
 }

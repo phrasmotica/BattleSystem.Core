@@ -9,6 +9,10 @@ namespace BattleSystem.Battles.Tests.TurnBased.Moves.Success
     [TestFixture]
     public class DecreasesLinearlyWithUsesSuccessCalculatorTests
     {
-        
+        [Test]
+        public void Calculate_WithPreviousMoveSuccess_Returns()
+        {
+
+        }
     }
 }
