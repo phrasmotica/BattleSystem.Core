@@ -1,9 +1,8 @@
-﻿using BattleSystem.Core.Moves;
+﻿using BattleSystem.Battles.TurnBased.Moves.Success;
+using BattleSystem.Core.Moves;
 using BattleSystem.Core.Moves.Success;
-using BattleSystemExample.Actions;
-using BattleSystemExample.Moves.Success;
 
-namespace BattleSystemExample.Extensions
+namespace BattleSystem.Battles.TurnBased.Extensions
 {
     /// <summary>
     /// Extension methods for <see cref="MoveBuilder"/>.

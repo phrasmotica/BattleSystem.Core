@@ -3,7 +3,7 @@ using System.Linq;
 using BattleSystem.Core.Actions.Targets;
 using BattleSystem.Core.Characters;
 
-namespace BattleSystemExample.Actions.Targets
+namespace BattleSystem.Battles.TurnBased.Actions.Targets
 {
     /// <summary>
     /// Calculates the action target as the user of the move containing the

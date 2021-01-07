@@ -1,4 +1,4 @@
-﻿namespace BattleSystemExample.Constants
+﻿namespace BattleSystem.Battles.TurnBased.Constants
 {
     /// <summary>
     /// Constants class for tags to be attached to tagged actions.

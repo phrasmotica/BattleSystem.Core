@@ -2,7 +2,7 @@
 using System.Linq;
 using BattleSystem.Core.Moves;
 
-namespace BattleSystemExample.Battles
+namespace BattleSystem.Battles.TurnBased
 {
     /// <summary>
     /// Class for managing the flow of a battle.

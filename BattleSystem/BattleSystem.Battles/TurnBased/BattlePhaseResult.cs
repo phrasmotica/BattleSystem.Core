@@ -2,10 +2,11 @@
 using BattleSystem.Core.Actions;
 using BattleSystem.Core.Items;
 
-namespace BattleSystemExample.Battles
+namespace BattleSystem.Battles.TurnBased
 {
     /// <summary>
-    /// Represents the result of a battle phase, during which some actions might occur from non-character sources.
+    /// Represents the result of a battle phase, during which some actions might
+    /// occur from non-character sources.
     /// </summary>
     public class BattlePhaseResult
     {

@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BattleSystem.Battles\BattleSystem.Battles.csproj" />
     <ProjectReference Include="..\BattleSystem.Core\BattleSystem.Core.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using BattleSystem.Battles.Interfaces;
+using BattleSystem.Battles.TurnBased;
+using BattleSystem.Battles.TurnBased.Extensions;
 using BattleSystem.Core.Actions.Buff;
 using BattleSystem.Core.Actions.Damage;
 using BattleSystem.Core.Actions.Heal;
@@ -9,8 +12,6 @@ using BattleSystem.Core.Items;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Moves.Success;
 using BattleSystem.Core.Stats;
-using BattleSystemExample.Actions;
-using BattleSystemExample.Battles;
 using BattleSystemExample.Characters;
 using BattleSystemExample.Extensions;
 using BattleSystemExample.Input;
@@ -22,16 +23,16 @@ namespace BattleSystemExample
     {
         public static void Main(string[] args)
         {
-            var playerInput = new ConsoleInput();
             var gameOutput = new ConsoleOutput();
+            var playerInput = new ConsoleInput(gameOutput);
             var actionHistory = new ActionHistory();
 
-            gameOutput.WriteLine("Welcome to the Console Battle System!");
+            gameOutput.ShowMessage("Welcome to the Console Battle System!");
 
             var playAgain = true;
             while (playAgain)
             {
-                new Battle(
+                new TurnBasedBattle(
                     new MoveProcessor(),
                     actionHistory,
                     gameOutput,
@@ -75,7 +76,7 @@ namespace BattleSystemExample
                             .WithAction(
                                 new DamageActionBuilder()
                                     .WithBasePower(20)
-                                    .UserSelectsSingleEnemy(userInput, gameOutput)
+                                    .UserSelectsSingleEnemy(userInput)
                                     .Build()
                             )
                             .Build()
@@ -89,7 +90,7 @@ namespace BattleSystemExample
                             .WithAction(
                                 new DamageActionBuilder()
                                     .BasePowerIncreasesLinearlyWithUses(20, 5, actionHistory)
-                                    .UserSelectsSingleEnemy(userInput, gameOutput)
+                                    .UserSelectsSingleEnemy(userInput)
                                     .Build()
                             )
                             .Build()
@@ -133,7 +134,6 @@ namespace BattleSystemExample
 
             var player = new Player(
                 userInput,
-                gameOutput,
                 "Warrior",
                 "a",
                 100,

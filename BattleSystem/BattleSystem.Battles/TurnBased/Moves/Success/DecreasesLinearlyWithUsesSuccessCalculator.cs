@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Moves.Success;
-using BattleSystemExample.Actions;
 
-namespace BattleSystemExample.Moves.Success
+namespace BattleSystem.Battles.TurnBased.Moves.Success
 {
     /// <summary>
     /// Calculates a move's success rate as the base success rate minus a linear

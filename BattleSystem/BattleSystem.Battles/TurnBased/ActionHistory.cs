@@ -6,7 +6,7 @@ using BattleSystem.Core.Characters;
 using BattleSystem.Core.Items;
 using BattleSystem.Core.Moves;
 
-namespace BattleSystemExample.Actions
+namespace BattleSystem.Battles.TurnBased
 {
     /// <summary>
     /// Records the moves and actions that have been executed in a battle.

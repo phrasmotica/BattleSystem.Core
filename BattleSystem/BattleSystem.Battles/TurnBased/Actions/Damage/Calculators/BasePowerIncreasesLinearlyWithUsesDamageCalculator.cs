@@ -3,7 +3,7 @@ using BattleSystem.Core.Actions.Damage;
 using BattleSystem.Core.Actions.Damage.Calculators;
 using BattleSystem.Core.Characters;
 
-namespace BattleSystemExample.Actions.Damage.Calculators
+namespace BattleSystem.Battles.TurnBased.Actions.Damage.Calculators
 {
     /// <summary>
     /// Calculates damage by a base power that is equal to the starting amount

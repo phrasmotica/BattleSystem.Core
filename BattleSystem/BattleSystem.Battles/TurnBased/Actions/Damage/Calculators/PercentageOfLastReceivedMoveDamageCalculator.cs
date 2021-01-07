@@ -4,7 +4,7 @@ using BattleSystem.Core.Actions.Damage;
 using BattleSystem.Core.Actions.Damage.Calculators;
 using BattleSystem.Core.Characters;
 
-namespace BattleSystemExample.Actions.Damage.Calculators
+namespace BattleSystem.Battles.TurnBased.Actions.Damage.Calculators
 {
     /// <summary>
     /// Calculates damage equal to a percentage of the amount of the last damage

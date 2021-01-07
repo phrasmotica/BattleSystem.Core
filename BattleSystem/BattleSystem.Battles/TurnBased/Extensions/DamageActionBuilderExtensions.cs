@@ -1,12 +1,10 @@
-﻿using BattleSystem.Core.Actions.Damage;
-using BattleSystemExample.Actions;
-using BattleSystemExample.Actions.Damage.Calculators;
-using BattleSystemExample.Actions.Tags;
-using BattleSystemExample.Actions.Targets;
-using BattleSystemExample.Input;
-using BattleSystemExample.Output;
+﻿using BattleSystem.Battles.Interfaces;
+using BattleSystem.Battles.TurnBased.Actions.Damage.Calculators;
+using BattleSystem.Battles.TurnBased.Actions.Tags;
+using BattleSystem.Battles.TurnBased.Actions.Targets;
+using BattleSystem.Core.Actions.Damage;
 
-namespace BattleSystemExample.Extensions
+namespace BattleSystem.Battles.TurnBased.Extensions
 {
     /// <summary>
     /// Extension methods for <see cref="DamageActionBuilder"/>.
@@ -44,50 +42,6 @@ namespace BattleSystemExample.Extensions
         }
 
         /// <summary>
-        /// Sets the built damage action to target a single character chosen by the user.
-        /// </summary>
-        /// <param name="builder">The damage action builder.</param>
-        /// <param name="userInput">The user input.</param>
-        /// <param name="gameOutput">The game output.</param>
-        public static DamageActionBuilder UserSelectsSingleTarget(this DamageActionBuilder builder, IUserInput userInput, IGameOutput gameOutput)
-        {
-            return builder.WithActionTargetCalculator(new SingleActionTargetCalculator(userInput, gameOutput));
-        }
-
-        /// <summary>
-        /// Sets the built damage action to target a single other character chosen by the user.
-        /// </summary>
-        /// <param name="builder">The damage action builder.</param>
-        /// <param name="userInput">The user input.</param>
-        /// <param name="gameOutput">The game output.</param>
-        public static DamageActionBuilder UserSelectsSingleOtherTarget(this DamageActionBuilder builder, IUserInput userInput, IGameOutput gameOutput)
-        {
-            return builder.WithActionTargetCalculator(new SingleOtherActionTargetCalculator(userInput, gameOutput));
-        }
-
-        /// <summary>
-        /// Sets the built damage action to target a single ally chosen by the user.
-        /// </summary>
-        /// <param name="builder">The damage action builder.</param>
-        /// <param name="userInput">The user input.</param>
-        /// <param name="gameOutput">The game output.</param>
-        public static DamageActionBuilder UserSelectsSingleAlly(this DamageActionBuilder builder, IUserInput userInput, IGameOutput gameOutput)
-        {
-            return builder.WithActionTargetCalculator(new SingleAllyActionTargetCalculator(userInput, gameOutput));
-        }
-
-        /// <summary>
-        /// Sets the built damage action to target a single enemy chosen by the user.
-        /// </summary>
-        /// <param name="builder">The damage action builder.</param>
-        /// <param name="userInput">The user input.</param>
-        /// <param name="gameOutput">The game output.</param>
-        public static DamageActionBuilder UserSelectsSingleEnemy(this DamageActionBuilder builder, IUserInput userInput, IGameOutput gameOutput)
-        {
-            return builder.WithActionTargetCalculator(new SingleEnemyActionTargetCalculator(userInput, gameOutput));
-        }
-
-        /// <summary>
         /// Sets the built damage action to target the user of the move
         /// containing the action that last affected the user.
         /// </summary>
@@ -99,6 +53,50 @@ namespace BattleSystemExample.Extensions
         {
             return builder.WithActionTargetCalculator(new RetaliationActionTargetCalculator(actionHistory))
                           .WithTag(DamageTags.Retaliation);
+        }
+
+        /// <summary>
+        /// Sets the built damage action to target a single character chosen by the user.
+        /// </summary>
+        /// <param name="builder">The damage action builder.</param>
+        /// <param name="userInput">The user input.</param>
+        /// <param name="gameOutput">The game output.</param>
+        public static DamageActionBuilder UserSelectsSingleTarget(this DamageActionBuilder builder, IUserInput userInput)
+        {
+            return builder.WithActionTargetCalculator(new SingleActionTargetCalculator(userInput));
+        }
+
+        /// <summary>
+        /// Sets the built damage action to target a single other character chosen by the user.
+        /// </summary>
+        /// <param name="builder">The damage action builder.</param>
+        /// <param name="userInput">The user input.</param>
+        /// <param name="gameOutput">The game output.</param>
+        public static DamageActionBuilder UserSelectsSingleOtherTarget(this DamageActionBuilder builder, IUserInput userInput)
+        {
+            return builder.WithActionTargetCalculator(new SingleOtherActionTargetCalculator(userInput));
+        }
+
+        /// <summary>
+        /// Sets the built damage action to target a single ally chosen by the user.
+        /// </summary>
+        /// <param name="builder">The damage action builder.</param>
+        /// <param name="userInput">The user input.</param>
+        /// <param name="gameOutput">The game output.</param>
+        public static DamageActionBuilder UserSelectsSingleAlly(this DamageActionBuilder builder, IUserInput userInput)
+        {
+            return builder.WithActionTargetCalculator(new SingleAllyActionTargetCalculator(userInput));
+        }
+
+        /// <summary>
+        /// Sets the built damage action to target a single enemy chosen by the user.
+        /// </summary>
+        /// <param name="builder">The damage action builder.</param>
+        /// <param name="userInput">The user input.</param>
+        /// <param name="gameOutput">The game output.</param>
+        public static DamageActionBuilder UserSelectsSingleEnemy(this DamageActionBuilder builder, IUserInput userInput)
+        {
+            return builder.WithActionTargetCalculator(new SingleEnemyActionTargetCalculator(userInput));
         }
     }
 }

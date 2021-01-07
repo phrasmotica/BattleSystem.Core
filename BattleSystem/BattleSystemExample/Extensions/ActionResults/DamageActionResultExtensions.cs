@@ -1,6 +1,6 @@
-﻿using BattleSystemExample.Actions.Tags;
-using BattleSystem.Core.Actions.Damage;
+﻿using BattleSystem.Core.Actions.Damage;
 using BattleSystem.Core.Items;
+using BattleSystem.Battles.TurnBased.Actions.Tags;
 
 namespace BattleSystemExample.Extensions.ActionResults
 {

@@ -1,8 +1,8 @@
-﻿using BattleSystem.Core.Actions;
+﻿using BattleSystem.Battles.TurnBased.Constants;
+using BattleSystem.Core.Actions;
 using BattleSystem.Core.Items;
-using BattleSystemExample.Constants;
 
-namespace BattleSystemExample.Extensions
+namespace BattleSystem.Battles.TurnBased.Extensions
 {
     /// <summary>
     /// Extension methods for <see cref="ItemBuilder"/>.
