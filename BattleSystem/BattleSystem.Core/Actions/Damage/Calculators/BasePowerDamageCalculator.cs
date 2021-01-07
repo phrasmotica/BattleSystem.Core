@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Core.Characters;
+using BattleSystem.Core.Random;
 
 namespace BattleSystem.Core.Actions.Damage.Calculators
 {
@@ -23,12 +24,19 @@ namespace BattleSystem.Core.Actions.Damage.Calculators
         private readonly int _basePower;
 
         /// <summary>
+        /// The random number generator.
+        /// </summary>
+        private readonly IRandom _random;
+
+        /// <summary>
         /// Creates a new <see cref="BasePowerDamageCalculator"/> instance.
         /// </summary>
         /// <param name="basePower">The base power.</param>
-        public BasePowerDamageCalculator(int basePower)
+        /// <param name="random">The random number generator.</param>
+        public BasePowerDamageCalculator(int basePower, IRandom random)
         {
             _basePower = basePower;
+            _random = random ?? throw new ArgumentNullException(nameof(random));
         }
 
         /// <inheritdoc/>
@@ -54,7 +62,7 @@ namespace BattleSystem.Core.Actions.Damage.Calculators
                 var normalisedAmount = transformedBasePower * (userAttack - targetDefence);
 
                 // damage range with 80% as lower bound
-                var varianceFactor = new Random().Next(80, 101) / 100d;
+                var varianceFactor = _random.Next(80, 101) / 100d;
                 var amountWithVariance = (int) (normalisedAmount * varianceFactor);
 
                 // damage is restricted to 70% if the action is hitting more than one target

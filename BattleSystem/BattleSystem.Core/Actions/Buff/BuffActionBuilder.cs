@@ -1,5 +1,6 @@
 ﻿using System;
 using BattleSystem.Core.Characters.Targets;
+using BattleSystem.Core.Random;
 using BattleSystem.Core.Stats;
 
 namespace BattleSystem.Core.Actions.Buff
@@ -94,33 +95,37 @@ namespace BattleSystem.Core.Actions.Buff
         /// <summary>
         /// Sets the built buff to target a random enemy.
         /// </summary>
-        public BuffActionBuilder TargetsRandomEnemy()
+        /// <param name="random">The random number generator.</param>
+        public BuffActionBuilder TargetsRandomEnemy(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator(random));
         }
 
         /// <summary>
         /// Sets the built buff to target a random ally.
         /// </summary>
-        public BuffActionBuilder TargetsRandomAlly()
+        /// <param name="random">The random number generator.</param>
+        public BuffActionBuilder TargetsRandomAlly(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomAllyActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomAllyActionTargetCalculator(random));
         }
 
         /// <summary>
         /// Sets the built buff to target a random character.
         /// </summary>
-        public BuffActionBuilder TargetsRandomCharacter()
+        /// <param name="random">The random number generator.</param>
+        public BuffActionBuilder TargetsRandomCharacter(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator(random));
         }
 
         /// <summary>
         /// Sets the built buff to target a random other character.
         /// </summary>
-        public BuffActionBuilder TargetsRandomOther()
+        /// <param name="random">The random number generator.</param>
+        public BuffActionBuilder TargetsRandomOther(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomOtherActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomOtherActionTargetCalculator(random));
         }
 
         /// <summary>

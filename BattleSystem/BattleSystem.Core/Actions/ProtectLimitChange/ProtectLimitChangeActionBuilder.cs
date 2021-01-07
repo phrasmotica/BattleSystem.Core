@@ -1,5 +1,6 @@
 ﻿using System;
 using BattleSystem.Core.Characters.Targets;
+using BattleSystem.Core.Random;
 
 namespace BattleSystem.Core.Actions.ProtectLimitChange
 {
@@ -109,33 +110,37 @@ namespace BattleSystem.Core.Actions.ProtectLimitChange
         /// <summary>
         /// Sets the built protect limit change action to target a random enemy.
         /// </summary>
-        public ProtectLimitChangeActionBuilder TargetsRandomEnemy()
+        /// <param name="random">The random number generator.</param>
+        public ProtectLimitChangeActionBuilder TargetsRandomEnemy(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator(random));
         }
 
         /// <summary>
         /// Sets the built protect limit change action to target a random ally.
         /// </summary>
-        public ProtectLimitChangeActionBuilder TargetsRandomAlly()
+        /// <param name="random">The random number generator.</param>
+        public ProtectLimitChangeActionBuilder TargetsRandomAlly(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomAllyActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomAllyActionTargetCalculator(random));
         }
 
         /// <summary>
         /// Sets the built buff to target a random character.
         /// </summary>
-        public ProtectLimitChangeActionBuilder TargetsRandomCharacter()
+        /// <param name="random">The random number generator.</param>
+        public ProtectLimitChangeActionBuilder TargetsRandomCharacter(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator(random));
         }
 
         /// <summary>
         /// Sets the built buff to target a random other character.
         /// </summary>
-        public ProtectLimitChangeActionBuilder TargetsRandomOther()
+        /// <param name="random">The random number generator.</param>
+        public ProtectLimitChangeActionBuilder TargetsRandomOther(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomOtherActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomOtherActionTargetCalculator(random));
         }
 
         /// <summary>

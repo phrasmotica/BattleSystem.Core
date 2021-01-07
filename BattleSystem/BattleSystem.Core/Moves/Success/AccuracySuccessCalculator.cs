@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BattleSystem.Core.Characters;
+using BattleSystem.Core.Random;
 
 namespace BattleSystem.Core.Moves.Success
 {
@@ -15,18 +16,25 @@ namespace BattleSystem.Core.Moves.Success
         private readonly int _accuracy;
 
         /// <summary>
+        /// The random number generator.
+        /// </summary>
+        private readonly IRandom _random;
+
+        /// <summary>
         /// Creates a new <see cref="AccuracySuccessCalculator"/> instance.
         /// </summary>
         /// <param name="accuracy">The accuracy.</param>
-        public AccuracySuccessCalculator(int accuracy)
+        /// <param name="random">The random number generator.</param>
+        public AccuracySuccessCalculator(int accuracy, IRandom random)
         {
             _accuracy = accuracy;
+            _random = random ?? throw new ArgumentNullException(nameof(random));
         }
 
         /// <inheritdoc />
         public MoveUseResult Calculate(Character user, Move move, IEnumerable<Character> otherCharacters)
         {
-            var r = new Random().Next(100) + 1;
+            var r = _random.Next(100) + 1;
             return r <= _accuracy ? MoveUseResult.Success : MoveUseResult.Miss;
         }
     }

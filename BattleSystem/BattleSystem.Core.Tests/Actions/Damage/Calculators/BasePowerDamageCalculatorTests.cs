@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using BattleSystem.Core.Actions.Damage.Calculators;
+using BattleSystem.Core.Random;
+using Moq;
 using NUnit.Framework;
 using static BattleSystem.Core.Actions.Damage.Calculators.BasePowerDamageCalculator;
 
@@ -11,19 +14,29 @@ namespace BattleSystem.Core.Tests.Actions.Damage.Calculators
     [TestFixture]
     public class BasePowerDamageCalculatorTests
     {
-        [TestCase(6, 10, 4, 16, 20)]
-        [TestCase(6, 10, 5, 8, 10)]
-        [TestCase(6, 10, 6, 1, 1)]
-        [TestCase(6, 10, 7, 1, 1)]
+        [Test]
+        public void Ctor_NullRandom_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => _ = new BasePowerDamageCalculator(0, null));
+        }
+
+        [TestCase(6, 10, 4, 20)]
+        [TestCase(6, 10, 5, 10)]
+        [TestCase(6, 10, 6, 1)]
+        [TestCase(6, 10, 7, 1)]
         public void Calculate_NoPowerTransforms_ReturnsDamage(
             int userAttack,
             int basePower,
             int targetDefence,
-            int expectedLowerBound,
-            int expectedUpperBound)
+            int expectedAmount)
         {
             // Arrange
-            var calculator = new BasePowerDamageCalculator(basePower);
+            var random = new Mock<IRandom>();
+            random
+                .Setup(m => m.Next(80, 101))
+                .Returns(100);
+
+            var calculator = new BasePowerDamageCalculator(basePower, random.Object);
 
             var user = TestHelpers.CreateBasicCharacter(attack: userAttack);
             var damage = TestHelpers.CreateDamageAction(calculator);
@@ -36,7 +49,7 @@ namespace BattleSystem.Core.Tests.Actions.Damage.Calculators
             Assert.Multiple(() =>
             {
                 Assert.That(calculation.Success, Is.True);
-                Assert.That(calculation.Amount, Is.InRange(expectedLowerBound, expectedUpperBound));
+                Assert.That(calculation.Amount, Is.EqualTo(expectedAmount));
             });
         }
 
@@ -44,7 +57,12 @@ namespace BattleSystem.Core.Tests.Actions.Damage.Calculators
         public void Calculate_NoPowerTransforms_MultipleTargets_ReturnsSpreadDamage()
         {
             // Arrange
-            var calculator = new BasePowerDamageCalculator(10);
+            var random = new Mock<IRandom>();
+            random
+                .Setup(m => m.Next(80, 101))
+                .Returns(100);
+
+            var calculator = new BasePowerDamageCalculator(10, random.Object);
 
             var user = TestHelpers.CreateBasicCharacter(attack: 6);
             var damage = TestHelpers.CreateDamageAction(calculator);
@@ -58,7 +76,7 @@ namespace BattleSystem.Core.Tests.Actions.Damage.Calculators
             Assert.Multiple(() =>
             {
                 Assert.That(calculation.Success, Is.True);
-                Assert.That(calculation.Amount, Is.InRange(5, 7));
+                Assert.That(calculation.Amount, Is.EqualTo(7));
             });
         }
 
@@ -66,7 +84,12 @@ namespace BattleSystem.Core.Tests.Actions.Damage.Calculators
         public void Calculate_WithPowerTransforms_ReturnsDamage()
         {
             // Arrange
-            var calculator = new BasePowerDamageCalculator(10);
+            var random = new Mock<IRandom>();
+            random
+                .Setup(m => m.Next(80, 101))
+                .Returns(100);
+
+            var calculator = new BasePowerDamageCalculator(10, random.Object);
 
             var user = TestHelpers.CreateBasicCharacter(attack: 6);
             var damage = TestHelpers.CreateDamageAction(calculator);
@@ -87,7 +110,7 @@ namespace BattleSystem.Core.Tests.Actions.Damage.Calculators
             Assert.Multiple(() =>
             {
                 Assert.That(calculation.Success, Is.True);
-                Assert.That(calculation.Amount, Is.InRange(32, 40));
+                Assert.That(calculation.Amount, Is.EqualTo(40));
             });
         }
     }

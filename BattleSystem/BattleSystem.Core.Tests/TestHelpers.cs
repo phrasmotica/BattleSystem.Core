@@ -12,6 +12,7 @@ using BattleSystem.Core.Characters.Targets;
 using BattleSystem.Core.Items;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Moves.Success;
+using BattleSystem.Core.Random;
 using BattleSystem.Core.Stats;
 using Moq;
 using static BattleSystem.Core.Actions.Damage.Calculators.BasePowerDamageCalculator;
@@ -34,14 +35,16 @@ namespace BattleSystem.Core.Tests
             int attack = 1,
             int defence = 1,
             int speed = 1,
-            MoveSet moveSet = null)
+            MoveSet moveSet = null,
+            IRandom random = null)
         {
             return new BasicCharacter(
                 name,
                 team,
                 maxHealth,
                 CreateStatSet(attack, defence, speed),
-                moveSet ?? CreateMoveSet());
+                moveSet ?? CreateMoveSet(),
+                random ?? new Mock<IRandom>().Object);
         }
 
         /// <summary>

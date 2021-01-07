@@ -1,5 +1,7 @@
 ﻿using System;
 using BattleSystem.Core.Moves;
+using BattleSystem.Core.Random;
+using Moq;
 using NUnit.Framework;
 
 namespace BattleSystem.Core.Tests.Moves
@@ -53,7 +55,7 @@ namespace BattleSystem.Core.Tests.Moves
                                 .Describe("andorra")
                                 .WithMaxUses(9)
                                 .WithPriority(1)
-                                .WithAccuracy(100);
+                                .WithAccuracy(100, new Mock<IRandom>().Object);
 
             // Act
             var move = builder.Build();

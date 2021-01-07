@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Moves.Success;
+using BattleSystem.Core.Random;
 
 namespace BattleSystem.Battles.TurnBased.Moves.Success
 {
@@ -29,6 +30,11 @@ namespace BattleSystem.Battles.TurnBased.Moves.Success
         private readonly int _minimumSuccessRate;
 
         /// <summary>
+        /// The random number generator.
+        /// </summary>
+        private readonly IRandom _random;
+
+        /// <summary>
         /// The result to return in the case of failure.
         /// </summary>
         private readonly MoveUseResult _failureResult;
@@ -44,20 +50,23 @@ namespace BattleSystem.Battles.TurnBased.Moves.Success
         /// <param name="baseSuccessRate">The starting chance of success.</param>
         /// <param name="linearFactor">The linear factor.</param>
         /// <param name="minimumSuccessRate">The minimum success rate</param>
+        /// <param name="random">The random number generator.</param>
         /// <param name="failureResult">The failure result.</param>
         /// <param name="actionHistory">The action history.</param>
         public DecreasesLinearlyWithUsesSuccessCalculator(
             int baseSuccessRate,
             int linearFactor,
             int minimumSuccessRate,
+            IRandom random,
             MoveUseResult failureResult,
             IActionHistory actionHistory)
         {
             _baseSuccessRate = baseSuccessRate;
             _linearFactor = linearFactor;
             _minimumSuccessRate = minimumSuccessRate;
+            _random = random ?? throw new ArgumentNullException(nameof(random));
             _failureResult = failureResult;
-            _actionHistory = actionHistory;
+            _actionHistory = actionHistory ?? throw new ArgumentNullException(nameof(actionHistory));
         }
 
         /// <inheritdoc />
@@ -65,7 +74,7 @@ namespace BattleSystem.Battles.TurnBased.Moves.Success
         {
             var count = _actionHistory.GetMoveConsecutiveSuccessCount(move, user);
             var chance = Math.Max(_minimumSuccessRate, _baseSuccessRate - _linearFactor * count);
-            var r = new Random().Next(100) + 1;
+            var r = _random.Next(100) + 1;
             return r <= chance ? MoveUseResult.Success : _failureResult;
         }
     }

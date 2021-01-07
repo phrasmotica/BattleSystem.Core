@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BattleSystem.Core.Actions.Damage;
 using BattleSystem.Core.Actions.Damage.Calculators;
 using BattleSystem.Core.Characters;
+using BattleSystem.Core.Random;
 
 namespace BattleSystem.Battles.TurnBased.Actions.Damage.Calculators
 {
@@ -23,6 +25,11 @@ namespace BattleSystem.Battles.TurnBased.Actions.Damage.Calculators
         private readonly int _linearFactor;
 
         /// <summary>
+        /// The random number generator.
+        /// </summary>
+        private readonly IRandom _random;
+
+        /// <summary>
         /// The action history.
         /// </summary>
         private readonly IActionHistory _actionHistory;
@@ -32,15 +39,18 @@ namespace BattleSystem.Battles.TurnBased.Actions.Damage.Calculators
         /// </summary>
         /// <param name="startingBasePower">The starting amount of damage to deal.</param>
         /// <param name="linearFactor">The linear factor.</param>
+        /// <param name="random">The random number generator.</param>
         /// <param name="actionHistory">The action history.</param>
         public BasePowerIncreasesLinearlyWithUsesDamageCalculator(
             int startingBasePower,
             int linearFactor,
+            IRandom random,
             IActionHistory actionHistory)
         {
             _startingBasePower = startingBasePower;
             _linearFactor = linearFactor;
-            _actionHistory = actionHistory;
+            _random = random ?? throw new ArgumentNullException(nameof(random));
+            _actionHistory = actionHistory ?? throw new ArgumentNullException(nameof(actionHistory));
         }
 
         /// <inheritdoc/>
@@ -49,7 +59,7 @@ namespace BattleSystem.Battles.TurnBased.Actions.Damage.Calculators
             var count = _actionHistory.GetMoveDamageConsecutiveSuccessCount(damage, user);
             var basePower = _startingBasePower + _linearFactor * count;
 
-            return new BasePowerDamageCalculator(basePower).Calculate(user, damage, targets);
+            return new BasePowerDamageCalculator(basePower, _random).Calculate(user, damage, targets);
         }
     }
 }

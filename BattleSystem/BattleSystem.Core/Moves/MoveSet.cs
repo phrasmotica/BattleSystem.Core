@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BattleSystem.Core.Random;
 
 namespace BattleSystem.Core.Moves
 {
@@ -10,17 +11,17 @@ namespace BattleSystem.Core.Moves
     public class MoveSet
     {
         /// <summary>
-        /// Gets or sets the moves in the set.
-        /// </summary>
-        public IList<Move> Moves { get; private set; }
-
-        /// <summary>
         /// Creates a new <see cref="MoveSet"/> instance.
         /// </summary>
         public MoveSet()
         {
             Moves = new List<Move>();
         }
+
+        /// <summary>
+        /// Gets or sets the moves in the set.
+        /// </summary>
+        public IList<Move> Moves { get; private set; }
 
         /// <summary>
         /// Adds the given move to the set.
@@ -82,9 +83,10 @@ namespace BattleSystem.Core.Moves
         /// <summary>
         /// Returns a random move in the set.
         /// </summary>
-        public Move ChooseRandom()
+        /// <param name="random">The random number generator.</param>
+        public Move ChooseRandom(IRandom random)
         {
-            return GetMove(new Random().Next(Moves.Count));
+            return GetMove(random.Next(Moves.Count));
         }
     }
 }

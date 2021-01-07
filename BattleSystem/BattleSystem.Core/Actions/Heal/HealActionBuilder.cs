@@ -1,6 +1,7 @@
 ﻿using System;
 using BattleSystem.Core.Actions.Heal.Calculators;
 using BattleSystem.Core.Characters.Targets;
+using BattleSystem.Core.Random;
 
 namespace BattleSystem.Core.Actions.Heal
 {
@@ -147,33 +148,37 @@ namespace BattleSystem.Core.Actions.Heal
         /// <summary>
         /// Sets the built heal to target a random enemy.
         /// </summary>
-        public HealActionBuilder TargetsRandomEnemy()
+        /// <param name="random">The random number generator.</param>
+        public HealActionBuilder TargetsRandomEnemy(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator(random));
         }
 
         /// <summary>
         /// Sets the built heal to target a random ally.
         /// </summary>
-        public HealActionBuilder TargetsRandomAlly()
+        /// <param name="random">The random number generator.</param>
+        public HealActionBuilder TargetsRandomAlly(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomAllyActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomAllyActionTargetCalculator(random));
         }
 
         /// <summary>
         /// Sets the built heal to target a random character.
         /// </summary>
-        public HealActionBuilder TargetsRandomCharacter()
+        /// <param name="random">The random number generator.</param>
+        public HealActionBuilder TargetsRandomCharacter(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator(random));
         }
 
         /// <summary>
         /// Sets the built heal to target a random other character.
         /// </summary>
-        public HealActionBuilder TargetsRandomOther()
+        /// <param name="random">The random number generator.</param>
+        public HealActionBuilder TargetsRandomOther(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomOtherActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomOtherActionTargetCalculator(random));
         }
 
         /// <summary>

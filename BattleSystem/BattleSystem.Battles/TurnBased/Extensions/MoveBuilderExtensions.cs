@@ -1,6 +1,7 @@
 ﻿using BattleSystem.Battles.TurnBased.Moves.Success;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Moves.Success;
+using BattleSystem.Core.Random;
 
 namespace BattleSystem.Battles.TurnBased.Extensions
 {
@@ -17,6 +18,7 @@ namespace BattleSystem.Battles.TurnBased.Extensions
         /// <param name="baseSuccess">The base success rate.</param>
         /// <param name="linearFactor">The linear factor.</param>
         /// <param name="minimumSuccessRate">The minimum success rate.</param>
+        /// <param name="random">The random number generator.</param>
         /// <param name="failureResult">The result to return in the case of failure.</param>
         /// <param name="actionHistory">The action history.</param>
         public static MoveBuilder SuccessDecreasesLinearlyWithUses(
@@ -24,6 +26,7 @@ namespace BattleSystem.Battles.TurnBased.Extensions
             int baseSuccess,
             int linearFactor,
             int minimumSuccessRate,
+            IRandom random,
             MoveUseResult failureResult,
             IActionHistory actionHistory)
         {
@@ -32,6 +35,7 @@ namespace BattleSystem.Battles.TurnBased.Extensions
                     baseSuccess,
                     linearFactor,
                     minimumSuccessRate,
+                    random,
                     failureResult,
                     actionHistory
                 )

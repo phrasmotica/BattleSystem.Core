@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BattleSystem.Core.Characters;
+using BattleSystem.Core.Moves;
 using BattleSystem.Core.Stats;
 using NUnit.Framework;
 using static BattleSystem.Core.Items.Item;
@@ -13,6 +14,21 @@ namespace BattleSystem.Core.Tests.Characters
     [TestFixture]
     public class BasicCharacterTests
     {
+        [Test]
+        public void Ctor_NullRandom_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                _ = new BasicCharacter(
+                    "velocity",
+                    "design",
+                    12,
+                    new StatSet(),
+                    new MoveSet(),
+                    null);
+            });
+        }
+
         [Test]
         public void ChooseMove_ReturnsMoveUse()
         {

@@ -11,6 +11,7 @@ using BattleSystem.Core.Characters;
 using BattleSystem.Core.Items;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Moves.Success;
+using BattleSystem.Core.Random;
 using BattleSystem.Core.Stats;
 using ConsoleBattleSystem.Characters;
 using ConsoleBattleSystem.Input;
@@ -24,6 +25,7 @@ namespace ConsoleBattleSystem
         {
             var gameOutput = new ConsoleOutput();
             var playerInput = new ConsoleInput(gameOutput);
+            var random = new Random();
             var actionHistory = new ActionHistory();
 
             gameOutput.ShowMessage("Welcome to the Console Battle System!");
@@ -35,7 +37,7 @@ namespace ConsoleBattleSystem
                     new MoveProcessor(),
                     actionHistory,
                     gameOutput,
-                    CreateCharacters(actionHistory, playerInput, gameOutput)
+                    CreateCharacters(random, actionHistory, playerInput)
                 ).Start();
 
                 var playAgainChoice = playerInput.SelectChoice("Play again? [y/n]", "y", "n");
@@ -48,13 +50,13 @@ namespace ConsoleBattleSystem
         /// <summary>
         /// Creates characters for the game.
         /// </summary>
+        /// <param name="random">The random number generator.</param>
         /// <param name="actionHistory">The action history.</param>
         /// <param name="userInput">The user input.</param>
-        /// <param name="gameOutput">The game output</param>
         private static IEnumerable<Character> CreateCharacters(
+            IRandom random,
             ActionHistory actionHistory,
-            IUserInput userInput,
-            IGameOutput gameOutput)
+            IUserInput userInput)
         {
             var playerStats = new StatSet
             {
@@ -71,10 +73,10 @@ namespace ConsoleBattleSystem
                             .Describe("The user swings their sword to inflict damage. This move has increased priority.")
                             .WithMaxUses(15)
                             .WithPriority(1)
-                            .SuccessDecreasesLinearlyWithUses(100, 25, 10, MoveUseResult.Failure, actionHistory)
+                            .SuccessDecreasesLinearlyWithUses(100, 25, 10, random, MoveUseResult.Failure, actionHistory)
                             .WithAction(
                                 new DamageActionBuilder()
-                                    .WithBasePower(20)
+                                    .WithBasePower(20, random)
                                     .UserSelectsSingleEnemy(userInput)
                                     .Build()
                             )
@@ -85,10 +87,10 @@ namespace ConsoleBattleSystem
                             .Name("Insistent Jab")
                             .Describe("This attack's base power increases with each consecutive successful use.")
                             .WithMaxUses(15)
-                            .WithAccuracy(100)
+                            .WithAccuracy(100, random)
                             .WithAction(
                                 new DamageActionBuilder()
-                                    .BasePowerIncreasesLinearlyWithUses(20, 5, actionHistory)
+                                    .BasePowerIncreasesLinearlyWithUses(20, 5, random, actionHistory)
                                     .UserSelectsSingleEnemy(userInput)
                                     .Build()
                             )
@@ -166,7 +168,7 @@ namespace ConsoleBattleSystem
                             .Name("Play Music")
                             .Describe("The user shreds on their guitar to inflict 5 damage on all enemies.")
                             .WithMaxUses(25)
-                            .WithAccuracy(100)
+                            .WithAccuracy(100, random)
                             .WithAction(
                                 new DamageActionBuilder()
                                     .AbsoluteDamage(5)
@@ -177,7 +179,7 @@ namespace ConsoleBattleSystem
                     )
                     .Build();
 
-            var bard = new BasicCharacter("Bard", "a", 100, bardStats, bardMoves);
+            var bard = new BasicCharacter("Bard", "a", 100, bardStats, bardMoves, random);
 
             bard.EquipItem(
                 new ItemBuilder()
@@ -201,7 +203,7 @@ namespace ConsoleBattleSystem
                             .Name("Magic Missile")
                             .Describe("The user fires a spectral missile to inflict 20 damage.")
                             .WithMaxUses(15)
-                            .WithAccuracy(100)
+                            .WithAccuracy(100, random)
                             .WithAction(
                                 new DamageActionBuilder()
                                     .AbsoluteDamage(20)
@@ -215,7 +217,7 @@ namespace ConsoleBattleSystem
                             .Name("Lightning Bolt")
                             .Describe("The user summons a lightning strike to deal damage equal to 30% of the target's health.")
                             .WithMaxUses(5)
-                            .WithAccuracy(70)
+                            .WithAccuracy(70, random)
                             .WithAction(
                                 new DamageActionBuilder()
                                     .PercentageDamage(30)
@@ -255,7 +257,7 @@ namespace ConsoleBattleSystem
                     )
                     .Build();
 
-            var mage = new BasicCharacter("Mage", "b", 100, mageStats, mageMoves);
+            var mage = new BasicCharacter("Mage", "b", 100, mageStats, mageMoves, random);
 
             mage.EquipItem(
                 new ItemBuilder()
@@ -264,7 +266,7 @@ namespace ConsoleBattleSystem
                     .WithStartTurnAction(
                         new DamageActionBuilder()
                             .AbsoluteDamage(6)
-                            .TargetsRandomOther()
+                            .TargetsRandomOther(random)
                             .Build()
                     )
                     .Build()
@@ -296,7 +298,7 @@ namespace ConsoleBattleSystem
                     )
                     .Build();
 
-            var rogue = new BasicCharacter("Rogue", "b", 80, rogueStats, rogueMoves);
+            var rogue = new BasicCharacter("Rogue", "b", 80, rogueStats, rogueMoves, random);
 
             return new Character[] { player, bard, mage, rogue };
         }

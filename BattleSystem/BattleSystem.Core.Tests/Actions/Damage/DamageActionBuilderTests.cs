@@ -1,5 +1,7 @@
 ﻿using System;
 using BattleSystem.Core.Actions.Damage;
+using BattleSystem.Core.Random;
+using Moq;
 using NUnit.Framework;
 
 namespace BattleSystem.Core.Tests.Actions.Damage
@@ -61,7 +63,7 @@ namespace BattleSystem.Core.Tests.Actions.Damage
         {
             // Arrange
             var builder = new DamageActionBuilder()
-                            .WithBasePower(20);
+                            .WithBasePower(20, new Mock<IRandom>().Object);
 
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() => _ = builder.Build());

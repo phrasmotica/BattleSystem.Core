@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Characters.Targets;
+using BattleSystem.Core.Random;
+using Moq;
 using NUnit.Framework;
 
 namespace BattleSystem.Core.Tests.Characters.Targets
@@ -12,16 +15,27 @@ namespace BattleSystem.Core.Tests.Characters.Targets
     public class RandomOtherActionTargetCalculatorTests
     {
         [Test]
-        public void Calculate_ReturnsOtherCharacter()
+        public void Ctor_NullRandom_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => _ = new RandomOtherActionTargetCalculator(null));
+        }
+
+        [Test]
+        public void Calculate_WithOthers_ReturnsOtherCharacter()
         {
             // Arrange
-            var calculator = new RandomOtherActionTargetCalculator();
+            var random = new Mock<IRandom>();
+            random
+                .Setup(m => m.Next(2))
+                .Returns(0);
 
-            var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
+            var calculator = new RandomOtherActionTargetCalculator(random.Object);
+
+            var user = TestHelpers.CreateBasicCharacter();
             var otherCharacters = new[]
             {
-                TestHelpers.CreateBasicCharacter(name: "the", team: "a"),
-                TestHelpers.CreateBasicCharacter(name: "15th", team: "b"),
+                TestHelpers.CreateBasicCharacter(),
+                TestHelpers.CreateBasicCharacter(),
             };
 
             // Act
@@ -31,17 +45,17 @@ namespace BattleSystem.Core.Tests.Characters.Targets
             Assert.Multiple(() =>
             {
                 Assert.That(success, Is.True);
-                Assert.That(targets.Single().Name, Is.AnyOf("the", "15th"));
+                Assert.That(targets.Single(), Is.EqualTo(otherCharacters[0]));
             });
         }
 
         [Test]
-        public void Calculate_NoOtherCharacters_ReturnsUnsuccessful()
+        public void Calculate_NoOthers_ReturnsUnsuccessful()
         {
             // Arrange
-            var calculator = new RandomOtherActionTargetCalculator();
+            var calculator = new RandomOtherActionTargetCalculator(new Mock<IRandom>().Object);
 
-            var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
+            var user = TestHelpers.CreateBasicCharacter();
             var otherCharacters = Enumerable.Empty<Character>();
 
             // Act

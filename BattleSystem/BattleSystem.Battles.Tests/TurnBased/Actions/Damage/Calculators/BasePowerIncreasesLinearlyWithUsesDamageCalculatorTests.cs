@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using BattleSystem.Battles.TurnBased;
 using BattleSystem.Battles.TurnBased.Actions.Damage.Calculators;
+using BattleSystem.Core.Random;
 using Moq;
 using NUnit.Framework;
 
@@ -13,9 +15,40 @@ namespace BattleSystem.Battles.Tests.TurnBased.Actions.Damage.Calculators
     public class BasePowerIncreasesLinearlyWithUsesDamageCalculatorTests
     {
         [Test]
+        public void Ctor_NullRandom_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                _ = new BasePowerIncreasesLinearlyWithUsesDamageCalculator(
+                    0,
+                    0,
+                    null,
+                    new Mock<IActionHistory>().Object);
+            });
+        }
+
+        [Test]
+        public void Ctor_NullActionHistory_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                _ = new BasePowerIncreasesLinearlyWithUsesDamageCalculator(
+                    0,
+                    0,
+                    new Mock<IRandom>().Object,
+                    null);
+            });
+        }
+
+        [Test]
         public void Calculate_NoPreviousUses_UsesStartingBasePower()
         {
             // Arrange
+            var random = new Mock<IRandom>();
+            random
+                .Setup(m => m.Next(80, 101))
+                .Returns(100);
+
             var damage = TestHelpers.CreateDamageAction();
 
             var user = TestHelpers.CreateBasicCharacter(attack: 6);
@@ -24,7 +57,7 @@ namespace BattleSystem.Battles.Tests.TurnBased.Actions.Damage.Calculators
                 TestHelpers.CreateBasicCharacter(defence: 5),
             };
 
-            var calculator = new BasePowerIncreasesLinearlyWithUsesDamageCalculator(10, 5, new Mock<IActionHistory>().Object);
+            var calculator = new BasePowerIncreasesLinearlyWithUsesDamageCalculator(10, 5, random.Object, new Mock<IActionHistory>().Object);
 
             // Act
             var calculation = calculator.Calculate(user, damage, otherCharacters).Single();
@@ -33,7 +66,7 @@ namespace BattleSystem.Battles.Tests.TurnBased.Actions.Damage.Calculators
             Assert.Multiple(() =>
             {
                 Assert.That(calculation.Success, Is.True);
-                Assert.That(calculation.Amount, Is.InRange(8, 10));
+                Assert.That(calculation.Amount, Is.EqualTo(10));
             });
         }
 
@@ -41,6 +74,11 @@ namespace BattleSystem.Battles.Tests.TurnBased.Actions.Damage.Calculators
         public void Calculate_WithPreviousUses_UsesIncreasedBasePower()
         {
             // Arrange
+            var random = new Mock<IRandom>();
+            random
+                .Setup(m => m.Next(80, 101))
+                .Returns(100);
+
             var damage = TestHelpers.CreateDamageAction();
 
             var user = TestHelpers.CreateBasicCharacter(attack: 6);
@@ -54,7 +92,7 @@ namespace BattleSystem.Battles.Tests.TurnBased.Actions.Damage.Calculators
                 .Setup(m => m.GetMoveDamageConsecutiveSuccessCount(damage, user))
                 .Returns(1);
 
-            var calculator = new BasePowerIncreasesLinearlyWithUsesDamageCalculator(10, 5, actionHistory.Object);
+            var calculator = new BasePowerIncreasesLinearlyWithUsesDamageCalculator(10, 5, random.Object, actionHistory.Object);
 
             // Act
             var calculation = calculator.Calculate(user, damage, otherCharacters).Single();
@@ -63,7 +101,7 @@ namespace BattleSystem.Battles.Tests.TurnBased.Actions.Damage.Calculators
             Assert.Multiple(() =>
             {
                 Assert.That(calculation.Success, Is.True);
-                Assert.That(calculation.Amount, Is.InRange(12, 15));
+                Assert.That(calculation.Amount, Is.EqualTo(15));
             });
         }
     }

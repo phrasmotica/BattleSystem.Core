@@ -1,5 +1,6 @@
 ﻿using System;
 using BattleSystem.Core.Characters.Targets;
+using BattleSystem.Core.Random;
 
 namespace BattleSystem.Core.Actions.Protect
 {
@@ -93,33 +94,37 @@ namespace BattleSystem.Core.Actions.Protect
         /// <summary>
         /// Sets the built protect action to target a random enemy.
         /// </summary>
-        public ProtectActionBuilder TargetsRandomEnemy()
+        /// <param name="random">The random number generator.</param>
+        public ProtectActionBuilder TargetsRandomEnemy(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator(random));
         }
 
         /// <summary>
         /// Sets the built protect action to target a random ally.
         /// </summary>
-        public ProtectActionBuilder TargetsRandomAlly()
+        /// <param name="random">The random number generator.</param>
+        public ProtectActionBuilder TargetsRandomAlly(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomAllyActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomAllyActionTargetCalculator(random));
         }
 
         /// <summary>
         /// Sets the built protect action to target a random character.
         /// </summary>
-        public ProtectActionBuilder TargetsRandomCharacter()
+        /// <param name="random">The random number generator.</param>
+        public ProtectActionBuilder TargetsRandomCharacter(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator(random));
         }
 
         /// <summary>
         /// Sets the built protect action to target a random other character.
         /// </summary>
-        public ProtectActionBuilder TargetsRandomOther()
+        /// <param name="random">The random number generator.</param>
+        public ProtectActionBuilder TargetsRandomOther(IRandom random)
         {
-            return WithActionTargetCalculator(new RandomOtherActionTargetCalculator());
+            return WithActionTargetCalculator(new RandomOtherActionTargetCalculator(random));
         }
 
         /// <summary>

@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using BattleSystem.Core.Characters.Targets;
+using BattleSystem.Core.Random;
+using Moq;
 using NUnit.Framework;
 
 namespace BattleSystem.Core.Tests.Characters.Targets
@@ -11,16 +14,27 @@ namespace BattleSystem.Core.Tests.Characters.Targets
     public class RandomCharacterActionTargetCalculatorTests
     {
         [Test]
+        public void Ctor_NullRandom_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => _ = new RandomCharacterActionTargetCalculator(null));
+        }
+
+        [Test]
         public void Calculate_ReturnsCharacter()
         {
             // Arrange
-            var calculator = new RandomCharacterActionTargetCalculator();
+            var random = new Mock<IRandom>();
+            random
+                .Setup(m => m.Next(3))
+                .Returns(1);
 
-            var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
+            var calculator = new RandomCharacterActionTargetCalculator(random.Object);
+
+            var user = TestHelpers.CreateBasicCharacter();
             var otherCharacters = new[]
             {
-                TestHelpers.CreateBasicCharacter(name: "the", team: "a"),
-                TestHelpers.CreateBasicCharacter(name: "15th", team: "b"),
+                TestHelpers.CreateBasicCharacter(),
+                TestHelpers.CreateBasicCharacter(),
             };
 
             // Act
@@ -30,7 +44,7 @@ namespace BattleSystem.Core.Tests.Characters.Targets
             Assert.Multiple(() =>
             {
                 Assert.That(success, Is.True);
-                Assert.That(targets.Single().Name, Is.AnyOf("wire", "the", "15th"));
+                Assert.That(targets.Single(), Is.EqualTo(otherCharacters[0]));
             });
         }
     }

@@ -3,6 +3,7 @@ using BattleSystem.Battles.TurnBased.Actions.Damage.Calculators;
 using BattleSystem.Battles.TurnBased.Actions.Tags;
 using BattleSystem.Battles.TurnBased.Actions.Targets;
 using BattleSystem.Core.Actions.Damage;
+using BattleSystem.Core.Random;
 
 namespace BattleSystem.Battles.TurnBased.Extensions
 {
@@ -31,14 +32,16 @@ namespace BattleSystem.Battles.TurnBased.Extensions
         /// <param name="builder">The damage action builder.</param>
         /// <param name="startingBasePower">The starting base power.</param>
         /// <param name="linearFactor">The linear factor.</param>
+        /// <param name="random">The random number generator.</param>
         /// <param name="actionHistory">The action history.</param>
         public static DamageActionBuilder BasePowerIncreasesLinearlyWithUses(
             this DamageActionBuilder builder,
             int startingBasePower,
             int linearFactor,
+            IRandom random,
             IActionHistory actionHistory)
         {
-            return builder.WithDamageCalculator(new BasePowerIncreasesLinearlyWithUsesDamageCalculator(startingBasePower, linearFactor, actionHistory));
+            return builder.WithDamageCalculator(new BasePowerIncreasesLinearlyWithUsesDamageCalculator(startingBasePower, linearFactor, random, actionHistory));
         }
 
         /// <summary>

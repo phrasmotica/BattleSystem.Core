@@ -1,4 +1,7 @@
-﻿using BattleSystem.Core.Moves.Success;
+﻿using System;
+using BattleSystem.Core.Moves.Success;
+using BattleSystem.Core.Random;
+using Moq;
 using NUnit.Framework;
 
 namespace BattleSystem.Core.Tests.Moves.Success
@@ -10,10 +13,21 @@ namespace BattleSystem.Core.Tests.Moves.Success
     public class AccuracySuccessCalculatorTests
     {
         [Test]
-        public void Calculate_MaxAccuracy_ReturnsSuccess()
+        public void Ctor_NullRandom_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => _ = new AccuracySuccessCalculator(0, null));
+        }
+
+        [Test]
+        public void Calculate_InsideThreshold_ReturnsSuccess()
         {
             // Arrange
-            var calculator = new AccuracySuccessCalculator(100);
+            var random = new Mock<IRandom>();
+            random
+                .Setup(m => m.Next(100))
+                .Returns(85);
+
+            var calculator = new AccuracySuccessCalculator(90, random.Object);
 
             var user = TestHelpers.CreateBasicCharacter();
             var move = TestHelpers.CreateMove();
@@ -30,10 +44,15 @@ namespace BattleSystem.Core.Tests.Moves.Success
         }
 
         [Test]
-        public void Calculate_MinAccuracy_ReturnsMiss()
+        public void Calculate_OutsideThreshold_ReturnsMiss()
         {
             // Arrange
-            var calculator = new AccuracySuccessCalculator(0);
+            var random = new Mock<IRandom>();
+            random
+                .Setup(m => m.Next(100))
+                .Returns(95);
+
+            var calculator = new AccuracySuccessCalculator(90, random.Object);
 
             var user = TestHelpers.CreateBasicCharacter();
             var move = TestHelpers.CreateMove();

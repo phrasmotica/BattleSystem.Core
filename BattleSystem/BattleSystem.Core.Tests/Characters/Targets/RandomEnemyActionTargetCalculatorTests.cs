@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using BattleSystem.Core.Characters.Targets;
+using BattleSystem.Core.Random;
+using Moq;
 using NUnit.Framework;
 
 namespace BattleSystem.Core.Tests.Characters.Targets
@@ -11,17 +14,28 @@ namespace BattleSystem.Core.Tests.Characters.Targets
     public class RandomEnemyActionTargetCalculatorTests
     {
         [Test]
-        public void Calculate_ReturnsEnemy()
+        public void Ctor_NullRandom_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => _ = new RandomEnemyActionTargetCalculator(null));
+        }
+
+        [Test]
+        public void Calculate_WithEnemies_ReturnsEnemy()
         {
             // Arrange
-            var calculator = new RandomEnemyActionTargetCalculator();
+            var random = new Mock<IRandom>();
+            random
+                .Setup(m => m.Next(2))
+                .Returns(0);
 
-            var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
+            var calculator = new RandomEnemyActionTargetCalculator(random.Object);
+
+            var user = TestHelpers.CreateBasicCharacter(team: "a");
             var otherCharacters = new[]
             {
-                TestHelpers.CreateBasicCharacter(name: "the", team: "a"),
-                TestHelpers.CreateBasicCharacter(name: "15th", team: "b"),
-                TestHelpers.CreateBasicCharacter(name: "154", team: "b"),
+                TestHelpers.CreateBasicCharacter(team: "a"),
+                TestHelpers.CreateBasicCharacter(team: "b"),
+                TestHelpers.CreateBasicCharacter(team: "b"),
             };
 
             // Act
@@ -31,7 +45,7 @@ namespace BattleSystem.Core.Tests.Characters.Targets
             Assert.Multiple(() =>
             {
                 Assert.That(success, Is.True);
-                Assert.That(targets.Single().Name, Is.AnyOf("15th", "154"));
+                Assert.That(targets.Single(), Is.EqualTo(otherCharacters[1]));
             });
         }
 
@@ -39,7 +53,7 @@ namespace BattleSystem.Core.Tests.Characters.Targets
         public void Calculate_NoEnemies_ReturnsUnsuccessful()
         {
             // Arrange
-            var calculator = new RandomEnemyActionTargetCalculator();
+            var calculator = new RandomEnemyActionTargetCalculator(new Mock<IRandom>().Object);
 
             var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
             var otherCharacters = new[]
