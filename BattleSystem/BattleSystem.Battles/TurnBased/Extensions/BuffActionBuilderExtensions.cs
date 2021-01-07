@@ -1,4 +1,4 @@
-﻿using BattleSystem.Battles.Interfaces;
+﻿using BattleSystem.Abstractions.Control;
 using BattleSystem.Battles.TurnBased.Actions.Targets;
 using BattleSystem.Core.Actions.Buff;
 

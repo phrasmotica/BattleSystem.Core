@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Battles.Interfaces;
+using BattleSystem.Abstractions.Control;
 using BattleSystem.Battles.TurnBased;
 using BattleSystem.Battles.TurnBased.Extensions;
 using BattleSystem.Core.Actions.Buff;

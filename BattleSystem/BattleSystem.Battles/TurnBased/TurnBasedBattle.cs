@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Battles.Interfaces;
+using BattleSystem.Abstractions.Control;
 using BattleSystem.Battles.TurnBased.Extensions;
 using BattleSystem.Core.Characters;
 

@@ -2,7 +2,7 @@
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Moves;
 
-namespace BattleSystem.Battles.Interfaces
+namespace BattleSystem.Abstractions.Control
 {
     /// <summary>
     /// Interface for ways a user can control a player.

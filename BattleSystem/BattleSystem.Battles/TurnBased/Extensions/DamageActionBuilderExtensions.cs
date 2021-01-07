@@ -1,4 +1,4 @@
-﻿using BattleSystem.Battles.Interfaces;
+﻿using BattleSystem.Abstractions.Control;
 using BattleSystem.Battles.TurnBased.Actions.Damage.Calculators;
 using BattleSystem.Battles.TurnBased.Actions.Tags;
 using BattleSystem.Battles.TurnBased.Actions.Targets;

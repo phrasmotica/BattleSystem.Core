@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Battles.Interfaces;
+using BattleSystem.Abstractions.Control;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Stats;

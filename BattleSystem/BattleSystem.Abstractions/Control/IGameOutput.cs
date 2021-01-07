@@ -4,7 +4,7 @@ using BattleSystem.Core.Characters;
 using BattleSystem.Core.Items;
 using BattleSystem.Core.Moves;
 
-namespace BattleSystem.Battles.Interfaces
+namespace BattleSystem.Abstractions.Control
 {
     /// <summary>
     /// Interface for ways the game can output details of a battle.
