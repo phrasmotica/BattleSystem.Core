@@ -4,7 +4,7 @@ using BattleSystem.Core.Characters;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Stats;
 
-namespace BattleSystemExample.Characters
+namespace ConsoleBattleSystem.Characters
 {
     /// <summary>
     /// Class representing a user-controller player.

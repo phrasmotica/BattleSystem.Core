@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleSystem.Core", "Battle
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleSystem.Core.Tests", "BattleSystem.Core.Tests\BattleSystem.Core.Tests.csproj", "{EFE2A368-BCBC-4F17-A760-3245EC7D3CBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleSystemExample", "BattleSystemExample\BattleSystemExample.csproj", "{FB8C1A4A-05B4-4665-A59E-D0ADEAF4EB7F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleBattleSystem", "ConsoleBattleSystem\ConsoleBattleSystem.csproj", "{FB8C1A4A-05B4-4665-A59E-D0ADEAF4EB7F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleSystem.Battles", "BattleSystem.Battles\BattleSystem.Battles.csproj", "{81E8C1E4-2BC6-4C63-86F2-3B88781408E5}"
 EndProject

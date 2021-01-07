@@ -2,7 +2,7 @@
 using BattleSystem.Core.Items;
 using BattleSystem.Battles.TurnBased.Actions.Tags;
 
-namespace BattleSystemExample.Extensions.ActionResults
+namespace ConsoleBattleSystem.Extensions.ActionResults
 {
     /// <summary>
     /// Extension methods for <see cref="DamageActionResult{TSource}"/>.

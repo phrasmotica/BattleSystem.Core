@@ -1,6 +1,6 @@
 ﻿using BattleSystem.Core.Actions;
 
-namespace BattleSystemExample.Extensions.ActionResults
+namespace ConsoleBattleSystem.Extensions.ActionResults
 {
     /// <summary>
     /// Extension methods for <see cref="IActionResult{TSource}"./>

@@ -1,6 +1,6 @@
 ﻿using BattleSystem.Core.Characters;
 
-namespace BattleSystemExample.Extensions
+namespace ConsoleBattleSystem.Extensions
 {
     /// <summary>
     /// Extension methods for <see cref="Character"/> and its sub-types.

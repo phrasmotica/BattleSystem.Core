@@ -12,12 +12,11 @@ using BattleSystem.Core.Items;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Moves.Success;
 using BattleSystem.Core.Stats;
-using BattleSystemExample.Characters;
-using BattleSystemExample.Extensions;
-using BattleSystemExample.Input;
-using BattleSystemExample.Output;
+using ConsoleBattleSystem.Characters;
+using ConsoleBattleSystem.Input;
+using ConsoleBattleSystem.Output;
 
-namespace BattleSystemExample
+namespace ConsoleBattleSystem
 {
     public class Program
     {

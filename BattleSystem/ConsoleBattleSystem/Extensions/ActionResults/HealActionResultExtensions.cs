@@ -1,7 +1,7 @@
 ﻿using BattleSystem.Core.Actions.Heal;
 using BattleSystem.Core.Items;
 
-namespace BattleSystemExample.Extensions.ActionResults
+namespace ConsoleBattleSystem.Extensions.ActionResults
 {
     /// <summary>
     /// Extension methods for <see cref="HealActionResult{TSource}"/>.

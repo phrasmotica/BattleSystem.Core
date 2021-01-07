@@ -1,6 +1,6 @@
 ﻿using BattleSystem.Core.Items;
 
-namespace BattleSystemExample.Extensions
+namespace ConsoleBattleSystem.Extensions
 {
     /// <summary>
     /// Extension methods for <see cref="Item"/>.

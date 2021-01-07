@@ -12,10 +12,10 @@ using BattleSystem.Core.Characters;
 using BattleSystem.Core.Items;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Moves.Success;
-using BattleSystemExample.Extensions;
-using BattleSystemExample.Extensions.ActionResults;
+using ConsoleBattleSystem.Extensions;
+using ConsoleBattleSystem.Extensions.ActionResults;
 
-namespace BattleSystemExample.Output
+namespace ConsoleBattleSystem.Output
 {
     /// <summary>
     /// Class for game output via the console.

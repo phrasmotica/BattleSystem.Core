@@ -5,7 +5,7 @@ using BattleSystem.Battles.Interfaces;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Moves;
 
-namespace BattleSystemExample.Input
+namespace ConsoleBattleSystem.Input
 {
     /// <summary>
     /// Class for user input via the console.

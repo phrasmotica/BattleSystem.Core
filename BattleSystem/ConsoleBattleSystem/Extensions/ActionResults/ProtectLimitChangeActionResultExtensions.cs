@@ -1,7 +1,7 @@
 ﻿using BattleSystem.Core.Actions.ProtectLimitChange;
 using BattleSystem.Core.Items;
 
-namespace BattleSystemExample.Extensions.ActionResults
+namespace ConsoleBattleSystem.Extensions.ActionResults
 {
     /// <summary>
     /// Extension methods for <see cref="ProtectLimitChangeActionResult{TSource}"/>.

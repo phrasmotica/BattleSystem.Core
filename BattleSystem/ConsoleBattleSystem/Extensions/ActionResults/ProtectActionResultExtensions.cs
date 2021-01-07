@@ -1,7 +1,7 @@
 ﻿using BattleSystem.Core.Actions.Protect;
 using BattleSystem.Core.Items;
 
-namespace BattleSystemExample.Extensions.ActionResults
+namespace ConsoleBattleSystem.Extensions.ActionResults
 {
     /// <summary>
     /// Extension methods for <see cref="ProtectActionResult{TSource}"/>.
