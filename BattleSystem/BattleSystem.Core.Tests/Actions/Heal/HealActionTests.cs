@@ -2,8 +2,8 @@
 using System.Linq;
 using BattleSystem.Core.Actions.Heal;
 using BattleSystem.Core.Actions.Heal.Calculators;
-using BattleSystem.Core.Actions.Targets;
 using BattleSystem.Core.Characters;
+using BattleSystem.Core.Characters.Targets;
 using Moq;
 using NUnit.Framework;
 

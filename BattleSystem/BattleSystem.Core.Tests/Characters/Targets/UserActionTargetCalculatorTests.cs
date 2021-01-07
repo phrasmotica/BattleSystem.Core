@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using BattleSystem.Core.Actions.Targets;
+using BattleSystem.Core.Characters.Targets;
 using NUnit.Framework;
 
-namespace BattleSystem.Core.Tests.Actions.Targets
+namespace BattleSystem.Core.Tests.Characters.Targets
 {
     /// <summary>
     /// Unit tests for <see cref="UserActionTargetCalculator"/>

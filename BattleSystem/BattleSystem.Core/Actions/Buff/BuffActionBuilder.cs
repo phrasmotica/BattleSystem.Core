@@ -1,5 +1,5 @@
 ﻿using System;
-using BattleSystem.Core.Actions.Targets;
+using BattleSystem.Core.Characters.Targets;
 using BattleSystem.Core.Stats;
 
 namespace BattleSystem.Core.Actions.Buff

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Core.Characters;
 
-namespace BattleSystem.Core.Actions.Targets
+namespace BattleSystem.Core.Characters.Targets
 {
     /// <summary>
-    /// Calculates the action target as one of the other characters at random.
+    /// Calculates the action target as one of the user's allies at random.
     /// </summary>
-    public class RandomOtherActionTargetCalculator : IActionTargetCalculator
+    public class RandomAllyActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
         public bool IsReactive => false;
@@ -16,14 +15,14 @@ namespace BattleSystem.Core.Actions.Targets
         /// <inheritdoc />
         public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
-            var targets = otherCharacters.ToArray();
-            if (!targets.Any())
+            var allies = otherCharacters.Where(c => c.Team == user.Team).ToArray();
+            if (!allies.Any())
             {
                 return (false, Enumerable.Empty<Character>());
             }
 
-            var r = new Random().Next(targets.Length);
-            return (true, new[] { targets[r] });
+            var r = new Random().Next(allies.Length);
+            return (true, new[] { allies[r] });
         }
     }
 }

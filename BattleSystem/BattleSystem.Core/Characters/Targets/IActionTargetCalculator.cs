@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Core.Characters;
 
-namespace BattleSystem.Core.Actions.Targets
+namespace BattleSystem.Core.Characters.Targets
 {
     /// <summary>
     /// Interface for calculating the targets of an action.

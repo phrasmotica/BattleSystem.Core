@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Core.Characters;
 
-namespace BattleSystem.Core.Actions.Targets
+namespace BattleSystem.Core.Characters.Targets
 {
     /// <summary>
-    /// Calculates the action targets as the user's enemies.
+    /// Calculates the action targets as the user's allies.
     /// </summary>
-    public class EnemiesActionTargetCalculator : IActionTargetCalculator
+    public class AlliesActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
         public bool IsReactive => false;
@@ -15,13 +14,13 @@ namespace BattleSystem.Core.Actions.Targets
         /// <inheritdoc />
         public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
-            var enemies = otherCharacters.Where(c => c.Team != user.Team);
-            if (!enemies.Any())
+            var allies = otherCharacters.Where(c => c.Team == user.Team);
+            if (!allies.Any())
             {
                 return (false, Enumerable.Empty<Character>());
             }
 
-            return (true, enemies);
+            return (true, allies);
         }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Core.Characters;
 
-namespace BattleSystem.Core.Actions.Targets
+namespace BattleSystem.Core.Characters.Targets
 {
     /// <summary>
     /// Calculates the action targets as all characters on the user's team.

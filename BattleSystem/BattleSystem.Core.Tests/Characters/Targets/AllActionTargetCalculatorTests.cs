@@ -1,27 +1,26 @@
 ﻿using System.Linq;
-using BattleSystem.Core.Actions.Targets;
+using BattleSystem.Core.Characters.Targets;
 using NUnit.Framework;
 
-namespace BattleSystem.Core.Tests.Actions.Targets
+namespace BattleSystem.Core.Tests.Characters.Targets
 {
     /// <summary>
-    /// Unit tests for <see cref="TeamActionTargetCalculator"/>
+    /// Unit tests for <see cref="AllActionTargetCalculator"/>
     /// </summary>
     [TestFixture]
-    public class TeamActionTargetCalculatorTests
+    public class AllActionTargetCalculatorTests
     {
         [Test]
-        public void Calculate_ReturnsTeam()
+        public void Calculate_ReturnsAll()
         {
             // Arrange
-            var calculator = new TeamActionTargetCalculator();
+            var calculator = new AllActionTargetCalculator();
 
-            var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
+            var user = TestHelpers.CreateBasicCharacter(name: "wire");
             var otherCharacters = new[]
             {
-                TestHelpers.CreateBasicCharacter(name: "the", team: "a"),
-                TestHelpers.CreateBasicCharacter(name: "15th", team: "b"),
-                TestHelpers.CreateBasicCharacter(name: "154", team: "a"),
+                TestHelpers.CreateBasicCharacter(name: "the"),
+                TestHelpers.CreateBasicCharacter(name: "15th"),
             };
 
             // Act
@@ -35,7 +34,7 @@ namespace BattleSystem.Core.Tests.Actions.Targets
                 Assert.That(targets.Length, Is.EqualTo(3));
                 Assert.That(targets[0].Name, Is.EqualTo("wire"));
                 Assert.That(targets[1].Name, Is.EqualTo("the"));
-                Assert.That(targets[2].Name, Is.EqualTo("154"));
+                Assert.That(targets[2].Name, Is.EqualTo("15th"));
             });
         }
     }

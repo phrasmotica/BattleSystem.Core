@@ -1,26 +1,26 @@
 ﻿using System.Linq;
-using BattleSystem.Core.Actions.Targets;
+using BattleSystem.Core.Characters.Targets;
 using NUnit.Framework;
 
-namespace BattleSystem.Core.Tests.Actions.Targets
+namespace BattleSystem.Core.Tests.Characters.Targets
 {
     /// <summary>
-    /// Unit tests for <see cref="FirstAllyActionTargetCalculator"/>.
+    /// Unit tests for <see cref="FirstEnemyActionTargetCalculator"/>.
     /// </summary>
     [TestFixture]
-    public class FirstAllyActionTargetCalculatorTests
+    public class FirstEnemyActionTargetCalculatorTests
     {
         [Test]
-        public void Calculate_ReturnsFirstAlly()
+        public void Calculate_ReturnsFirstEnemy()
         {
             // Arrange
-            var calculator = new FirstAllyActionTargetCalculator();
+            var calculator = new FirstEnemyActionTargetCalculator();
 
             var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
             var otherCharacters = new[]
             {
-                TestHelpers.CreateBasicCharacter(name: "the", team: "b"),
-                TestHelpers.CreateBasicCharacter(name: "15th", team: "a"),
+                TestHelpers.CreateBasicCharacter(name: "the", team: "a"),
+                TestHelpers.CreateBasicCharacter(name: "15th", team: "b"),
             };
 
             // Act
@@ -35,16 +35,16 @@ namespace BattleSystem.Core.Tests.Actions.Targets
         }
 
         [Test]
-        public void Calculate_NoAllies_ReturnsUnsuccessful()
+        public void Calculate_NoEnemies_ReturnsUnsuccessful()
         {
             // Arrange
-            var calculator = new FirstAllyActionTargetCalculator();
+            var calculator = new FirstEnemyActionTargetCalculator();
 
             var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
             var otherCharacters = new[]
             {
-                TestHelpers.CreateBasicCharacter(name: "the", team: "b"),
-                TestHelpers.CreateBasicCharacter(name: "15th", team: "b"),
+                TestHelpers.CreateBasicCharacter(name: "the", team: "a"),
+                TestHelpers.CreateBasicCharacter(name: "15th", team: "a"),
             };
 
             // Act

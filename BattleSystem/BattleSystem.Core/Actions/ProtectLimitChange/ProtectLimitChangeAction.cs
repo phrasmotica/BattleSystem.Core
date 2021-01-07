@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Core.Characters;
-using BattleSystem.Core.Actions.Targets;
+using BattleSystem.Core.Characters.Targets;
 
 namespace BattleSystem.Core.Actions.ProtectLimitChange
 {

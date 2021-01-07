@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using BattleSystem.Core.Characters;
 
-namespace BattleSystem.Core.Actions.Targets
+namespace BattleSystem.Core.Characters.Targets
 {
     /// <summary>
-    /// Calculates the action targets as all of the other characters.
+    /// Calculates the action target as the user.
     /// </summary>
-    public class OthersActionTargetCalculator : IActionTargetCalculator
+    public class UserActionTargetCalculator : IActionTargetCalculator
     {
         /// <inheritdoc />
         public bool IsReactive => false;
@@ -14,7 +13,7 @@ namespace BattleSystem.Core.Actions.Targets
         /// <inheritdoc />
         public (bool success, IEnumerable<Character> targets) Calculate(Character user, IEnumerable<Character> otherCharacters)
         {
-            return (true, otherCharacters);
+            return (true, new[] { user });
         }
     }
 }

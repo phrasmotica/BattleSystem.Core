@@ -1,6 +1,6 @@
 ﻿using System;
-using BattleSystem.Core.Actions.Targets;
 using BattleSystem.Core.Actions.Heal.Calculators;
+using BattleSystem.Core.Characters.Targets;
 
 namespace BattleSystem.Core.Actions.Heal
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using BattleSystem.Core.Actions.Damage.Calculators;
-using BattleSystem.Core.Actions.Targets;
+using BattleSystem.Core.Characters.Targets;
 
 namespace BattleSystem.Core.Actions.Damage
 {

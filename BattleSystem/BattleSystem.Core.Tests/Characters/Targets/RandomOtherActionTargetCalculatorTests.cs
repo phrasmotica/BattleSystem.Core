@@ -1,27 +1,27 @@
 ﻿using System.Linq;
-using BattleSystem.Core.Actions.Targets;
+using BattleSystem.Core.Characters;
+using BattleSystem.Core.Characters.Targets;
 using NUnit.Framework;
 
-namespace BattleSystem.Core.Tests.Actions.Targets
+namespace BattleSystem.Core.Tests.Characters.Targets
 {
     /// <summary>
-    /// Unit tests for <see cref="RandomEnemyActionTargetCalculator"/>.
+    /// Unit tests for <see cref="RandomOtherActionTargetCalculator"/>.
     /// </summary>
     [TestFixture]
-    public class RandomEnemyActionTargetCalculatorTests
+    public class RandomOtherActionTargetCalculatorTests
     {
         [Test]
-        public void Calculate_ReturnsEnemy()
+        public void Calculate_ReturnsOtherCharacter()
         {
             // Arrange
-            var calculator = new RandomEnemyActionTargetCalculator();
+            var calculator = new RandomOtherActionTargetCalculator();
 
             var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
             var otherCharacters = new[]
             {
                 TestHelpers.CreateBasicCharacter(name: "the", team: "a"),
                 TestHelpers.CreateBasicCharacter(name: "15th", team: "b"),
-                TestHelpers.CreateBasicCharacter(name: "154", team: "b"),
             };
 
             // Act
@@ -31,22 +31,18 @@ namespace BattleSystem.Core.Tests.Actions.Targets
             Assert.Multiple(() =>
             {
                 Assert.That(success, Is.True);
-                Assert.That(targets.Single().Name, Is.AnyOf("15th", "154"));
+                Assert.That(targets.Single().Name, Is.AnyOf("the", "15th"));
             });
         }
 
         [Test]
-        public void Calculate_NoEnemies_ReturnsUnsuccessful()
+        public void Calculate_NoOtherCharacters_ReturnsUnsuccessful()
         {
             // Arrange
-            var calculator = new RandomEnemyActionTargetCalculator();
+            var calculator = new RandomOtherActionTargetCalculator();
 
             var user = TestHelpers.CreateBasicCharacter(name: "wire", team: "a");
-            var otherCharacters = new[]
-            {
-                TestHelpers.CreateBasicCharacter(name: "the", team: "a"),
-                TestHelpers.CreateBasicCharacter(name: "15th", team: "a"),
-            };
+            var otherCharacters = Enumerable.Empty<Character>();
 
             // Act
             var (success, targets) = calculator.Calculate(user, otherCharacters);

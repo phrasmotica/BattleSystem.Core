@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Core.Actions.Targets;
 using BattleSystem.Core.Characters;
+using BattleSystem.Core.Characters.Targets;
 using BattleSystem.Core.Stats;
 using Moq;
 using NUnit.Framework;
