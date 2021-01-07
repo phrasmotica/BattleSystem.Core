@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using BattleSystem.Battles.TurnBased;
 using BattleSystem.Battles.TurnBased.Actions.Damage.Calculators;
-using BattleSystem.Core.Characters.Targets;
-using BattleSystem.Core.Moves;
+using Moq;
 using NUnit.Framework;
 
 namespace BattleSystem.Battles.Tests.TurnBased.Actions.Damage.Calculators
@@ -17,29 +16,7 @@ namespace BattleSystem.Battles.Tests.TurnBased.Actions.Damage.Calculators
         public void Calculate_NoPreviousUses_UsesStartingBasePower()
         {
             // Arrange
-            var calculator = new BasePowerIncreasesLinearlyWithUsesDamageCalculator(10, 5, new ActionHistory());
-
-            var user = TestHelpers.CreateBasicCharacter(attack: 6);
-            var targets = new[]
-            {
-                TestHelpers.CreateBasicCharacter(defence: 5),
-            };
-
-            var damage = TestHelpers.CreateDamageAction(calculator);
-
-            // Act
-            var calculations = calculator.Calculate(user, damage, targets);
-
-            // Assert
-            Assert.That(calculations.Single().Amount, Is.InRange(8, 10));
-        }
-
-        [Test]
-        public void Calculate_WithPreviousUses_UsesIncreasedBasePower()
-        {
-            // Arrange
-            var actionHistory = new ActionHistory();
-            var calculator = new BasePowerIncreasesLinearlyWithUsesDamageCalculator(10, 5, actionHistory);
+            var damage = TestHelpers.CreateDamageAction();
 
             var user = TestHelpers.CreateBasicCharacter(attack: 6);
             var otherCharacters = new[]
@@ -47,28 +24,47 @@ namespace BattleSystem.Battles.Tests.TurnBased.Actions.Damage.Calculators
                 TestHelpers.CreateBasicCharacter(defence: 5),
             };
 
-            var damage = TestHelpers.CreateDamageAction(
-                damageCalculator: calculator,
-                actionTargetCalculator: new OthersActionTargetCalculator());
-            damage.SetTargets(user, otherCharacters);
-
-            var move = TestHelpers.CreateMove(moveActions: damage);
-
-            var moveUse = new MoveUse
-            {
-                Move = move,
-                User = user,
-                OtherCharacters = otherCharacters,
-            };
-            moveUse.Apply();
-
-            actionHistory.AddMoveUse(moveUse);
+            var calculator = new BasePowerIncreasesLinearlyWithUsesDamageCalculator(10, 5, new Mock<IActionHistory>().Object);
 
             // Act
-            var calculations = calculator.Calculate(user, damage, otherCharacters);
+            var calculation = calculator.Calculate(user, damage, otherCharacters).Single();
 
             // Assert
-            Assert.That(calculations.First().Amount, Is.InRange(12, 15));
+            Assert.Multiple(() =>
+            {
+                Assert.That(calculation.Success, Is.True);
+                Assert.That(calculation.Amount, Is.InRange(8, 10));
+            });
+        }
+
+        [Test]
+        public void Calculate_WithPreviousUses_UsesIncreasedBasePower()
+        {
+            // Arrange
+            var damage = TestHelpers.CreateDamageAction();
+
+            var user = TestHelpers.CreateBasicCharacter(attack: 6);
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter(defence: 5),
+            };
+
+            var actionHistory = new Mock<IActionHistory>();
+            actionHistory
+                .Setup(m => m.GetMoveDamageConsecutiveSuccessCount(damage, user))
+                .Returns(1);
+
+            var calculator = new BasePowerIncreasesLinearlyWithUsesDamageCalculator(10, 5, actionHistory.Object);
+
+            // Act
+            var calculation = calculator.Calculate(user, damage, otherCharacters).Single();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(calculation.Success, Is.True);
+                Assert.That(calculation.Amount, Is.InRange(12, 15));
+            });
         }
     }
 }
