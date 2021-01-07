@@ -34,7 +34,7 @@ namespace BattleSystem.Battles.TurnBased
         /// <summary>
         /// The action history for the battle.
         /// </summary>
-        private readonly ActionHistory _actionHistory;
+        private readonly IActionHistory _actionHistory;
 
         /// <summary>
         /// Gets whether the battle is over, i.e. whether there is some team
@@ -51,7 +51,7 @@ namespace BattleSystem.Battles.TurnBased
         /// <param name="characters">The characters in the battle.</param>
         public TurnBasedBattle(
             MoveProcessor moveProcessor,
-            ActionHistory actionHistory,
+            IActionHistory actionHistory,
             IGameOutput gameOutput,
             IEnumerable<Character> characters)
         {

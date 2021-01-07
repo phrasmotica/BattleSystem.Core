@@ -36,7 +36,7 @@ namespace BattleSystem.Battles.TurnBased.Moves.Success
         /// <summary>
         /// The action history.
         /// </summary>
-        private readonly ActionHistory _actionHistory;
+        private readonly IActionHistory _actionHistory;
 
         /// <summary>
         /// Creates a new <see cref="DecreasesLinearlyWithUsesSuccessCalculator"/> instance.
@@ -51,7 +51,7 @@ namespace BattleSystem.Battles.TurnBased.Moves.Success
             int linearFactor,
             int minimumSuccessRate,
             MoveUseResult failureResult,
-            ActionHistory actionHistory)
+            IActionHistory actionHistory)
         {
             _baseSuccessRate = baseSuccessRate;
             _linearFactor = linearFactor;

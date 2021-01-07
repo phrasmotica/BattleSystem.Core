@@ -20,7 +20,7 @@ namespace BattleSystem.Battles.TurnBased.Extensions
         public static DamageActionBuilder PercentageOfLastReceivedMoveDamage(
             this DamageActionBuilder builder,
             int percentage,
-            ActionHistory actionHistory)
+            IActionHistory actionHistory)
         {
             return builder.WithDamageCalculator(new PercentageOfLastReceivedMoveDamageCalculator(percentage, actionHistory));
         }
@@ -36,7 +36,7 @@ namespace BattleSystem.Battles.TurnBased.Extensions
             this DamageActionBuilder builder,
             int startingBasePower,
             int linearFactor,
-            ActionHistory actionHistory)
+            IActionHistory actionHistory)
         {
             return builder.WithDamageCalculator(new BasePowerIncreasesLinearlyWithUsesDamageCalculator(startingBasePower, linearFactor, actionHistory));
         }
@@ -49,7 +49,7 @@ namespace BattleSystem.Battles.TurnBased.Extensions
         /// <param name="actionHistory">The action history.</param>
         public static DamageActionBuilder Retaliates(
             this DamageActionBuilder builder,
-            ActionHistory actionHistory)
+            IActionHistory actionHistory)
         {
             return builder.WithActionTargetCalculator(new RetaliationActionTargetCalculator(actionHistory))
                           .WithTag(DamageTags.Retaliation);

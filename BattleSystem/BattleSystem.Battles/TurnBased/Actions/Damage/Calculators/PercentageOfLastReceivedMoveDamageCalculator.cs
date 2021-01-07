@@ -20,7 +20,7 @@ namespace BattleSystem.Battles.TurnBased.Actions.Damage.Calculators
         /// <summary>
         /// The action history.
         /// </summary>
-        private readonly ActionHistory _actionHistory;
+        private readonly IActionHistory _actionHistory;
 
         /// <summary>
         /// Creates a new <see cref="PercentageOfLastReceivedMoveDamageCalculator"/> instance.
@@ -29,7 +29,7 @@ namespace BattleSystem.Battles.TurnBased.Actions.Damage.Calculators
         /// <param name="actionHistory">The action history.</param>
         public PercentageOfLastReceivedMoveDamageCalculator(
             int percentage,
-            ActionHistory actionHistory)
+            IActionHistory actionHistory)
         {
             _percentage = percentage;
             _actionHistory = actionHistory;

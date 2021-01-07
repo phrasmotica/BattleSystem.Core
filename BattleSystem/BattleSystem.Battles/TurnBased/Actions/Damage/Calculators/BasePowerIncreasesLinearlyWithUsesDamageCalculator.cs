@@ -25,7 +25,7 @@ namespace BattleSystem.Battles.TurnBased.Actions.Damage.Calculators
         /// <summary>
         /// The action history.
         /// </summary>
-        private readonly ActionHistory _actionHistory;
+        private readonly IActionHistory _actionHistory;
 
         /// <summary>
         /// Creates a new <see cref="BasePowerIncreasesLinearlyWithUsesDamageCalculator"/> instance.
@@ -36,7 +36,7 @@ namespace BattleSystem.Battles.TurnBased.Actions.Damage.Calculators
         public BasePowerIncreasesLinearlyWithUsesDamageCalculator(
             int startingBasePower,
             int linearFactor,
-            ActionHistory actionHistory)
+            IActionHistory actionHistory)
         {
             _startingBasePower = startingBasePower;
             _linearFactor = linearFactor;

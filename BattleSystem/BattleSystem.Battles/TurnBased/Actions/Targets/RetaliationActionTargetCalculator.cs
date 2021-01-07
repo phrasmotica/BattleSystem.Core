@@ -14,13 +14,13 @@ namespace BattleSystem.Battles.TurnBased.Actions.Targets
         /// <summary>
         /// The action history.
         /// </summary>
-        private readonly ActionHistory _actionHistory;
+        private readonly IActionHistory _actionHistory;
 
         /// <summary>
         /// Creates a new <see cref="RetaliationActionTargetCalculator"/> instance.
         /// </summary>
         /// <param name="actionHistory">The action history.</param>
-        public RetaliationActionTargetCalculator(ActionHistory actionHistory)
+        public RetaliationActionTargetCalculator(IActionHistory actionHistory)
         {
             _actionHistory = actionHistory;
         }

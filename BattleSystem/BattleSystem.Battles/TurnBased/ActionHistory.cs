@@ -10,9 +10,8 @@ namespace BattleSystem.Battles.TurnBased
 {
     /// <summary>
     /// Records the moves and actions that have been executed in a battle.
-    /// TODO: create IActionHistory interface
     /// </summary>
-    public class ActionHistory
+    public class ActionHistory : IActionHistory
     {
         /// <summary>
         /// Gets or sets the turn counter.
@@ -56,28 +55,19 @@ namespace BattleSystem.Battles.TurnBased
             ItemActions = new List<(int, IActionResult<Item>)>();
         }
 
-        /// <summary>
-        /// Starts the turn.
-        /// </summary>
+        /// <inheritdoc />
         public void StartTurn()
         {
             TurnCounter++;
         }
 
-        /// <summary>
-        /// Adds the given move use to the move use history.
-        /// </summary>
-        /// <param name="moveUse">The move use.</param>
+        /// <inheritdoc />
         public void AddMoveUse(MoveUse moveUse)
         {
             MoveUses.Add((TurnCounter, moveUse));
         }
 
-        /// <summary>
-        /// Adds the given action to the move action history.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the object that caused the action.</typeparam>
-        /// <param name="result">The result of the action.</param>
+        /// <inheritdoc />
         public void AddAction<TSource>(IActionResult<TSource> result)
         {
             switch (result)
@@ -88,12 +78,7 @@ namespace BattleSystem.Battles.TurnBased
             }
         }
 
-        /// <summary>
-        /// Gets the most recent damage action from a move that affected the
-        /// given character on the current turn.
-        /// </summary>
-        /// <param name="character">The affected character.</param>
-        /// <param name="turnNumber">The turn number.</param>
+        /// <inheritdoc />
         public DamageActionResult<Move> LastMoveDamageResultAgainst(Character character)
         {
             return MoveActions.Single(a => a.turnNumber == TurnCounter).results
@@ -103,12 +88,7 @@ namespace BattleSystem.Battles.TurnBased
                               .LastOrDefault() as DamageActionResult<Move>;
         }
 
-        /// <summary>
-        /// Gets the number of times the given action has been used successfully
-        /// by the given user since it last failed.
-        /// </summary>
-        /// <param name="action">The action.</param>
-        /// <param name="user">The user.</param>
+        /// <inheritdoc />
         public int GetMoveDamageConsecutiveSuccessCount(IAction action, Character user)
         {
             return MoveUses.Select(a => a.moveUse)
@@ -121,12 +101,7 @@ namespace BattleSystem.Battles.TurnBased
                            .Count();
         }
 
-        /// <summary>
-        /// Gets the number of times the given move has been used successfully
-        /// by the given user since it last failed.
-        /// </summary>
-        /// <param name="move">The move.</param>
-        /// <param name="user">The user.</param>
+        /// <inheritdoc />
         public int GetMoveConsecutiveSuccessCount(Move move, Character user)
         {
             return MoveUses.Select(a => a.moveUse)

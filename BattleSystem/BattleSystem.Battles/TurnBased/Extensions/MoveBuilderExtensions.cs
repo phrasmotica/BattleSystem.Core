@@ -25,7 +25,7 @@ namespace BattleSystem.Battles.TurnBased.Extensions
             int linearFactor,
             int minimumSuccessRate,
             MoveUseResult failureResult,
-            ActionHistory actionHistory)
+            IActionHistory actionHistory)
         {
             return builder.WithSuccessCalculator(
                 new DecreasesLinearlyWithUsesSuccessCalculator(
