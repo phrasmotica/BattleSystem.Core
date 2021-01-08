@@ -1,22 +1,13 @@
-﻿using System.Collections.Generic;
-using BattleSystem.Core.Actions;
-using BattleSystem.Core.Actions.Buff;
+﻿using BattleSystem.Core.Actions;
 using BattleSystem.Core.Actions.Damage;
 using BattleSystem.Core.Actions.Damage.Calculators;
-using BattleSystem.Core.Actions.Heal;
-using BattleSystem.Core.Actions.Heal.Calculators;
-using BattleSystem.Core.Actions.Protect;
-using BattleSystem.Core.Actions.ProtectLimitChange;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Characters.Targets;
-using BattleSystem.Core.Items;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Moves.Success;
 using BattleSystem.Core.Random;
 using BattleSystem.Core.Stats;
 using Moq;
-using static BattleSystem.Core.Actions.Damage.Calculators.BasePowerDamageCalculator;
-using static BattleSystem.Core.Items.Item;
 
 namespace BattleSystem.Battles.Tests
 {
@@ -48,9 +39,9 @@ namespace BattleSystem.Battles.Tests
         }
 
         /// <summary>
-        /// Returns a stat set with default base values in each stat.
+        /// Returns a stat set with the given base values in each stat.
         /// </summary>
-        public static StatSet CreateStatSet(int attack, int defence, int speed)
+        private static StatSet CreateStatSet(int attack, int defence, int speed)
         {
             return new StatSet
             {
@@ -63,7 +54,7 @@ namespace BattleSystem.Battles.Tests
         /// <summary>
         /// Returns a stat with the given base value.
         /// </summary>
-        public static Stat CreateStat(int baseValue = 1)
+        private static Stat CreateStat(int baseValue = 1)
         {
             return new Stat(baseValue);
         }
@@ -81,64 +72,6 @@ namespace BattleSystem.Battles.Tests
             }
 
             return moveSet;
-        }
-
-        /// <summary>
-        /// Returns an item slot.
-        /// </summary>
-        public static ItemSlot CreateItemSlot()
-        {
-            return new ItemSlot();
-        }
-
-        /// <summary>
-        /// Returns an item.
-        /// </summary>
-        public static Item CreateItem(
-            string name = "jim",
-            string description = "eureka",
-            StatBaseValueTransform[] attackBaseValueTransforms = null,
-            StatBaseValueTransform[] defenceBaseValueTransforms = null,
-            StatBaseValueTransform[] speedBaseValueTransforms = null,
-            PowerTransform[] damagePowerTransforms = null)
-        {
-            var builder = new ItemBuilder()
-                            .Name(name)
-                            .Describe(description);
-
-            if (attackBaseValueTransforms is not null)
-            {
-                foreach (var t in attackBaseValueTransforms)
-                {
-                    builder = builder.WithAttackBaseValueTransform(t);
-                }
-            }
-
-            if (defenceBaseValueTransforms is not null)
-            {
-                foreach (var t in defenceBaseValueTransforms)
-                {
-                    builder = builder.WithDefenceBaseValueTransform(t);
-                }
-            }
-
-            if (speedBaseValueTransforms is not null)
-            {
-                foreach (var t in speedBaseValueTransforms)
-                {
-                    builder = builder.WithSpeedBaseValueTransform(t);
-                }
-            }
-
-            if (damagePowerTransforms is not null)
-            {
-                foreach (var t in damagePowerTransforms)
-                {
-                    builder = builder.WithDamagePowerTransform(t);
-                }
-            }
-
-            return builder.Build();
         }
 
         /// <summary>
@@ -175,66 +108,6 @@ namespace BattleSystem.Battles.Tests
             return new DamageActionBuilder()
                 .WithDamageCalculator(damageCalculator ?? new Mock<IDamageCalculator>().Object)
                 .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
-                .Build();
-        }
-
-        /// <summary>
-        /// Returns a buff action.
-        /// </summary>
-        public static BuffAction CreateBuffAction(
-            IActionTargetCalculator actionTargetCalculator = null,
-            IDictionary<StatCategory, double> targetMultipliers = null)
-        {
-            var builder = new BuffActionBuilder()
-                            .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object);
-
-            if (targetMultipliers is not null)
-            {
-                foreach (var multiplier in targetMultipliers)
-                {
-                    builder = builder.WithTargetMultiplier(multiplier.Key, multiplier.Value);
-                }
-            }
-
-            return builder.Build();
-        }
-
-        /// <summary>
-        /// Returns a heal action.
-        /// </summary>
-        public static HealAction CreateHeal(
-            IHealingCalculator healingCalculator = null,
-            IActionTargetCalculator actionTargetCalculator = null,
-            int amount = 5)
-        {
-            return new HealActionBuilder()
-                .WithAmount(amount)
-                .WithHealingCalculator(healingCalculator ?? new Mock<IHealingCalculator>().Object)
-                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
-                .Build();
-        }
-
-        /// <summary>
-        /// Returns a protect action.
-        /// </summary>
-        public static ProtectAction CreateProtectAction(
-            IActionTargetCalculator actionTargetCalculator = null)
-        {
-            return new ProtectActionBuilder()
-                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
-                .Build();
-        }
-
-        /// <summary>
-        /// Returns a protect limit change action.
-        /// </summary>
-        public static ProtectLimitChangeAction CreateProtectLimitChange(
-            IActionTargetCalculator actionTargetCalculator = null,
-            int amount = 1)
-        {
-            return new ProtectLimitChangeActionBuilder()
-                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
-                .WithAmount(amount)
                 .Build();
         }
     }

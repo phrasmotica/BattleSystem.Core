@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BattleSystem.Core.Actions.Protect;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Characters.Targets;
 using Moq;
@@ -23,7 +24,7 @@ namespace BattleSystem.Core.Tests.Actions.Protect
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var protect = TestHelpers.CreateProtectAction(new OthersActionTargetCalculator());
+            var protect = CreateProtectAction(new OthersActionTargetCalculator());
 
             protect.SetTargets(user, otherCharacters);
 
@@ -44,7 +45,7 @@ namespace BattleSystem.Core.Tests.Actions.Protect
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var protect = TestHelpers.CreateProtectAction(new OthersActionTargetCalculator());
+            var protect = CreateProtectAction(new OthersActionTargetCalculator());
 
             protect.SetTargets(user, otherCharacters);
 
@@ -70,7 +71,7 @@ namespace BattleSystem.Core.Tests.Actions.Protect
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var protect = TestHelpers.CreateProtectAction(new OthersActionTargetCalculator());
+            var protect = CreateProtectAction(new OthersActionTargetCalculator());
 
             protect.SetTargets(user, otherCharacters);
 
@@ -105,7 +106,7 @@ namespace BattleSystem.Core.Tests.Actions.Protect
                 )
                 .Returns((true, Enumerable.Empty<Character>()));
 
-            var protect = TestHelpers.CreateProtectAction(
+            var protect = CreateProtectAction(
                 actionTargetCalculator: actionTargetCalculator.Object);
 
             protect.SetTargets(user, otherCharacters);
@@ -131,7 +132,7 @@ namespace BattleSystem.Core.Tests.Actions.Protect
                 TestHelpers.CreateBasicCharacter(),
             };
 
-            var protect = TestHelpers.CreateProtectAction();
+            var protect = CreateProtectAction();
 
             // Act
             var result = protect.Use<string>(user, otherCharacters);
@@ -142,6 +143,14 @@ namespace BattleSystem.Core.Tests.Actions.Protect
                 Assert.That(result.Success, Is.False);
                 Assert.That(result.Results, Is.Empty);
             });
+        }
+
+        private static ProtectAction CreateProtectAction(
+            IActionTargetCalculator actionTargetCalculator = null)
+        {
+            return new ProtectActionBuilder()
+                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
+                .Build();
         }
     }
 }

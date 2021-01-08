@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BattleSystem.Core.Actions.ProtectLimitChange;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Characters.Targets;
 using Moq;
@@ -23,7 +24,7 @@ namespace BattleSystem.Core.Tests.Actions.ProtectLimitChange
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var change = TestHelpers.CreateProtectLimitChange(new OthersActionTargetCalculator());
+            var change = CreateProtectLimitChange(new OthersActionTargetCalculator());
 
             change.SetTargets(user, otherCharacters);
 
@@ -44,7 +45,7 @@ namespace BattleSystem.Core.Tests.Actions.ProtectLimitChange
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var change = TestHelpers.CreateProtectLimitChange(new OthersActionTargetCalculator());
+            var change = CreateProtectLimitChange(new OthersActionTargetCalculator());
 
             change.SetTargets(user, otherCharacters);
 
@@ -70,7 +71,7 @@ namespace BattleSystem.Core.Tests.Actions.ProtectLimitChange
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var change = TestHelpers.CreateProtectLimitChange(new OthersActionTargetCalculator());
+            var change = CreateProtectLimitChange(new OthersActionTargetCalculator());
 
             change.SetTargets(user, otherCharacters);
 
@@ -105,7 +106,7 @@ namespace BattleSystem.Core.Tests.Actions.ProtectLimitChange
                 )
                 .Returns((true, Enumerable.Empty<Character>()));
 
-            var change = TestHelpers.CreateProtectLimitChange(
+            var change = CreateProtectLimitChange(
                 actionTargetCalculator: actionTargetCalculator.Object);
 
             change.SetTargets(user, otherCharacters);
@@ -131,7 +132,7 @@ namespace BattleSystem.Core.Tests.Actions.ProtectLimitChange
                 TestHelpers.CreateBasicCharacter(),
             };
 
-            var change = TestHelpers.CreateProtectLimitChange();
+            var change = CreateProtectLimitChange();
 
             // Act
             var result = change.Use<string>(user, otherCharacters);
@@ -142,6 +143,16 @@ namespace BattleSystem.Core.Tests.Actions.ProtectLimitChange
                 Assert.That(result.Success, Is.False);
                 Assert.That(result.Results, Is.Empty);
             });
+        }
+
+        private static ProtectLimitChangeAction CreateProtectLimitChange(
+            IActionTargetCalculator actionTargetCalculator = null,
+            int amount = 1)
+        {
+            return new ProtectLimitChangeActionBuilder()
+                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
+                .WithAmount(amount)
+                .Build();
         }
     }
 }

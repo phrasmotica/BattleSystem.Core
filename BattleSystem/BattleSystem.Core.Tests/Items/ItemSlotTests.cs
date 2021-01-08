@@ -13,7 +13,7 @@ namespace BattleSystem.Core.Tests.Items
         public void Set_SetsItem()
         {
             // Arrange
-            var itemSlot = TestHelpers.CreateItemSlot();
+            var itemSlot = CreateItemSlot();
             var item = TestHelpers.CreateItem();
 
             // Act
@@ -31,7 +31,7 @@ namespace BattleSystem.Core.Tests.Items
         public void Remove_RemovesItem()
         {
             // Arrange
-            var itemSlot = TestHelpers.CreateItemSlot();
+            var itemSlot = CreateItemSlot();
             var item = TestHelpers.CreateItem();
             itemSlot.Set(item);
 
@@ -43,6 +43,11 @@ namespace BattleSystem.Core.Tests.Items
             {
                 Assert.That(itemSlot.HasItem, Is.False);
             });
+        }
+
+        private static ItemSlot CreateItemSlot()
+        {
+            return new ItemSlot();
         }
     }
 }

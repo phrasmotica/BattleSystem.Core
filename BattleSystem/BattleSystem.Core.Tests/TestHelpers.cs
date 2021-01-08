@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using BattleSystem.Core.Actions;
-using BattleSystem.Core.Actions.Buff;
+﻿using BattleSystem.Core.Actions;
 using BattleSystem.Core.Actions.Damage;
 using BattleSystem.Core.Actions.Damage.Calculators;
 using BattleSystem.Core.Actions.Heal;
 using BattleSystem.Core.Actions.Heal.Calculators;
-using BattleSystem.Core.Actions.Protect;
-using BattleSystem.Core.Actions.ProtectLimitChange;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Characters.Targets;
 using BattleSystem.Core.Items;
@@ -48,9 +44,9 @@ namespace BattleSystem.Core.Tests
         }
 
         /// <summary>
-        /// Returns a stat set with default base values in each stat.
+        /// Returns a stat set the given base values in each stat.
         /// </summary>
-        public static StatSet CreateStatSet(int attack, int defence, int speed)
+        private static StatSet CreateStatSet(int attack, int defence, int speed)
         {
             return new StatSet
             {
@@ -63,7 +59,7 @@ namespace BattleSystem.Core.Tests
         /// <summary>
         /// Returns a stat with the given base value.
         /// </summary>
-        public static Stat CreateStat(int baseValue = 1)
+        private static Stat CreateStat(int baseValue = 1)
         {
             return new Stat(baseValue);
         }
@@ -81,14 +77,6 @@ namespace BattleSystem.Core.Tests
             }
 
             return moveSet;
-        }
-
-        /// <summary>
-        /// Returns an item slot.
-        /// </summary>
-        public static ItemSlot CreateItemSlot()
-        {
-            return new ItemSlot();
         }
 
         /// <summary>
@@ -179,27 +167,6 @@ namespace BattleSystem.Core.Tests
         }
 
         /// <summary>
-        /// Returns a buff action.
-        /// </summary>
-        public static BuffAction CreateBuffAction(
-            IActionTargetCalculator actionTargetCalculator = null,
-            IDictionary<StatCategory, double> targetMultipliers = null)
-        {
-            var builder = new BuffActionBuilder()
-                            .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object);
-
-            if (targetMultipliers is not null)
-            {
-                foreach (var multiplier in targetMultipliers)
-                {
-                    builder = builder.WithTargetMultiplier(multiplier.Key, multiplier.Value);
-                }
-            }
-
-            return builder.Build();
-        }
-
-        /// <summary>
         /// Returns a heal action.
         /// </summary>
         public static HealAction CreateHeal(
@@ -211,30 +178,6 @@ namespace BattleSystem.Core.Tests
                 .WithAmount(amount)
                 .WithHealingCalculator(healingCalculator ?? new Mock<IHealingCalculator>().Object)
                 .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
-                .Build();
-        }
-
-        /// <summary>
-        /// Returns a protect action.
-        /// </summary>
-        public static ProtectAction CreateProtectAction(
-            IActionTargetCalculator actionTargetCalculator = null)
-        {
-            return new ProtectActionBuilder()
-                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
-                .Build();
-        }
-
-        /// <summary>
-        /// Returns a protect limit change action.
-        /// </summary>
-        public static ProtectLimitChangeAction CreateProtectLimitChange(
-            IActionTargetCalculator actionTargetCalculator = null,
-            int amount = 1)
-        {
-            return new ProtectLimitChangeActionBuilder()
-                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
-                .WithAmount(amount)
                 .Build();
         }
     }

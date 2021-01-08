@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BattleSystem.Core.Actions.Buff;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Characters.Targets;
 using BattleSystem.Core.Stats;
@@ -24,7 +25,7 @@ namespace BattleSystem.Core.Tests.Actions.Buff
                 TestHelpers.CreateBasicCharacter(attack: 10)
             };
 
-            var buff = TestHelpers.CreateBuffAction(
+            var buff = CreateBuffAction(
                 new OthersActionTargetCalculator(),
                 new Dictionary<StatCategory, double>
                 {
@@ -50,7 +51,7 @@ namespace BattleSystem.Core.Tests.Actions.Buff
                 TestHelpers.CreateBasicCharacter()
             };
 
-            var buff = TestHelpers.CreateBuffAction(new OthersActionTargetCalculator());
+            var buff = CreateBuffAction(new OthersActionTargetCalculator());
 
             buff.SetTargets(user, otherCharacters);
 
@@ -75,7 +76,7 @@ namespace BattleSystem.Core.Tests.Actions.Buff
                 TestHelpers.CreateBasicCharacter(maxHealth: 0)
             };
 
-            var buff = TestHelpers.CreateBuffAction(new OthersActionTargetCalculator());
+            var buff = CreateBuffAction(new OthersActionTargetCalculator());
 
             buff.SetTargets(user, otherCharacters);
 
@@ -110,7 +111,7 @@ namespace BattleSystem.Core.Tests.Actions.Buff
                 )
                 .Returns((true, Enumerable.Empty<Character>()));
 
-            var buff = TestHelpers.CreateBuffAction(
+            var buff = CreateBuffAction(
                 actionTargetCalculator: actionTargetCalculator.Object);
 
             buff.SetTargets(user, otherCharacters);
@@ -136,7 +137,7 @@ namespace BattleSystem.Core.Tests.Actions.Buff
                 TestHelpers.CreateBasicCharacter(),
             };
 
-            var buff = TestHelpers.CreateBuffAction();
+            var buff = CreateBuffAction();
 
             // Act
             var result = buff.Use<string>(user, otherCharacters);
@@ -147,6 +148,24 @@ namespace BattleSystem.Core.Tests.Actions.Buff
                 Assert.That(result.Success, Is.False);
                 Assert.That(result.Results, Is.Empty);
             });
+        }
+
+        private static BuffAction CreateBuffAction(
+            IActionTargetCalculator actionTargetCalculator = null,
+            IDictionary<StatCategory, double> targetMultipliers = null)
+        {
+            var builder = new BuffActionBuilder()
+                            .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object);
+
+            if (targetMultipliers is not null)
+            {
+                foreach (var multiplier in targetMultipliers)
+                {
+                    builder = builder.WithTargetMultiplier(multiplier.Key, multiplier.Value);
+                }
+            }
+
+            return builder.Build();
         }
     }
 }
