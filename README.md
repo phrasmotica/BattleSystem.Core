@@ -1,8 +1,8 @@
-# Battle System
+# BattleSystem.Core
 
 This is a library that provides functionality for characters battling against other, targeting .NET 5.0.
 
-[![NuGet](https://img.shields.io/nuget/v/BattleSystem.svg?logo=nuget)](https://www.nuget.org/packages/BattleSystem)
+[![NuGet](https://img.shields.io/nuget/v/BattleSystem.Core.svg?logo=nuget)](https://www.nuget.org/packages/BattleSystem.Core)
 
 ## Character
 
