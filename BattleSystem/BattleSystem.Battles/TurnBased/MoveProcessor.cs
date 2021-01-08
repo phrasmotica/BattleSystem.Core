@@ -47,6 +47,11 @@ namespace BattleSystem.Battles.TurnBased
         /// </summary>
         public MoveUse ApplyNext()
         {
+            if (MoveUseQueueIsEmpty)
+            {
+                return null;
+            }
+
             SortMoveUseQueue();
 
             var moveUse = Queue[0];

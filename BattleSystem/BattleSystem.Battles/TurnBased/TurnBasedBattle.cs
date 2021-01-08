@@ -40,7 +40,7 @@ namespace BattleSystem.Battles.TurnBased
         /// Gets whether the battle is over, i.e. whether there is some team
         /// whose characters are all dead.
         /// </summary>
-        private bool IsOver => Teams.Any(t => t.All(c => c.IsDead));
+        public bool IsOver => Teams.Any(t => t.All(c => c.IsDead));
 
         /// <summary>
         /// Creates a new <see cref="TurnBasedBattle"/> instance.

@@ -26,7 +26,7 @@ namespace BattleSystem.Core.Moves
         /// <summary>
         /// Gets or sets the result of the move use.
         /// </summary>
-        public MoveUseResult? Result { get; private set; }
+        public MoveUseResult? Result { get; set; }
 
         /// <summary>
         /// Gets whether the move use has a result.
@@ -41,7 +41,7 @@ namespace BattleSystem.Core.Moves
         /// <summary>
         /// Gets or sets the result of each action use in the move use.
         /// </summary>
-        public IEnumerable<ActionUseResult<Move>> ActionsResults { get; private set; }
+        public IEnumerable<ActionUseResult<Move>> ActionsResults { get; set; }
 
         /// <summary>
         /// Gets whether all the targets of the actions in this move use were

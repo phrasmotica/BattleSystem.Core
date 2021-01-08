@@ -89,7 +89,7 @@ namespace BattleSystem.Battles.Tests.TurnBased.Actions.Damage.Calculators
 
             var actionHistory = new Mock<IActionHistory>();
             actionHistory
-                .Setup(m => m.GetMoveDamageConsecutiveSuccessCount(damage, user))
+                .Setup(m => m.GetMoveActionConsecutiveSuccessCount(damage, user))
                 .Returns(1);
 
             var calculator = new BasePowerIncreasesLinearlyWithUsesDamageCalculator(10, 5, random.Object, actionHistory.Object);

@@ -89,7 +89,7 @@ namespace BattleSystem.Battles.TurnBased
         }
 
         /// <inheritdoc />
-        public int GetMoveDamageConsecutiveSuccessCount(IAction action, Character user)
+        public int GetMoveActionConsecutiveSuccessCount(IAction action, Character user)
         {
             return MoveUses.Select(a => a.moveUse)
                            .SelectMany(mu => mu.ActionsResults)

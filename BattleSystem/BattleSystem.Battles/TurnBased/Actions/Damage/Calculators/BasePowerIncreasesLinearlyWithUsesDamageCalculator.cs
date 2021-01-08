@@ -56,7 +56,7 @@ namespace BattleSystem.Battles.TurnBased.Actions.Damage.Calculators
         /// <inheritdoc/>
         public IEnumerable<DamageCalculation> Calculate(Character user, DamageAction damage, IEnumerable<Character> targets)
         {
-            var count = _actionHistory.GetMoveDamageConsecutiveSuccessCount(damage, user);
+            var count = _actionHistory.GetMoveActionConsecutiveSuccessCount(damage, user);
             var basePower = _startingBasePower + _linearFactor * count;
 
             return new BasePowerDamageCalculator(basePower, _random).Calculate(user, damage, targets);

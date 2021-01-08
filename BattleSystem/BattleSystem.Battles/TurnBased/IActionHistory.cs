@@ -35,11 +35,11 @@ namespace BattleSystem.Battles.TurnBased
 
         /// <summary>
         /// Gets the number of times the given action has been used successfully
-        /// by the given user since it last failed.
+        /// as part of a move by the given user since it last failed.
         /// </summary>
         /// <param name="action">The action.</param>
         /// <param name="user">The user.</param>
-        int GetMoveDamageConsecutiveSuccessCount(IAction action, Character user);
+        int GetMoveActionConsecutiveSuccessCount(IAction action, Character user);
 
         /// <summary>
         /// Gets the most recent damage action from a move that affected the
