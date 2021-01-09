@@ -39,6 +39,11 @@ namespace BattleSystem.Core.Moves
         public bool Success => Result == MoveUseResult.Success;
 
         /// <summary>
+        /// Gets whether the user of the move flinched.
+        /// </summary>
+        public bool UserFlinched => Result == MoveUseResult.Flinched;
+
+        /// <summary>
         /// Gets or sets the result of each action use in the move use.
         /// </summary>
         public IEnumerable<ActionUseResult<Move>> ActionsResults { get; set; }

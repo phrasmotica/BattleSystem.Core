@@ -5,6 +5,7 @@ using BattleSystem.Core.Moves;
 using BattleSystem.Core.Actions;
 using Moq;
 using NUnit.Framework;
+using BattleSystem.Core.Moves.Success;
 
 namespace BattleSystem.Core.Tests.Moves
 {
@@ -103,6 +104,32 @@ namespace BattleSystem.Core.Tests.Moves
 
             // Assert
             Assert.That(move.RemainingUses, Is.EqualTo(4));
+        }
+
+        [Test]
+        public void Use_WhenUserWillFlinch_ActionsNotApplied()
+        {
+            // Arrange
+            var move = TestHelpers.CreateMove(
+                moveActions: TestHelpers.CreateDamageAction());
+
+            var user = TestHelpers.CreateBasicCharacter();
+            user.WillFlinch = true;
+
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter(),
+            };
+
+            // Act
+            var (result, actionsResults) = move.Use(user, otherCharacters);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Is.EqualTo(MoveUseResult.Flinched));
+                Assert.That(actionsResults, Is.Empty);
+            });
         }
 
         [Test]

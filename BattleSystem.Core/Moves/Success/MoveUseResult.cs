@@ -16,6 +16,11 @@
         Miss,
 
         /// <summary>
+        /// The move failed because the user flinched.
+        /// </summary>
+        Flinched,
+
+        /// <summary>
         /// The move failed for some reason.
         /// </summary>
         Failure,

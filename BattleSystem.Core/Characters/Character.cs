@@ -83,6 +83,11 @@ namespace BattleSystem.Core.Characters
         public int ProtectCount => ProtectQueue?.Count ?? 0;
 
         /// <summary>
+        /// Gets or sets whether the character will flinch on their next move.
+        /// </summary>
+        public bool WillFlinch { get; set; }
+
+        /// <summary>
         /// Gets the character's current speed.
         /// </summary>
         public int CurrentSpeed => Stats.Speed.CurrentValue;

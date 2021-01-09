@@ -150,12 +150,18 @@ namespace BattleSystem.Core.Moves
         {
             var moveUseResult = _successCalculator.Calculate(user, this, otherCharacters);
 
-            var actionsResults = new List<ActionUseResult<Move>>();
+            if (user.WillFlinch)
+            {
+                moveUseResult = MoveUseResult.Flinched;
+                user.WillFlinch = false;
+            }
 
-            var targets = otherCharacters.ToArray();
+            var actionsResults = new List<ActionUseResult<Move>>();
 
             if (moveUseResult == MoveUseResult.Success)
             {
+                var targets = otherCharacters.ToArray();
+
                 foreach (var action in _moveActions)
                 {
                     var result = action.Use<Move>(user, targets);
