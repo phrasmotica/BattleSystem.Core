@@ -38,12 +38,9 @@ namespace BattleSystem.Core.Actions.Damage.Calculators
         {
             var transformedBasePower = _basePower;
 
-            if (user.HasItem)
+            foreach (var t in user.DamagePowerTransforms)
             {
-                foreach (var t in user.Item.ActionContainer.DamagePowerTransforms)
-                {
-                    transformedBasePower = t(transformedBasePower);
-                }
+                transformedBasePower = t(transformedBasePower);
             }
 
             var calculations = new List<DamageCalculation>();
