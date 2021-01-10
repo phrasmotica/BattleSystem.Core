@@ -102,10 +102,10 @@ namespace BattleSystem.Core.Actions
         }
 
         /// <summary>
-        /// Returns the tagged character actions with the given tag.
+        /// Returns the tagged actions with the given tag.
         /// </summary>
         /// <param name="tag">The tag.</param>
-        public IEnumerable<TaggedAction> GetCharacterTaggedActions(string tag)
+        public IEnumerable<TaggedAction> GetTaggedActions(string tag)
         {
             return TaggedActions.Where(a => a.HasTag(tag));
         }
