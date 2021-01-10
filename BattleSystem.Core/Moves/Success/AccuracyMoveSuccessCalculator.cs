@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using BattleSystem.Core.Characters;
-using BattleSystem.Core.Moves;
 using BattleSystem.Core.Random;
+using BattleSystem.Core.Success;
 
-namespace BattleSystem.Core.Success
+namespace BattleSystem.Core.Moves.Success
 {
     /// <summary>
     /// Calculates whether a move succeeds based on a percentage accuracy value.
     /// </summary>
-    public class AccuracySuccessCalculator : ISuccessCalculator
+    public class AccuracyMoveSuccessCalculator : ISuccessCalculator<Move, MoveUseResult>
     {
         /// <summary>
         /// The accuracy.
@@ -26,14 +24,14 @@ namespace BattleSystem.Core.Success
         /// </summary>
         /// <param name="accuracy">The accuracy.</param>
         /// <param name="random">The random number generator.</param>
-        public AccuracySuccessCalculator(int accuracy, IRandom random)
+        public AccuracyMoveSuccessCalculator(int accuracy, IRandom random)
         {
             _accuracy = accuracy;
             _random = random ?? throw new ArgumentNullException(nameof(random));
         }
 
         /// <inheritdoc />
-        public MoveUseResult Calculate(Character user, Move move, IEnumerable<Character> otherCharacters)
+        public MoveUseResult Calculate(Move move)
         {
             var r = _random.Next(100) + 1;
             return r <= _accuracy ? MoveUseResult.Success : MoveUseResult.Miss;

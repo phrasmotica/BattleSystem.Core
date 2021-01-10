@@ -19,7 +19,7 @@ namespace BattleSystem.Core.Tests.Moves
         {
             // Arrange
             var builder = new MoveBuilder();
-            
+
             // Act and Assert
             Assert.Throws<ArgumentException>(() => _ = builder.Name(name));
         }
@@ -37,13 +37,13 @@ namespace BattleSystem.Core.Tests.Moves
         }
 
         [TestCase]
-        public void WithSuccessCalculator_NullArgument_Throws()
+        public void WithSuccessCalculatorFactory_NullArgument_Throws()
         {
             // Arrange
             var builder = new MoveBuilder();
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>(() => _ = builder.WithSuccessCalculator(null));
+            Assert.Throws<ArgumentNullException>(() => _ = builder.WithSuccessCalculatorFactory(null));
         }
 
         [Test]

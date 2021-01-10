@@ -1,20 +1,14 @@
-﻿using System.Collections.Generic;
-using BattleSystem.Core.Characters;
-using BattleSystem.Core.Moves;
-
-namespace BattleSystem.Core.Success
+﻿namespace BattleSystem.Core.Success
 {
     /// <summary>
-    /// Interface for calculating whether a move succeeds.
+    /// Interface for calculating whether an input task succeeds.
     /// </summary>
-    public interface ISuccessCalculator
+    public interface ISuccessCalculator<TTask, TResult>
     {
         /// <summary>
-        /// Calculates how the given move succeeds.
+        /// Calculates how the given input task succeeds.
         /// </summary>
-        /// <param name="user">The user of the move.</param>
-        /// <param name="move">The move.</param>
-        /// <param name="otherCharacters">The other characters.</param>
-        MoveUseResult Calculate(Character user, Move move, IEnumerable<Character> otherCharacters);
+        /// <param name="input">The input task.</param>
+        TResult Calculate(TTask input);
     }
 }

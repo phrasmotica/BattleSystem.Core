@@ -2,6 +2,7 @@
 using BattleSystem.Core.Actions;
 using BattleSystem.Core.Moves.Success;
 using BattleSystem.Core.Random;
+using static BattleSystem.Core.Moves.Move;
 
 namespace BattleSystem.Core.Moves
 {
@@ -33,7 +34,7 @@ namespace BattleSystem.Core.Moves
         /// <summary>
         /// Whether the built move has a success calculator.
         /// </summary>
-        private bool _hasSuccessCalculator;
+        private bool _hasSuccessCalculatorFactory;
 
         /// <summary>
         /// Creates a new <see cref="MoveBuilder"/> instance.
@@ -97,18 +98,18 @@ namespace BattleSystem.Core.Moves
         }
 
         /// <summary>
-        /// Sets the built move's success calculator.
+        /// Sets the built move's success calculator factory.
         /// </summary>
-        /// <param name="accuracy">The built move's success calculator.</param>
-        public MoveBuilder WithSuccessCalculator(ISuccessCalculator successCalculator)
+        /// <param name="accuracy">The built move's success calculator factory.</param>
+        public MoveBuilder WithSuccessCalculatorFactory(MoveSuccessCalculatorFactory successCalculatorFactory)
         {
-            if (successCalculator is null)
+            if (successCalculatorFactory is null)
             {
-                throw new ArgumentNullException(nameof(successCalculator));
+                throw new ArgumentNullException(nameof(successCalculatorFactory));
             }
 
-            _move.SetSuccessCalculator(successCalculator);
-            _hasSuccessCalculator = true;
+            _move.SetSuccessCalculatorFactory(successCalculatorFactory);
+            _hasSuccessCalculatorFactory = true;
             return this;
         }
 
@@ -119,7 +120,7 @@ namespace BattleSystem.Core.Moves
         /// <param name="random">The random number generator.</param>
         public MoveBuilder WithAccuracy(int accuracy, IRandom random)
         {
-            return WithSuccessCalculator(new AccuracySuccessCalculator(accuracy, random));
+            return WithSuccessCalculatorFactory((_, __) => new AccuracyMoveSuccessCalculator(accuracy, random));
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace BattleSystem.Core.Moves
         /// </summary>
         public MoveBuilder AlwaysSucceeds()
         {
-            return WithSuccessCalculator(new AlwaysSuccessCalculator());
+            return WithSuccessCalculatorFactory((_, __) => new AlwaysMoveSuccessCalculator());
         }
 
         /// <summary>
@@ -160,9 +161,9 @@ namespace BattleSystem.Core.Moves
                 throw new InvalidOperationException("Cannot build a move with no max uses set!");
             }
 
-            if (!_hasSuccessCalculator)
+            if (!_hasSuccessCalculatorFactory)
             {
-                throw new InvalidOperationException("Cannot build a move with no success calculator!");
+                throw new InvalidOperationException("Cannot build a move with no success calculator factory!");
             }
 
             return _move;

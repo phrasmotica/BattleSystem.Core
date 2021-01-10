@@ -2,7 +2,7 @@
 using System.Linq;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Actions;
-using BattleSystem.Core.Moves.Success;
+using BattleSystem.Core.Success;
 
 namespace BattleSystem.Core.Moves
 {
@@ -12,9 +12,16 @@ namespace BattleSystem.Core.Moves
     public class Move
     {
         /// <summary>
-        /// The success calculator.
+        /// Delegate for a function that creates a move success calculator.
         /// </summary>
-        private ISuccessCalculator _successCalculator;
+        /// <param name="user">The user of the move.</param>
+        /// <param name="otherCharacters">The other characters.</param>
+        public delegate ISuccessCalculator<Move, MoveUseResult> MoveSuccessCalculatorFactory(Character user, IEnumerable<Character> otherCharacters);
+
+        /// <summary>
+        /// The factory for constructing a success calculator.
+        /// </summary>
+        private MoveSuccessCalculatorFactory _successCalculatorFactory;
 
         /// <summary>
         /// The actions this move will apply in order.
@@ -103,12 +110,12 @@ namespace BattleSystem.Core.Moves
         }
 
         /// <summary>
-        /// Sets the success calculator for this move.
+        /// Sets the success calculator factory for this move.
         /// </summary>
-        /// <param name="successCalculator">The success calculator.</param>
-        public void SetSuccessCalculator(ISuccessCalculator successCalculator)
+        /// <param name="successCalculatorFactory">The success calculator factory.</param>
+        public void SetSuccessCalculatorFactory(MoveSuccessCalculatorFactory successCalculatorFactory)
         {
-            _successCalculator = successCalculator;
+            _successCalculatorFactory = successCalculatorFactory;
         }
 
         /// <summary>
@@ -148,7 +155,8 @@ namespace BattleSystem.Core.Moves
         /// <param name="otherCharacters">The other characters.</param>
         public (MoveUseResult, IEnumerable<ActionUseResult<Move>>) Use(Character user, IEnumerable<Character> otherCharacters)
         {
-            var moveUseResult = _successCalculator.Calculate(user, this, otherCharacters);
+            var successCalculator = _successCalculatorFactory(user, otherCharacters);
+            var moveUseResult = successCalculator.Calculate(this);
 
             if (user.WillFlinch)
             {
