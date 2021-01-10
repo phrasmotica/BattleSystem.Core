@@ -14,9 +14,7 @@ namespace BattleSystem.Core.Moves
         /// <summary>
         /// Delegate for a function that creates a move success calculator.
         /// </summary>
-        /// <param name="user">The user of the move.</param>
-        /// <param name="otherCharacters">The other characters.</param>
-        public delegate ISuccessCalculator<Move, MoveUseResult> MoveSuccessCalculatorFactory(Character user, IEnumerable<Character> otherCharacters);
+        public delegate ISuccessCalculator<Move, MoveUseResult> MoveSuccessCalculatorFactory();
 
         /// <summary>
         /// The factory for constructing a success calculator.
@@ -155,8 +153,7 @@ namespace BattleSystem.Core.Moves
         /// <param name="otherCharacters">The other characters.</param>
         public (MoveUseResult, IEnumerable<ActionUseResult<Move>>) Use(Character user, IEnumerable<Character> otherCharacters)
         {
-            var successCalculator = _successCalculatorFactory(user, otherCharacters);
-            var moveUseResult = successCalculator.Calculate(this);
+            var moveUseResult = _successCalculatorFactory().Calculate(this);
 
             if (user.WillFlinch)
             {

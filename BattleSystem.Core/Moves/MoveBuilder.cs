@@ -120,7 +120,7 @@ namespace BattleSystem.Core.Moves
         /// <param name="random">The random number generator.</param>
         public MoveBuilder WithAccuracy(int accuracy, IRandom random)
         {
-            return WithSuccessCalculatorFactory((_, __) => new AccuracyMoveSuccessCalculator(accuracy, random));
+            return WithSuccessCalculatorFactory(() => new AccuracyMoveSuccessCalculator(accuracy, random));
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace BattleSystem.Core.Moves
         /// </summary>
         public MoveBuilder AlwaysSucceeds()
         {
-            return WithSuccessCalculatorFactory((_, __) => new AlwaysMoveSuccessCalculator());
+            return WithSuccessCalculatorFactory(() => new AlwaysMoveSuccessCalculator());
         }
 
         /// <summary>

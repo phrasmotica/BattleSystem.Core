@@ -142,7 +142,7 @@ namespace BattleSystem.Core.Tests
         {
             if (successCalculatorFactory is null)
             {
-                successCalculatorFactory = (_, __) => new AlwaysMoveSuccessCalculator();
+                successCalculatorFactory = () => new AlwaysMoveSuccessCalculator();
             }
 
             var builder = new MoveBuilder()
