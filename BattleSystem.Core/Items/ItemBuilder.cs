@@ -45,7 +45,7 @@ namespace BattleSystem.Core.Items
                 throw new ArgumentException("Item name must be non-null and non-whitespace!", nameof(name));
             }
 
-            _item.SetName(name);
+            _item.Name = name;
             _hasName = true;
             return this;
         }
@@ -61,7 +61,7 @@ namespace BattleSystem.Core.Items
                 throw new ArgumentException("Item description must be non-null and non-whitespace!", nameof(description));
             }
 
-            _item.SetDescription(description);
+            _item.Description = description;
             _hasDescription = true;
             return this;
         }
