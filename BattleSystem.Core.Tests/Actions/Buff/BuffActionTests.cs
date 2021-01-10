@@ -38,7 +38,7 @@ namespace BattleSystem.Core.Tests.Actions.Buff
             _ = buff.Use<string>(user, otherCharacters);
 
             // Assert
-            Assert.That(otherCharacters[0].Stats.Attack.CurrentValue, Is.EqualTo(12));
+            Assert.That(otherCharacters[0].CurrentAttack, Is.EqualTo(12));
         }
 
         [Test]

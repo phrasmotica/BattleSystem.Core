@@ -44,9 +44,9 @@ namespace BattleSystem.Core.Characters
         public int CurrentHealth { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the character's stats.
+        /// The character's stats.
         /// </summary>
-        public StatSet Stats { get; protected set; }
+        protected StatSet Stats;
 
         /// <summary>
         /// Gets or sets the character's moves.
@@ -89,9 +89,67 @@ namespace BattleSystem.Core.Characters
         public bool WillFlinch { get; set; }
 
         /// <summary>
-        /// Gets the character's current speed.
+        /// Gets the character's current attack stat value.
         /// </summary>
-        public int CurrentSpeed => Stats.Speed.CurrentValue;
+        public int CurrentAttack
+        {
+            get
+            {
+                var transformedValue = Stats.Attack.CurrentValue;
+
+                if (HasItem)
+                {
+                    foreach (var t in Item.StatBaseValueTransforms[StatCategory.Attack])
+                    {
+                        transformedValue = t(transformedValue);
+                    }
+                }
+
+                return transformedValue;
+            }
+        }
+
+        /// <summary>
+        /// Gets the character's current defence stat value.
+        /// </summary>
+        public int CurrentDefence
+        {
+            get
+            {
+                var transformedValue = Stats.Defence.CurrentValue;
+
+                if (HasItem)
+                {
+                    foreach (var t in Item.StatBaseValueTransforms[StatCategory.Defence])
+                    {
+                        transformedValue = t(transformedValue);
+                    }
+                }
+
+                return transformedValue;
+            }
+        }
+
+        /// <summary>
+        /// Gets the character's current speed stat value.
+        /// </summary>
+        public int CurrentSpeed
+        {
+            get
+            {
+                var transformedValue = Stats.Speed.CurrentValue;
+
+                if (HasItem)
+                {
+                    foreach (var t in Item.StatBaseValueTransforms[StatCategory.Speed])
+                    {
+                        transformedValue = t(transformedValue);
+                    }
+                }
+
+                return transformedValue;
+            }
+        }
 
         /// <summary>
         /// Gets whether the character is dead.
@@ -145,12 +203,6 @@ namespace BattleSystem.Core.Characters
             }
 
             ItemSlot.Set(item);
-
-            Stats.ClearTransforms();
-            if (item is not null)
-            {
-                Stats.ReceiveTransforms(item);
-            }
 
             return new EquipItemResult
             {

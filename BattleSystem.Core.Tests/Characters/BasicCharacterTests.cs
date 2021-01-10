@@ -55,25 +55,22 @@ namespace BattleSystem.Core.Tests.Characters
         }
 
         [Test]
-        public void Stats_Get_NoItem_ReturnsStats()
+        public void CurrentStats_NoItem_ReturnsStats()
         {
             // Arrange
             var character = TestHelpers.CreateBasicCharacter(attack: 1, defence: 2, speed: 3);
 
-            // Act
-            var stats = character.Stats;
-
-            // Assert
+            // Act and Assert
             Assert.Multiple(() =>
             {
-                Assert.That(stats.Attack.BaseValue, Is.EqualTo(1));
-                Assert.That(stats.Defence.BaseValue, Is.EqualTo(2));
-                Assert.That(stats.Speed.BaseValue, Is.EqualTo(3));
+                Assert.That(character.CurrentAttack, Is.EqualTo(1));
+                Assert.That(character.CurrentDefence, Is.EqualTo(2));
+                Assert.That(character.CurrentSpeed, Is.EqualTo(3));
             });
         }
 
         [Test]
-        public void Stats_Get_WithItem_ReturnsTransformedStats()
+        public void CurrentStats_WithItem_ReturnsTransformedStats()
         {
             // Arrange
             var character = TestHelpers.CreateBasicCharacter(attack: 10, defence: 20, speed: 30);
@@ -94,15 +91,12 @@ namespace BattleSystem.Core.Tests.Characters
             );
             _ = character.EquipItem(item);
 
-            // Act
-            var stats = character.Stats;
-
-            // Assert
+            // Act and Assert
             Assert.Multiple(() =>
             {
-                Assert.That(stats.Attack.CurrentValue, Is.EqualTo(11));
-                Assert.That(stats.Defence.CurrentValue, Is.EqualTo(24));
-                Assert.That(stats.Speed.CurrentValue, Is.EqualTo(39));
+                Assert.That(character.CurrentAttack, Is.EqualTo(11));
+                Assert.That(character.CurrentDefence, Is.EqualTo(24));
+                Assert.That(character.CurrentSpeed, Is.EqualTo(39));
             });
         }
 
@@ -246,8 +240,8 @@ namespace BattleSystem.Core.Tests.Characters
             }, user);
 
             // Assert
-            Assert.That(target.Stats.Attack.CurrentValue, Is.EqualTo(12));
-            Assert.That(target.Stats.Defence.CurrentValue, Is.EqualTo(7));
+            Assert.That(target.CurrentAttack, Is.EqualTo(12));
+            Assert.That(target.CurrentDefence, Is.EqualTo(7));
             Assert.That(target.CurrentSpeed, Is.EqualTo(9));
         }
 

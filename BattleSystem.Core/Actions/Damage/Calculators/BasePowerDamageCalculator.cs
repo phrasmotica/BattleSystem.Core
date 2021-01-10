@@ -56,8 +56,8 @@ namespace BattleSystem.Core.Actions.Damage.Calculators
 
             foreach (var target in targets)
             {
-                var userAttack = user.Stats.Attack.CurrentValue;
-                var targetDefence = target.Stats.Defence.CurrentValue;
+                var userAttack = user.CurrentAttack;
+                var targetDefence = target.CurrentDefence;
 
                 var normalisedAmount = transformedBasePower * (userAttack - targetDefence);
 
