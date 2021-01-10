@@ -13,12 +13,6 @@ namespace BattleSystem.Core.Actions.Damage.Calculators
     public class BasePowerDamageCalculator : IDamageCalculator
     {
         /// <summary>
-        /// Delegate for a function that transforms the given power.
-        /// </summary>
-        /// <param name="power">The power.</param>
-        public delegate int PowerTransform(int power);
-
-        /// <summary>
         /// The base power to use in calculating the damage to deal.
         /// </summary>
         private readonly int _basePower;
@@ -46,7 +40,7 @@ namespace BattleSystem.Core.Actions.Damage.Calculators
 
             if (user.HasItem)
             {
-                foreach (var t in user.Item.DamagePowerTransforms)
+                foreach (var t in user.Item.ActionContainer.DamagePowerTransforms)
                 {
                     transformedBasePower = t(transformedBasePower);
                 }
