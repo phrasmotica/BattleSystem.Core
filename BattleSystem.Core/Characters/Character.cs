@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BattleSystem.Core.Abilities;
+using BattleSystem.Core.Abilities.Results;
 using BattleSystem.Core.Actions.Buff;
 using BattleSystem.Core.Actions.Damage;
 using BattleSystem.Core.Actions.Flinch;
@@ -222,6 +223,54 @@ namespace BattleSystem.Core.Characters
         /// </summary>
         /// <param name="otherCharacters">The other characters in the battle.</param>
         public abstract MoveUse ChooseMove(IEnumerable<Character> otherCharacters);
+
+        /// <summary>
+        /// Sets the character's ability to the given ability and returns the
+        /// result.
+        /// </summary>
+        /// <param name="ability">The ability.</param>
+        public virtual SetAbilityResult SetAbility(Ability ability)
+        {
+            var hadPreviousAbility = HasAbility;
+
+            Ability previousAbility = null;
+            if (hadPreviousAbility)
+            {
+                previousAbility = Ability;
+            }
+
+            AbilitySlot.Set(ability);
+
+            return new SetAbilityResult
+            {
+                Success = true,
+                HadPreviousAbility = hadPreviousAbility,
+                PreviousAbility = previousAbility,
+            };
+        }
+
+        /// <summary>
+        /// Removes the character's ability and returns the result.
+        /// </summary>
+        public virtual RemoveAbilityResult RemoveAbility()
+        {
+            if (!HasAbility)
+            {
+                return new RemoveAbilityResult
+                {
+                    Success = false,
+                };
+            }
+
+            var item = Ability;
+            AbilitySlot.Remove();
+
+            return new RemoveAbilityResult
+            {
+                Success = true,
+                Ability = item,
+            };
+        }
 
         /// <summary>
         /// Equips the given item and returns the result.
