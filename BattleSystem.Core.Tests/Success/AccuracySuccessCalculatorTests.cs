@@ -1,5 +1,5 @@
 ﻿using System;
-using BattleSystem.Core.Moves.Success;
+using BattleSystem.Core.Success;
 using BattleSystem.Core.Random;
 using Moq;
 using NUnit.Framework;

@@ -1,4 +1,4 @@
-﻿using BattleSystem.Core.Moves.Success;
+﻿using BattleSystem.Core.Success;
 using NUnit.Framework;
 
 namespace BattleSystem.Core.Tests.Moves.Success
