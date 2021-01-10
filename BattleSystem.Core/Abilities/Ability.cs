@@ -20,6 +20,6 @@ namespace BattleSystem.Core.Abilities
         /// <summary>
         /// Gets or sets this item's action container.
         /// </summary>
-        public ActionContainer ActionContainer { get; } = new ActionContainer();
+        public ActionContainer ActionContainer { get; set; } = new ActionContainer();
     }
 }
