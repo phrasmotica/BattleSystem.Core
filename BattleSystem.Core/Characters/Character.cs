@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BattleSystem.Core.Actions.Buff;
 using BattleSystem.Core.Actions.Damage;
+using BattleSystem.Core.Actions.Flinch;
 using BattleSystem.Core.Actions.Heal;
 using BattleSystem.Core.Actions.Protect;
 using BattleSystem.Core.Actions.ProtectLimitChange;
@@ -81,6 +82,11 @@ namespace BattleSystem.Core.Characters
         /// Gets the length of the protect queue.
         /// </summary>
         public int ProtectCount => ProtectQueue?.Count ?? 0;
+
+        /// <summary>
+        /// Gets or sets whether the character will flinch on their next move.
+        /// </summary>
+        public bool WillFlinch { get; set; }
 
         /// <summary>
         /// Gets the character's current speed.
@@ -287,6 +293,46 @@ namespace BattleSystem.Core.Characters
                     TargetProtected = false,
                     StartingStatMultipliers = startingMultipliers,
                     EndingStatMultipliers = endingMultipliers,
+                    Tags = new HashSet<string>(),
+                };
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Sets the character to flinch and returns the result.
+        /// </summary>
+        /// <param name="user">The character who used the incoming flinch action.</param>
+        /// <typeparam name="TSource">The type of the source of the incoming flinch action.</typeparam>
+        public virtual FlinchActionResult<TSource> Flinch<TSource>(Character user)
+        {
+            FlinchActionResult<TSource> result;
+
+            if (CanProtectFrom(user))
+            {
+                var protectUser = ConsumeProtect();
+
+                result = new FlinchActionResult<TSource>
+                {
+                    Applied = false,
+                    User = user,
+                    Target = this,
+                    TargetProtected = true,
+                    ProtectUser = protectUser,
+                    Tags = new HashSet<string>(),
+                };
+            }
+            else
+            {
+                WillFlinch = true;
+
+                result = new FlinchActionResult<TSource>
+                {
+                    Applied = true,
+                    User = user,
+                    Target = this,
+                    TargetProtected = false,
                     Tags = new HashSet<string>(),
                 };
             }

@@ -13,6 +13,7 @@ using BattleSystem.Core.Stats;
 using Moq;
 using static BattleSystem.Core.Actions.Damage.Calculators.BasePowerDamageCalculator;
 using static BattleSystem.Core.Items.Item;
+using static BattleSystem.Core.Moves.Move;
 
 namespace BattleSystem.Core.Tests
 {
@@ -136,14 +137,19 @@ namespace BattleSystem.Core.Tests
             string name = "yeti",
             string description = "amon",
             int maxUses = 5,
-            ISuccessCalculator successCalculator = null,
+            MoveSuccessCalculatorFactory successCalculatorFactory = null,
             params IAction[] moveActions)
         {
+            if (successCalculatorFactory is null)
+            {
+                successCalculatorFactory = () => new AlwaysMoveSuccessCalculator();
+            }
+
             var builder = new MoveBuilder()
                             .Name(name)
                             .Describe(description)
                             .WithMaxUses(maxUses)
-                            .WithSuccessCalculator(successCalculator ?? new AlwaysSuccessCalculator());
+                            .WithSuccessCalculatorFactory(successCalculatorFactory);
 
             foreach (var action in moveActions)
             {

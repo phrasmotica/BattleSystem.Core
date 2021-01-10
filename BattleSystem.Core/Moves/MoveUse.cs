@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Core.Characters;
-using BattleSystem.Core.Moves.Success;
 using System.Linq;
 using BattleSystem.Core.Actions;
 
@@ -37,6 +36,11 @@ namespace BattleSystem.Core.Moves
         /// Gets whether the move use was successful.
         /// </summary>
         public bool Success => Result == MoveUseResult.Success;
+
+        /// <summary>
+        /// Gets whether the user of the move flinched.
+        /// </summary>
+        public bool UserFlinched => Result == MoveUseResult.Flinched;
 
         /// <summary>
         /// Gets or sets the result of each action use in the move use.
