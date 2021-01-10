@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using BattleSystem.Core.Characters;
+using BattleSystem.Core.Moves;
 using BattleSystem.Core.Random;
 
-namespace BattleSystem.Core.Moves.Success
+namespace BattleSystem.Core.Success
 {
     /// <summary>
     /// Calculates whether a move succeeds based on a percentage accuracy value.

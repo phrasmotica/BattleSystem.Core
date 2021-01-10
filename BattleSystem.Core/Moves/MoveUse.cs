@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Core.Characters;
-using BattleSystem.Core.Moves.Success;
 using System.Linq;
 using BattleSystem.Core.Actions;
 

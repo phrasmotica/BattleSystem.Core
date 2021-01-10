@@ -1,10 +1,11 @@
 ﻿using System;
+using BattleSystem.Core.Moves;
 using BattleSystem.Core.Success;
 using BattleSystem.Core.Random;
 using Moq;
 using NUnit.Framework;
 
-namespace BattleSystem.Core.Tests.Moves.Success
+namespace BattleSystem.Core.Tests.Success
 {
     /// <summary>
     /// Unit tests for <see cref="AccuracySuccessCalculator"/>.

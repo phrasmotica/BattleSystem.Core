@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using BattleSystem.Core.Characters;
+using BattleSystem.Core.Moves;
 
-namespace BattleSystem.Core.Moves.Success
+namespace BattleSystem.Core.Success
 {
     /// <summary>
     /// Calculates a move to always succeed.

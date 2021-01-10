@@ -1,4 +1,4 @@
-﻿namespace BattleSystem.Core.Moves.Success
+﻿namespace BattleSystem.Core.Moves
 {
     /// <summary>
     /// Represents the possible results of a move use.

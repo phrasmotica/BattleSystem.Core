@@ -5,7 +5,6 @@ using BattleSystem.Core.Moves;
 using BattleSystem.Core.Actions;
 using Moq;
 using NUnit.Framework;
-using BattleSystem.Core.Moves.Success;
 
 namespace BattleSystem.Core.Tests.Moves
 {

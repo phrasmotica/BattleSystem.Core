@@ -1,7 +1,8 @@
-﻿using BattleSystem.Core.Success;
+﻿using BattleSystem.Core.Moves;
+using BattleSystem.Core.Success;
 using NUnit.Framework;
 
-namespace BattleSystem.Core.Tests.Moves.Success
+namespace BattleSystem.Core.Tests.Success
 {
     /// <summary>
     /// Unit tests for <see cref="AlwaysSuccessCalculator"/>.
