@@ -101,7 +101,11 @@ namespace BattleSystem.Core.Tests.Actions.Damage.Calculators
                 p => p + 10,
                 p => p * 2,
             };
-            var item = TestHelpers.CreateItem(damagePowerTransforms: transforms);
+            var item = TestHelpers.CreateItem(
+                actionContainer: TestHelpers.CreateActionContainer(
+                    damagePowerTransforms: transforms
+                )
+            );
             _ = user.EquipItem(item);
 
             // Act

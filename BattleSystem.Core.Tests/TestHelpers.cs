@@ -12,8 +12,6 @@ using BattleSystem.Core.Random;
 using BattleSystem.Core.Stats;
 using Moq;
 using static BattleSystem.Core.Actions.ActionContainer;
-using static BattleSystem.Core.Actions.Damage.Calculators.BasePowerDamageCalculator;
-using static BattleSystem.Core.Items.Item;
 using static BattleSystem.Core.Moves.Move;
 
 namespace BattleSystem.Core.Tests
@@ -87,14 +85,26 @@ namespace BattleSystem.Core.Tests
         public static Item CreateItem(
             string name = "jim",
             string description = "eureka",
+            ActionContainer actionContainer = null)
+        {
+            var builder = new ItemBuilder()
+                            .Name(name)
+                            .Describe(description)
+                            .WithActionContainer(actionContainer);
+
+            return builder.Build();
+        }
+
+        /// <summary>
+        /// Returns an action container.
+        /// </summary>
+        public static ActionContainer CreateActionContainer(
             StatValueTransform[] attackValueTransforms = null,
             StatValueTransform[] defenceValueTransforms = null,
             StatValueTransform[] speedValueTransforms = null,
             PowerTransform[] damagePowerTransforms = null)
         {
-            var builder = new ItemBuilder()
-                            .Name(name)
-                            .Describe(description);
+            var builder = new ActionContainerBuilder();
 
             if (attackValueTransforms is not null)
             {

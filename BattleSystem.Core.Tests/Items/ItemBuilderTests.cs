@@ -1,4 +1,5 @@
 ﻿using System;
+using BattleSystem.Core.Actions;
 using BattleSystem.Core.Items;
 using NUnit.Framework;
 
@@ -41,7 +42,7 @@ namespace BattleSystem.Core.Tests.Items
             var builder = new ItemBuilder()
                                 .Name("caribou")
                                 .Describe("andorra")
-                                .WithIncreaseAttack();
+                                .WithActionContainer(new ActionContainer());
 
             // Act
             var move = builder.Build();
@@ -55,8 +56,7 @@ namespace BattleSystem.Core.Tests.Items
         {
             // Arrange
             var builder = new ItemBuilder()
-                                .Describe("andorra")
-                                .WithAttackValueTransform(v => v);
+                                .Describe("andorra");
 
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() => _ = builder.Build());
@@ -67,8 +67,7 @@ namespace BattleSystem.Core.Tests.Items
         {
             // Arrange
             var builder = new ItemBuilder()
-                                .Name("caribou")
-                                .WithDamagePowerTransform(p => p);
+                                .Name("caribou");
 
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() => _ = builder.Build());
