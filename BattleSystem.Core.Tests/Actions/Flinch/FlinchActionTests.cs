@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BattleSystem.Core.Actions;
 using BattleSystem.Core.Actions.Flinch;
+using BattleSystem.Core.Actions.Success;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Characters.Targets;
+using BattleSystem.Core.Success;
 using Moq;
 using NUnit.Framework;
+using static BattleSystem.Core.Actions.Flinch.FlinchAction;
 
 namespace BattleSystem.Core.Tests.Actions.Flinch
 {
@@ -15,7 +19,7 @@ namespace BattleSystem.Core.Tests.Actions.Flinch
     public class FlinchActionTests
     {
         [Test]
-        public void Use_CalculationSuccessfulWithTargets_CauseTargetsToFlinch()
+        public void Use_TargetCalculationSuccessfulWithTargets_CauseTargetsToFlinch()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -36,7 +40,7 @@ namespace BattleSystem.Core.Tests.Actions.Flinch
         }
 
         [Test]
-        public void Use_CalculationSuccessfulWithTargets_SucceedsAndAppliesActions()
+        public void Use_TargetCalculationSuccessfulWithTargets_SucceedsAndAppliesActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -61,7 +65,34 @@ namespace BattleSystem.Core.Tests.Actions.Flinch
         }
 
         [Test]
-        public void Use_CalculationSuccessfulAllTargetsDead_SucceedsAndAppliesNoActions()
+        public void Use_SuccessCalculationFails_SucceedsButDoesNotApplyReturnedAction()
+        {
+            // Arrange
+            var user = TestHelpers.CreateBasicCharacter();
+            var otherCharacters = new[]
+            {
+                TestHelpers.CreateBasicCharacter(),
+            };
+
+            var flinch = CreateFlinchAction(
+                new OthersActionTargetCalculator(),
+                () => new Mock<ISuccessCalculator<IAction, bool>>().Object);
+
+            flinch.SetTargets(user, otherCharacters);
+
+            // Act
+            var result = flinch.Use<string>(user, otherCharacters);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Success, Is.True);
+                Assert.That(result.Results.Single().Applied, Is.False);
+            });
+        }
+
+        [Test]
+        public void Use_TargetCalculationSuccessfulAllTargetsDead_SucceedsAndAppliesNoActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -86,7 +117,7 @@ namespace BattleSystem.Core.Tests.Actions.Flinch
         }
 
         [Test]
-        public void Use_CalculationSuccessfulNoTargets_SucceedsAndAppliesNoActions()
+        public void Use_TargetCalculationSuccessfulNoTargets_SucceedsAndAppliesNoActions()
         {
             // Arrange
             var user = TestHelpers.CreateBasicCharacter();
@@ -145,10 +176,17 @@ namespace BattleSystem.Core.Tests.Actions.Flinch
         }
 
         private static FlinchAction CreateFlinchAction(
-            IActionTargetCalculator actionTargetCalculator = null)
+            IActionTargetCalculator actionTargetCalculator = null,
+            ActionSuccessCalculatorFactory successCalculatorFactory = null)
         {
+            if (successCalculatorFactory is null)
+            {
+                successCalculatorFactory = () => new AlwaysActionSuccessCalculator();
+            }
+
             var builder = new FlinchActionBuilder()
-                            .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object);
+                            .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
+                            .WithSuccessCalculatorFactory(successCalculatorFactory);
 
             return builder.Build();
         }

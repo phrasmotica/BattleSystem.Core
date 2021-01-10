@@ -1,6 +1,8 @@
 ﻿using System;
+using BattleSystem.Core.Actions.Success;
 using BattleSystem.Core.Characters.Targets;
 using BattleSystem.Core.Random;
+using static BattleSystem.Core.Actions.Flinch.FlinchAction;
 
 namespace BattleSystem.Core.Actions.Flinch
 {
@@ -18,6 +20,11 @@ namespace BattleSystem.Core.Actions.Flinch
         /// Whether the action target calculator of the flinch action has been set.
         /// </summary>
         private bool _isActionTargetCalculatorSet;
+
+        /// <summary>
+        /// Whether the built flinch action has a success calculator factory.
+        /// </summary>
+        private bool _hasSuccessCalculatorFactory;
 
         /// <summary>
         /// Creates a new <see cref="FlinchActionBuilder"/> instance.
@@ -144,6 +151,40 @@ namespace BattleSystem.Core.Actions.Flinch
         }
 
         /// <summary>
+        /// Sets the built flinch action's success calculator factory.
+        /// </summary>
+        /// <param name="successCalculatorFactory">The built flinch action's success calculator factory.</param>
+        public FlinchActionBuilder WithSuccessCalculatorFactory(ActionSuccessCalculatorFactory successCalculatorFactory)
+        {
+            if (successCalculatorFactory is null)
+            {
+                throw new ArgumentNullException(nameof(successCalculatorFactory));
+            }
+
+            _flinch.SetSuccessCalculatorFactory(successCalculatorFactory);
+            _hasSuccessCalculatorFactory = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the built flinch action's accuracy.
+        /// </summary>
+        /// <param name="accuracy">The built flinch action's accuracy.</param>
+        /// <param name="random">The random number generator.</param>
+        public FlinchActionBuilder WithAccuracy(int accuracy, IRandom random)
+        {
+            return WithSuccessCalculatorFactory(() => new AccuracyActionSuccessCalculator(accuracy, random));
+        }
+
+        /// <summary>
+        /// Sets the built flinch action to always succeed.
+        /// </summary>
+        public FlinchActionBuilder AlwaysSucceeds()
+        {
+            return WithSuccessCalculatorFactory(() => new AlwaysActionSuccessCalculator());
+        }
+
+        /// <summary>
         /// Returns the built flinch.
         /// </summary>
         public FlinchAction Build()
@@ -151,6 +192,11 @@ namespace BattleSystem.Core.Actions.Flinch
             if (!_isActionTargetCalculatorSet)
             {
                 throw new InvalidOperationException("Cannot build a flinch with no action target calculator!");
+            }
+
+            if (!_hasSuccessCalculatorFactory)
+            {
+                throw new InvalidOperationException("Cannot build a flinch with no success calculator factory!");
             }
 
             return _flinch;

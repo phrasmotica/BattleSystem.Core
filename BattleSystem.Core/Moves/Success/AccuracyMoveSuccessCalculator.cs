@@ -20,7 +20,7 @@ namespace BattleSystem.Core.Moves.Success
         private readonly IRandom _random;
 
         /// <summary>
-        /// Creates a new <see cref="AccuracySuccessCalculator"/> instance.
+        /// Creates a new <see cref="AccuracyMoveSuccessCalculator"/> instance.
         /// </summary>
         /// <param name="accuracy">The accuracy.</param>
         /// <param name="random">The random number generator.</param>

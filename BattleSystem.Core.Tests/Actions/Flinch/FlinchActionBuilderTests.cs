@@ -21,11 +21,22 @@ namespace BattleSystem.Core.Tests.Actions.Flinch
         }
 
         [Test]
+        public void WithSuccessCalculatorFactory_NullArgument_Throws()
+        {
+            // Arrange
+            var builder = new FlinchActionBuilder();
+
+            // Act and Assert
+            Assert.Throws<ArgumentNullException>(() => _ = builder.WithSuccessCalculatorFactory(null));
+        }
+
+        [Test]
         public void Build_CallsPresent_Succeeds()
         {
             // Arrange
             var builder = new FlinchActionBuilder()
-                                .TargetsUser();
+                                .TargetsUser()
+                                .AlwaysSucceeds();
 
             // Act
             var flinch = builder.Build();
@@ -38,7 +49,19 @@ namespace BattleSystem.Core.Tests.Actions.Flinch
         public void Build_MissingActionTargetCalculator_Throws()
         {
             // Arrange
-            var builder = new FlinchActionBuilder();
+            var builder = new FlinchActionBuilder()
+                                .AlwaysSucceeds();
+
+            // Act and Assert
+            Assert.Throws<InvalidOperationException>(() => _ = builder.Build());
+        }
+
+        [Test]
+        public void Build_MissingSuccessCalculatorFactory_Throws()
+        {
+            // Arrange
+            var builder = new FlinchActionBuilder()
+                                .TargetsAll();
 
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() => _ = builder.Build());

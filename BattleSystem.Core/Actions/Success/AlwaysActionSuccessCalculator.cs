@@ -1,5 +1,4 @@
-﻿using BattleSystem.Core.Actions;
-using BattleSystem.Core.Success;
+﻿using BattleSystem.Core.Success;
 
 namespace BattleSystem.Core.Actions.Success
 {

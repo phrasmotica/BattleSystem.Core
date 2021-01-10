@@ -1,5 +1,4 @@
 ﻿using System;
-using BattleSystem.Core.Actions;
 using BattleSystem.Core.Random;
 using BattleSystem.Core.Success;
 
