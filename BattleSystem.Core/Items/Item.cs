@@ -12,10 +12,10 @@ namespace BattleSystem.Core.Items
     public class Item
     {
         /// <summary>
-        /// Delegate for a function that transforms the given base value of some stat.
+        /// Delegate for a function that transforms the given value of some stat.
         /// </summary>
-        /// <param name="stats">The stat set.</param>
-        public delegate int StatBaseValueTransform(int baseValue);
+        /// <param name="statValue">The stat value.</param>
+        public delegate int StatValueTransform(int statValue);
 
         /// <summary>
         /// Gets or sets the name of the item.
@@ -33,9 +33,9 @@ namespace BattleSystem.Core.Items
         public List<TaggedAction> TaggedActions { get; private set; }
 
         /// <summary>
-        /// Gets or sets the map of stat base value transform functions.
+        /// Gets or sets the map of stat value transform functions.
         /// </summary>
-        public IDictionary<StatCategory, List<StatBaseValueTransform>> StatBaseValueTransforms { get; private set; }
+        public IDictionary<StatCategory, List<StatValueTransform>> StatValueTransforms { get; private set; }
 
         /// <summary>
         /// Gets or sets the damage power transform functions.
@@ -49,11 +49,11 @@ namespace BattleSystem.Core.Items
         {
             TaggedActions = new List<TaggedAction>();
 
-            StatBaseValueTransforms = new Dictionary<StatCategory, List<StatBaseValueTransform>>
+            StatValueTransforms = new Dictionary<StatCategory, List<StatValueTransform>>
             {
-                [StatCategory.Attack] = new List<StatBaseValueTransform>(),
-                [StatCategory.Defence] = new List<StatBaseValueTransform>(),
-                [StatCategory.Speed] = new List<StatBaseValueTransform>(),
+                [StatCategory.Attack] = new List<StatValueTransform>(),
+                [StatCategory.Defence] = new List<StatValueTransform>(),
+                [StatCategory.Speed] = new List<StatValueTransform>(),
             };
 
             DamagePowerTransforms = new List<PowerTransform>();
@@ -89,30 +89,30 @@ namespace BattleSystem.Core.Items
         }
 
         /// <summary>
-        /// Adds an attack base value transform function for this item.
+        /// Adds an attack value transform function for this item.
         /// </summary>
-        /// <param name="transform">The attack base value transform function to add.</param>
-        public void AddAttackBaseValueTransform(StatBaseValueTransform transform)
+        /// <param name="transform">The attack value transform function to add.</param>
+        public void AddAttackValueTransform(StatValueTransform transform)
         {
-            StatBaseValueTransforms[StatCategory.Attack].Add(transform);
+            StatValueTransforms[StatCategory.Attack].Add(transform);
         }
 
         /// <summary>
-        /// Adds an defence base value transform function for this item.
+        /// Adds an defence value transform function for this item.
         /// </summary>
-        /// <param name="transform">The defence base value transform function to add.</param>
-        public void AddDefenceBaseValueTransform(StatBaseValueTransform transform)
+        /// <param name="transform">The defence value transform function to add.</param>
+        public void AddDefenceValueTransform(StatValueTransform transform)
         {
-            StatBaseValueTransforms[StatCategory.Defence].Add(transform);
+            StatValueTransforms[StatCategory.Defence].Add(transform);
         }
 
         /// <summary>
-        /// Adds an speed base value transform function for this item.
+        /// Adds an speed balue transform function for this item.
         /// </summary>
         /// <param name="transform">The speed base value transform function to add.</param>
-        public void AddSpeedBaseValueTransform(StatBaseValueTransform transform)
+        public void AddSpeedValueTransform(StatValueTransform transform)
         {
-            StatBaseValueTransforms[StatCategory.Speed].Add(transform);
+            StatValueTransforms[StatCategory.Speed].Add(transform);
         }
 
         /// <summary>

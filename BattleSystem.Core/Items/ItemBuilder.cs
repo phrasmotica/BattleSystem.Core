@@ -66,32 +66,32 @@ namespace BattleSystem.Core.Items
         }
 
         /// <summary>
-        /// Adds the given attack base value transform to the built item.
+        /// Adds the given attack value transform to the built item.
         /// </summary>
-        /// <param name="transform">The attack base value transform for the built item.</param>
-        public ItemBuilder WithAttackBaseValueTransform(StatBaseValueTransform transform)
+        /// <param name="transform">The attack value transform for the built item.</param>
+        public ItemBuilder WithAttackValueTransform(StatValueTransform transform)
         {
-            _item.AddAttackBaseValueTransform(transform);
+            _item.AddAttackValueTransform(transform);
             return this;
         }
 
         /// <summary>
-        /// Adds the given defence base value transform to the built item.
+        /// Adds the given defence value transform to the built item.
         /// </summary>
-        /// <param name="transform">The defence base value transform for the built item.</param>
-        public ItemBuilder WithDefenceBaseValueTransform(StatBaseValueTransform transform)
+        /// <param name="transform">The defence value transform for the built item.</param>
+        public ItemBuilder WithDefenceValueTransform(StatValueTransform transform)
         {
-            _item.AddDefenceBaseValueTransform(transform);
+            _item.AddDefenceValueTransform(transform);
             return this;
         }
 
         /// <summary>
-        /// Adds the given speed base value transform to the built item.
+        /// Adds the given speed value transform to the built item.
         /// </summary>
-        /// <param name="transform">The speed base value transform for the built item.</param>
-        public ItemBuilder WithSpeedBaseValueTransform(StatBaseValueTransform transform)
+        /// <param name="transform">The speed value transform for the built item.</param>
+        public ItemBuilder WithSpeedValueTransform(StatValueTransform transform)
         {
-            _item.AddSpeedBaseValueTransform(transform);
+            _item.AddSpeedValueTransform(transform);
             return this;
         }
 
@@ -100,7 +100,7 @@ namespace BattleSystem.Core.Items
         /// </summary>
         public ItemBuilder WithIncreaseAttack(double factor = 0.1)
         {
-            return WithAttackBaseValueTransform(a => (int) (a * (1 + factor)));
+            return WithAttackValueTransform(a => (int) (a * (1 + factor)));
         }
 
         /// <summary>

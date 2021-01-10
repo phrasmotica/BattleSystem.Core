@@ -56,7 +56,7 @@ namespace BattleSystem.Core.Tests.Items
             // Arrange
             var builder = new ItemBuilder()
                                 .Describe("andorra")
-                                .WithAttackBaseValueTransform(v => v);
+                                .WithAttackValueTransform(v => v);
 
             // Act and Assert
             Assert.Throws<InvalidOperationException>(() => _ = builder.Build());

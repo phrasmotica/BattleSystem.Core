@@ -76,15 +76,15 @@ namespace BattleSystem.Core.Tests.Characters
             var character = TestHelpers.CreateBasicCharacter(attack: 10, defence: 20, speed: 30);
 
             var item = TestHelpers.CreateItem(
-                attackBaseValueTransforms: new StatBaseValueTransform[]
+                attackValueTransforms: new StatValueTransform[]
                 {
                     v => (int) (v * 1.1),
                 },
-                defenceBaseValueTransforms: new StatBaseValueTransform[]
+                defenceValueTransforms: new StatValueTransform[]
                 {
                     v => (int) (v * 1.2),
                 },
-                speedBaseValueTransforms: new StatBaseValueTransform[]
+                speedValueTransforms: new StatValueTransform[]
                 {
                     v => (int) (v * 1.3),
                 }

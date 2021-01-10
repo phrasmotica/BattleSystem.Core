@@ -86,36 +86,36 @@ namespace BattleSystem.Core.Tests
         public static Item CreateItem(
             string name = "jim",
             string description = "eureka",
-            StatBaseValueTransform[] attackBaseValueTransforms = null,
-            StatBaseValueTransform[] defenceBaseValueTransforms = null,
-            StatBaseValueTransform[] speedBaseValueTransforms = null,
+            StatValueTransform[] attackValueTransforms = null,
+            StatValueTransform[] defenceValueTransforms = null,
+            StatValueTransform[] speedValueTransforms = null,
             PowerTransform[] damagePowerTransforms = null)
         {
             var builder = new ItemBuilder()
                             .Name(name)
                             .Describe(description);
 
-            if (attackBaseValueTransforms is not null)
+            if (attackValueTransforms is not null)
             {
-                foreach (var t in attackBaseValueTransforms)
+                foreach (var t in attackValueTransforms)
                 {
-                    builder = builder.WithAttackBaseValueTransform(t);
+                    builder = builder.WithAttackValueTransform(t);
                 }
             }
 
-            if (defenceBaseValueTransforms is not null)
+            if (defenceValueTransforms is not null)
             {
-                foreach (var t in defenceBaseValueTransforms)
+                foreach (var t in defenceValueTransforms)
                 {
-                    builder = builder.WithDefenceBaseValueTransform(t);
+                    builder = builder.WithDefenceValueTransform(t);
                 }
             }
 
-            if (speedBaseValueTransforms is not null)
+            if (speedValueTransforms is not null)
             {
-                foreach (var t in speedBaseValueTransforms)
+                foreach (var t in speedValueTransforms)
                 {
-                    builder = builder.WithSpeedBaseValueTransform(t);
+                    builder = builder.WithSpeedValueTransform(t);
                 }
             }
 
