@@ -4,6 +4,7 @@ using BattleSystem.Core.Actions.Damage.Calculators;
 using BattleSystem.Core.Random;
 using Moq;
 using NUnit.Framework;
+using static BattleSystem.Core.Actions.ActionContainer;
 using static BattleSystem.Core.Actions.Damage.Calculators.BasePowerDamageCalculator;
 
 namespace BattleSystem.Core.Tests.Actions.Damage.Calculators

@@ -99,7 +99,7 @@ namespace BattleSystem.Core.Characters
 
                 if (HasItem)
                 {
-                    foreach (var t in Item.StatValueTransforms[StatCategory.Attack])
+                    foreach (var t in Item.ActionContainer.StatValueTransforms[StatCategory.Attack])
                     {
                         transformedValue = t(transformedValue);
                     }
@@ -120,7 +120,7 @@ namespace BattleSystem.Core.Characters
 
                 if (HasItem)
                 {
-                    foreach (var t in Item.StatValueTransforms[StatCategory.Defence])
+                    foreach (var t in Item.ActionContainer.StatValueTransforms[StatCategory.Defence])
                     {
                         transformedValue = t(transformedValue);
                     }
@@ -141,7 +141,7 @@ namespace BattleSystem.Core.Characters
 
                 if (HasItem)
                 {
-                    foreach (var t in Item.StatValueTransforms[StatCategory.Speed])
+                    foreach (var t in Item.ActionContainer.StatValueTransforms[StatCategory.Speed])
                     {
                         transformedValue = t(transformedValue);
                     }

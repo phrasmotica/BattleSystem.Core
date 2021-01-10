@@ -11,6 +11,7 @@ using BattleSystem.Core.Moves.Success;
 using BattleSystem.Core.Random;
 using BattleSystem.Core.Stats;
 using Moq;
+using static BattleSystem.Core.Actions.ActionContainer;
 using static BattleSystem.Core.Actions.Damage.Calculators.BasePowerDamageCalculator;
 using static BattleSystem.Core.Items.Item;
 using static BattleSystem.Core.Moves.Move;

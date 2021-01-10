@@ -4,6 +4,7 @@ using BattleSystem.Core.Characters;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Stats;
 using NUnit.Framework;
+using static BattleSystem.Core.Actions.ActionContainer;
 using static BattleSystem.Core.Items.Item;
 
 namespace BattleSystem.Core.Tests.Characters

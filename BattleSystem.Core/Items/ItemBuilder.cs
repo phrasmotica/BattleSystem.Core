@@ -1,5 +1,6 @@
 ﻿using System;
 using BattleSystem.Core.Actions;
+using static BattleSystem.Core.Actions.ActionContainer;
 using static BattleSystem.Core.Actions.Damage.Calculators.BasePowerDamageCalculator;
 using static BattleSystem.Core.Items.Item;
 
@@ -71,7 +72,7 @@ namespace BattleSystem.Core.Items
         /// <param name="transform">The attack value transform for the built item.</param>
         public ItemBuilder WithAttackValueTransform(StatValueTransform transform)
         {
-            _item.AddAttackValueTransform(transform);
+            _item.ActionContainer.AddAttackValueTransform(transform);
             return this;
         }
 
@@ -81,7 +82,7 @@ namespace BattleSystem.Core.Items
         /// <param name="transform">The defence value transform for the built item.</param>
         public ItemBuilder WithDefenceValueTransform(StatValueTransform transform)
         {
-            _item.AddDefenceValueTransform(transform);
+            _item.ActionContainer.AddDefenceValueTransform(transform);
             return this;
         }
 
@@ -91,7 +92,7 @@ namespace BattleSystem.Core.Items
         /// <param name="transform">The speed value transform for the built item.</param>
         public ItemBuilder WithSpeedValueTransform(StatValueTransform transform)
         {
-            _item.AddSpeedValueTransform(transform);
+            _item.ActionContainer.AddSpeedValueTransform(transform);
             return this;
         }
 
@@ -109,7 +110,7 @@ namespace BattleSystem.Core.Items
         /// <param name="transform">The damage power transform for the built item.</param>
         public ItemBuilder WithDamagePowerTransform(PowerTransform transform)
         {
-            _item.AddDamagePowerTransform(transform);
+            _item.ActionContainer.AddDamagePowerTransform(transform);
             return this;
         }
 
@@ -120,7 +121,7 @@ namespace BattleSystem.Core.Items
         /// <param name="tags">The tags.</param>
         public ItemBuilder WithTaggedAction(IAction action, params string[] tags)
         {
-            _item.AddTaggedAction(action, tags);
+            _item.ActionContainer.AddTaggedAction(action, tags);
             return this;
         }
 
