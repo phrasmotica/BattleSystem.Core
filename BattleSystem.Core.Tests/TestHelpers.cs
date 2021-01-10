@@ -1,4 +1,5 @@
-﻿using BattleSystem.Core.Actions;
+﻿using BattleSystem.Core.Abilities;
+using BattleSystem.Core.Actions;
 using BattleSystem.Core.Actions.Damage;
 using BattleSystem.Core.Actions.Damage.Calculators;
 using BattleSystem.Core.Actions.Heal;
@@ -32,6 +33,7 @@ namespace BattleSystem.Core.Tests
             int defence = 1,
             int speed = 1,
             MoveSet moveSet = null,
+            Ability ability = null,
             IRandom random = null)
         {
             return new BasicCharacter(
@@ -40,6 +42,7 @@ namespace BattleSystem.Core.Tests
                 maxHealth,
                 CreateStatSet(attack, defence, speed),
                 moveSet ?? CreateMoveSet(),
+                ability,
                 random ?? new Mock<IRandom>().Object);
         }
 

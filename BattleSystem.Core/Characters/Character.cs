@@ -195,7 +195,8 @@ namespace BattleSystem.Core.Characters
             string team,
             int maxHealth,
             StatSet stats,
-            MoveSet moves)
+            MoveSet moves,
+            Ability ability)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
@@ -208,6 +209,8 @@ namespace BattleSystem.Core.Characters
             Moves = moves;
 
             AbilitySlot = new AbilitySlot();
+            AbilitySlot.Set(ability);
+
             ItemSlot = new ItemSlot();
 
             ProtectQueue = new List<Character>();

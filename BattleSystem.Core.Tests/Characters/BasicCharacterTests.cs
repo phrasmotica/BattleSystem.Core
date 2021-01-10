@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using BattleSystem.Core.Abilities;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Stats;
 using NUnit.Framework;
 using static BattleSystem.Core.Actions.ActionContainer;
-using static BattleSystem.Core.Items.Item;
 
 namespace BattleSystem.Core.Tests.Characters
 {
@@ -26,6 +26,7 @@ namespace BattleSystem.Core.Tests.Characters
                     12,
                     new StatSet(),
                     new MoveSet(),
+                    new Ability(),
                     null);
             });
         }
