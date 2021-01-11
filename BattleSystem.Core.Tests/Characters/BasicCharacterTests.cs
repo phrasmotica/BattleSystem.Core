@@ -105,6 +105,87 @@ namespace BattleSystem.Core.Tests.Characters
         }
 
         [Test]
+        public void SetAbility_FirstAbility_SetsAbility()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+            _ = target.RemoveAbility();
+
+            var ability = TestHelpers.CreateAbility();
+
+            // Act
+            var result = target.SetAbility(ability);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(target.Ability, Is.EqualTo(ability));
+                Assert.That(result.Success, Is.True);
+                Assert.That(result.HadPreviousAbility, Is.False);
+                Assert.That(result.PreviousAbility, Is.Null);
+            });
+        }
+
+        [Test]
+        public void SetAbility_SubsequentAbility_SetsAbility()
+        {
+            // Arrange
+            var ability1 = TestHelpers.CreateAbility();
+            var target = TestHelpers.CreateBasicCharacter(ability: ability1);
+
+            var ability2 = TestHelpers.CreateAbility();
+
+            // Act
+            var result = target.SetAbility(ability2);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(target.Ability, Is.EqualTo(ability2));
+                Assert.That(result.Success, Is.True);
+                Assert.That(result.HadPreviousAbility, Is.True);
+                Assert.That(result.PreviousAbility, Is.EqualTo(ability1));
+            });
+        }
+
+        [Test]
+        public void RemoveAbility_HasAbility_RemovesAbility()
+        {
+            // Arrange
+            var ability = TestHelpers.CreateAbility();
+            var target = TestHelpers.CreateBasicCharacter(ability: ability);
+
+            // Act
+            var result = target.RemoveAbility();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(target.HasAbility, Is.False);
+                Assert.That(result.Success, Is.True);
+                Assert.That(result.Ability, Is.EqualTo(ability));
+            });
+        }
+
+        [Test]
+        public void RemoveAbility_HasNoAbility_Fails()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+            _ = target.RemoveAbility();
+
+            // Act
+            var result = target.RemoveAbility();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Success, Is.False);
+                Assert.That(result.Ability, Is.Null);
+            });
+        }
+
+        [Test]
         public void EquipItem_FirstItem_SetsItem()
         {
             // Arrange

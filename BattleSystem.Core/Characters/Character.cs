@@ -64,12 +64,12 @@ namespace BattleSystem.Core.Characters
         /// <summary>
         /// Gets whether the character has an active ability.
         /// </summary>
-        protected bool HasAbility => AbilitySlot.HasAbility;
+        public bool HasAbility => AbilitySlot.HasAbility;
 
         /// <summary>
         /// Gets the character's ability.
         /// </summary>
-        protected Ability Ability => AbilitySlot.Current;
+        public Ability Ability => AbilitySlot.Current;
 
         /// <summary>
         /// Gets or sets the character's item slot.

@@ -83,6 +83,22 @@ namespace BattleSystem.Core.Tests
         }
 
         /// <summary>
+        /// Returns an ability.
+        /// </summary>
+        public static Ability CreateAbility(
+            string name = "jim",
+            string description = "eureka",
+            ActionContainer actionContainer = null)
+        {
+            var builder = new AbilityBuilder()
+                            .Name(name)
+                            .Describe(description)
+                            .WithActionContainer(actionContainer);
+
+            return builder.Build();
+        }
+
+        /// <summary>
         /// Returns an item.
         /// </summary>
         public static Item CreateItem(
