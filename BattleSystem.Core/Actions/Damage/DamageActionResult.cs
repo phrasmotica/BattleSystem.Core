@@ -37,7 +37,7 @@ namespace BattleSystem.Core.Actions.Damage
         /// <summary>
         /// Gets whether the damage was self-inflicted.
         /// </summary>
-        public bool IsSelfInflicted => User is not null && Target is not null && User.Id == Target.Id;
+        public bool IsSelfInflicted => User != null && Target != null && User.Id == Target.Id;
 
         /// <summary>
         /// Gets or sets the target's health before the damage.

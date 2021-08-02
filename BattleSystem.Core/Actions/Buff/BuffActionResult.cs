@@ -39,7 +39,7 @@ namespace BattleSystem.Core.Actions.Buff
         /// <summary>
         /// Gets whether the buff was self-inflicted.
         /// </summary>
-        public bool IsSelfInflicted => User is not null && Target is not null && User.Id == Target.Id;
+        public bool IsSelfInflicted => User != null && Target != null && User.Id == Target.Id;
 
         /// <summary>
         /// Gets or sets whether the character was protected from the buff.
