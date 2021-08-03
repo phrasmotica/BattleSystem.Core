@@ -5,11 +5,19 @@ namespace BattleSystem.Core.Abilities
     /// <summary>
     /// Represents a character's ability slot.
     /// </summary>
-    public class AbilitySlot : Slot<Ability>
+    public class AbilitySlot
     {
-        /// <summary>
-        /// Gets whether there is an active ability in this ability slot.
-        /// </summary>
-        public bool HasAbility => HasAsset;
+        private readonly Slot<Ability> _slot;
+
+        public AbilitySlot(Slot<Ability> slot = null)
+        {
+            _slot = slot ?? new Slot<Ability>();
+        }
+
+        public bool HasAbility => _slot.HasAsset;
+        public Ability Current => _slot.Current;
+
+        public void Set(Ability ability) => _slot.Set(ability);
+        public void Remove() => _slot.Remove();
     }
 }

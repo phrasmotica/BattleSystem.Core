@@ -17,7 +17,7 @@ namespace BattleSystem.Core.Characters
         /// <summary>
         /// Gets whether there is an active asset in this slot.
         /// </summary>
-        protected bool HasAsset => _assets.Count > 0 && Current != null;
+        public bool HasAsset => _assets.Count > 0 && Current != null;
 
         /// <summary>
         /// Gets the current asset.
@@ -36,17 +36,11 @@ namespace BattleSystem.Core.Characters
         /// Sets the current asset to the given asset.
         /// </summary>
         /// <param name="asset">The asset.</param>
-        public void Set(TAsset asset)
-        {
-            _assets.Push(asset);
-        }
+        public void Set(TAsset asset) => _assets.Push(asset);
 
         /// <summary>
         /// Removes the current asset.
         /// </summary>
-        public void Remove()
-        {
-            _assets.Push(default);
-        }
+        public void Remove() => _assets.Push(default);
     }
 }
