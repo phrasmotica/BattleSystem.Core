@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using BattleSystem.Core.Abilities;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Stats;
 using NUnit.Framework;
-using static BattleSystem.Core.Items.Item;
+using static BattleSystem.Core.Actions.ActionContainer;
 
 namespace BattleSystem.Core.Tests.Characters
 {
@@ -25,6 +26,7 @@ namespace BattleSystem.Core.Tests.Characters
                     12,
                     new StatSet(),
                     new MoveSet(),
+                    new Ability(),
                     null);
             });
         }
@@ -76,18 +78,20 @@ namespace BattleSystem.Core.Tests.Characters
             var character = TestHelpers.CreateBasicCharacter(attack: 10, defence: 20, speed: 30);
 
             var item = TestHelpers.CreateItem(
-                attackValueTransforms: new StatValueTransform[]
-                {
-                    v => (int) (v * 1.1),
-                },
-                defenceValueTransforms: new StatValueTransform[]
-                {
-                    v => (int) (v * 1.2),
-                },
-                speedValueTransforms: new StatValueTransform[]
-                {
-                    v => (int) (v * 1.3),
-                }
+                actionContainer: TestHelpers.CreateActionContainer(
+                    attackValueTransforms: new StatValueTransform[]
+                    {
+                        v => (int) (v * 1.1),
+                    },
+                    defenceValueTransforms: new StatValueTransform[]
+                    {
+                        v => (int) (v * 1.2),
+                    },
+                    speedValueTransforms: new StatValueTransform[]
+                    {
+                        v => (int) (v * 1.3),
+                    }
+                )
             );
             _ = character.EquipItem(item);
 
@@ -97,6 +101,87 @@ namespace BattleSystem.Core.Tests.Characters
                 Assert.That(character.CurrentAttack, Is.EqualTo(11));
                 Assert.That(character.CurrentDefence, Is.EqualTo(24));
                 Assert.That(character.CurrentSpeed, Is.EqualTo(39));
+            });
+        }
+
+        [Test]
+        public void SetAbility_FirstAbility_SetsAbility()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+            _ = target.RemoveAbility();
+
+            var ability = TestHelpers.CreateAbility();
+
+            // Act
+            var result = target.SetAbility(ability);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(target.Ability, Is.EqualTo(ability));
+                Assert.That(result.Success, Is.True);
+                Assert.That(result.HadPreviousAbility, Is.False);
+                Assert.That(result.PreviousAbility, Is.Null);
+            });
+        }
+
+        [Test]
+        public void SetAbility_SubsequentAbility_SetsAbility()
+        {
+            // Arrange
+            var ability1 = TestHelpers.CreateAbility();
+            var target = TestHelpers.CreateBasicCharacter(ability: ability1);
+
+            var ability2 = TestHelpers.CreateAbility();
+
+            // Act
+            var result = target.SetAbility(ability2);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(target.Ability, Is.EqualTo(ability2));
+                Assert.That(result.Success, Is.True);
+                Assert.That(result.HadPreviousAbility, Is.True);
+                Assert.That(result.PreviousAbility, Is.EqualTo(ability1));
+            });
+        }
+
+        [Test]
+        public void RemoveAbility_HasAbility_RemovesAbility()
+        {
+            // Arrange
+            var ability = TestHelpers.CreateAbility();
+            var target = TestHelpers.CreateBasicCharacter(ability: ability);
+
+            // Act
+            var result = target.RemoveAbility();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(target.HasAbility, Is.False);
+                Assert.That(result.Success, Is.True);
+                Assert.That(result.Ability, Is.EqualTo(ability));
+            });
+        }
+
+        [Test]
+        public void RemoveAbility_HasNoAbility_Fails()
+        {
+            // Arrange
+            var target = TestHelpers.CreateBasicCharacter();
+            _ = target.RemoveAbility();
+
+            // Act
+            var result = target.RemoveAbility();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Success, Is.False);
+                Assert.That(result.Ability, Is.Null);
             });
         }
 

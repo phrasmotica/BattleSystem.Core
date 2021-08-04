@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using BattleSystem.Core.Abilities;
+using BattleSystem.Core.Abilities.Results;
 using BattleSystem.Core.Actions.Buff;
 using BattleSystem.Core.Actions.Damage;
 using BattleSystem.Core.Actions.Flinch;
@@ -10,6 +12,7 @@ using BattleSystem.Core.Items;
 using BattleSystem.Core.Items.Results;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Stats;
+using static BattleSystem.Core.Actions.ActionContainer;
 
 namespace BattleSystem.Core.Characters
 {
@@ -52,6 +55,21 @@ namespace BattleSystem.Core.Characters
         /// Gets or sets the character's moves.
         /// </summary>
         public MoveSet Moves { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the character's ability slot.
+        /// </summary>
+        public AbilitySlot AbilitySlot { get; protected set; }
+
+        /// <summary>
+        /// Gets whether the character has an active ability.
+        /// </summary>
+        public bool HasAbility => AbilitySlot.HasAbility;
+
+        /// <summary>
+        /// Gets the character's ability.
+        /// </summary>
+        public Ability Ability => AbilitySlot.Current;
 
         /// <summary>
         /// Gets or sets the character's item slot.
@@ -97,12 +115,9 @@ namespace BattleSystem.Core.Characters
             {
                 var transformedValue = Stats.Attack.CurrentValue;
 
-                if (HasItem)
+                foreach (var t in GetStatTransforms(StatCategory.Attack))
                 {
-                    foreach (var t in Item.StatValueTransforms[StatCategory.Attack])
-                    {
-                        transformedValue = t(transformedValue);
-                    }
+                    transformedValue = t(transformedValue);
                 }
 
                 return transformedValue;
@@ -118,12 +133,9 @@ namespace BattleSystem.Core.Characters
             {
                 var transformedValue = Stats.Defence.CurrentValue;
 
-                if (HasItem)
+                foreach (var t in GetStatTransforms(StatCategory.Defence))
                 {
-                    foreach (var t in Item.StatValueTransforms[StatCategory.Defence])
-                    {
-                        transformedValue = t(transformedValue);
-                    }
+                    transformedValue = t(transformedValue);
                 }
 
                 return transformedValue;
@@ -139,12 +151,9 @@ namespace BattleSystem.Core.Characters
             {
                 var transformedValue = Stats.Speed.CurrentValue;
 
-                if (HasItem)
+                foreach (var t in GetStatTransforms(StatCategory.Speed))
                 {
-                    foreach (var t in Item.StatValueTransforms[StatCategory.Speed])
-                    {
-                        transformedValue = t(transformedValue);
-                    }
+                    transformedValue = t(transformedValue);
                 }
 
                 return transformedValue;
@@ -157,6 +166,29 @@ namespace BattleSystem.Core.Characters
         public bool IsDead => CurrentHealth <= 0;
 
         /// <summary>
+        /// Gets the effective damage power transforms this character possesses.
+        /// </summary>
+        public IEnumerable<PowerTransform> DamagePowerTransforms
+        {
+            get
+            {
+                var transforms = new List<PowerTransform>();
+
+                if (HasAbility)
+                {
+                    transforms.AddRange(Ability.ActionContainer.DamagePowerTransforms);
+                }
+
+                if (HasItem)
+                {
+                    transforms.AddRange(Item.ActionContainer.DamagePowerTransforms);
+                }
+
+                return transforms;
+            }
+        }
+
+        /// <summary>
         /// Creates a new character with the given name, max health, stats and moves.
         /// </summary>
         public Character(
@@ -164,7 +196,8 @@ namespace BattleSystem.Core.Characters
             string team,
             int maxHealth,
             StatSet stats,
-            MoveSet moves)
+            MoveSet moves,
+            Ability ability)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
@@ -175,6 +208,9 @@ namespace BattleSystem.Core.Characters
 
             Stats = stats;
             Moves = moves;
+
+            AbilitySlot = new AbilitySlot();
+            AbilitySlot.Set(ability);
 
             ItemSlot = new ItemSlot();
 
@@ -187,6 +223,54 @@ namespace BattleSystem.Core.Characters
         /// </summary>
         /// <param name="otherCharacters">The other characters in the battle.</param>
         public abstract MoveUse ChooseMove(IEnumerable<Character> otherCharacters);
+
+        /// <summary>
+        /// Sets the character's ability to the given ability and returns the
+        /// result.
+        /// </summary>
+        /// <param name="ability">The ability.</param>
+        public virtual SetAbilityResult SetAbility(Ability ability)
+        {
+            var hadPreviousAbility = HasAbility;
+
+            Ability previousAbility = null;
+            if (hadPreviousAbility)
+            {
+                previousAbility = Ability;
+            }
+
+            AbilitySlot.Set(ability);
+
+            return new SetAbilityResult
+            {
+                Success = true,
+                HadPreviousAbility = hadPreviousAbility,
+                PreviousAbility = previousAbility,
+            };
+        }
+
+        /// <summary>
+        /// Removes the character's ability and returns the result.
+        /// </summary>
+        public virtual RemoveAbilityResult RemoveAbility()
+        {
+            if (!HasAbility)
+            {
+                return new RemoveAbilityResult
+                {
+                    Success = false,
+                };
+            }
+
+            var item = Ability;
+            AbilitySlot.Remove();
+
+            return new RemoveAbilityResult
+            {
+                Success = true,
+                Ability = item,
+            };
+        }
 
         /// <summary>
         /// Equips the given item and returns the result.
@@ -563,6 +647,27 @@ namespace BattleSystem.Core.Characters
         public void ClearProtectQueue()
         {
             ProtectQueue.Clear();
+        }
+
+        /// <summary>
+        /// Gets the effective transforms for the given stat that this character
+        /// possesses.
+        /// </summary>
+        protected IEnumerable<StatValueTransform> GetStatTransforms(StatCategory statCategory)
+        {
+            var transforms = new List<StatValueTransform>();
+
+            if (HasAbility)
+            {
+                transforms.AddRange(Ability.ActionContainer.StatValueTransforms[statCategory]);
+            }
+
+            if (HasItem)
+            {
+                transforms.AddRange(Item.ActionContainer.StatValueTransforms[statCategory]);
+            }
+
+            return transforms;
         }
     }
 }

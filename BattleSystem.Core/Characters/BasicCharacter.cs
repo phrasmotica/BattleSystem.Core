@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BattleSystem.Core.Abilities;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Random;
 using BattleSystem.Core.Stats;
@@ -25,7 +26,8 @@ namespace BattleSystem.Core.Characters
             int maxHealth,
             StatSet stats,
             MoveSet moves,
-            IRandom random) : base(name, team, maxHealth, stats, moves)
+            Ability ability,
+            IRandom random) : base(name, team, maxHealth, stats, moves, ability)
         {
             _random = random ?? throw new ArgumentNullException(nameof(random));
         }

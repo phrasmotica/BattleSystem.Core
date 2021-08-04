@@ -1,19 +1,19 @@
 ﻿using BattleSystem.Core.Actions;
 
-namespace BattleSystem.Core.Items
+namespace BattleSystem.Core.Abilities
 {
     /// <summary>
-    /// Represents an item that a character holds in battle.
+    /// Represents an ability that a character possesses.
     /// </summary>
-    public class Item
+    public class Ability
     {
         /// <summary>
-        /// Gets or sets the name of the item.
+        /// Gets or sets the name of the ability.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the description of the item.
+        /// Gets or sets the description of the ability.
         /// </summary>
         public string Description { get; set; }
 

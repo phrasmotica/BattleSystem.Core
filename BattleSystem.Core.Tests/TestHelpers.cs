@@ -1,4 +1,5 @@
-﻿using BattleSystem.Core.Actions;
+﻿using BattleSystem.Core.Abilities;
+using BattleSystem.Core.Actions;
 using BattleSystem.Core.Actions.Damage;
 using BattleSystem.Core.Actions.Damage.Calculators;
 using BattleSystem.Core.Actions.Heal;
@@ -11,8 +12,7 @@ using BattleSystem.Core.Moves.Success;
 using BattleSystem.Core.Random;
 using BattleSystem.Core.Stats;
 using Moq;
-using static BattleSystem.Core.Actions.Damage.Calculators.BasePowerDamageCalculator;
-using static BattleSystem.Core.Items.Item;
+using static BattleSystem.Core.Actions.ActionContainer;
 using static BattleSystem.Core.Moves.Move;
 
 namespace BattleSystem.Core.Tests
@@ -33,6 +33,7 @@ namespace BattleSystem.Core.Tests
             int defence = 1,
             int speed = 1,
             MoveSet moveSet = null,
+            Ability ability = null,
             IRandom random = null)
         {
             return new BasicCharacter(
@@ -41,6 +42,7 @@ namespace BattleSystem.Core.Tests
                 maxHealth,
                 CreateStatSet(attack, defence, speed),
                 moveSet ?? CreateMoveSet(),
+                ability,
                 random ?? new Mock<IRandom>().Object);
         }
 
@@ -81,19 +83,47 @@ namespace BattleSystem.Core.Tests
         }
 
         /// <summary>
+        /// Returns an ability.
+        /// </summary>
+        public static Ability CreateAbility(
+            string name = "jim",
+            string description = "eureka",
+            ActionContainer actionContainer = null)
+        {
+            var builder = new AbilityBuilder()
+                            .Name(name)
+                            .Describe(description)
+                            .WithActionContainer(actionContainer);
+
+            return builder.Build();
+        }
+
+        /// <summary>
         /// Returns an item.
         /// </summary>
         public static Item CreateItem(
             string name = "jim",
             string description = "eureka",
+            ActionContainer actionContainer = null)
+        {
+            var builder = new ItemBuilder()
+                            .Name(name)
+                            .Describe(description)
+                            .WithActionContainer(actionContainer);
+
+            return builder.Build();
+        }
+
+        /// <summary>
+        /// Returns an action container.
+        /// </summary>
+        public static ActionContainer CreateActionContainer(
             StatValueTransform[] attackValueTransforms = null,
             StatValueTransform[] defenceValueTransforms = null,
             StatValueTransform[] speedValueTransforms = null,
             PowerTransform[] damagePowerTransforms = null)
         {
-            var builder = new ItemBuilder()
-                            .Name(name)
-                            .Describe(description);
+            var builder = new ActionContainerBuilder();
 
             if (attackValueTransforms is not null)
             {

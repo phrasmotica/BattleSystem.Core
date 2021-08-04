@@ -4,6 +4,7 @@ using BattleSystem.Core.Actions.Damage.Calculators;
 using BattleSystem.Core.Random;
 using Moq;
 using NUnit.Framework;
+using static BattleSystem.Core.Actions.ActionContainer;
 using static BattleSystem.Core.Actions.Damage.Calculators.BasePowerDamageCalculator;
 
 namespace BattleSystem.Core.Tests.Actions.Damage.Calculators
@@ -100,7 +101,11 @@ namespace BattleSystem.Core.Tests.Actions.Damage.Calculators
                 p => p + 10,
                 p => p * 2,
             };
-            var item = TestHelpers.CreateItem(damagePowerTransforms: transforms);
+            var item = TestHelpers.CreateItem(
+                actionContainer: TestHelpers.CreateActionContainer(
+                    damagePowerTransforms: transforms
+                )
+            );
             _ = user.EquipItem(item);
 
             // Act

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using BattleSystem.Core.Characters;
 
 namespace BattleSystem.Core.Items
 {
@@ -7,44 +7,17 @@ namespace BattleSystem.Core.Items
     /// </summary>
     public class ItemSlot
     {
-        /// <summary>
-        /// The items that have occupied this item slot.
-        /// </summary>
-        private readonly Stack<Item> Items;
+        private readonly Slot<Item> _slot;
 
-        /// <summary>
-        /// Gets whether there is an active item in this item slot.
-        /// </summary>
-        public bool HasItem => Items.Count > 0 && Current != null;
-
-        /// <summary>
-        /// Gets the current item.
-        /// </summary>
-        public Item Current => Items.Peek();
-
-        /// <summary>
-        /// Creates a new <see cref="ItemSlot"/> instance.
-        /// </summary>
-        public ItemSlot()
+        public ItemSlot(Slot<Item> slot = null)
         {
-            Items = new Stack<Item>();
+            _slot = slot ?? new Slot<Item>();
         }
 
-        /// <summary>
-        /// Sets the current item to the given item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        public void Set(Item item)
-        {
-            Items.Push(item);
-        }
+        public bool HasItem => _slot.HasAsset;
+        public Item Current => _slot.Current;
 
-        /// <summary>
-        /// Removes the current item.
-        /// </summary>
-        public void Remove()
-        {
-            Items.Push(null);
-        }
+        public void Set(Item item) => _slot.Set(item);
+        public void Remove() => _slot.Remove();
     }
 }

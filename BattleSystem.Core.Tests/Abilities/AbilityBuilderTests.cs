@@ -1,15 +1,15 @@
 ﻿using System;
+using BattleSystem.Core.Abilities;
 using BattleSystem.Core.Actions;
-using BattleSystem.Core.Items;
 using NUnit.Framework;
 
-namespace BattleSystem.Core.Tests.Items
+namespace BattleSystem.Core.Tests.Abilities
 {
     /// <summary>
-    /// Unit tests for <see cref="ItemBuilder"/>.
+    /// Unit tests for <see cref="AbilityBuilder"/>.
     /// </summary>
     [TestFixture]
-    public class ItemBuilderTests
+    public class AbilityBuilderTests
     {
         [TestCase(null)]
         [TestCase("")]
@@ -17,7 +17,7 @@ namespace BattleSystem.Core.Tests.Items
         public void Name_BadArgument_Throws(string name)
         {
             // Arrange
-            var builder = new ItemBuilder();
+            var builder = new AbilityBuilder();
             
             // Act and Assert
             Assert.Throws<ArgumentException>(() => _ = builder.Name(name));
@@ -29,7 +29,7 @@ namespace BattleSystem.Core.Tests.Items
         public void Describe_BadArgument_Throws(string description)
         {
             // Arrange
-            var builder = new ItemBuilder();
+            var builder = new AbilityBuilder();
 
             // Act and Assert
             Assert.Throws<ArgumentException>(() => _ = builder.Describe(description));
@@ -39,7 +39,7 @@ namespace BattleSystem.Core.Tests.Items
         public void Build_CallsPresent_Succeeds()
         {
             // Arrange
-            var builder = new ItemBuilder()
+            var builder = new AbilityBuilder()
                                 .Name("caribou")
                                 .Describe("andorra")
                                 .WithActionContainer(new ActionContainer());
@@ -55,7 +55,7 @@ namespace BattleSystem.Core.Tests.Items
         public void Build_MissingName_Throws()
         {
             // Arrange
-            var builder = new ItemBuilder()
+            var builder = new AbilityBuilder()
                                 .Describe("andorra");
 
             // Act and Assert
@@ -66,7 +66,7 @@ namespace BattleSystem.Core.Tests.Items
         public void Build_MissingDescription_Throws()
         {
             // Arrange
-            var builder = new ItemBuilder()
+            var builder = new AbilityBuilder()
                                 .Name("caribou");
 
             // Act and Assert

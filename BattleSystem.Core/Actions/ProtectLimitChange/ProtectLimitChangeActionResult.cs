@@ -37,7 +37,7 @@ namespace BattleSystem.Core.Actions.ProtectLimitChange
         /// <summary>
         /// Gets whether the protect limit change action was self-inflicted.
         /// </summary>
-        public bool IsSelfInflicted => User is not null && Target is not null && User.Id == Target.Id;
+        public bool IsSelfInflicted => User != null && Target != null && User.Id == Target.Id;
 
         /// <summary>
         /// Gets or sets whether the character was protected from the protect limit change.

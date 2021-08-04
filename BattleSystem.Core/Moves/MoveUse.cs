@@ -56,7 +56,7 @@ namespace BattleSystem.Core.Moves
             get
             {
                 return Result == MoveUseResult.Success
-                    && ActionsResults is not null
+                    && ActionsResults != null
                     && ActionsResults.All(ars => ars.Success && !ars.Results.Any());
             }
         }

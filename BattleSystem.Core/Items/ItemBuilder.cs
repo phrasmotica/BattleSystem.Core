@@ -1,7 +1,5 @@
 ﻿using System;
 using BattleSystem.Core.Actions;
-using static BattleSystem.Core.Actions.Damage.Calculators.BasePowerDamageCalculator;
-using static BattleSystem.Core.Items.Item;
 
 namespace BattleSystem.Core.Items
 {
@@ -44,7 +42,7 @@ namespace BattleSystem.Core.Items
                 throw new ArgumentException("Item name must be non-null and non-whitespace!", nameof(name));
             }
 
-            _item.SetName(name);
+            _item.Name = name;
             _hasName = true;
             return this;
         }
@@ -60,67 +58,18 @@ namespace BattleSystem.Core.Items
                 throw new ArgumentException("Item description must be non-null and non-whitespace!", nameof(description));
             }
 
-            _item.SetDescription(description);
+            _item.Description = description;
             _hasDescription = true;
             return this;
         }
 
         /// <summary>
-        /// Adds the given attack value transform to the built item.
+        /// Sets the given action container for the built item.
         /// </summary>
-        /// <param name="transform">The attack value transform for the built item.</param>
-        public ItemBuilder WithAttackValueTransform(StatValueTransform transform)
+        /// <param name="transform">The action container for the built item.</param>
+        public ItemBuilder WithActionContainer(ActionContainer container)
         {
-            _item.AddAttackValueTransform(transform);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the given defence value transform to the built item.
-        /// </summary>
-        /// <param name="transform">The defence value transform for the built item.</param>
-        public ItemBuilder WithDefenceValueTransform(StatValueTransform transform)
-        {
-            _item.AddDefenceValueTransform(transform);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the given speed value transform to the built item.
-        /// </summary>
-        /// <param name="transform">The speed value transform for the built item.</param>
-        public ItemBuilder WithSpeedValueTransform(StatValueTransform transform)
-        {
-            _item.AddSpeedValueTransform(transform);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a stats transform for increasing attack by the given factor to the built item.
-        /// </summary>
-        public ItemBuilder WithIncreaseAttack(double factor = 0.1)
-        {
-            return WithAttackValueTransform(a => (int) (a * (1 + factor)));
-        }
-
-        /// <summary>
-        /// Adds the given damage power transform to the built item.
-        /// </summary>
-        /// <param name="transform">The damage power transform for the built item.</param>
-        public ItemBuilder WithDamagePowerTransform(PowerTransform transform)
-        {
-            _item.AddDamagePowerTransform(transform);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a tagged action to the built item.
-        /// </summary>
-        /// <param name="action">The action.</param>
-        /// <param name="tags">The tags.</param>
-        public ItemBuilder WithTaggedAction(IAction action, params string[] tags)
-        {
-            _item.AddTaggedAction(action, tags);
+            _item.ActionContainer = container;
             return this;
         }
 
