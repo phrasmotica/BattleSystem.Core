@@ -76,6 +76,13 @@ This is a library that provides functionality for characters battling against ot
 
 - determines the order in which characters' [moves](#moves) are processed (highest first)
 
+<a name="abilities"></a>
+## Abilities
+
+- can alter values of holder's base stats
+- can alter power of holder's damage actions
+- can execute [actions](#actions) against characters arbitrarily
+
 <a name="items"></a>
 ## Items
 
