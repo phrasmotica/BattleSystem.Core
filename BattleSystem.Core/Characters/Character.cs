@@ -231,10 +231,8 @@ namespace BattleSystem.Core.Characters
         /// <param name="ability">The ability.</param>
         public virtual SetAbilityResult SetAbility(Ability ability)
         {
-            var hadPreviousAbility = HasAbility;
-
             Ability previousAbility = null;
-            if (hadPreviousAbility)
+            if (HasAbility)
             {
                 previousAbility = Ability;
             }
@@ -244,7 +242,6 @@ namespace BattleSystem.Core.Characters
             return new SetAbilityResult
             {
                 Success = true,
-                HadPreviousAbility = hadPreviousAbility,
                 PreviousAbility = previousAbility,
             };
         }
@@ -278,10 +275,8 @@ namespace BattleSystem.Core.Characters
         /// <param name="item">The item.</param>
         public virtual EquipItemResult EquipItem(Item item)
         {
-            var hadPreviousItem = HasItem;
-
             Item previousItem = null;
-            if (hadPreviousItem)
+            if (HasItem)
             {
                 previousItem = Item;
             }
@@ -291,7 +286,6 @@ namespace BattleSystem.Core.Characters
             return new EquipItemResult
             {
                 Success = true,
-                HadPreviousItem = hadPreviousItem,
                 PreviousItem = previousItem,
             };
         }

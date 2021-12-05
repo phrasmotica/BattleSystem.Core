@@ -11,15 +11,15 @@
         public bool Success { get; set; }
 
         /// <summary>
-        /// Gets or sets whether the character had an ability before the new one
-        /// was set.
-        /// </summary>
-        public bool HadPreviousAbility { get; set; }
-
-        /// <summary>
         /// Gets or sets the ability that was previously equipped to the
         /// character.
         /// </summary>
         public Ability PreviousAbility { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the character had an ability before the new one
+        /// was set.
+        /// </summary>
+        public bool HadPreviousAbility => PreviousAbility is not null;
     }
 }
