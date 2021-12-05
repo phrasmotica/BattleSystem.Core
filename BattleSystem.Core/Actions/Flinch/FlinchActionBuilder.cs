@@ -44,7 +44,7 @@ namespace BattleSystem.Core.Actions.Flinch
                 throw new ArgumentNullException(nameof(actionTargetCalculator));
             }
 
-            _flinch.SetActionTargetCalculator(actionTargetCalculator);
+            _flinch.ActionTargetCalculator = actionTargetCalculator;
             _isActionTargetCalculatorSet = true;
             return this;
         }
@@ -160,7 +160,7 @@ namespace BattleSystem.Core.Actions.Flinch
                 throw new ArgumentNullException(nameof(successCalculatorFactory));
             }
 
-            _flinch.SetSuccessCalculatorFactory(successCalculatorFactory);
+            _flinch.SuccessCalculatorFactory = successCalculatorFactory;
             _hasSuccessCalculatorFactory = true;
             return this;
         }

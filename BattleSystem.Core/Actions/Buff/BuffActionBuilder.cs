@@ -38,7 +38,7 @@ namespace BattleSystem.Core.Actions.Buff
                 throw new ArgumentNullException(nameof(actionTargetCalculator));
             }
 
-            _buff.SetActionTargetCalculator(actionTargetCalculator);
+            _buff.ActionTargetCalculator = actionTargetCalculator;
             _isActionTargetCalculatorSet = true;
             return this;
         }

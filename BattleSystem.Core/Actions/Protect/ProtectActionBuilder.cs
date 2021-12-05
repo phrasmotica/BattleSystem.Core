@@ -37,7 +37,7 @@ namespace BattleSystem.Core.Actions.Protect
                 throw new ArgumentNullException(nameof(actionTargetCalculator));
             }
 
-            _protect.SetActionTargetCalculator(actionTargetCalculator);
+            _protect.ActionTargetCalculator = actionTargetCalculator;
             _isActionTargetCalculatorSet = true;
             return this;
         }

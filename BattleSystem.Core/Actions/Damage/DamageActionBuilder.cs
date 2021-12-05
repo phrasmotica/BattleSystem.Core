@@ -43,7 +43,7 @@ namespace BattleSystem.Core.Actions.Damage
                 throw new ArgumentNullException(nameof(damageCalculator));
             }
 
-            _damage.SetDamageCalculator(damageCalculator);
+            _damage.DamageCalculator = damageCalculator;
             _isDamageCalculatorSet = true;
             return this;
         }
@@ -87,7 +87,7 @@ namespace BattleSystem.Core.Actions.Damage
                 throw new ArgumentNullException(nameof(actionTargetCalculator));
             }
 
-            _damage.SetActionTargetCalculator(actionTargetCalculator);
+            _damage.ActionTargetCalculator = actionTargetCalculator;
             _isActionTargetCalculatorSet = true;
             return this;
         }

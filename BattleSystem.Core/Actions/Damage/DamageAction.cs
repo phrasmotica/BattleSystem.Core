@@ -12,16 +12,6 @@ namespace BattleSystem.Core.Actions.Damage
     public class DamageAction : IAction
     {
         /// <summary>
-        /// The damage calculator.
-        /// </summary>
-        private IDamageCalculator _damageCalculator;
-
-        /// <summary>
-        /// The action target calculator.
-        /// </summary>
-        private IActionTargetCalculator _actionTargetCalculator;
-
-        /// <summary>
         /// The targets for the next use of the damage action.
         /// </summary>
         private IEnumerable<Character> _targets;
@@ -45,22 +35,14 @@ namespace BattleSystem.Core.Actions.Damage
         }
 
         /// <summary>
-        /// Sets the damage calculator for this damage action.
+        /// The damage calculator.
         /// </summary>
-        /// <param name="damageCalculator">The damage calculator.</param>
-        public void SetDamageCalculator(IDamageCalculator damageCalculator)
-        {
-            _damageCalculator = damageCalculator;
-        }
+        public IDamageCalculator DamageCalculator { get; set; }
 
         /// <summary>
-        /// Sets the action target calculator for this damage action.
+        /// The action target calculator.
         /// </summary>
-        /// <param name="actionTargetCalculator">The action target calculator.</param>
-        public void SetActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
-        {
-            _actionTargetCalculator = actionTargetCalculator;
-        }
+        public IActionTargetCalculator ActionTargetCalculator { get; set; }
 
         /// <summary>
         /// If the action target calculator is not reactive, set the targets for
@@ -70,7 +52,7 @@ namespace BattleSystem.Core.Actions.Damage
         /// <param name="otherCharacters">The other characters.</param>
         public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            if (!_actionTargetCalculator.IsReactive)
+            if (!ActionTargetCalculator.IsReactive)
             {
                 EstablishTargets(user, otherCharacters);
             }
@@ -79,7 +61,7 @@ namespace BattleSystem.Core.Actions.Damage
         /// <inheritdoc />
         public virtual ActionUseResult<TSource> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
-            if (_actionTargetCalculator.IsReactive)
+            if (ActionTargetCalculator.IsReactive)
             {
                 EstablishTargets(user, otherCharacters);
             }
@@ -98,7 +80,7 @@ namespace BattleSystem.Core.Actions.Damage
             }
 
             // action only succeeds if damage is calculated against all targets successfully
-            var damageCalculations = _damageCalculator.Calculate(user, this, _targets.Where(c => !c.IsDead));
+            var damageCalculations = DamageCalculator.Calculate(user, this, _targets.Where(c => !c.IsDead));
             if (damageCalculations.Any(d => !d.Success))
             {
                 return new ActionUseResult<TSource>
@@ -143,9 +125,7 @@ namespace BattleSystem.Core.Actions.Damage
         /// <param name="otherCharacters">The other characters.</param>
         protected void EstablishTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            var (success, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
-            _targets = targets;
-            _targetsSet = success;
+            (_targetsSet, _targets) = ActionTargetCalculator.Calculate(user, otherCharacters);
         }
     }
 }

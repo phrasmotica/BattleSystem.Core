@@ -52,14 +52,14 @@ namespace BattleSystem.Core.Actions.Heal
         /// Sets the built heal's healing calculator.
         /// </summary>
         /// <param name="healingCalculator">The built heal's healing calculator.</param>
-        public HealActionBuilder WithHealingCalculator(IHealingCalculator actionTargetCalculator)
+        public HealActionBuilder WithHealingCalculator(IHealingCalculator healingCalculator)
         {
-            if (actionTargetCalculator is null)
+            if (healingCalculator is null)
             {
-                throw new ArgumentNullException(nameof(actionTargetCalculator));
+                throw new ArgumentNullException(nameof(healingCalculator));
             }
 
-            _heal.SetHealingCalculator(actionTargetCalculator);
+            _heal.HealingCalculator = healingCalculator;
             _isHealingCalculatorSet = true;
             return this;
         }
@@ -91,7 +91,7 @@ namespace BattleSystem.Core.Actions.Heal
                 throw new ArgumentNullException(nameof(actionTargetCalculator));
             }
 
-            _heal.SetActionTargetCalculator(actionTargetCalculator);
+            _heal.ActionTargetCalculator = actionTargetCalculator;
             _isActionTargetCalculatorSet = true;
             return this;
         }

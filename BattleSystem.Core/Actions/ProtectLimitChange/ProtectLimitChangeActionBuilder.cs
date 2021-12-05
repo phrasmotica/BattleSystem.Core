@@ -42,7 +42,7 @@ namespace BattleSystem.Core.Actions.ProtectLimitChange
                 throw new ArgumentNullException(nameof(actionTargetCalculator));
             }
 
-            _protectLimitChange.SetActionTargetCalculator(actionTargetCalculator);
+            _protectLimitChange.ActionTargetCalculator = actionTargetCalculator;
             _isActionTargetCalculatorSet = true;
             return this;
         }

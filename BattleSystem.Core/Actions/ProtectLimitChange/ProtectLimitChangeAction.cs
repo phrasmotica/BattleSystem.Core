@@ -11,11 +11,6 @@ namespace BattleSystem.Core.Actions.ProtectLimitChange
     public class ProtectLimitChangeAction : IAction
     {
         /// <summary>
-        /// The action target calculator.
-        /// </summary>
-        private IActionTargetCalculator _actionTargetCalculator;
-
-        /// <summary>
         /// The targets for the protect limit change.
         /// </summary>
         private IEnumerable<Character> _targets;
@@ -24,6 +19,19 @@ namespace BattleSystem.Core.Actions.ProtectLimitChange
         /// Whether the targets for the next use of the protect limit change have been set.
         /// </summary>
         private bool _targetsSet;
+
+        /// <summary>
+        /// Creates a new <see cref="ProtectLimitChangeAction"/> instance.
+        /// </summary>
+        public ProtectLimitChangeAction()
+        {
+            Tags = new HashSet<string>();
+        }
+
+        /// <summary>
+        /// The action target calculator.
+        /// </summary>
+        public IActionTargetCalculator ActionTargetCalculator { get; set; }
 
         /// <summary>
         /// Gets or sets the amount to change the target's protect limit by.
@@ -36,23 +44,6 @@ namespace BattleSystem.Core.Actions.ProtectLimitChange
         public HashSet<string> Tags { get; set; }
 
         /// <summary>
-        /// Creates a new <see cref="ProtectLimitChangeAction"/> instance.
-        /// </summary>
-        public ProtectLimitChangeAction()
-        {
-            Tags = new HashSet<string>();
-        }
-
-        /// <summary>
-        /// Sets the action target calculator for this protect limit change.
-        /// </summary>
-        /// <param name="actionTargetCalculator">The action target calculator.</param>
-        public void SetActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
-        {
-            _actionTargetCalculator = actionTargetCalculator;
-        }
-
-        /// <summary>
         /// If the action target calculator is not reactive, set the targets for
         /// the protect limit change's next use.
         /// </summary>
@@ -60,7 +51,7 @@ namespace BattleSystem.Core.Actions.ProtectLimitChange
         /// <param name="otherCharacters">The other characters.</param>
         public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            if (!_actionTargetCalculator.IsReactive)
+            if (!ActionTargetCalculator.IsReactive)
             {
                 EstablishTargets(user, otherCharacters);
             }
@@ -69,7 +60,7 @@ namespace BattleSystem.Core.Actions.ProtectLimitChange
         /// <inheritdoc />
         public ActionUseResult<TSource> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
-            if (_actionTargetCalculator.IsReactive)
+            if (ActionTargetCalculator.IsReactive)
             {
                 EstablishTargets(user, otherCharacters);
             }
@@ -114,9 +105,7 @@ namespace BattleSystem.Core.Actions.ProtectLimitChange
         /// <param name="otherCharacters">The other characters.</param>
         protected void EstablishTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            var (success, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
-            _targets = targets;
-            _targetsSet = success;
+            (_targetsSet, _targets) = ActionTargetCalculator.Calculate(user, otherCharacters);
         }
     }
 }

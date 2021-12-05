@@ -17,16 +17,6 @@ namespace BattleSystem.Core.Actions.Flinch
         public delegate ISuccessCalculator<IAction, bool> ActionSuccessCalculatorFactory();
 
         /// <summary>
-        /// The action target calculator.
-        /// </summary>
-        private IActionTargetCalculator _actionTargetCalculator;
-
-        /// <summary>
-        /// The success calculator factory.
-        /// </summary>
-        private ActionSuccessCalculatorFactory _successCalculatorFactory;
-
-        /// <summary>
         /// The targets for the next use of the flinch action.
         /// </summary>
         private IEnumerable<Character> _targets;
@@ -45,32 +35,24 @@ namespace BattleSystem.Core.Actions.Flinch
         }
 
         /// <summary>
+        /// The action target calculator.
+        /// </summary>
+        public IActionTargetCalculator ActionTargetCalculator { get; set; }
+
+        /// <summary>
+        /// The success calculator factory.
+        /// </summary>
+        public ActionSuccessCalculatorFactory SuccessCalculatorFactory { get; set; }
+
+        /// <summary>
         /// Gets or sets the tags for the flinch action.
         /// </summary>
         public HashSet<string> Tags { get; set; }
 
-        /// <summary>
-        /// Sets the action target calculator for this flinch action.
-        /// </summary>
-        /// <param name="actionTargetCalculator">The action target calculator.</param>
-        public void SetActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
-        {
-            _actionTargetCalculator = actionTargetCalculator;
-        }
-
-        /// <summary>
-        /// Sets the action success calculator factory for this flinch action.
-        /// </summary>
-        /// <param name="actionSuccessCalculatorFactory">The action target calculator.</param>
-        public void SetSuccessCalculatorFactory(ActionSuccessCalculatorFactory actionSuccessCalculatorFactory)
-        {
-            _successCalculatorFactory = actionSuccessCalculatorFactory;
-        }
-
         /// <inheritdoc />
         public void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            if (!_actionTargetCalculator.IsReactive)
+            if (!ActionTargetCalculator.IsReactive)
             {
                 EstablishTargets(user, otherCharacters);
             }
@@ -79,7 +61,7 @@ namespace BattleSystem.Core.Actions.Flinch
         /// <inheritdoc />
         public ActionUseResult<TSource> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
-            if (_actionTargetCalculator.IsReactive)
+            if (ActionTargetCalculator.IsReactive)
             {
                 EstablishTargets(user, otherCharacters);
             }
@@ -104,7 +86,7 @@ namespace BattleSystem.Core.Actions.Flinch
                     Target = target,
                 };
 
-                var success = _successCalculatorFactory().Calculate(this);
+                var success = SuccessCalculatorFactory().Calculate(this);
                 if (success)
                 {
                     result = target.Flinch<TSource>(user);
@@ -134,9 +116,7 @@ namespace BattleSystem.Core.Actions.Flinch
         /// <param name="otherCharacters">The other characters.</param>
         protected void EstablishTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            var (success, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
-            _targets = targets;
-            _targetsSet = success;
+            (_targetsSet, _targets) = ActionTargetCalculator.Calculate(user, otherCharacters);
         }
     }
 }

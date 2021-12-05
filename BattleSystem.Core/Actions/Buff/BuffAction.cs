@@ -12,11 +12,6 @@ namespace BattleSystem.Core.Actions.Buff
     public class BuffAction : IAction
     {
         /// <summary>
-        /// The action target calculator.
-        /// </summary>
-        private IActionTargetCalculator _actionTargetCalculator;
-
-        /// <summary>
         /// The targets for the next use of the buff.
         /// </summary>
         private IEnumerable<Character> _targets;
@@ -46,13 +41,9 @@ namespace BattleSystem.Core.Actions.Buff
         }
 
         /// <summary>
-        /// Sets the action target calculator for this buff.
+        /// The action target calculator.
         /// </summary>
-        /// <param name="actionTargetCalculator">The action target calculator.</param>
-        public void SetActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
-        {
-            _actionTargetCalculator = actionTargetCalculator;
-        }
+        public IActionTargetCalculator ActionTargetCalculator { get; set; }
 
         /// <summary>
         /// If the action target calculator is not reactive, set the targets for
@@ -62,7 +53,7 @@ namespace BattleSystem.Core.Actions.Buff
         /// <param name="otherCharacters">The other characters.</param>
         public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            if (!_actionTargetCalculator.IsReactive)
+            if (!ActionTargetCalculator.IsReactive)
             {
                 EstablishTargets(user, otherCharacters);
             }
@@ -71,7 +62,7 @@ namespace BattleSystem.Core.Actions.Buff
         /// <inheritdoc />
         public virtual ActionUseResult<TSource> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
-            if (_actionTargetCalculator.IsReactive)
+            if (ActionTargetCalculator.IsReactive)
             {
                 EstablishTargets(user, otherCharacters);
             }
@@ -116,9 +107,7 @@ namespace BattleSystem.Core.Actions.Buff
         /// <param name="otherCharacters">The other characters.</param>
         protected void EstablishTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            var (success, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
-            _targets = targets;
-            _targetsSet = success;
+            (_targetsSet, _targets) = ActionTargetCalculator.Calculate(user, otherCharacters);
         }
     }
 }

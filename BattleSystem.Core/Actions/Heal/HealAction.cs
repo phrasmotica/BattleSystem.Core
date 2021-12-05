@@ -12,16 +12,6 @@ namespace BattleSystem.Core.Actions.Heal
     public class HealAction : IAction
     {
         /// <summary>
-        /// The healing calculator.
-        /// </summary>
-        private IHealingCalculator _healingCalculator;
-
-        /// <summary>
-        /// The action target calculator.
-        /// </summary>
-        private IActionTargetCalculator _actionTargetCalculator;
-
-        /// <summary>
         /// The targets for the next use of the heal.
         /// </summary>
         private IEnumerable<Character> _targets;
@@ -30,6 +20,24 @@ namespace BattleSystem.Core.Actions.Heal
         /// Whether the targets for the next use of the heal have been set.
         /// </summary>
         private bool _targetsSet;
+
+        /// <summary>
+        /// Creates a new <see cref="HealAction"/>.
+        /// </summary>
+        public HealAction()
+        {
+            Tags = new HashSet<string>();
+        }
+
+        /// <summary>
+        /// The healing calculator.
+        /// </summary>
+        public IHealingCalculator HealingCalculator { get; set; }
+
+        /// <summary>
+        /// The action target calculator.
+        /// </summary>
+        public IActionTargetCalculator ActionTargetCalculator { get; set; }
 
         /// <summary>
         /// Gets or sets the heal's healing amount.
@@ -42,32 +50,6 @@ namespace BattleSystem.Core.Actions.Heal
         public HashSet<string> Tags { get; set; }
 
         /// <summary>
-        /// Creates a new <see cref="HealAction"/>.
-        /// </summary>
-        public HealAction()
-        {
-            Tags = new HashSet<string>();
-        }
-
-        /// <summary>
-        /// Sets the healing calculator for this heal.
-        /// </summary>
-        /// <param name="healingCalculator">The healing calculator.</param>
-        public void SetHealingCalculator(IHealingCalculator healingCalculator)
-        {
-            _healingCalculator = healingCalculator;
-        }
-
-        /// <summary>
-        /// Sets the action target calculator for this heal.
-        /// </summary>
-        /// <param name="actionTargetCalculator">The action target calculator.</param>
-        public void SetActionTargetCalculator(IActionTargetCalculator actionTargetCalculator)
-        {
-            _actionTargetCalculator = actionTargetCalculator;
-        }
-
-        /// <summary>
         /// If the action target calculator is not reactive, set the targets for
         /// the heal's next use.
         /// </summary>
@@ -75,7 +57,7 @@ namespace BattleSystem.Core.Actions.Heal
         /// <param name="otherCharacters">The other characters.</param>
         public virtual void SetTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            if (!_actionTargetCalculator.IsReactive)
+            if (!ActionTargetCalculator.IsReactive)
             {
                 EstablishTargets(user, otherCharacters);
             }
@@ -84,7 +66,7 @@ namespace BattleSystem.Core.Actions.Heal
         /// <inheritdoc />
         public virtual ActionUseResult<TSource> Use<TSource>(Character user, IEnumerable<Character> otherCharacters)
         {
-            if (_actionTargetCalculator.IsReactive)
+            if (ActionTargetCalculator.IsReactive)
             {
                 EstablishTargets(user, otherCharacters);
             }
@@ -102,7 +84,7 @@ namespace BattleSystem.Core.Actions.Heal
 
             foreach (var target in _targets.Where(c => !c.IsDead).ToArray())
             {
-                var amount = _healingCalculator.Calculate(user, this, target);
+                var amount = HealingCalculator.Calculate(user, this, target);
                 var result = target.Heal<TSource>(amount, user);
                 result.Action = this;
 
@@ -130,9 +112,7 @@ namespace BattleSystem.Core.Actions.Heal
         /// <param name="otherCharacters">The other characters.</param>
         protected void EstablishTargets(Character user, IEnumerable<Character> otherCharacters)
         {
-            var (success, targets) = _actionTargetCalculator.Calculate(user, otherCharacters);
-            _targets = targets;
-            _targetsSet = success;
+            (_targetsSet, _targets) = ActionTargetCalculator.Calculate(user, otherCharacters);
         }
     }
 }
