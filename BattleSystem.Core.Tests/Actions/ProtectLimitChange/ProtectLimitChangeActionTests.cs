@@ -150,7 +150,7 @@ namespace BattleSystem.Core.Tests.Actions.ProtectLimitChange
             int amount = 1)
         {
             return new ProtectLimitChangeActionBuilder()
-                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
+                .WithActionTargetCalculator(actionTargetCalculator ?? Mock.Of<IActionTargetCalculator>())
                 .WithAmount(amount)
                 .Build();
         }

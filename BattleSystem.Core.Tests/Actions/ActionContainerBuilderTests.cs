@@ -19,7 +19,7 @@ namespace BattleSystem.Core.Tests.Actions
                                 .WithDefenceValueTransform(v => v + 1)
                                 .WithSpeedValueTransform(v => v + 2)
                                 .WithDamagePowerTransform(v => v + 3)
-                                .WithTaggedAction(new Mock<IAction>().Object, "mtg");
+                                .WithTaggedAction(Mock.Of<IAction>(), "mtg");
 
             // Act
             var container = builder.Build();

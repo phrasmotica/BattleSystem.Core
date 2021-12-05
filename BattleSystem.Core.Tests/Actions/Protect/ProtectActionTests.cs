@@ -149,7 +149,7 @@ namespace BattleSystem.Core.Tests.Actions.Protect
             IActionTargetCalculator actionTargetCalculator = null)
         {
             return new ProtectActionBuilder()
-                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
+                .WithActionTargetCalculator(actionTargetCalculator ?? Mock.Of<IActionTargetCalculator>())
                 .Build();
         }
     }

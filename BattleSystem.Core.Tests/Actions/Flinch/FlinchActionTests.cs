@@ -76,7 +76,7 @@ namespace BattleSystem.Core.Tests.Actions.Flinch
 
             var flinch = CreateFlinchAction(
                 new OthersActionTargetCalculator(),
-                () => new Mock<ISuccessCalculator<IAction, bool>>().Object);
+                () => Mock.Of<ISuccessCalculator<IAction, bool>>());
 
             flinch.SetTargets(user, otherCharacters);
 
@@ -185,7 +185,7 @@ namespace BattleSystem.Core.Tests.Actions.Flinch
             }
 
             var builder = new FlinchActionBuilder()
-                            .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
+                            .WithActionTargetCalculator(actionTargetCalculator ?? Mock.Of<IActionTargetCalculator>())
                             .WithSuccessCalculatorFactory(successCalculatorFactory);
 
             return builder.Build();

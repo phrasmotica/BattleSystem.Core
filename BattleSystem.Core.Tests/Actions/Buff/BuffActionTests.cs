@@ -155,7 +155,7 @@ namespace BattleSystem.Core.Tests.Actions.Buff
             IDictionary<StatCategory, double> targetMultipliers = null)
         {
             var builder = new BuffActionBuilder()
-                            .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object);
+                            .WithActionTargetCalculator(actionTargetCalculator ?? Mock.Of<IActionTargetCalculator>());
 
             if (targetMultipliers is not null)
             {

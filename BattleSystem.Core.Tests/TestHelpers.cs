@@ -197,8 +197,8 @@ namespace BattleSystem.Core.Tests
             IActionTargetCalculator actionTargetCalculator = null)
         {
             return new DamageActionBuilder()
-                .WithDamageCalculator(damageCalculator ?? new Mock<IDamageCalculator>().Object)
-                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
+                .WithDamageCalculator(damageCalculator ?? Mock.Of<IDamageCalculator>())
+                .WithActionTargetCalculator(actionTargetCalculator ?? Mock.Of<IActionTargetCalculator>())
                 .Build();
         }
 
@@ -212,8 +212,8 @@ namespace BattleSystem.Core.Tests
         {
             return new HealActionBuilder()
                 .WithAmount(amount)
-                .WithHealingCalculator(healingCalculator ?? new Mock<IHealingCalculator>().Object)
-                .WithActionTargetCalculator(actionTargetCalculator ?? new Mock<IActionTargetCalculator>().Object)
+                .WithHealingCalculator(healingCalculator ?? Mock.Of<IHealingCalculator>())
+                .WithActionTargetCalculator(actionTargetCalculator ?? Mock.Of<IActionTargetCalculator>())
                 .Build();
         }
     }
