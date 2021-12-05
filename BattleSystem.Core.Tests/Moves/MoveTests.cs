@@ -79,7 +79,7 @@ namespace BattleSystem.Core.Tests.Moves
             var move = TestHelpers.CreateMove(maxUses: remainingUses);
 
             // Act and Assert
-            Assert.That(move.CanUse(), Is.EqualTo(expectedCanUse));
+            Assert.That(move.CanUse, Is.EqualTo(expectedCanUse));
         }
 
         [Test]

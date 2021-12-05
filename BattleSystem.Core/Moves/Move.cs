@@ -17,24 +17,32 @@ namespace BattleSystem.Core.Moves
         public delegate ISuccessCalculator<Move, MoveUseResult> MoveSuccessCalculatorFactory();
 
         /// <summary>
-        /// The factory for constructing a success calculator.
-        /// </summary>
-        private MoveSuccessCalculatorFactory _successCalculatorFactory;
-
-        /// <summary>
         /// The actions this move will apply in order.
         /// </summary>
         private readonly IList<IAction> _moveActions;
 
         /// <summary>
+        /// Creates a new <see cref="Move"/> instance.
+        /// </summary>
+        public Move()
+        {
+            _moveActions = new List<IAction>();
+        }
+
+        /// <summary>
+        /// The factory for constructing a success calculator.
+        /// </summary>
+        public MoveSuccessCalculatorFactory SuccessCalculatorFactory { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the move.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the move.
         /// </summary>
-        public string Description { get; private set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the max uses of the move.
@@ -49,7 +57,7 @@ namespace BattleSystem.Core.Moves
         /// <summary>
         /// Gets or sets the priority of the move.
         /// </summary>
-        public int Priority { get; private set; }
+        public int Priority { get; set; }
 
         /// <summary>
         /// Gets or sets a summary of the move.
@@ -57,30 +65,9 @@ namespace BattleSystem.Core.Moves
         public string Summary => $"{Name} ({RemainingUses}/{MaxUses} uses) - {Description}";
 
         /// <summary>
-        /// Creates a new <see cref="Move"/> instance.
+        /// Gets whether the move can be used.
         /// </summary>
-        public Move()
-        {
-            _moveActions = new List<IAction>();
-        }
-
-        /// <summary>
-        /// Sets the name for this move.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        public void SetName(string name)
-        {
-            Name = name;
-        }
-
-        /// <summary>
-        /// Sets the description for this move.
-        /// </summary>
-        /// <param name="description">The description.</param>
-        public void SetDescription(string description)
-        {
-            Description = description;
-        }
+        public bool CanUse => RemainingUses > 0;
 
         /// <summary>
         /// Sets the max uses for this move. Optionally ignores the value of the remaining uses.
@@ -99,38 +86,12 @@ namespace BattleSystem.Core.Moves
         }
 
         /// <summary>
-        /// Sets the priority for this move.
-        /// </summary>
-        /// <param priority="priority">The priority.</param>
-        public void SetPriority(int priority)
-        {
-            Priority = priority;
-        }
-
-        /// <summary>
-        /// Sets the success calculator factory for this move.
-        /// </summary>
-        /// <param name="successCalculatorFactory">The success calculator factory.</param>
-        public void SetSuccessCalculatorFactory(MoveSuccessCalculatorFactory successCalculatorFactory)
-        {
-            _successCalculatorFactory = successCalculatorFactory;
-        }
-
-        /// <summary>
         /// Adds the given action to the move.
         /// </summary>
         /// <param name="action">The action to add.</param>
         public void AddAction(IAction action)
         {
             _moveActions.Add(action);
-        }
-
-        /// <summary>
-        /// Returns whether the move can be used.
-        /// </summary>
-        public bool CanUse()
-        {
-            return RemainingUses > 0;
         }
 
         /// <summary>
@@ -153,7 +114,7 @@ namespace BattleSystem.Core.Moves
         /// <param name="otherCharacters">The other characters.</param>
         public (MoveUseResult, IEnumerable<ActionUseResult<Move>>) Use(Character user, IEnumerable<Character> otherCharacters)
         {
-            var moveUseResult = _successCalculatorFactory().Calculate(this);
+            var moveUseResult = SuccessCalculatorFactory().Calculate(this);
 
             if (user.WillFlinch)
             {

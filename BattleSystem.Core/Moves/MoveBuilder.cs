@@ -54,7 +54,7 @@ namespace BattleSystem.Core.Moves
                 throw new ArgumentException("Move name must be non-null and non-whitespace!", nameof(name));
             }
 
-            _move.SetName(name);
+            _move.Name = name;
             _hasName = true;
             return this;
         }
@@ -70,7 +70,7 @@ namespace BattleSystem.Core.Moves
                 throw new ArgumentException("Move description must be non-null and non-whitespace!", nameof(description));
             }
 
-            _move.SetDescription(description);
+            _move.Description = description;
             _hasDescription = true;
             return this;
         }
@@ -92,7 +92,7 @@ namespace BattleSystem.Core.Moves
         /// <param name="priority">The built move's priority.</param>
         public MoveBuilder WithPriority(int priority)
         {
-            _move.SetPriority(priority);
+            _move.Priority = priority;
             return this;
         }
 
@@ -107,7 +107,7 @@ namespace BattleSystem.Core.Moves
                 throw new ArgumentNullException(nameof(successCalculatorFactory));
             }
 
-            _move.SetSuccessCalculatorFactory(successCalculatorFactory);
+            _move.SuccessCalculatorFactory = successCalculatorFactory;
             _hasSuccessCalculatorFactory = true;
             return this;
         }
