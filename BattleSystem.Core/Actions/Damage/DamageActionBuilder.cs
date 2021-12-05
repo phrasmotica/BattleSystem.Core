@@ -1,7 +1,6 @@
 ﻿using System;
 using BattleSystem.Core.Actions.Damage.Calculators;
 using BattleSystem.Core.Characters.Targets;
-using BattleSystem.Core.Random;
 
 namespace BattleSystem.Core.Actions.Damage
 {
@@ -72,7 +71,7 @@ namespace BattleSystem.Core.Actions.Damage
         /// </summary>
         /// <param name="basePower">The base power.</param>
         /// <param name="random">The random number generator.</param>
-        public DamageActionBuilder WithBasePower(int basePower, IRandom random)
+        public DamageActionBuilder WithBasePower(int basePower, Random random)
         {
             return WithDamageCalculator(new BasePowerDamageCalculator(basePower, random));
         }
@@ -145,7 +144,7 @@ namespace BattleSystem.Core.Actions.Damage
         /// Sets the built damage action to target a random enemy.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public DamageActionBuilder TargetsRandomEnemy(IRandom random)
+        public DamageActionBuilder TargetsRandomEnemy(Random random)
         {
             return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator(random));
         }
@@ -154,7 +153,7 @@ namespace BattleSystem.Core.Actions.Damage
         /// Sets the built damage action to target a random ally.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public DamageActionBuilder TargetsRandomAlly(IRandom random)
+        public DamageActionBuilder TargetsRandomAlly(Random random)
         {
             return WithActionTargetCalculator(new RandomAllyActionTargetCalculator(random));
         }
@@ -163,7 +162,7 @@ namespace BattleSystem.Core.Actions.Damage
         /// Sets the built damage action to target a random character.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public DamageActionBuilder TargetsRandomCharacter(IRandom random)
+        public DamageActionBuilder TargetsRandomCharacter(Random random)
         {
             return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator(random));
         }
@@ -172,7 +171,7 @@ namespace BattleSystem.Core.Actions.Damage
         /// Sets the built damage action to target a random other character.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public DamageActionBuilder TargetsRandomOther(IRandom random)
+        public DamageActionBuilder TargetsRandomOther(Random random)
         {
             return WithActionTargetCalculator(new RandomOtherActionTargetCalculator(random));
         }

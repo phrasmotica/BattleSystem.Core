@@ -1,7 +1,6 @@
 ﻿using System;
 using BattleSystem.Core.Actions.Success;
 using BattleSystem.Core.Characters.Targets;
-using BattleSystem.Core.Random;
 using static BattleSystem.Core.Actions.Flinch.FlinchAction;
 
 namespace BattleSystem.Core.Actions.Flinch
@@ -102,7 +101,7 @@ namespace BattleSystem.Core.Actions.Flinch
         /// Sets the built flinch to target a random enemy.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public FlinchActionBuilder TargetsRandomEnemy(IRandom random)
+        public FlinchActionBuilder TargetsRandomEnemy(Random random)
         {
             return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator(random));
         }
@@ -111,7 +110,7 @@ namespace BattleSystem.Core.Actions.Flinch
         /// Sets the built flinch to target a random ally.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public FlinchActionBuilder TargetsRandomAlly(IRandom random)
+        public FlinchActionBuilder TargetsRandomAlly(Random random)
         {
             return WithActionTargetCalculator(new RandomAllyActionTargetCalculator(random));
         }
@@ -120,7 +119,7 @@ namespace BattleSystem.Core.Actions.Flinch
         /// Sets the built flinch to target a random character.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public FlinchActionBuilder TargetsRandomCharacter(IRandom random)
+        public FlinchActionBuilder TargetsRandomCharacter(Random random)
         {
             return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator(random));
         }
@@ -129,7 +128,7 @@ namespace BattleSystem.Core.Actions.Flinch
         /// Sets the built flinch to target a random other character.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public FlinchActionBuilder TargetsRandomOther(IRandom random)
+        public FlinchActionBuilder TargetsRandomOther(Random random)
         {
             return WithActionTargetCalculator(new RandomOtherActionTargetCalculator(random));
         }
@@ -171,7 +170,7 @@ namespace BattleSystem.Core.Actions.Flinch
         /// </summary>
         /// <param name="accuracy">The built flinch action's accuracy.</param>
         /// <param name="random">The random number generator.</param>
-        public FlinchActionBuilder WithAccuracy(int accuracy, IRandom random)
+        public FlinchActionBuilder WithAccuracy(int accuracy, Random random)
         {
             return WithSuccessCalculatorFactory(() => new AccuracyActionSuccessCalculator(accuracy, random));
         }

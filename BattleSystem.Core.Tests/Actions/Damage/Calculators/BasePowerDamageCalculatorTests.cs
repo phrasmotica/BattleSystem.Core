@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using BattleSystem.Core.Actions.Damage.Calculators;
-using BattleSystem.Core.Random;
 using Moq;
 using NUnit.Framework;
 using static BattleSystem.Core.Actions.ActionContainer;
@@ -32,7 +31,7 @@ namespace BattleSystem.Core.Tests.Actions.Damage.Calculators
             int expectedAmount)
         {
             // Arrange
-            var random = new Mock<IRandom>();
+            var random = new Mock<Random>();
             random
                 .Setup(m => m.Next(80, 101))
                 .Returns(100);
@@ -58,7 +57,7 @@ namespace BattleSystem.Core.Tests.Actions.Damage.Calculators
         public void Calculate_NoPowerTransforms_MultipleTargets_ReturnsSpreadDamage()
         {
             // Arrange
-            var random = new Mock<IRandom>();
+            var random = new Mock<Random>();
             random
                 .Setup(m => m.Next(80, 101))
                 .Returns(100);
@@ -85,7 +84,7 @@ namespace BattleSystem.Core.Tests.Actions.Damage.Calculators
         public void Calculate_WithPowerTransforms_ReturnsDamage()
         {
             // Arrange
-            var random = new Mock<IRandom>();
+            var random = new Mock<Random>();
             random
                 .Setup(m => m.Next(80, 101))
                 .Returns(100);

@@ -1,7 +1,6 @@
 ﻿using System;
 using BattleSystem.Core.Actions.Heal.Calculators;
 using BattleSystem.Core.Characters.Targets;
-using BattleSystem.Core.Random;
 
 namespace BattleSystem.Core.Actions.Heal
 {
@@ -149,7 +148,7 @@ namespace BattleSystem.Core.Actions.Heal
         /// Sets the built heal to target a random enemy.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public HealActionBuilder TargetsRandomEnemy(IRandom random)
+        public HealActionBuilder TargetsRandomEnemy(Random random)
         {
             return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator(random));
         }
@@ -158,7 +157,7 @@ namespace BattleSystem.Core.Actions.Heal
         /// Sets the built heal to target a random ally.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public HealActionBuilder TargetsRandomAlly(IRandom random)
+        public HealActionBuilder TargetsRandomAlly(Random random)
         {
             return WithActionTargetCalculator(new RandomAllyActionTargetCalculator(random));
         }
@@ -167,7 +166,7 @@ namespace BattleSystem.Core.Actions.Heal
         /// Sets the built heal to target a random character.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public HealActionBuilder TargetsRandomCharacter(IRandom random)
+        public HealActionBuilder TargetsRandomCharacter(Random random)
         {
             return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator(random));
         }
@@ -176,7 +175,7 @@ namespace BattleSystem.Core.Actions.Heal
         /// Sets the built heal to target a random other character.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public HealActionBuilder TargetsRandomOther(IRandom random)
+        public HealActionBuilder TargetsRandomOther(Random random)
         {
             return WithActionTargetCalculator(new RandomOtherActionTargetCalculator(random));
         }

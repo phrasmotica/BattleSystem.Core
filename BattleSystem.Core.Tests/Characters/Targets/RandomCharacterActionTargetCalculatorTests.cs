@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using BattleSystem.Core.Characters.Targets;
-using BattleSystem.Core.Random;
 using Moq;
 using NUnit.Framework;
 
@@ -23,7 +22,7 @@ namespace BattleSystem.Core.Tests.Characters.Targets
         public void Calculate_ReturnsCharacter()
         {
             // Arrange
-            var random = new Mock<IRandom>();
+            var random = new Mock<Random>();
             random
                 .Setup(m => m.Next(3))
                 .Returns(1);

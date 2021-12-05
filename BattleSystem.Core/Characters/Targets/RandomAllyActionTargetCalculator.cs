@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Core.Random;
 
 namespace BattleSystem.Core.Characters.Targets
 {
@@ -13,13 +12,13 @@ namespace BattleSystem.Core.Characters.Targets
         /// <summary>
         /// The random number generator.
         /// </summary>
-        private readonly IRandom _random;
+        private readonly Random _random;
 
         /// <summary>
         /// Creates a new <see cref="RandomAllyActionTargetCalculator"/> instance.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public RandomAllyActionTargetCalculator(IRandom random)
+        public RandomAllyActionTargetCalculator(Random random)
         {
             _random = random ?? throw new ArgumentNullException(nameof(random));
         }

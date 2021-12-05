@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using BattleSystem.Core.Abilities;
 using BattleSystem.Core.Moves;
-using BattleSystem.Core.Random;
 using BattleSystem.Core.Stats;
 
 namespace BattleSystem.Core.Characters
@@ -15,7 +14,7 @@ namespace BattleSystem.Core.Characters
         /// <summary>
         /// The random number generator.
         /// </summary>
-        private readonly IRandom _random;
+        private readonly Random _random;
 
         /// <summary>
         /// Creates a new basic character with the given name, max health, stats and moves.
@@ -27,7 +26,7 @@ namespace BattleSystem.Core.Characters
             StatSet stats,
             MoveSet moves,
             Ability ability,
-            IRandom random) : base(name, team, maxHealth, stats, moves, ability)
+            Random random) : base(name, team, maxHealth, stats, moves, ability)
         {
             _random = random ?? throw new ArgumentNullException(nameof(random));
         }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using BattleSystem.Core.Characters;
-using BattleSystem.Core.Random;
 
 namespace BattleSystem.Core.Actions.Damage.Calculators
 {
@@ -20,14 +19,14 @@ namespace BattleSystem.Core.Actions.Damage.Calculators
         /// <summary>
         /// The random number generator.
         /// </summary>
-        private readonly IRandom _random;
+        private readonly Random _random;
 
         /// <summary>
         /// Creates a new <see cref="BasePowerDamageCalculator"/> instance.
         /// </summary>
         /// <param name="basePower">The base power.</param>
         /// <param name="random">The random number generator.</param>
-        public BasePowerDamageCalculator(int basePower, IRandom random)
+        public BasePowerDamageCalculator(int basePower, Random random)
         {
             _basePower = basePower;
             _random = random ?? throw new ArgumentNullException(nameof(random));

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BattleSystem.Core.Random;
 
 namespace BattleSystem.Core.Moves
 {
@@ -84,7 +83,7 @@ namespace BattleSystem.Core.Moves
         /// Returns a random move in the set.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public Move ChooseRandom(IRandom random)
+        public Move ChooseRandom(Random random)
         {
             return GetMove(random.Next(Moves.Count));
         }

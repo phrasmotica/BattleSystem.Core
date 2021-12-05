@@ -1,7 +1,6 @@
 ﻿using System;
 using BattleSystem.Core.Actions;
 using BattleSystem.Core.Moves.Success;
-using BattleSystem.Core.Random;
 using static BattleSystem.Core.Moves.Move;
 
 namespace BattleSystem.Core.Moves
@@ -118,7 +117,7 @@ namespace BattleSystem.Core.Moves
         /// </summary>
         /// <param name="accuracy">The built move's accuracy.</param>
         /// <param name="random">The random number generator.</param>
-        public MoveBuilder WithAccuracy(int accuracy, IRandom random)
+        public MoveBuilder WithAccuracy(int accuracy, Random random)
         {
             return WithSuccessCalculatorFactory(() => new AccuracyMoveSuccessCalculator(accuracy, random));
         }

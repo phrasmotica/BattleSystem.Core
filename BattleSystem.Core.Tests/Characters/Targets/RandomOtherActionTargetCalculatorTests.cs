@@ -2,7 +2,6 @@
 using System.Linq;
 using BattleSystem.Core.Characters;
 using BattleSystem.Core.Characters.Targets;
-using BattleSystem.Core.Random;
 using Moq;
 using NUnit.Framework;
 
@@ -24,7 +23,7 @@ namespace BattleSystem.Core.Tests.Characters.Targets
         public void Calculate_WithOthers_ReturnsOtherCharacter()
         {
             // Arrange
-            var random = new Mock<IRandom>();
+            var random = new Mock<Random>();
             random
                 .Setup(m => m.Next(2))
                 .Returns(0);
@@ -53,7 +52,7 @@ namespace BattleSystem.Core.Tests.Characters.Targets
         public void Calculate_NoOthers_ReturnsUnsuccessful()
         {
             // Arrange
-            var calculator = new RandomOtherActionTargetCalculator(new Mock<IRandom>().Object);
+            var calculator = new RandomOtherActionTargetCalculator(Mock.Of<Random>());
 
             var user = TestHelpers.CreateBasicCharacter();
             var otherCharacters = Enumerable.Empty<Character>();

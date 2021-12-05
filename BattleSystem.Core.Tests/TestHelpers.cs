@@ -1,4 +1,5 @@
-﻿using BattleSystem.Core.Abilities;
+﻿using System;
+using BattleSystem.Core.Abilities;
 using BattleSystem.Core.Actions;
 using BattleSystem.Core.Actions.Damage;
 using BattleSystem.Core.Actions.Damage.Calculators;
@@ -9,7 +10,6 @@ using BattleSystem.Core.Characters.Targets;
 using BattleSystem.Core.Items;
 using BattleSystem.Core.Moves;
 using BattleSystem.Core.Moves.Success;
-using BattleSystem.Core.Random;
 using BattleSystem.Core.Stats;
 using Moq;
 using static BattleSystem.Core.Actions.ActionContainer;
@@ -34,7 +34,7 @@ namespace BattleSystem.Core.Tests
             int speed = 1,
             MoveSet moveSet = null,
             Ability ability = null,
-            IRandom random = null)
+            Random random = null)
         {
             return new BasicCharacter(
                 name,
@@ -43,7 +43,7 @@ namespace BattleSystem.Core.Tests
                 CreateStatSet(attack, defence, speed),
                 moveSet ?? CreateMoveSet(),
                 ability,
-                random ?? new Mock<IRandom>().Object);
+                random ?? Mock.Of<Random>());
         }
 
         /// <summary>

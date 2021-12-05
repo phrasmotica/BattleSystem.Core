@@ -1,6 +1,5 @@
 ﻿using System;
 using BattleSystem.Core.Characters.Targets;
-using BattleSystem.Core.Random;
 
 namespace BattleSystem.Core.Actions.Protect
 {
@@ -95,7 +94,7 @@ namespace BattleSystem.Core.Actions.Protect
         /// Sets the built protect action to target a random enemy.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public ProtectActionBuilder TargetsRandomEnemy(IRandom random)
+        public ProtectActionBuilder TargetsRandomEnemy(Random random)
         {
             return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator(random));
         }
@@ -104,7 +103,7 @@ namespace BattleSystem.Core.Actions.Protect
         /// Sets the built protect action to target a random ally.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public ProtectActionBuilder TargetsRandomAlly(IRandom random)
+        public ProtectActionBuilder TargetsRandomAlly(Random random)
         {
             return WithActionTargetCalculator(new RandomAllyActionTargetCalculator(random));
         }
@@ -113,7 +112,7 @@ namespace BattleSystem.Core.Actions.Protect
         /// Sets the built protect action to target a random character.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public ProtectActionBuilder TargetsRandomCharacter(IRandom random)
+        public ProtectActionBuilder TargetsRandomCharacter(Random random)
         {
             return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator(random));
         }
@@ -122,7 +121,7 @@ namespace BattleSystem.Core.Actions.Protect
         /// Sets the built protect action to target a random other character.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public ProtectActionBuilder TargetsRandomOther(IRandom random)
+        public ProtectActionBuilder TargetsRandomOther(Random random)
         {
             return WithActionTargetCalculator(new RandomOtherActionTargetCalculator(random));
         }

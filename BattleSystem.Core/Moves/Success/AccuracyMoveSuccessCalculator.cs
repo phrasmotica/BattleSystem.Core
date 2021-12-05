@@ -1,5 +1,4 @@
 ﻿using System;
-using BattleSystem.Core.Random;
 using BattleSystem.Core.Success;
 
 namespace BattleSystem.Core.Moves.Success
@@ -17,14 +16,14 @@ namespace BattleSystem.Core.Moves.Success
         /// <summary>
         /// The random number generator.
         /// </summary>
-        private readonly IRandom _random;
+        private readonly Random _random;
 
         /// <summary>
         /// Creates a new <see cref="AccuracyMoveSuccessCalculator"/> instance.
         /// </summary>
         /// <param name="accuracy">The accuracy.</param>
         /// <param name="random">The random number generator.</param>
-        public AccuracyMoveSuccessCalculator(int accuracy, IRandom random)
+        public AccuracyMoveSuccessCalculator(int accuracy, Random random)
         {
             _accuracy = accuracy;
             _random = random ?? throw new ArgumentNullException(nameof(random));

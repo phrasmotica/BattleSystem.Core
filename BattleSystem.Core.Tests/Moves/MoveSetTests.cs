@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using BattleSystem.Core.Moves;
-using BattleSystem.Core.Random;
 using Moq;
 using NUnit.Framework;
 
@@ -46,7 +45,7 @@ namespace BattleSystem.Core.Tests.Moves
             );
 
             // Act
-            var move = moveSet.ChooseRandom(new Mock<IRandom>().Object);
+            var move = moveSet.ChooseRandom(Mock.Of<Random>());
 
             // Assert
             Assert.That(move, Is.Not.Null);

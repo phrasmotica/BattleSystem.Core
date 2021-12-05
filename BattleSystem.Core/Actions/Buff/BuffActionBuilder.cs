@@ -1,6 +1,5 @@
 ﻿using System;
 using BattleSystem.Core.Characters.Targets;
-using BattleSystem.Core.Random;
 using BattleSystem.Core.Stats;
 
 namespace BattleSystem.Core.Actions.Buff
@@ -96,7 +95,7 @@ namespace BattleSystem.Core.Actions.Buff
         /// Sets the built buff to target a random enemy.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public BuffActionBuilder TargetsRandomEnemy(IRandom random)
+        public BuffActionBuilder TargetsRandomEnemy(Random random)
         {
             return WithActionTargetCalculator(new RandomEnemyActionTargetCalculator(random));
         }
@@ -105,7 +104,7 @@ namespace BattleSystem.Core.Actions.Buff
         /// Sets the built buff to target a random ally.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public BuffActionBuilder TargetsRandomAlly(IRandom random)
+        public BuffActionBuilder TargetsRandomAlly(Random random)
         {
             return WithActionTargetCalculator(new RandomAllyActionTargetCalculator(random));
         }
@@ -114,7 +113,7 @@ namespace BattleSystem.Core.Actions.Buff
         /// Sets the built buff to target a random character.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public BuffActionBuilder TargetsRandomCharacter(IRandom random)
+        public BuffActionBuilder TargetsRandomCharacter(Random random)
         {
             return WithActionTargetCalculator(new RandomCharacterActionTargetCalculator(random));
         }
@@ -123,7 +122,7 @@ namespace BattleSystem.Core.Actions.Buff
         /// Sets the built buff to target a random other character.
         /// </summary>
         /// <param name="random">The random number generator.</param>
-        public BuffActionBuilder TargetsRandomOther(IRandom random)
+        public BuffActionBuilder TargetsRandomOther(Random random)
         {
             return WithActionTargetCalculator(new RandomOtherActionTargetCalculator(random));
         }

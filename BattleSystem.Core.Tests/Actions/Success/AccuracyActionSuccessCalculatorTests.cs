@@ -1,6 +1,5 @@
 ﻿using System;
 using BattleSystem.Core.Actions.Success;
-using BattleSystem.Core.Random;
 using Moq;
 using NUnit.Framework;
 
@@ -22,7 +21,7 @@ namespace BattleSystem.Core.Tests.Actions.Success
         public void Calculate_InsideThreshold_ReturnsSuccess()
         {
             // Arrange
-            var random = new Mock<IRandom>();
+            var random = new Mock<Random>();
             random
                 .Setup(m => m.Next(100))
                 .Returns(85);
@@ -42,7 +41,7 @@ namespace BattleSystem.Core.Tests.Actions.Success
         public void Calculate_OutsideThreshold_ReturnsMiss()
         {
             // Arrange
-            var random = new Mock<IRandom>();
+            var random = new Mock<Random>();
             random
                 .Setup(m => m.Next(100))
                 .Returns(95);
