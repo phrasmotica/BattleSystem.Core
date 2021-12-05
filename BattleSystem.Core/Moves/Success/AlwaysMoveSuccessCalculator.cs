@@ -8,9 +8,6 @@ namespace BattleSystem.Core.Moves.Success
     public class AlwaysMoveSuccessCalculator : ISuccessCalculator<Move, MoveUseResult>
     {
         /// <inheritdoc />
-        public MoveUseResult Calculate(Move move)
-        {
-            return MoveUseResult.Success;
-        }
+        public MoveUseResult Calculate(Move move) => MoveUseResult.Success;
     }
 }
